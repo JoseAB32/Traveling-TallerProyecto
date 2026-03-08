@@ -1,0 +1,122 @@
+:host {
+  --blue-dark: #004a80;
+  --blue-light: #005a9c;
+  --orange: #ff7841;
+  --white: #ffffff;
+}
+
+.section {
+  padding: 80px 10%;
+  display: flex;
+  justify-content: center;
+}
+
+.content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  gap: 40px;
+}
+
+.reverse {
+  flex-direction: row-reverse; 
+}
+
+.navbar {
+  background-color: var(--blue-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  color: white;
+}
+
+.text-block {
+  flex: 1;
+}
+
+.text-block h1, .text-block h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-transform: lowercase;
+}
+
+.white-text { color: white; }
+
+.btn {
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+  margin-right: 10px;
+}
+
+.btn-primary { background: var(--blue-dark); color: white; }
+.btn-outline { background: transparent; border: 2px solid var(--blue-dark); }
+.btn-orange { background: var(--orange); color: white; margin-top: 20px; }
+
+.image-collage {
+  flex: 1;
+  position: relative;
+  height: 400px; 
+}
+
+.image-collage img {
+  position: absolute;
+  border: 8px solid white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  max-width: 250px;
+}
+
+.img-top { transform: rotate(-5deg); z-index: 2; top: 0; left: 50px; }
+.img-left { transform: rotate(-15deg); z-index: 1; top: 50px; left: -20px; }
+.img-bottom { transform: rotate(5deg); z-index: 3; top: 120px; left: 80px; }
+
+.center-content {
+  flex-direction: column;
+  align-items: center;
+}
+
+.cta-card {
+  max-width: 600px;
+  text-align: center;
+}
+
+.full-img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  gap: 50px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.divider {
+  width: 2px;
+  background-color: white;
+  align-self: stretch;
+}
+.blue-bg {
+  background-color: #004e89 !important; 
+  color: white;
+}
+
+.white-bg {
+  background-color: #ffffff !important;
+  color: #333;
+}
