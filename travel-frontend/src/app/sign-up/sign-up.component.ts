@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { NgForOf } from "../../../node_modules/@angular/common";
@@ -39,7 +39,7 @@ export class SignUpComponent implements OnInit {
   }
 
   goToInicio() {
-    this.router.navigate(['/inicio']);
+    // this.router.navigate(['/inicio']); 
   }
 
   onSubmit() {
