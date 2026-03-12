@@ -1,0 +1,71 @@
+/* Colores y Tipografía */
+.text-orange {
+    color: #ff6b35; /* Naranja de los títulos */
+}
+
+.bg-blue-dark {
+    background-color: #004a87 !important; /* Azul de las tarjetas y fondo inferior */
+}
+
+.bg-orange-soft {
+    background-color: #fce1c5 !important; /* Naranja suave de la tarjeta central */
+}
+
+/* Hero Section */
+.section-title-hero {
+    line-height: 1.2;
+    font-size: 1.8rem;
+}
+
+.mapa-vector {
+    max-height: 450px;
+    transition: filter 0.3s ease;
+}
+
+/* Tarjetas de Lugares */
+.travel-card {
+    border-radius: 25px !important;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.travel-card:hover {
+    transform: translateY(-10px);
+}
+
+.travel-card img {
+    height: 550px;
+    object-fit: cover;
+    border-radius: 20px !important;
+}
+
+.stars {
+    color: #ffc107; /* Color dorado para las estrellas */
+    font-size: 1.1rem;
+    margin-top: 5px;
+}
+
+/* Sección de Itinerario (Inferior) */
+.cta-section {
+    background-color: #004a87;
+    border-top: 5px solid #ffffff;
+}
+
+.btn-orange-action {
+    background-color: #ff6b35;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-orange-action:hover {
+    background-color: #e85a28;
+}
+
+/* Ajustes para Móviles */
+@media (max-width: 768px) {
+    .section-title-hero {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+}
