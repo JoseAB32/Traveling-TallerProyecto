@@ -12,92 +12,55 @@ import jakarta.persistence.Table;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;  // Cambiado de long a Long (objeto)
 
     @Column(name = "correo", nullable = false)
-    private String Correo;
+    private String correo;  // Cambiado de Correo a correo
 
     @Column(name = "user_name", nullable = false)
-    private String UserName;
+    private String userName;  // Cambiado de UserName a userName
 
     @Column(name = "pass", nullable = false)
-    private String Pass;
+    private String pass;  // Cambiado de Pass a pass
 
     @Column(name = "birthday", nullable = true)
-    private String Birthday;
+    private String birthday;  // Cambiado de Birthday a birthday
 
     @Column(name = "city", nullable = true)
-    private String City;
+    private String city;  // Cambiado de City a city
 
     @Column(name = "state", nullable = false)
-    private boolean State = true; //Inicia siempre como true para manejar delete logico
+    private boolean state = true;  // Cambiado de State a state
 
-    public User() {
-
-    }
+    public User() {}
 
     public User(String correo, String userName, String pass, String birthday, String city) {
-        super();
-        this.Correo = correo;
-        this.UserName = userName;
-        this.Pass = pass;
-        this.Birthday = birthday;
-        this.City = city;
+        this.correo = correo;
+        this.userName = userName;
+        this.pass = pass;
+        this.birthday = birthday;
+        this.city = city;
     }
 
-    public long getId() {
-        return id;
-    }
+    // Getters y Setters actualizados
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
 
-    public String getCorreo() {
-        return Correo;
-    }
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
-    public void setCorreo(String correo) {
-        this.Correo = correo;
-    }
+    public String getPass() { return pass; }
+    public void setPass(String pass) { this.pass = pass; }
 
-    public String getUserName() {
-        return UserName;
-    }
+    public String getBirthday() { return birthday; }
+    public void setBirthday(String birthday) { this.birthday = birthday; }
 
-    public void setUserName(String userName) {
-        this.UserName = userName;
-    }
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
 
-    public String getPass() {
-        return Pass;
-    }
-
-    public void setPass(String pass) {
-        this.Pass = pass;
-    }
-
-    public String getBirthday() {
-        return Birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.Birthday = birthday;
-    }
-
-    public String getCity() {
-        return City;
-    }
-
-    public void setCity(String city) {
-        this.City = city;
-    }
-
-    public boolean isState() {
-        return State;
-    }
-
-    public void setState(boolean state) {
-        this.State = state;
-    }
+    public boolean isState() { return state; }
+    public void setState(boolean state) { this.state = state; }
 }

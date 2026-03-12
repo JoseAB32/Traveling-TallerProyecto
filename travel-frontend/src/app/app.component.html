@@ -1,1 +1,24 @@
-<button class="btn btn-primary">PRUEBA</button>
+<!-- Barra de navegación - visible solo cuando está autenticado -->
+<nav class="navbar" *ngIf="authService.isAuthenticated()">
+  <div class="nav-container">
+    <a routerLink="/dashboard" class="nav-brand outfit-semibold">
+      <img src="/traveling2white.svg" alt="Travel App" class="nav-logo">
+    </a>
+    
+    <div class="nav-menu">
+      <a routerLink="/dashboard" class="nav-link outfit-medium" routerLinkActive="active">Inicio</a>
+      <a routerLink="/profile" class="nav-link outfit-medium" routerLinkActive="active">Perfil</a>
+      <a routerLink="/viajes" class="nav-link outfit-medium" routerLinkActive="active">Mis Viajes</a>
+      
+      <span class="nav-user outfit-medium">
+        👤 {{ (authService.currentUser$ | async)?.userName }}
+      </span>
+      <button (click)="logout()" class="btn-logout outfit-medium">Cerrar Sesión</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Contenido principal -->
+<main>
+  <router-outlet></router-outlet>
+</main>

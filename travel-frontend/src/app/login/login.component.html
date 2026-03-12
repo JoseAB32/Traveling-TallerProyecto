@@ -1,0 +1,73 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-container">
+      <img src="/logo.svg" alt="Logo" class="logo">
+    </div>
+
+    <h1 class="login-title outfit-semibold">INICIAR SESIÓN</h1>
+    
+    <div *ngIf="error" class="alert alert-error outfit-regular">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="successMessage" class="alert alert-success outfit-regular">
+      {{ successMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+      <div class="form-group">
+        <label for="userName" class="form-label outfit-medium">Usuario</label>
+        <input 
+          type="text" 
+          id="userName"
+          name="userName"
+          [(ngModel)]="credentials.userName"
+          required
+          #userName="ngModel"
+          placeholder="Ingresa tu usuario"
+          class="form-control outfit-regular"
+          [class.error]="userName.invalid && userName.touched"
+          [disabled]="loading"
+          autocomplete="off"
+        > <!-- ✅ IMPORTANTE: EL INPUT DEBE ESTAR CERRADO -->
+        <div *ngIf="userName.invalid && userName.touched" class="error-message outfit-light">
+          El usuario es requerido
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pass" class="form-label outfit-medium">Contraseña</label>
+        <input 
+          type="password" 
+          id="pass"
+          name="pass"
+          [(ngModel)]="credentials.pass"
+          required
+          #pass="ngModel"
+          placeholder="••••••••"
+          class="form-control outfit-regular"
+          [class.error]="pass.invalid && pass.touched"
+          [disabled]="loading"
+          autocomplete="off"
+        > <!-- ✅ IMPORTANTE: EL INPUT DEBE ESTAR CERRADO -->
+        <div *ngIf="pass.invalid && pass.touched" class="error-message outfit-light">
+          La contraseña es requerida
+        </div>
+      </div>
+
+      <button 
+        type="submit" 
+        [disabled]="loginForm.invalid || loading"
+        class="btn-login outfit-semibold"
+      >
+        <span *ngIf="loading" class="spinner"></span>
+        {{ loading ? 'INICIANDO...' : 'INICIAR SESIÓN' }}
+      </button>
+    </form>
+
+    <p class="register-link outfit-regular">
+      ¿Aún no tienes una cuenta? 
+      <a routerLink="/register" class="register-link-text outfit-medium">Registrate</a>
+    </p>
+  </div>
+</div>
