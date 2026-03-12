@@ -3,6 +3,7 @@ import { InicioLogueadoComponent } from './inicio-logueado/inicio-logueado.compo
 import { LandingComponent } from './landing/landing.component';
 
 export const routes: Routes = [
+  {path: 'InicioLogueado', component: InicioLogueadoComponent },
   {
     path: '',
     component: LandingComponent
@@ -11,6 +12,5 @@ export const routes: Routes = [
     path: '**', 
     redirectTo: '', 
     pathMatch: 'full'
-  },
-  {path: 'InicioLogueado', component: InicioLogueadoComponent }
+  }
 ];
