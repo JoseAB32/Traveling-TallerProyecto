@@ -85,12 +85,12 @@
                 <input type="password" placeholder=" " class="form-input" id="confirmarContrasena" name="confirmarContrasena">
                 <label for="confirmarContrasena" class="label-form">Confirmar contraseña</label>
             </div>
-            <input type="date" placeholder="Fecha de nacimiento" class="form-input-no-anima" name="fechaNacimiento"
+            <input type="date" placeholder="Fecha de nacimiento" class="form-input-no-anima" name="fechaNacimiento" [min]="limiteInferiorFecha" [max]="limiteSuperiorFecha"
             [(ngModel)] = "user.birthday" name = "fechaNacimiento">
             <select name="ciudades" id="ciudades" class="form-select" name="ciudad"
-            [(ngModel)] = "user.city" name = "ciudad">
-                <option value=" " class="option-defecto">Selecciona una ciudad</option>
-                <option value="cochabamba">Cochabamba</option>
+            [(ngModel)] = "user.city" [(ngModel)]="selected" name = "ciudad">
+                <!-- <option value=" " class="option-defecto">Selecciona una ciudad</option>
+                <option value="cochabamba" selected>Cochabamba</option>
                 <option value="la paz">La Paz</option>
                 <option value="santa cruz">Santa Cruz</option>
                 <option value="oruro">Oruro</option>
@@ -98,8 +98,12 @@
                 <option value="chuquisaca">Chuquisaca</option>
                 <option value="tarija">Tarija</option>
                 <option value="beni">Beni</option>
-                <option value="pando">Pando</option>
+                <option value="pando">Pando</option> -->
+                <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ciudad}}</option>
             </select>
+            <div class="error-container">
+                <p>Error</p>
+            </div>
             <div class="button-container">
                 <button type="submit">REGISTRARSE</button>
             </div>

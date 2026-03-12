@@ -15,22 +15,22 @@ public class User {
     private long id;
 
     @Column(name = "correo", nullable = false)
-    private String Correo;
+    private String correo;
 
     @Column(name = "user_name", nullable = false)
-    private String UserName;
+    private String userName;
 
     @Column(name = "pass", nullable = false)
-    private String Pass;
+    private String pass;
 
     @Column(name = "birthday", nullable = true)
-    private String Birthday;
+    private String birthday;
 
     @Column(name = "city", nullable = true)
-    private String City;
+    private String city;
 
     @Column(name = "state", nullable = false)
-    private boolean State = true; //Inicia siempre como true para manejar delete logico
+    private boolean state = true; //Inicia siempre como true para manejar delete logico
 
     public User() {
 
@@ -38,11 +38,11 @@ public class User {
 
     public User(String correo, String userName, String pass, String birthday, String city) {
         super();
-        this.Correo = correo;
-        this.UserName = userName;
-        this.Pass = pass;
-        this.Birthday = birthday;
-        this.City = city;
+        this.correo = correo;
+        this.userName = userName;
+        this.pass = pass;
+        this.birthday = birthday;
+        this.city = city;
     }
 
     public long getId() {
@@ -54,50 +54,50 @@ public class User {
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
 
     public void setCorreo(String correo) {
-        this.Correo = correo;
+        this.correo = correo;
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        this.UserName = userName;
+        this.userName = userName;
     }
 
     public String getPass() {
-        return Pass;
+        return pass;
     }
 
     public void setPass(String pass) {
-        this.Pass = pass;
+        this.pass = pass;
     }
 
     public String getBirthday() {
-        return Birthday;
+        return birthday;
     }
 
     public void setBirthday(String birthday) {
-        this.Birthday = birthday;
+        this.birthday = birthday;
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        this.City = city;
+        this.city = city;
     }
 
     public boolean isState() {
-        return State;
+        return state;
     }
 
     public void setState(boolean state) {
-        this.State = state;
+        this.state = state;
     }
 }

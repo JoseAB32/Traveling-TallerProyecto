@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TravelBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TravelBackendApplication.class, args);
+		SpringApplication.run(TravelBackendApplication.class, args);	
 	}
 
 }
