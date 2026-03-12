@@ -1,0 +1,14 @@
+.header {
+  background-color: var(--steel-azure);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  color: white;
+  height: 100px;
+}
+
+.logo img{
+  max-block-size: 25px;
+  border: 100px;
+}
