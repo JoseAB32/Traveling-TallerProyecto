@@ -14,46 +14,25 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("=================================");
-        System.out.println("INICIALIZANDO DATOS DE PRUEBA...");
-        System.out.println("=================================");
+        System.out.println("=== INICIALIZANDO DATOS DE PRUEBA ===");
         
-        // Crear usuario admin
+        // Usar findByUsername (NO findByUserName)
         if (!userRepository.existsByUsername("admin")) {
             User admin = new User();
             admin.setUsername("admin");
-            admin.setEmail("admin@travelapp.com");
-            admin.setPassword("1234"); // Por ahora sin encriptar
+            admin.setEmail("admin@gmail.com");
+            admin.setPassword("1234");
             admin.setRole("ADMIN");
+            admin.setActive(true);
             
             userRepository.save(admin);
-            System.out.println("✅ Usuario ADMIN creado:");
-            System.out.println("   Usuario: admin");
-            System.out.println("   Password: 1234");
-        } else {
-            System.out.println("✅ Usuario admin ya existe");
+            System.out.println("✅ Usuario admin creado");
         }
         
-        // Crear usuario de prueba
-        if (!userRepository.existsByUsername("test")) {
-            User test = new User();
-            test.setUsername("test");
-            test.setEmail("test@email.com");
-            test.setPassword("1234");
-            test.setRole("USER");
-            
-            userRepository.save(test);
-            System.out.println("✅ Usuario TEST creado: test / 1234");
-        }
-        
-        // Mostrar usuarios existentes
-        System.out.println("\n📋 USUARIOS EN BASE DE DATOS:");
-        userRepository.findAll().forEach(user -> {
-            System.out.println("   - " + user.getUsername() + 
-                             " (" + user.getRole() + ") - " + 
-                             user.getEmail());
-        });
-        
-        System.out.println("=================================\n");
+        // Listar usuarios
+        System.out.println("\n📊 USUARIOS EN BASE DE DATOS:");
+        userRepository.findAll().forEach(user -> 
+            System.out.println("   - " + user.getUsername() + " (" + user.getRole() + ")")
+        );
     }
 }

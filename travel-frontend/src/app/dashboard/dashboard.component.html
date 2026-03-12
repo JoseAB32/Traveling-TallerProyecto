@@ -1,0 +1,39 @@
+<div class="dashboard-container">
+  <h1>Panel de Control</h1>
+  
+  <div class="welcome-card">
+    <h2>¡Bienvenido, {{ (authService.currentUser$ | async)?.username }}!</h2>
+    <p>Has iniciado sesión correctamente.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Viajes</h3>
+      <p class="stat-number">0</p>
+      <p>Próximos viajes</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>Destinos</h3>
+      <p class="stat-number">0</p>
+      <p>Lugares visitados</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>Fotos</h3>
+      <p class="stat-number">0</p>
+      <p>Recuerdos</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>Amigos</h3>
+      <p class="stat-number">0</p>
+      <p>Conectados</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a routerLink="/viajes" class="btn-primary">Ver mis viajes</a>
+    <a routerLink="/profile" class="btn-secondary">Editar perfil</a>
+  </div>
+</div>

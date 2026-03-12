@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 export interface User {
@@ -20,6 +21,19 @@ export interface LoginResponse {
   id: number;
 }
 
+export interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+  birthday?: string;
+  city?: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  id: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,14 +42,21 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient, 
+    private router: Router
+  ) {
     this.loadStoredUser();
   }
 
   private loadStoredUser() {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
-      this.currentUserSubject.next(JSON.parse(storedUser));
+      try {
+        this.currentUserSubject.next(JSON.parse(storedUser));
+      } catch (e) {
+        localStorage.removeItem('currentUser');
+      }
     }
   }
 
@@ -43,6 +64,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { username, password })
       .pipe(
         tap(response => {
+          console.log('✅ Login exitoso:', response);
           const user: User = {
             id: response.id,
             username: response.username,
@@ -52,13 +74,20 @@ export class AuthService {
           };
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
-          this.router.navigate(['/']);
-        })
+        }),
+        catchError(this.handleError)
       );
   }
 
-  register(user: { username: string; email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, user);
+  // ✅ NUEVO: Método register
+  register(userData: RegisterData): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, userData)
+      .pipe(
+        tap(response => {
+          console.log('✅ Registro exitoso:', response);
+        }),
+        catchError(this.handleError)
+      );
   }
 
   logout() {
@@ -73,5 +102,29 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.currentUserSubject.value;
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('❌ Error:', error);
+    
+    let errorMessage = 'Error en la autenticación';
+    
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      if (error.error && typeof error.error === 'string') {
+        errorMessage = error.error;
+      } else if (error.error && error.error.error) {
+        errorMessage = error.error.error;
+      } else if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      } else if (error.status === 401) {
+        errorMessage = 'Usuario o contraseña incorrectos';
+      } else if (error.status === 0) {
+        errorMessage = 'No se pudo conectar al servidor';
+      }
+    }
+    
+    return throwError(() => errorMessage);
   }
 }

@@ -1,0 +1,22 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Crear Cuenta</h2>
+    
+    <div *ngIf="error" class="alert alert-error">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <!-- ... resto del template igual ... -->
+    </form>
+
+    <p class="text-center">
+      ¿Ya tienes cuenta? 
+      <a routerLink="/login" class="link">Inicia Sesión</a>
+    </p>
+  </div>
+</div>

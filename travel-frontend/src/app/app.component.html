@@ -1,19 +1,31 @@
-<nav class="navbar">
+<!-- Barra de navegación - SOLO visible cuando el usuario está autenticado -->
+<nav class="navbar" *ngIf="authService.isAuthenticated()">
   <div class="nav-container">
-    <a routerLink="/" class="nav-brand">✈️ Travel App</a>
+    <a routerLink="/dashboard" class="nav-brand">✈️ Travel App</a>
+    
     <div class="nav-menu">
-      <ng-container *ngIf="!(authService.currentUser$ | async)">
-        <a routerLink="/login" class="nav-link">Iniciar Sesión</a>
-        <a routerLink="/register" class="nav-link btn-primary">Registrarse</a>
-      </ng-container>
-      <ng-container *ngIf="authService.currentUser$ | async as user">
-        <span class="nav-user">👤 {{user.username}}</span>
-        <button (click)="authService.logout()" class="nav-link btn-logout">Cerrar Sesión</button>
-      </ng-container>
+      <!-- Menú de navegación -->
+      <a routerLink="/dashboard" class="nav-link" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/profile" class="nav-link" routerLinkActive="active">Perfil</a>
+      <a routerLink="/viajes" class="nav-link" routerLinkActive="active">Mis Viajes</a>
+      
+      <!-- Información del usuario y logout -->
+      <span class="nav-user">
+        👤 {{ (authService.currentUser$ | async)?.username }}
+        <span class="nav-role">({{ (authService.currentUser$ | async)?.role }})</span>
+      </span>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
     </div>
   </div>
 </nav>
 
-<main class="container">
+<!-- Contenido principal - Aquí se cargan los componentes según la ruta -->
+<main class="container" [class.without-nav]="!authService.isAuthenticated()">
   <router-outlet></router-outlet>
 </main>
+
+<!-- Mensaje para cuando no hay rutas cargando (opcional) -->
+<div *ngIf="!authService.isAuthenticated()" class="welcome-message">
+  <h1>Bienvenido a Travel App</h1>
+  <p>Por favor <a routerLink="/login">inicia sesión</a> o <a routerLink="/register">regístrate</a></p>
+</div>
