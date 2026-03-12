@@ -60,7 +60,17 @@
 
 .btn-primary { background: var(--steel-azure); color: white; }
 .btn-outline { background: transparent; border: 2px solid var(--steel-azure); }
-.btn-orange { background: var(--atomic-tangerine); color: white; margin-top: 20px; }
+.btn-orange { background: var(--atomic-tangerine); color: white; margin-top: 20px; border-radius: 10px; }
+
+.blue-bg {
+  background-color: var(--steel-azure) !important; 
+  color: white;
+}
+
+.white-bg {
+  background-color: var(--white) !important;
+  color: #333;
+}
 
 .image-collage {
   flex: 1;
@@ -104,6 +114,7 @@
 
 .footer {
   display: flex;
+  margin-top: 80px;
   justify-content: center;
   align-items: flex-start;
   padding: 50px;
@@ -115,20 +126,15 @@
 .footer-column {
   display: flex;
   flex-direction: column;
+  margin-left: 100px;
+  margin-right: 100px;
   gap: 10px;
+  alignment-baseline: baseline;
 }
 
 .divider {
-  width: 2px;
+  width: 5px;
   background-color: white;
   align-self: stretch;
-}
-.blue-bg {
-  background-color: var(--steel-azure) !important; 
-  color: white;
-}
-
-.white-bg {
-  background-color: var(--white) !important;
-  color: #333;
+  border-radius: 5px;
 }
