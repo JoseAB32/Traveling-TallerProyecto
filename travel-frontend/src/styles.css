@@ -7,3 +7,10 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+/*Colores globales, FIGMA*/
+:root{
+  --steel-azure: #004a80;
+  --baltic-blue: #1a659e;
+  --atomic-tangerine: #ff6b35;
+  --white: #ffffff; 
+}
