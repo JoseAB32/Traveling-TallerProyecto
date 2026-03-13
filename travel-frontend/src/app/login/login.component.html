@@ -1,0 +1,110 @@
+<div class="login-page">
+  <div class="login-container">
+    <!-- Columna izquierda - Collage de fotos -->
+    <div class="left-column">
+      <!-- Contenedor de fotos con posición relativa -->
+      <div class="photo-collage">
+        <!-- Foto 1: Salar (arriba izquierda) -->
+        <div class="photo photo-1">
+          <img src="https://images.unsplash.com/photo-1542402026-4c7f3b9f3c3d?w=180&h=180&fit=crop" alt="Salar">
+        </div>
+        
+        <!-- Foto 2: Montaña con lago (arriba centro/derecha) -->
+        <div class="photo photo-2">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=180&h=180&fit=crop" alt="Montaña">
+        </div>
+        
+        <!-- Foto 3: Fuente iluminada rosa (centro izquierda) -->
+        <div class="photo photo-3">
+          <img src="https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=180&h=180&fit=crop" alt="Fuente">
+        </div>
+        
+        <!-- Foto 4: Edificio moderno (abajo derecha) -->
+        <div class="photo photo-4">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=180&h=180&fit=crop" alt="Edificio">
+        </div>
+        
+        <!-- Foto 5: Foto intermedia (detrás) -->
+        <div class="photo photo-5">
+          <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=180&h=180&fit=crop" alt="Intermedia">
+        </div>
+      </div>
+      
+      <!-- Logo TRAVELING - exactamente como en la imagen -->
+      <div class="logo-container">
+        <img src="/traveling2white.svg" alt="TRAVELING" class="logo-svg">
+      </div>
+    </div>
+    
+    <!-- Línea divisoria punteada -->
+    <div class="divider"></div>
+    
+    <!-- Columna derecha - Formulario login (sin cambios) -->
+    <div class="right-column">
+      <div class="login-card">
+        <h1 class="login-title">INICIAR SESIÓN</h1>
+        
+        <div *ngIf="error" class="alert alert-error">
+          {{ error }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success">
+          {{ successMessage }}
+        </div>
+        
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div class="form-group">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input 
+              type="email" 
+              id="email"
+              name="email"
+              [(ngModel)]="credentials.email"
+              required
+              email
+              #email="ngModel"
+              class="form-control"
+              [class.error]="email.invalid && email.touched"
+              [disabled]="loading"
+            >
+            <div *ngIf="email.invalid && email.touched && email.errors?.['required']" class="error-message">
+              El correo es requerido
+            </div>
+            <div *ngIf="email.invalid && email.touched && email.errors?.['email']" class="error-message">
+              Correo inválido
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password" class="form-label">Contraseña</label>
+            <input 
+              type="password" 
+              id="password"
+              name="password"
+              [(ngModel)]="credentials.password"
+              required
+              #password="ngModel"
+              class="form-control"
+              [class.error]="password.invalid && password.touched"
+              [disabled]="loading"
+            >
+            <div *ngIf="password.invalid && password.touched" class="error-message">
+              La contraseña es requerida
+            </div>
+          </div>
+          
+          <button 
+            type="submit" 
+            [disabled]="loginForm.invalid || loading"
+            class="btn-login"
+          >
+            {{ loading ? 'INICIANDO...' : 'INICIAR SESIÓN' }}
+          </button>
+        </form>
+        
+        <p class="register-link">
+          ¿Aún no tienes una cuenta? <a routerLink="/register" class="register-link-text">Regístrate</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

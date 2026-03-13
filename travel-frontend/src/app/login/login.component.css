@@ -1,0 +1,295 @@
+/* Fondo principal - azul oscuro */
+.login-page {
+  background-color: #0e4b78;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Contenedor principal - con borde punteado celeste */
+.login-container {
+  display: flex;
+  background-color: #0e4b78;
+  border: 2px dashed #4ea1d3;
+  border-radius: 20px;
+  max-width: 1100px;
+  width: 100%;
+  min-height: 600px;
+  position: relative;
+}
+
+/* Línea divisoria punteada */
+.divider {
+  border-right: 2px dashed #4ea1d3;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+/* Columnas */
+.left-column, .right-column {
+  flex: 1;
+  position: relative;
+  padding: 2rem;
+}
+
+/* ========================================
+   COLUMNA IZQUIERDA - COLLAGE DE FOTOS
+   ======================================== */
+.left-column {
+  position: relative;
+  min-height: 500px;
+}
+
+/* Contenedor del collage - posición relativa */
+.photo-collage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 450px;
+}
+
+/* Estilo base para todas las fotos - como fotos físicas */
+.photo {
+  position: absolute;
+  background: white;
+  padding: 8px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  width: fit-content;
+  height: fit-content;
+}
+
+.photo img {
+  display: block;
+  width: 160px;  /* Tamaño fijo para todas las imágenes */
+  height: 160px;
+  object-fit: cover;
+}
+
+/* ========================================
+   POSICIONES EXACTAS DE CADA FOTO
+   ======================================== */
+
+/* Foto 1: Salar (arriba izquierda) */
+.photo-1 {
+  top: 40px;
+  left: 80px;
+  transform: rotate(-12deg);
+  z-index: 1;
+}
+
+/* Foto 2: Montaña con lago (arriba centro/derecha) */
+.photo-2 {
+  top: 80px;
+  left: 200px;
+  transform: rotate(8deg);
+  z-index: 3;
+}
+
+/* Foto 3: Fuente iluminada rosa (centro izquierda) */
+.photo-3 {
+  top: 200px;
+  left: 60px;
+  transform: rotate(-18deg);
+  z-index: 4;
+}
+
+/* Foto 4: Edificio moderno (abajo derecha) */
+.photo-4 {
+  top: 300px;
+  left: 220px;
+  transform: rotate(-6deg);
+  z-index: 2;
+}
+
+/* Foto 5: Foto intermedia (detrás) */
+.photo-5 {
+  top: 180px;
+  left: 160px;
+  transform: rotate(5deg);
+  z-index: 1;
+  opacity: 0.9;  /* Ligeramente opaca para dar sensación de profundidad */
+}
+
+/* Logo TRAVELING - exactamente como en la imagen */
+.logo-container {
+  position: absolute;
+  bottom: 40px;    /* Exactamente como describiste */
+  left: 80px;       /* Exactamente como describiste */
+}
+
+.logo-svg {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+/* ========================================
+   COLUMNA DERECHA - FORMULARIO LOGIN
+   ======================================== */
+.right-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: #eeeeee;
+  border-radius: 16px;
+  padding: 40px;
+  width: 350px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+  color: #0c4a6e;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Alertas */
+.alert {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.alert-error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  background: white;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #1e4a7a;
+}
+
+.form-control.error {
+  border-color: #dc2626;
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Botón naranja */
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background-color: #ff6b35;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.btn-login:hover:not(:disabled) {
+  background-color: #e05a2a;
+}
+
+.btn-login:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Link de registro */
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.register-link-text {
+  color: #ff6b35;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.register-link-text:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+  
+  .divider {
+    border-right: none;
+    border-bottom: 2px dashed #4ea1d3;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+  }
+  
+  .left-column {
+    min-height: 400px;
+  }
+  
+  .photo img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  /* Ajustar posiciones en móvil */
+  .photo-1 { top: 20px; left: 40px; }
+  .photo-2 { top: 50px; left: 120px; }
+  .photo-3 { top: 140px; left: 30px; }
+  .photo-4 { top: 220px; left: 140px; }
+  .photo-5 { top: 120px; left: 90px; }
+  
+  .logo-container {
+    bottom: 20px;
+    left: 40px;
+  }
+}

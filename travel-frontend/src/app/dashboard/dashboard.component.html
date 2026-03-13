@@ -1,0 +1,34 @@
+<div class="dashboard-container">
+  <div class="header">
+    <img src="/traveling2white.svg" alt="Travel App Logo" class="logo">
+    <h1 class="outfit-bold">Panel Principal</h1>
+  </div>
+
+  <div class="welcome-card">
+    <h2 class="outfit-semibold">¡Bienvenido, {{ (authService.currentUser$ | async)?.userName }}!</h2>
+    <p class="outfit-regular">Has iniciado sesión correctamente.</p>
+  </div>
+
+  <div class="actions-grid">
+    <div class="action-card">
+      <span class="action-icon">✈️</span>
+      <h3 class="outfit-medium">Mis Viajes</h3>
+      <p class="outfit-light">Ver y gestionar tus viajes</p>
+      <a routerLink="/viajes" class="action-link outfit-medium">Ir →</a>
+    </div>
+
+    <div class="action-card">
+      <span class="action-icon">👤</span>
+      <h3 class="outfit-medium">Mi Perfil</h3>
+      <p class="outfit-light">Actualizar tu información</p>
+      <a routerLink="/profile" class="action-link outfit-medium">Ir →</a>
+    </div>
+
+    <div class="action-card">
+      <span class="action-icon">⚙️</span>
+      <h3 class="outfit-medium">Configuración</h3>
+      <p class="outfit-light">Ajustes de la cuenta</p>
+      <a routerLink="/settings" class="action-link outfit-medium">Ir →</a>
+    </div>
+  </div>
+</div>
