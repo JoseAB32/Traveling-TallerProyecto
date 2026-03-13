@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnDestroy {
   credentials = {
-    email: '',
+    userName: '',
     password: ''
   };
   
@@ -29,11 +29,11 @@ export class LoginComponent implements OnDestroy {
   ) {}
 
   onSubmit(): void {
-    this.credentials.email = this.credentials.email.trim();
+    this.credentials.userName = this.credentials.userName.trim();
     this.credentials.password = this.credentials.password.trim();
     
-    if (!this.credentials.email) {
-      this.error = 'El correo es requerido';
+    if (!this.credentials.userName) {
+      this.error = 'El nombre de usuario es requerido';
       return;
     }
     
@@ -48,13 +48,13 @@ export class LoginComponent implements OnDestroy {
 
     // ⚠️ Adaptación: backend espera userName, enviamos email como userName
     this.subscription = this.authService.login(
-      this.credentials.email,
+      this.credentials.userName,
       this.credentials.password
     ).subscribe({
       next: () => {
         this.successMessage = '¡Login exitoso!';
         this.loading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/InicioLogueado']);
       },
       error: (errorMessage: string) => {
         this.error = errorMessage;

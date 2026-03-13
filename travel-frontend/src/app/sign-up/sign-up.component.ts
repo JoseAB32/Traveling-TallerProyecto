@@ -39,7 +39,7 @@ export class SignUpComponent implements OnInit {
   }
 
   goToInicio() {
-    // this.router.navigate(['/inicio']); 
+    this.router.navigate(['/InicioLogueado']); 
   }
 
   onSubmit() {

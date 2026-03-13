@@ -17,20 +17,6 @@ export interface LoginResponse {
   id: number;
 }
 
-// ✅ Exportar RegisterData
-export interface RegisterData {
-  userName: string;
-  correo: string;
-  pass: string;
-  birthday?: string;
-  city?: string;
-}
-
-export interface RegisterResponse {
-  message: string;
-  id: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -72,23 +58,6 @@ export class AuthService {
         }),
         catchError(this.handleError)
       );
-  }
-
-  // ✅ Método register agregado
-  register(userData: RegisterData): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, userData)
-      .pipe(
-        tap(response => {
-          console.log('✅ Registro exitoso:', response);
-        }),
-        catchError(this.handleError)
-      );
-  }
-
-  logout() {
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
