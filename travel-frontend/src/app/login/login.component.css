@@ -1,122 +1,236 @@
+/* Fondo principal - azul oscuro */
+.login-page {
+  background-color: #0e4b78;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Contenedor principal - con borde punteado celeste */
 .login-container {
   display: flex;
-  justify-content: center;
+  background-color: #0e4b78;
+  border: 2px dashed #4ea1d3;
+  border-radius: 20px;
+  max-width: 1100px;
+  width: 100%;
+  min-height: 600px;
+  position: relative;
+}
+
+/* Línea divisoria punteada */
+.divider {
+  border-right: 2px dashed #4ea1d3;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+/* Columnas */
+.left-column, .right-column {
+  flex: 1;
+  position: relative;
+  padding: 2rem;
+}
+
+/* ========================================
+   COLUMNA IZQUIERDA - COLLAGE DE FOTOS
+   ======================================== */
+.left-column {
+  position: relative;
+  min-height: 500px;
+}
+
+/* Contenedor del collage - posición relativa */
+.photo-collage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 450px;
+}
+
+/* Estilo base para todas las fotos - como fotos físicas */
+.photo {
+  position: absolute;
+  background: white;
+  padding: 8px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  width: fit-content;
+  height: fit-content;
+}
+
+.photo img {
+  display: block;
+  width: 160px;  /* Tamaño fijo para todas las imágenes */
+  height: 160px;
+  object-fit: cover;
+}
+
+/* ========================================
+   POSICIONES EXACTAS DE CADA FOTO
+   ======================================== */
+
+/* Foto 1: Salar (arriba izquierda) */
+.photo-1 {
+  top: 40px;
+  left: 80px;
+  transform: rotate(-12deg);
+  z-index: 1;
+}
+
+/* Foto 2: Montaña con lago (arriba centro/derecha) */
+.photo-2 {
+  top: 80px;
+  left: 200px;
+  transform: rotate(8deg);
+  z-index: 3;
+}
+
+/* Foto 3: Fuente iluminada rosa (centro izquierda) */
+.photo-3 {
+  top: 200px;
+  left: 60px;
+  transform: rotate(-18deg);
+  z-index: 4;
+}
+
+/* Foto 4: Edificio moderno (abajo derecha) */
+.photo-4 {
+  top: 300px;
+  left: 220px;
+  transform: rotate(-6deg);
+  z-index: 2;
+}
+
+/* Foto 5: Foto intermedia (detrás) */
+.photo-5 {
+  top: 180px;
+  left: 160px;
+  transform: rotate(5deg);
+  z-index: 1;
+  opacity: 0.9;  /* Ligeramente opaca para dar sensación de profundidad */
+}
+
+/* Logo TRAVELING - exactamente como en la imagen */
+.logo-container {
+  position: absolute;
+  bottom: 40px;    /* Exactamente como describiste */
+  left: 80px;       /* Exactamente como describiste */
+}
+
+.logo-svg {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+/* ========================================
+   COLUMNA DERECHA - FORMULARIO LOGIN
+   ======================================== */
+.right-column {
+  display: flex;
   align-items: center;
-  min-height: 100vh;
-  padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  justify-content: center;
 }
 
 .login-card {
-  background: white;
-  padding: 2.5rem 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.logo-container {
-  margin-bottom: 1.5rem;
-}
-
-.logo {
-  height: 50px;
-  width: auto;
+  background: #eeeeee;
+  border-radius: 16px;
+  padding: 40px;
+  width: 350px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .login-title {
-  color: #333;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  letter-spacing: 0.5px;
+  color: #0c4a6e;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
+/* Alertas */
 .alert {
-  padding: 0.75rem;
-  border-radius: 4px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  text-align: center;
 }
 
 .alert-error {
-  background: #fef2f2;
-  color: #dc2626;
+  background-color: #fee2e2;
+  color: #b91c1c;
   border: 1px solid #fecaca;
 }
 
 .alert-success {
-  background: #f0fdf4;
-  color: #16a34a;
+  background-color: #dcfce7;
+  color: #166534;
   border: 1px solid #bbf7d0;
 }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
+/* Grupos de formulario */
 .form-group {
-  text-align: left;
+  margin-bottom: 20px;
 }
 
 .form-label {
   display: block;
-  color: #555;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .form-control {
   width: 100%;
-  padding: 0.75rem 0;
-  border: none;
-  border-bottom: 2px solid #e0e0e0;
-  font-size: 1rem;
-  color: #333;
-  transition: all 0.3s ease;
-  background: transparent;
+  padding: 12px;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  background: white;
+  box-sizing: border-box;
 }
 
 .form-control:focus {
   outline: none;
-  border-bottom-color: #667eea;
+  border-color: #1e4a7a;
 }
 
 .form-control.error {
-  border-bottom-color: #dc2626;
+  border-color: #dc2626;
 }
 
 .error-message {
-  font-size: 0.8rem;
   color: #dc2626;
-  margin-top: 0.25rem;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
+/* Botón naranja */
 .btn-login {
   width: 100%;
-  padding: 0.85rem;
-  background: #667eea;
+  padding: 14px;
+  background-color: #ff6b35;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(102, 126, 234, 0.2);
+  transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
 .btn-login:hover:not(:disabled) {
-  background: #5a67d8;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(102, 126, 234, 0.4);
+  background-color: #e05a2a;
 }
 
 .btn-login:disabled {
@@ -124,36 +238,58 @@
   cursor: not-allowed;
 }
 
-.spinner {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s linear infinite;
-  margin-right: 0.5rem;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
+/* Link de registro */
 .register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
   color: #666;
-  font-size: 0.9rem;
-  margin-top: 2rem;
 }
 
 .register-link-text {
-  color: #667eea;
+  color: #ff6b35;
   text-decoration: none;
   font-weight: 500;
-  margin-left: 0.25rem;
-  transition: color 0.3s ease;
+  margin-left: 5px;
 }
 
 .register-link-text:hover {
-  color: #5a67d8;
   text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+  
+  .divider {
+    border-right: none;
+    border-bottom: 2px dashed #4ea1d3;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+  }
+  
+  .left-column {
+    min-height: 400px;
+  }
+  
+  .photo img {
+    width: 120px;
+    height: 120px;
+  }
+  
+  /* Ajustar posiciones en móvil */
+  .photo-1 { top: 20px; left: 40px; }
+  .photo-2 { top: 50px; left: 120px; }
+  .photo-3 { top: 140px; left: 30px; }
+  .photo-4 { top: 220px; left: 140px; }
+  .photo-5 { top: 120px; left: 90px; }
+  
+  .logo-container {
+    bottom: 20px;
+    left: 40px;
+  }
 }

@@ -14,8 +14,8 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnDestroy {
   credentials = {
-    userName: '',
-    pass: ''
+    email: '',
+    password: ''
   };
   
   loading = false;
@@ -29,17 +29,15 @@ export class LoginComponent implements OnDestroy {
   ) {}
 
   onSubmit(): void {
-    // Limpiar espacios
-    this.credentials.userName = this.credentials.userName.trim();
-    this.credentials.pass = this.credentials.pass.trim();
+    this.credentials.email = this.credentials.email.trim();
+    this.credentials.password = this.credentials.password.trim();
     
-    // Validación
-    if (!this.credentials.userName) {
-      this.error = 'El usuario es requerido';
+    if (!this.credentials.email) {
+      this.error = 'El correo es requerido';
       return;
     }
     
-    if (!this.credentials.pass) {
+    if (!this.credentials.password) {
       this.error = 'La contraseña es requerida';
       return;
     }
@@ -48,11 +46,12 @@ export class LoginComponent implements OnDestroy {
     this.error = '';
     this.successMessage = '';
 
+    // ⚠️ Adaptación: backend espera userName, enviamos email como userName
     this.subscription = this.authService.login(
-      this.credentials.userName,
-      this.credentials.pass
+      this.credentials.email,
+      this.credentials.password
     ).subscribe({
-      next: (response) => {
+      next: () => {
         this.successMessage = '¡Login exitoso!';
         this.loading = false;
         this.router.navigate(['/dashboard']);
@@ -65,8 +64,6 @@ export class LoginComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription?.unsubscribe();
   }
 }
