@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.traveling.travel_backend.model.User;
 import com.traveling.travel_backend.repository.UserRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -25,4 +28,9 @@ public class userController {
         return userRepository.findAll();
     }
     
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
+
 }
