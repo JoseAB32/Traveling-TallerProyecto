@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 export interface User {
   id?: number;
@@ -11,6 +10,8 @@ export interface User {
 }
 
 export interface LoginResponse {
+  token: string;
+  type: string;
   userName: string;
   correo: string;
   message: string;
@@ -26,8 +27,7 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(
-    private http: HttpClient, 
-    private router: Router
+    private http: HttpClient
   ) {
     this.loadStoredUser();
   }
@@ -53,6 +53,7 @@ export class AuthService {
             correo: response.correo,
             userName: response.userName
           };
+          localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
         }),
@@ -60,8 +61,18 @@ export class AuthService {
       );
   }
 
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
   isAuthenticated(): boolean {
-    return !!this.currentUserSubject.value;
+    return !!this.getToken();
   }
 
   getCurrentUser(): User | null {
