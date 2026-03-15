@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { HeaderComponent } from "../header/header.component";
+import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-inicio-logueado',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent, FooterComponent],
   templateUrl: './inicio-logueado.component.html',
   styleUrl: './inicio-logueado.component.css'
 })
