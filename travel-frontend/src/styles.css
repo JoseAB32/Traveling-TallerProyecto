@@ -3,11 +3,12 @@
     --main-bg-color: #004E89;
     --on-bg-color: white;
     --secondary-color: #FF6B35;
-    --steel-azure: #004a80;
+    --steel-azure: #004E89;
     --baltic-blue: #1a659e;
     --atomic-tangerine: #ff6b35;
     --white: #ffffff;
-}body {
+}
+body {
   margin: 0;
   padding: 0;
   font-family: "Outfit", sans-serif;

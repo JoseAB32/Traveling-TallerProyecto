@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent,FooterComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })

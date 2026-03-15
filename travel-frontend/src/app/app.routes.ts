@@ -6,8 +6,12 @@ import { LoginComponent } from './login/login.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: 'sign-up', component: SignUpComponent },
-  {path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent },
+  { 
+    path: 'sign-up', component: SignUpComponent 
+  },
+  {
+    path: 'InicioLogueado', /*canActivate: [authGuard],*/ component: InicioLogueadoComponent 
+  },
   {
     path: '',
     component: LandingComponent
