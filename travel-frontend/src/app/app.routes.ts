@@ -3,10 +3,11 @@ import { InicioLogueadoComponent } from './inicio-logueado/inicio-logueado.compo
 import { LandingComponent } from './landing/landing.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LoginComponent } from './login/login.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
-  {path: 'InicioLogueado', component: InicioLogueadoComponent },
+  {path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent },
   {
     path: '',
     component: LandingComponent
