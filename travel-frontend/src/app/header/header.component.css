@@ -6,9 +6,90 @@
   padding: 15px 5%;
   color: white;
   height: 100px;
+  position: relative;
+  z-index: 10;
 }
 
 .logo img{
   max-block-size: 25px;
   border: 100px;
+}
+
+.search-bar {
+  display: flex;
+  background: white;
+  border: 2px solid #ff7841; 
+  border-radius: 25px;
+  padding: 5px 15px;
+  width: 400px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  flex-grow: 1;
+  font-size: 14px;
+}
+
+.search-btn {
+  background: #ff7841;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-container {
+  position: relative;
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #ff7841;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: #004a80;
+  border: 2px solid #ff7841;
+  border-radius: 15px;
+  width: 220px;
+  z-index: 100;
+  overflow: hidden;
+  display: block;
+  padding: 10px 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 120, 65, 0.3); /* Línea naranja suave */
+  gap: 15px;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item i {
+  font-size: 20px;
 }

@@ -2,4 +2,40 @@
     <div class="logo">
       <img src="traveling2white.svg" alt="Traveling Logo">
     </div>
+    @if (isLoggedIn) {
+    <div class="search-container">
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar departamento o lugar">
+        <button class="search-btn">
+          <img src="iconoBusqueda.svg" alt=""> 
+        </button>
+      </div>
+    </div>
+
+    <div class="profile-container">
+      <img 
+        src="favicon.ico" 
+        alt="Perfil" 
+        class="profile-pic" 
+        (click)="toggleMenu()"
+      >
+
+      @if (isMenuOpen) {
+        <div class="dropdown-menu">
+          <div class="menu-item">
+            <img src="iconoPerfil.svg" alt=""> <span>Perfil</span>
+          </div>
+          <div class="menu-item">
+            <img src="iconoItinerario.svg" alt=""> <span>Itinerarios</span>
+          </div>
+          <div class="menu-item">
+            <img src="iconoWishList.svg" alt=""> <span>Wish List</span>
+          </div>
+          <div class="menu-item logout">
+            <img src="Logout.svg" alt=""><span>Salir</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </nav>
