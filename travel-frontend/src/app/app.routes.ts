@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: 'sign-up', component: SignUpComponent 
   },
   {
-    path: 'InicioLogueado', /*canActivate: [authGuard],*/ component: InicioLogueadoComponent 
+    path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent 
   },
   {
     path: '',

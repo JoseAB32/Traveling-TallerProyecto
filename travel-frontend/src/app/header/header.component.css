@@ -78,7 +78,7 @@
   color: white;
   font-weight: bold;
   cursor: pointer;
-  border-bottom: 1px solid rgba(255, 120, 65, 0.3); /* Línea naranja suave */
+  border-bottom: 1px solid rgba(255, 120, 65, 0.3); 
   gap: 15px;
 }
 
