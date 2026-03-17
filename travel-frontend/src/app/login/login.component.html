@@ -193,35 +193,45 @@
                   [(ngModel)]="credentials.userName"
                   required
                   #userName="ngModel"
-                  [class.error]="userName.invalid && userName.touched"
+                  [class.input-error]="userName.invalid && userName.touched"
                   [disabled]="loading">
-                <label for="nombreUsuario" class="label-form">Nombre de usuario</label>
+                <label for="nombreUsuario" class="label-form"
+                [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">Nombre de usuario</label>
+
+                <div class="error-container" *ngIf="userName.invalid && (userName.touched || userName.dirty)">
+                    <p *ngIf="userName.errors?.['required']">El nombre de usuario es obligatorio.</p>
+                </div>
             </div>
 
-            <div *ngIf="userName.invalid && userName.touched && userName.errors?.['required']" class="error-message">
+            <!-- <div *ngIf="userName.invalid && userName.touched && userName.errors?.['required']" class="error-message">
               El nombre de usuario es requerido
             </div>
             <div *ngIf="userName.invalid && userName.touched && userName.errors?.['userName']" class="error-message">
               Nombre de usuario inválido
-            </div>
+            </div> -->
 
             <div class="input-container">
                 <input type="password" placeholder=" " class="form-input" id="contrasena" name="contrasena"
                   [(ngModel)]="credentials.password"
                   required
                   #password="ngModel"
-                  [class.error]="password.invalid && password.touched"
+                  [class.input-error]="password.invalid && password.touched"
                   [disabled]="loading">
-                <label for="contrasena" class="label-form">Contraseña</label>
+                <label for="contrasena" class="label-form"
+                [class.label-error]="password.invalid && (password.touched || password.dirty)">Contraseña</label>
+
+                <div class="error-container" *ngIf="password.invalid && (password.touched || password.dirty)">
+                    <p *ngIf="password.errors?.['required']">La contraseña es obligatoria.</p>
+                </div>
             </div>
 
-            <div *ngIf="password.invalid && password.touched" class="error-message">
+            <!-- <div *ngIf="password.invalid && password.touched" class="error-message">
               La contraseña es requerida
-            </div>
+            </div> -->
 
-            <div class="error-container">
+            <!-- <div class="error-container">
                 <p>Error</p>
-            </div>
+            </div> -->
             <div class="button-container">
                 <button type="submit"
                   [disabled]="loginForm.invalid || loading"
@@ -231,7 +241,7 @@
                 <p>
                     ¿Aún no tienes una cuenta?
                 </p>
-                <a href="">Regístrate</a>
+                <a [routerLink]="['/sign-up']">Regístrate</a>
             </div>
         </form>
     </section>

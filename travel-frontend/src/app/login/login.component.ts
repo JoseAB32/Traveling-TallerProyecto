@@ -46,7 +46,6 @@ export class LoginComponent implements OnDestroy {
     this.error = '';
     this.successMessage = '';
 
-    // ⚠️ Adaptación: backend espera userName, enviamos email como userName
     this.subscription = this.authService.login(
       this.credentials.userName,
       this.credentials.password
