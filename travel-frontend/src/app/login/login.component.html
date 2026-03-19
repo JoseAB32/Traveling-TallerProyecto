@@ -1,7 +1,122 @@
+<!-- <div class="login-page">
+  <div class="login-container">
+
+    <div class="left-column">
+
+      <div class="photo-collage">
+
+        <div class="photo photo-1">
+          <img src="https://images.unsplash.com/photo-1542402026-4c7f3b9f3c3d?w=180&h=180&fit=crop" alt="Salar">
+        </div>
+        
+        <div class="photo photo-2">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=180&h=180&fit=crop" alt="Montaña">
+        </div>
+        
+        <div class="photo photo-3">
+          <img src="https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=180&h=180&fit=crop" alt="Fuente">
+        </div>
+        
+        <div class="photo photo-4">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=180&h=180&fit=crop" alt="Edificio">
+        </div>
+        
+        <div class="photo photo-5">
+          <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=180&h=180&fit=crop" alt="Intermedia">
+        </div>
+      </div>
+      
+      <div class="logo-container">
+        <img src="/traveling2white.svg" alt="TRAVELING" class="logo-svg">
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <div class="right-column">
+      <div class="login-card">
+        <h1 class="login-title">INICIAR SESIÓN</h1>
+        
+        <div *ngIf="error" class="alert alert-error">
+          {{ error }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success">
+          {{ successMessage }}
+        </div>
+        
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div class="form-group">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input 
+              type="email" 
+              id="email"
+              name="email"
+              [(ngModel)]="credentials.email"
+              required
+              email
+              #email="ngModel"
+              class="form-control"
+              [class.error]="email.invalid && email.touched"
+              [disabled]="loading"
+            >
+            <div *ngIf="email.invalid && email.touched && email.errors?.['required']" class="error-message">
+              El correo es requerido
+            </div>
+            <div *ngIf="email.invalid && email.touched && email.errors?.['email']" class="error-message">
+              Correo inválido
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password" class="form-label">Contraseña</label>
+            <input 
+              type="password" 
+              id="password"
+              name="password"
+              [(ngModel)]="credentials.password"
+              required
+              #password="ngModel"
+              class="form-control"
+              [class.error]="password.invalid && password.touched"
+              [disabled]="loading"
+            >
+            <div *ngIf="password.invalid && password.touched" class="error-message">
+              La contraseña es requerida
+            </div>
+          </div>
+          
+          <button 
+            type="submit" 
+            [disabled]="loginForm.invalid || loading"
+            class="btn-login"
+          >
+            {{ loading ? 'INICIANDO...' : 'INICIAR SESIÓN' }}
+          </button>
+        </form>
+        
+        <p class="register-link">
+          ¿Aún no tienes una cuenta? <a routerLink="/register" class="register-link-text">Regístrate</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <main class="content">
     <section class="img-container">
-        <div class="img-border">
-            <img src="https://i0.wp.com/elcalderoviajero.com/wp-content/uploads/2017/09/bolivia-itinerario-20-dias-38.jpg?resize=750%2C500&ssl=1" alt="Panfleto en Salar de Uyuni">
+        <div class="imgs-container">
+          <div class="img-border" id="photo01">
+            <img id="img01" src="https://www.civitatis.com/f/bolivia/uyuni/excursion-salar-uyuni-589x392.jpg" alt="Salar de Uyuni">
+          </div>
+          <div class="img-border" id="photo02">
+            <img id="img02" src="https://images.pexels.com/photos/29512435/pexels-photo-29512435.jpeg" alt="Lago Titicaca">
+          </div>
+          <div class="img-border" id="photo03">
+            <img id="img03" src="https://dondebolivia.com/wp-content/uploads/cache/images/Costanera-Cochabamba-Foto-Fernando-Cartagena_LRZIMA20150910_0053_4/Costanera-Cochabamba-Foto-Fernando-Cartagena_LRZIMA20150910_0053_4-2267751331.jpg" alt="Parque de la Familia">
+          </div>
+          <div class="img-border" id="photo04">
+            <img id="img04" src="https://i.pinimg.com/736x/3c/5f/95/3c5f95991688e9b96dcf2b5f9c87e8ae.jpg" alt="Cine Center">
+          </div>
         </div>
         <div class="logo">
             <svg
@@ -59,98 +174,74 @@
         </div>
     </section>
 
+    <div *ngIf="error" class="alert alert-error">
+      {{ error }}
+    </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
     <section class="form-container">
-        <form #signUpForm="ngForm" (ngSubmit)="onSubmit(signUpForm)" class="form-signup">
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="form-login">
             <div class="title-container">
                 <h1>
-                    REGÍSTRATE
+                    INICIAR SESIÓN
                 </h1>
             </div>
             <div class="input-container">
-                <input type="text" placeholder=" " class="form-input input-text" id="nombreUsuario" name="nombreUsuario"
-                [(ngModel)] = "user.userName" #nombreUsuario="ngModel" required minlength="5"
-                [class.input-error]="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">
+                <input type="text" placeholder=" " class="form-input" id="nombreUsuario" name="nombreUsuario" 
+                  [(ngModel)]="credentials.userName"
+                  required
+                  #userName="ngModel"
+                  [class.input-error]="userName.invalid && userName.touched"
+                  [disabled]="loading">
                 <label for="nombreUsuario" class="label-form"
-                [class.label-error]="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">Nombre de usuario</label>
+                [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">Nombre de usuario</label>
 
-                <div class="error-container" *ngIf="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">
-                    <p *ngIf="nombreUsuario.errors?.['required']">El nombre de usuario es obligatorio.</p>
-                    <p *ngIf="nombreUsuario.errors?.['minlength']">El nombre de usuario debe tener al menos 5 caracteres.</p>
+                <div class="error-container" *ngIf="userName.invalid && (userName.touched || userName.dirty)">
+                    <p *ngIf="userName.errors?.['required']">El nombre de usuario es obligatorio.</p>
                 </div>
             </div>
-            <div class="input-container">
-                <input type="text" placeholder=" " class="form-input input-text" id="correo" name="correo"
-                [(ngModel)] = "user.correo" #correo="ngModel" required email
-                [class.input-error]="correo.invalid && (correo.touched || correo.dirty)">
-                <label for="correo" class="label-form"
-                [class.label-error]="correo.invalid && (correo.touched || correo.dirty)">Correo electrónico</label>
 
-                <div class="error-container" *ngIf="correo.invalid && (correo.touched || correo.dirty)">
-                    <p *ngIf="correo.errors?.['required']">El correo electrónico es obligatorio.</p>
-                    <p *ngIf="correo.errors?.['email']">Ingresa un correo electrónico válido.</p>
-                </div>
+            <!-- <div *ngIf="userName.invalid && userName.touched && userName.errors?.['required']" class="error-message">
+              El nombre de usuario es requerido
             </div>
+            <div *ngIf="userName.invalid && userName.touched && userName.errors?.['userName']" class="error-message">
+              Nombre de usuario inválido
+            </div> -->
+
             <div class="input-container">
-                <input type="password" placeholder=" " class="form-input input-text" id="contrasena" name="contrasena"
-                [(ngModel)] = "user.pass" #contrasena="ngModel" required minlength="8"
-                [class.input-error]="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
+                <input type="password" placeholder=" " class="form-input" id="contrasena" name="contrasena"
+                  [(ngModel)]="credentials.password"
+                  required
+                  #password="ngModel"
+                  [class.input-error]="password.invalid && password.touched"
+                  [disabled]="loading">
                 <label for="contrasena" class="label-form"
-                [class.label-error]="contrasena.invalid && (contrasena.touched || contrasena.dirty)">Contraseña</label>
+                [class.label-error]="password.invalid && (password.touched || password.dirty)">Contraseña</label>
 
-                <div class="error-container" *ngIf="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
-                    <p *ngIf="contrasena.errors?.['required']">La contraseña es obligatoria.</p>
-                    <p *ngIf="contrasena.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</p>
-                </div>
-            </div>
-            <div class="input-container">
-                <input type="password" placeholder=" " class="form-input input-text" id="confirmarContrasena" name="confirmarContrasena"
-                [(ngModel)]="confirmarContrasena" #confContrasena="ngModel" required
-                [class.input-error]="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">
-                <label for="confirmarContrasena" class="label-form"
-                [class.label-error]="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">Confirmar contraseña</label>
-
-                <div class="error-container" *ngIf="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">
-                    <p *ngIf="confContrasena.errors?.['required']">La confirmación de la contraseña es obligatoria.</p>
-                </div>
-            </div>
-            <div class="input-container">
-                <input type="date" placeholder=" " class="form-input" name="fechaNacimiento" [min]="limiteInferiorFecha" [max]="limiteSuperiorFecha"
-                [(ngModel)] = "user.birthday" id="fechaNacimiento" #fechaNacimiento="ngModel" required
-                [class.input-error]="fechaNacimiento.invalid && (fechaNacimiento.touched || fechaNacimiento.dirty)"
-                (focus)="onDateFocus()" (blur)="onDateBlur()">
-                <label for="fechaNacimiento" [class]="(isDateFocused || user.birthday) ? 'label-form label-above' : 'label-form'"
-                [class.label-error]="fechaNacimiento.invalid && (fechaNacimiento.touched || fechaNacimiento.dirty)">Fecha de nacimiento</label>
-
-                <div class="error-container" *ngIf="fechaNacimiento.invalid && (fechaNacimiento.touched || fechaNacimiento.dirty)">
-                    <p *ngIf="fechaNacimiento.errors?.['required']">La fecha de nacimiento es obligatoria.</p>
-                </div>
-            </div>
-            <div class="input-container">
-                <select name="ciudades" id="ciudades" class="form-select" placeholder=" "
-                [(ngModel)] = "user.city" #ciudad="ngModel" required
-                [class.input-error]="ciudad.invalid && (ciudad.touched || ciudad.dirty)"
-                (focus)="onCityFocus()" (blur)="onCityBlur()">
-                    <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ciudad}}</option>
-                </select>
-                <label for="ciudades" class="label-form" [class]="(isCityFocused || user.city) ? 'label-form label-above' : 'label-form'"
-                [class.label-error]="ciudad.invalid && (ciudad.touched || ciudad.dirty)">Ciudad</label>
-
-                <div class="error-container" *ngIf="ciudad.invalid && (ciudad.touched || ciudad.dirty)">
-                    <p *ngIf="ciudad.errors?.['required']">La ciudad es obligatoria.</p>
+                <div class="error-container" *ngIf="password.invalid && (password.touched || password.dirty)">
+                    <p *ngIf="password.errors?.['required']">La contraseña es obligatoria.</p>
                 </div>
             </div>
 
-            <div class="error-general" *ngIf="errorGeneral">
-                <p><i class="fa-solid fa-exclamation"></i> &nbsp; {{ errorGeneral }}</p>
-            </div>
+            <!-- <div *ngIf="password.invalid && password.touched" class="error-message">
+              La contraseña es requerida
+            </div> -->
+
+            <!-- <div class="error-container">
+                <p>Error</p>
+            </div> -->
             <div class="button-container">
-                <button type="submit">REGISTRARSE</button>
+                <button type="submit"
+                  [disabled]="loginForm.invalid || loading"
+                  class="btn-login">INICIAR SESIÓN</button>
             </div>
             <div class="login-container">
                 <p>
-                    ¿Ya tienes una cuenta?
+                    ¿Aún no tienes una cuenta?
                 </p>
-                <a [routerLink]="['/login']">Iniciar sesión</a>
+                <a [routerLink]="['/sign-up']">Regístrate</a>
             </div>
         </form>
     </section>

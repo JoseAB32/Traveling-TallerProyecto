@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="landing-container">
   <section class="section hero white-bg">
     <div class="content-wrapper">
@@ -9,8 +10,8 @@
       <div class="text-block">
         <h1>Planifica tu viaje y disfruta de los mejores lugares turísticos de toda Bolivia!</h1>
         <div class="cta-buttons">
-          <button class="btn btn-primary">EMPIEZA AQUÍ</button>
-          <button class="btn btn-outline">YA TENGO UNA CUENTA</button>
+          <button class="btn btn-primary" (click)="irASignUp()">EMPIEZA AQUÍ</button>
+          <button class="btn btn-outline" (click)="irALogIn()">YA TENGO UNA CUENTA</button>
         </div>
       </div>
     </div>
@@ -62,3 +63,4 @@
     </div>
   </section>
 </div>
+<app-footer></app-footer>

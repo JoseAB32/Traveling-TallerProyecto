@@ -1,13 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-    --main-bg-color: #004E89;
-    --on-bg-color: white;
-    --secondary-color: #FF6B35;
-    --steel-azure: #004a80;
-    --baltic-blue: #1a659e;
-    --atomic-tangerine: #ff6b35;
-    --white: #ffffff;
-}body {
+  --main-bg-color: #004E89;
+  --on-bg-color: white;
+  --secondary-color: #FF6B35;
+  --steel-azure: #004E89;
+  --steel-azure-08op: rgba(0, 78, 137, 0.8);
+  --baltic-blue: #1a659e;
+  --atomic-tangerine: #ff6b35;
+  --white: #ffffff;
+}
+
+.outfit-regular {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
   margin: 0;
   padding: 0;
   font-family: "Outfit", sans-serif;
