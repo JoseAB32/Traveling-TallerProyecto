@@ -1,3 +1,14 @@
 <app-header></app-header>
-<p>wishlist works!</p>
+<div class="wishlist-container">
+  <h2 class="page-title">TUS LUGARES FAVORITOS</h2>
+
+  <div class="list">
+    @for (lugar of Favoritos; track lugar.id; let i = $index) {
+      <app-place-card 
+        [place]="lugar" 
+        [isBlue]="i % 2 === 0">
+      </app-place-card>
+    }
+  </div>
+</div>
 <app-footer></app-footer>
