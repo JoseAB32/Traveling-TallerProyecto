@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'success-signup', component: SuccessSignupComponent },
-  { path: 'wishlist', component: WishlistComponent },
+  { path: 'wishlist', canActivate: [authGuard], component: WishlistComponent },
   {
     path: '**', 
     redirectTo: '', 
