@@ -1,7 +1,6 @@
 <app-header></app-header>
 <main class="container-fluid p-0">
 
-  
   <section class="row align-items-center py-5 px-4 bg-white min-vh-75">
     <div class="col-md-6 text-center">
       <img src="mapa.png" alt="Mapa de Bolivia" class="img-fluid mapa-vector">
@@ -18,34 +17,43 @@
       <h3 class="text-orange fw-bold mb-4">LUGARES MEJOR CALIFICADOS</h3>
       
       <div class="row g-4 justify-content-center">
+        <!-- Tarjeta 1: Lago Titicaca (ID: 1) -->
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm travel-card bg-blue-dark text-white">
-            <img src="1.png" class="card-img-top p-2 rounded-4" alt="Lago Titicaca">
-            <div class="card-body text-center">
-              <h5 class="card-title h6">Lago Titicaca, La Paz</h5>
-              <div class="stars">★★★★☆</div>
+          <a [routerLink]="['/place', 1]" class="text-decoration-none">
+            <div class="card border-0 shadow-sm travel-card bg-blue-dark text-white">
+              <img src="1.png" class="card-img-top p-2 rounded-4" alt="Lago Titicaca">
+              <div class="card-body text-center">
+                <h5 class="card-title h6">Lago Titicaca, La Paz</h5>
+                <div class="stars">★★★★☆</div>
+              </div>
             </div>
-          </div>
+          </a>
         </div>
 
+        <!-- Tarjeta 2: Parque Nacional Madidi (ID: 2) -->
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm travel-card bg-orange-soft text-dark">
-            <img src="2.png" class="card-img-top p-2 rounded-4" alt="Parque Madidi">
-            <div class="card-body text-center">
-              <h5 class="card-title h6 fw-bold">Parque Nacional Madidi, La Paz</h5>
-              <div class="stars text-primary">★★★★☆</div>
+          <a [routerLink]="['/place', 2]" class="text-decoration-none">
+            <div class="card border-0 shadow-sm travel-card bg-orange-soft text-dark">
+              <img src="2.png" class="card-img-top p-2 rounded-4" alt="Parque Madidi">
+              <div class="card-body text-center">
+                <h5 class="card-title h6 fw-bold">Parque Nacional Madidi, La Paz</h5>
+                <div class="stars text-primary">★★★★☆</div>
+              </div>
             </div>
-          </div>
+          </a>
         </div>
 
+        <!-- Tarjeta 3: Cristo de la Concordia (ID: 3) -->
         <div class="col-md-4">
-          <div class="card border-0 shadow-sm travel-card bg-blue-dark text-white">
-            <img src="3.png" class="card-img-top p-2 rounded-4" alt="Cristo de la Concordia">
-            <div class="card-body text-center">
-              <h5 class="card-title h6">Cristo de la Concordia, Cochabamba</h5>
-              <div class="stars">★★★★★</div>
+          <a [routerLink]="['/place', 3]" class="text-decoration-none">
+            <div class="card border-0 shadow-sm travel-card bg-blue-dark text-white">
+              <img src="3.png" class="card-img-top p-2 rounded-4" alt="Cristo de la Concordia">
+              <div class="card-body text-center">
+                <h5 class="card-title h6">Cristo de la Concordia, Cochabamba</h5>
+                <div class="stars">★★★★★</div>
+              </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>
