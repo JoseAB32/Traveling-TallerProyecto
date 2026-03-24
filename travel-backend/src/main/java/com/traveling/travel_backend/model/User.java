@@ -1,20 +1,16 @@
 package com.traveling.travel_backend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "correo", nullable = false)
+    @Column(name = "correo", nullable = false, unique = true)
     private String correo;
 
     @Column(name = "user_name", nullable = false)
@@ -23,21 +19,20 @@ public class User {
     @Column(name = "pass", nullable = false)
     private String pass;
 
-    @Column(name = "birthday", nullable = true)
-    private String birthday;
+    @Column(name = "birthday")
+    private String birthday; 
 
-    @Column(name = "city", nullable = true)
-    private String city;
+    @ManyToOne
+    @JoinColumn(name = "city_id") 
+    private City city;
 
     @Column(name = "state", nullable = false)
-    private boolean state = true; //Inicia siempre como true para manejar delete logico
+    private boolean state = true;
 
-    public User() {
+    public User() {}
 
-    }
-
-    public User(String correo, String userName, String pass, String birthday, String city) {
-        super();
+    // Constructor actualizado
+    public User(String correo, String userName, String pass, String birthday, City city) {
         this.correo = correo;
         this.userName = userName;
         this.pass = pass;
@@ -45,59 +40,25 @@ public class User {
         this.city = city;
     }
 
-    public long getId() {
-        return id;
-    }
+    // Getters y Setters
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
 
-    public String getCorreo() {
-        return correo;
-    }
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+    public String getPass() { return pass; }
+    public void setPass(String pass) { this.pass = pass; }
 
-    public String getUserName() {
-        return userName;
-    }
+    public String getBirthday() { return birthday; }
+    public void setBirthday(String birthday) { this.birthday = birthday; }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public City getCity() { return city; }
+    public void setCity(City city) { this.city = city; }
 
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public boolean isState() {
-        return state;
-    }
-
-    public void setState(boolean state) {
-        this.state = state;
-    }
+    public boolean isState() { return state; }
+    public void setState(boolean state) { this.state = state; }
 }

@@ -127,12 +127,12 @@
             </div>
             <div class="input-container">
                 <select name="ciudades" id="ciudades" class="form-select" placeholder=" "
-                [(ngModel)] = "user.city" #ciudad="ngModel" required
+                [(ngModel)] = "user.city_id" #ciudad="ngModel" required
                 [class.input-error]="ciudad.invalid && (ciudad.touched || ciudad.dirty)"
                 (focus)="onCityFocus()" (blur)="onCityBlur()">
-                    <option *ngFor="let ciudad of ciudades" [value]="ciudad">{{ciudad}}</option>
+                    <option *ngFor="let ciudad of ciudades" [value]="ciudad.id">{{ciudad.name}}</option>
                 </select>
-                <label for="ciudades" class="label-form" [class]="(isCityFocused || user.city) ? 'label-form label-above' : 'label-form'"
+                <label for="ciudades" class="label-form" [class]="(isCityFocused || user.city_id) ? 'label-form label-above' : 'label-form'"
                 [class.label-error]="ciudad.invalid && (ciudad.touched || ciudad.dirty)">Ciudad</label>
 
                 <div class="error-container" *ngIf="ciudad.invalid && (ciudad.touched || ciudad.dirty)">

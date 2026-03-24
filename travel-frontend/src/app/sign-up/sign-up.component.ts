@@ -4,6 +4,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Router, RouterLink } from '@angular/router';
 import { NgForOf, NgIf } from "../../../node_modules/@angular/common";
+import { CityService } from '../city.service';
+import { City } from '../city';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,7 +17,7 @@ import { NgForOf, NgIf } from "../../../node_modules/@angular/common";
 export class SignUpComponent implements OnInit {
   user: User = new User();
 
-  ciudades = ["Cochabamba", "Santa Cruz", "La Paz", "Oruro", "Potosi", "Chuquisaca", "Tarija", "Beni", "Pando"];
+  ciudades: City[]= [];
 
   limiteInferiorFecha = '2000-01-01';
   limiteSuperiorFecha =  new Date().toISOString().split('T')[0];
@@ -25,8 +27,11 @@ export class SignUpComponent implements OnInit {
   isDateFocused: boolean = false;
   isCityFocused: boolean = false;
 
-  constructor (private userService: UserService, private router: Router) {
-
+  constructor (private userService: UserService, private router: Router, private cityService: CityService) {
+    this.cityService.getCities().subscribe(
+      cities => this.ciudades = cities,
+      err => console.error('Error cargando ciudades', err)
+    );
   }
 
   onDateFocus() {
@@ -50,11 +55,25 @@ export class SignUpComponent implements OnInit {
   }
 
   saveUser() {
-    this.userService.createUser(this.user).subscribe( data => {
+    const payload: any = { ...this.user };
+
+    if (this.user.city_id) {
+      payload.city = { id: this.user.city_id };
+    } else {
+      payload.city = null;
+    }
+
+    delete payload.city_id; // backend espera el objeto city
+
+    this.userService.createUser(payload).subscribe(
+      data => {
         console.log(data);
         this.goToSuccessSignup();
       },
-      error => console.log(error)
+      error => {
+        console.error('Error al crear usuario', error);
+        this.errorGeneral = 'No se pudo registrar el usuario. Revise datos e intente de nuevo.';
+      }
     );
   }
 
@@ -75,7 +94,7 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    if (this.user.city === "Selecciona una ciudad") {
+    if (this.user.city_id === null || this.user.city_id === 0) {
       this.errorGeneral = 'Debes seleccionar una ciudad válida.';
       return;
     }
