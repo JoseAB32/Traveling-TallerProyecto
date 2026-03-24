@@ -10,7 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
+import com.traveling.travel_backend.model.City;
 import com.traveling.travel_backend.model.User;
+import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.UserRepository;
 import com.traveling.travel_backend.security.JwtService;
 
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
 
 
 import java.util.HashMap;
@@ -35,6 +36,9 @@ public class userController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CityRepository cityRepository;
+
     private final JwtService jwtService;
 
     public userController(JwtService jwtService) {
@@ -48,63 +52,14 @@ public class userController {
     
     @PostMapping("/users")
     public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    
+    if (user.getCity() != null) {
+        City realCity = cityRepository.findById(user.getCity().getId()).orElse(null);
+        user.setCity(realCity); 
+    }
+    return userRepository.save(user);
     }
 
-    // @PostMapping("/login")
-    // public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
-    //     try {
-    //         String userName = credentials.get("userName");
-    //         String pass = credentials.get("pass");
-            
-    //         // System.out.println("\n=== INTENTO DE LOGIN ===");
-    //         // System.out.println("Usuario recibido: " + userName);
-            
-    //         if (userName == null || userName.trim().isEmpty()) {
-    //             return ResponseEntity.badRequest().body(Map.of("error", "El usuario es requerido"));
-    //         }
-    //         if (pass == null || pass.trim().isEmpty()) {
-    //             return ResponseEntity.badRequest().body(Map.of("error", "La contraseña es requerida"));
-    //         }
-            
-    //         // Buscar usuario por userName
-    //         User user = userRepository.findByUserName(userName).orElse(null);
-            
-    //         if (user == null) {
-    //             // System.out.println("❌ Usuario no encontrado");
-    //             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-    //                 .body(Map.of("error", "Usuario o contraseña incorrectos"));
-    //         }
-            
-    //         if (!user.isState()) {
-    //             // System.out.println("❌ Usuario inactivo");
-    //             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-    //                 .body(Map.of("error", "Usuario desactivado"));
-    //         }
-            
-    //         if (!user.getPass().equals(pass)) {
-    //             // System.out.println("❌ Contraseña incorrecta");
-    //             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-    //                 .body(Map.of("error", "Usuario o contraseña incorrectos"));
-    //         }
-            
-    //         // System.out.println("✅ Login exitoso para: " + userName);
-            
-    //         // Respuesta SIN JWT - solo datos básicos
-    //         Map<String, Object> response = new HashMap<>();
-    //         response.put("userName", user.getUserName());
-    //         response.put("correo", user.getCorreo());
-    //         response.put("id", user.getId());
-    //         response.put("message", "Login exitoso");
-            
-    //         return ResponseEntity.ok(response);
-            
-    //     } catch (Exception e) {
-    //         // System.out.println("❌ Error en login: " + e.getMessage());
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    //             .body(Map.of("error", "Error interno del servidor"));
-    //     }
-    // }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest credentials) {
