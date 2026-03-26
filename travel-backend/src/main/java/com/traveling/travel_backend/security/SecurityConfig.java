@@ -1,5 +1,7 @@
 package com.traveling.travel_backend.security;
 
+import org.springframework.security.config.Customizer;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +24,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/login", "/api/users", "/api/cities").permitAll()
+                .requestMatchers("/api/login", "/api/users", "/api/cities", "/api/places/**").permitAll()
                 .anyRequest().authenticated()
             )
 

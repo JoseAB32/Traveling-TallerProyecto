@@ -5,10 +5,14 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './guards/auth.guard';
 import { SuccessSignupComponent } from './success-signup/success-signup.component';
+import { SearchPlacesComponent } from './search-places/search-places.component';
 
 export const routes: Routes = [
   { 
     path: 'sign-up', component: SignUpComponent 
+  },
+  {
+    path: 'SearchPlace', component: SearchPlacesComponent
   },
   {
     path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent 
@@ -23,5 +27,5 @@ export const routes: Routes = [
     path: '**', 
     redirectTo: '', 
     pathMatch: 'full'
-  }
+  } 
 ];

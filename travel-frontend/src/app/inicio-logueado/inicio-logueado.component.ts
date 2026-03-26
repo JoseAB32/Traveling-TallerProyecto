@@ -77,7 +77,6 @@ export class InicioLogueadoComponent implements OnInit {
     const arranged: Place[] = new Array(places.length);
     const center = Math.floor(places.length / 2);
     
-    // El primero (mejor rankeado) va al centro
     const bestPlace = places[0];
     const otherPlaces = places.slice(1);
 

@@ -1,0 +1,34 @@
+<app-header></app-header>
+
+<div class="search-page-wrapper py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10">
+        
+        <div *ngFor="let place of places; let i = index"
+             class="search-card mb-4 d-flex justify-content-between align-items-start"
+             [ngClass]="i % 2 === 0 ? 'border-orange-travel' : 'border-blue-travel'">
+          
+          <div class="pe-3">
+            <h4 class="place-title">{{ place.name }}</h4>
+            <p class="place-location">
+              <strong>Ubicado en {{ place.address }}</strong>
+            </p>
+            <p class="place-description">
+              {{ place.description }}
+            </p>
+          </div>
+          
+          <div class="stars h5 flex-shrink-0"
+               [ngClass]="i % 2 === 0 ? 'stars-orange' : 'stars-blue'">
+            {{ getStars(place.rating) }}
+          </div>
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
