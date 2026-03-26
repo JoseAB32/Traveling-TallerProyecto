@@ -1,0 +1,122 @@
+<app-header></app-header>
+
+<main class="place-detail-container">
+
+  <!-- LOADING -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando información del lugar...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-container" *ngIf="error">
+    <p class="error-message">{{ error }}</p>
+    <a routerLink="/InicioLogueado">Volver a Inicio</a>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <ng-container *ngIf="!loading && !error">
+
+    <!-- Barra de título -->
+    <div class="title-bar">
+      <span class="location-name">{{ title }}</span>
+      <span class="favorite-icon">❤️</span>
+    </div>
+
+    <!-- Carrusel de imágenes -->
+    <div class="carousel-container">
+
+      <!-- Flecha izquierda -->
+      <button class="arrow left" (click)="prevImage()">❮</button>
+
+      <!-- Imagen principal -->
+      <div class="carousel-image">
+        <img *ngIf="images.length"
+             [src]="images[currentImageIndex]"
+             alt="Imagen del lugar">
+      </div>
+
+      <!-- Flecha derecha -->
+      <button class="arrow right" (click)="nextImage()">❯</button>
+
+      <!-- Indicadores -->
+      <div class="carousel-indicators">
+        <span
+          *ngFor="let image of images; let i = index"
+          class="dot"
+          [class.active]="i === currentImageIndex"
+          (click)="setImage(i)">
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Sección de información -->
+    <div class="info-section">
+
+      <!-- IZQUIERDA -->
+      <div class="info-card info-general">
+        <h2 class="card-title">Información General</h2>
+        <p class="description">
+          {{ description }}
+        </p>
+      </div>
+
+      <!-- DERECHA -->
+      <div class="info-card info-lugar">
+        <h2 class="card-title">Información del Lugar</h2>
+
+        <div class="info-list">
+
+          <!-- Nombre -->
+          <div class="info-item">
+            <span class="info-icon">🏞️</span>
+            <span class="info-text">{{ title }}</span>
+          </div>
+
+          <!-- Ubicación -->
+          <div class="info-item">
+            <span class="info-icon">📍</span>
+            <span class="info-text">{{ location }}</span>
+          </div>
+
+          <!-- Teléfono -->
+          <div class="info-item">
+            <span class="info-icon">📞</span>
+            <span class="info-text">{{ phone }}</span>
+          </div>
+
+          <!-- Calificación -->
+          <div class="info-item">
+            <span class="info-icon">⭐</span>
+            <span class="info-text stars">★★★★☆</span>
+          </div>
+
+          <!-- Horario -->
+          <div class="info-item">
+            <span class="info-icon">🕐</span>
+            <span class="info-text">9:00 - 20:00</span>
+          </div>
+
+          <!-- Precio -->
+          <div class="info-item">
+            <span class="info-icon">💲</span>
+            <span class="info-text">Aprox. {{ price }}</span>
+          </div>
+
+          <!-- Categoría -->
+          <div class="info-item">
+            <span class="info-icon">🏷️</span>
+            <span class="info-text">{{ category }}</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</main>
+
+<app-footer></app-footer>

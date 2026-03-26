@@ -8,17 +8,32 @@ import { SuccessSignupComponent } from './success-signup/success-signup.componen
 
 export const routes: Routes = [
   { 
-    path: 'sign-up', component: SignUpComponent 
+    path: 'sign-up', 
+    component: SignUpComponent 
   },
   {
-    path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent 
+    path: 'InicioLogueado', 
+    canActivate: [authGuard], 
+    component: InicioLogueadoComponent 
   },
   {
     path: '',
     component: LandingComponent
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'success-signup', component: SuccessSignupComponent },
+  { 
+    path: 'login', 
+    component: LoginComponent 
+  },
+  { 
+    path: 'success-signup', 
+    component: SuccessSignupComponent 
+  },
+  // ✅ NUEVA RUTA PARA DETALLE DE LUGAR
+  { 
+    path: 'place/:id', 
+    loadComponent: () => import('./place-detail/place-detail.component').then(m => m.PlaceDetailComponent),
+    canActivate: [authGuard]  // Protegida por autenticación
+  },
   {
     path: '**', 
     redirectTo: '', 
