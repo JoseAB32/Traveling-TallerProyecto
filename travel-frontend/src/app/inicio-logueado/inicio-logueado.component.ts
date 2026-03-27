@@ -1,66 +1,76 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { PlaceService } from '../place.service';
+import { Place } from '../place';
 
-// 🔥 IMPORTA ESTOS
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-inicio-logueado',
-  standalone: true, // 🔥 CLAVE
-  imports: [
-    CommonModule,   // 🔥 ngIf, ngFor, ngClass
-    RouterModule,   // 🔥 routerLink
-    HeaderComponent,
-    FooterComponent
-  ],
+  standalone: true,
+  imports: [CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './inicio-logueado.component.html',
   styleUrls: ['./inicio-logueado.component.css']
 })
 export class InicioLogueadoComponent implements OnInit {
 
-  featuredPlaces: any[] = [];
-  isLoading = true;
+  featuredPlaces: Place[] = [];
+  carouselPlaces: Place[] = [];
   currentIndex = 0;
+  isLoading = true;
 
-  constructor(private placeService: PlaceService) {}
+  constructor(
+    private placeService: PlaceService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.placeService.getPlacesOrdenado().subscribe(data => {
-      this.featuredPlaces = data;
-      this.isLoading = false;
+    this.placeService.getPlacesOrdenado().subscribe({
+      next: (data: Place[]) => {
+        this.featuredPlaces = data;
+        this.updateCarousel();
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      }
     });
   }
 
-  get carouselPlaces(): any[] {
-    const len = this.featuredPlaces.length;
-    if (len === 0) return [];
+  updateCarousel() {
+    this.carouselPlaces = this.featuredPlaces.slice(this.currentIndex, this.currentIndex + 3);
 
-    const prev = (this.currentIndex - 1 + len) % len;
-    const next = (this.currentIndex + 1) % len;
+    if (this.carouselPlaces.length < 3) {
+      this.carouselPlaces = [
+        ...this.carouselPlaces,
+        ...this.featuredPlaces.slice(0, 3 - this.carouselPlaces.length)
+      ];
+    }
+  }
 
-    return [
-      this.featuredPlaces[prev],
-      this.featuredPlaces[this.currentIndex],
-      this.featuredPlaces[next]
-    ];
+  next() {
+    this.currentIndex = (this.currentIndex + 1) % this.featuredPlaces.length;
+    this.updateCarousel();
   }
 
   prev() {
     this.currentIndex =
       (this.currentIndex - 1 + this.featuredPlaces.length) % this.featuredPlaces.length;
-  }
-
-  next() {
-    this.currentIndex =
-      (this.currentIndex + 1) % this.featuredPlaces.length;
+    this.updateCarousel();
   }
 
   goTo(index: number) {
     this.currentIndex = index;
+    this.updateCarousel();
+  }
+
+  // 🔥 NAVEGACIÓN AL DETALLE
+  goToDetail(id: number) {
+    console.log('Navegando a ID:', id);
+    this.router.navigate(['/place', id]);
   }
 
   getStars(rating: number): string {

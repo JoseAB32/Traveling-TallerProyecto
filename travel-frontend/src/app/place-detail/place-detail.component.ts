@@ -34,35 +34,54 @@ export class PlaceDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = Number(idParam);
+
+    // 🔥 Validación extra (pro)
+    if (!id || isNaN(id)) {
+      console.error('ID inválido:', idParam);
+      this.loading = false;
+      return;
+    }
 
     this.placeService.getPlaceById(id).subscribe({
-  next: (data: Place | undefined) => {
-    if (data) {
-      this.place = data;
-      this.images = [data.image_url];
-    }
-    this.loading = false;
-  },
-  error: (err) => {
-    console.error(err);
-    this.loading = false;
-  }
-});
+      next: (data: Place | undefined) => {
+
+        if (!data) {
+          console.warn('Lugar no encontrado');
+          this.loading = false;
+          return;
+        }
+
+        this.place = data;
+
+        // 🔥 Preparar imágenes (escala a futuro)
+        this.images = data.image_url
+          ? [data.image_url]
+          : [];
+
+        this.loading = false;
+      },
+
+      error: (err) => {
+        console.error('Error al obtener el lugar:', err);
+        this.loading = false;
+      }
+    });
   }
 
   nextImage(): void {
-    if (this.images.length > 0) {
-      this.currentImageIndex =
-        (this.currentImageIndex + 1) % this.images.length;
-    }
+    if (this.images.length === 0) return;
+
+    this.currentImageIndex =
+      (this.currentImageIndex + 1) % this.images.length;
   }
 
   prevImage(): void {
-    if (this.images.length > 0) {
-      this.currentImageIndex =
-        (this.currentImageIndex - 1 + this.images.length) % this.images.length;
-    }
+    if (this.images.length === 0) return;
+
+    this.currentImageIndex =
+      (this.currentImageIndex - 1 + this.images.length) % this.images.length;
   }
 
   getStars(rating: number): string {
