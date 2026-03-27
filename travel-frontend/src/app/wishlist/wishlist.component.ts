@@ -1,8 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { PlaceCardComponent } from '../components/place-card/place-card.component';
 import { FavoriteService } from '../services/favorite/favorite.service';
+import { AuthService } from '../services/auth.service';        
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-wishlist',
@@ -11,18 +13,27 @@ import { FavoriteService } from '../services/favorite/favorite.service';
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.css'
 })
-export class WishlistComponent {
+export class WishlistComponent implements OnInit, OnDestroy{
 
   Favoritos: any[] =[]; 
-  
+  private userSub!: Subscription;
+
   private favoriteService = inject(FavoriteService);
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
-    this.cargarFavoritos();
+    this.userSub = this.authService.currentUser$.subscribe(user => {
+      
+      if (user && user.id) {
+        this.cargarFavoritos(user.id);
+      } else {
+        console.warn('No hay usuario logueado o no se encontró el ID del usuario.');
+        this.Favoritos =[];
+      }
+    });
   }
 
-  cargarFavoritos() {
-    const userId = 1; // ID de prueba
+  cargarFavoritos(userId: number) {
 
     this.favoriteService.getUserFavorites(userId).subscribe({
       next: (data) => {
@@ -34,5 +45,11 @@ export class WishlistComponent {
         console.error('Error al obtener los favoritos', error);
       }
     });
+  }
+  ngOnDestroy(): void {
+    //Limpiar la suscripción para evitar fugas de memoria
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
   }
 }
