@@ -5,8 +5,9 @@
   <div class="list">
     @for (lugar of Favoritos; track lugar.id; let i = $index) {
       <app-place-card 
-        [place]="lugar" 
-        [isBlue]="i % 2 === 0">
+        [place]="lugar" [isBlue]="i % 2 === 0"
+        (removeFavorite)="deleteFavorite($event)"
+      >
       </app-place-card>
     }
   </div>

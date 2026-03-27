@@ -15,6 +15,7 @@ public class favoriteController {
 
     @Autowired
     private FavoriteRepository favoriteRepository;
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Favorite>> getUserFavorites(@PathVariable Long userId) {
         
@@ -26,4 +27,10 @@ public class favoriteController {
         
         return ResponseEntity.ok(favorites); // Devuelve 200 y la lista en JSON
     }
+
+    @DeleteMapping("/user/{userId}/place/{placeId}")
+    public ResponseEntity<Void> removeFavorite(@PathVariable Long userId, @PathVariable Long placeId) {
+        favoriteRepository.deleteByUserIdAndPlaceId(userId, placeId);
+        return ResponseEntity.ok().build(); // Devuel 200 OK cuando se elimina
+    }    
 }
