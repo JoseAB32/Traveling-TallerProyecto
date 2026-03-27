@@ -10,18 +10,19 @@ import { delay } from 'rxjs/operators';
 export class PlaceService {
 
   private baseUrl = 'http://localhost:8080/api/places';
+
   constructor(private httClient: HttpClient) { }
 
-  getPlacesOrdenado():Observable<Place[]>{
+  getPlacesOrdenado(): Observable<Place[]> {
     const res: Place[] = [
       {
         id: 1,
         name: 'Lago Titicaca, La Paz',
         description: 'El lago navegable más alto del mundo, cuna de la civilización Inca.',
         address: 'Copacabana, Manco Kapac',
-        image_url: '1.png', 
+        image_url: '1.png',
         rating: 4.5,
-        city_id: 1, 
+        city_id: 1,
         is_event: false,
         start_date: null,
         end_date: null,
@@ -34,7 +35,7 @@ export class PlaceService {
         address: 'Región de Apolo y San Buenaventura',
         image_url: '2.png',
         rating: 4.8,
-        city_id: 1, 
+        city_id: 1,
         is_event: false,
         start_date: null,
         end_date: null,
@@ -47,7 +48,7 @@ export class PlaceService {
         address: 'Av. de la Concordia',
         image_url: '3.png',
         rating: 5.0,
-        city_id: 2, 
+        city_id: 2,
         is_event: false,
         start_date: null,
         end_date: null,
@@ -67,6 +68,22 @@ export class PlaceService {
         state: true
       }
     ];
+
     return of(res).pipe(delay(1000));
+  }
+
+  // 🔥 ESTE MÉTODO TE FALTABA
+  getPlaceById(id: number): Observable<Place | undefined> {
+    return this.getPlacesOrdenado().pipe(
+      // simple filtro sin backend real
+      delay(0),
+      (source) => new Observable(observer => {
+        source.subscribe(data => {
+          const place = data.find(p => p.id === id);
+          observer.next(place);
+          observer.complete();
+        });
+      })
+    );
   }
 }

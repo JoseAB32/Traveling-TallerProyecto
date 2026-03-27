@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+import { PlaceService } from '../place.service';
+import { Place } from '../place';
+
+// Componentes
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-place-detail',
@@ -11,91 +15,58 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     HeaderComponent,
-    FooterComponent,
-    RouterModule
+    FooterComponent
   ],
   templateUrl: './place-detail.component.html',
   styleUrls: ['./place-detail.component.css']
 })
-export class PlaceDetailComponent {
+export class PlaceDetailComponent implements OnInit {
 
-  title: string = '';
-  description: string = '';
-  location: string = '';
-  phone: string = '';
-  price: string = '';
-  category: string = '';
+  place: Place | null = null;
+  loading: boolean = true;
 
-  images: string[] = [];
   currentImageIndex: number = 0;
+  images: string[] = [];
 
-  loading: boolean = false;
-  error: string = '';
+  constructor(
+    private route: ActivatedRoute,
+    private placeService: PlaceService
+  ) {}
 
-  constructor(private route: ActivatedRoute) {
-    this.loadPlace();
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.placeService.getPlaceById(id).subscribe({
+  next: (data: Place | undefined) => {
+    if (data) {
+      this.place = data;
+      this.images = [data.image_url];
+    }
+    this.loading = false;
+  },
+  error: (err) => {
+    console.error(err);
+    this.loading = false;
+  }
+});
   }
 
-  loadPlace() {
-    const id = this.route.snapshot.paramMap.get('id');
-
-    switch (id) {
-
-        // 🌊 LAGO TITICACA
-      case '1':
-        this.title = 'Lago Titicaca, La Paz';
-        this.description = 'El Lago Titicaca es el lago navegable más alto del mundo y un lugar lleno de historia y cultura andina. Sus aguas albergan islas tradicionales como la Isla del Sol.';
-        this.location = 'Copacabana, La Paz';
-        this.phone = '71234567';
-        this.price = '10$';
-        this.category = 'Turístico';
-        this.images = [
-          'asset_10.png'
-        ];
-        break;
-
-      // 🌿 MADIDI
-      case '2':
-        this.title = 'Parque Nacional Madidi, La Paz';
-        this.description = 'Madidi es una de las áreas protegidas más importantes del mundo por su enorme biodiversidad...';
-        this.location = 'Ucumarí, La Paz';
-        this.phone = '72513843';
-        this.price = '15$';
-        this.category = 'Natural';
-        this.images = [
-          'asset_11.png'
-        ];
-        break;
-
-      // 🏔️ CRISTO DE LA CONCORDIA
-      case '3':
-        this.title = 'Cristo de la Concordia, Cochabamba';
-        this.description = 'El Cristo de la Concordia es una de las estatuas de Cristo más grandes del mundo y ofrece una vista panorámica impresionante de toda la ciudad de Cochabamba.';
-        this.location = 'Cochabamba, Bolivia';
-        this.phone = '79876543';
-        this.price = '5$';
-        this.category = 'Cultural';
-        this.images = [
-          'asset_1.png'
-        ];
-        break;
-
-      default:
-        this.error = 'Lugar no encontrado';
+  nextImage(): void {
+    if (this.images.length > 0) {
+      this.currentImageIndex =
+        (this.currentImageIndex + 1) % this.images.length;
     }
   }
 
-  nextImage() {
-    this.currentImageIndex =
-      (this.currentImageIndex + 1) % this.images.length;
+  prevImage(): void {
+    if (this.images.length > 0) {
+      this.currentImageIndex =
+        (this.currentImageIndex - 1 + this.images.length) % this.images.length;
+    }
   }
 
-  prevImage() {
-    this.currentImageIndex =
-      (this.currentImageIndex - 1 + this.images.length) % this.images.length;
-  }
-
-  setImage(index: number) {
-    this.currentImageIndex = index;
+  getStars(rating: number): string {
+    const score = Math.floor(rating || 0);
+    return '★'.repeat(score) + '☆'.repeat(5 - score);
   }
 }

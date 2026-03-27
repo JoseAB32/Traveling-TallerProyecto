@@ -1,113 +1,78 @@
 <app-header></app-header>
 
-<main class="place-detail-container">
+<div class="place-detail-container">
 
-  <!-- LOADING -->
-  <div class="loading-container" *ngIf="loading">
+  <!-- 🔄 LOADING -->
+  <div *ngIf="loading" class="loading-container">
     <div class="spinner"></div>
-    <p>Cargando información del lugar...</p>
+    <p>Cargando lugar...</p>
   </div>
 
-  <!-- ERROR -->
-  <div class="error-container" *ngIf="error">
-    <p class="error-message">{{ error }}</p>
-    <a routerLink="/InicioLogueado">Volver a Inicio</a>
+  <!-- ❌ ERROR -->
+  <div *ngIf="!loading && !place" class="error-container">
+    <p class="error-message">Lugar no encontrado</p>
   </div>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <ng-container *ngIf="!loading && !error">
+  <!-- ✅ CONTENIDO -->
+  <div *ngIf="place">
 
-    <!-- Barra de título -->
+    <!-- 🔶 BARRA DE TÍTULO -->
     <div class="title-bar">
-      <span class="location-name">{{ title }}</span>
-      <span class="favorite-icon">❤️</span>
+      <span class="location-name">{{ place.name }}</span>
+      <span class="favorite-icon">♡</span>
     </div>
 
-    <!-- Carrusel de imágenes -->
+    <!-- 🖼️ CARRUSEL -->
     <div class="carousel-container">
 
-      <!-- Flecha izquierda -->
-      <button class="arrow left" (click)="prevImage()">❮</button>
+      <!-- Flechas -->
+      <button class="arrow left" (click)="prevImage()">‹</button>
+      <button class="arrow right" (click)="nextImage()">›</button>
 
-      <!-- Imagen principal -->
+      <!-- Imagen -->
       <div class="carousel-image">
-        <img *ngIf="images.length"
-             [src]="images[currentImageIndex]"
-             alt="Imagen del lugar">
+        <img [src]="'/' + place.image_url" alt="Imagen lugar">
       </div>
-
-      <!-- Flecha derecha -->
-      <button class="arrow right" (click)="nextImage()">❯</button>
 
       <!-- Indicadores -->
       <div class="carousel-indicators">
-        <span
-          *ngFor="let image of images; let i = index"
-          class="dot"
-          [class.active]="i === currentImageIndex"
-          (click)="setImage(i)">
-        </span>
+        <span class="dot active"></span>
       </div>
 
     </div>
 
-    <!-- Sección de información -->
+    <!-- 📊 INFO -->
     <div class="info-section">
 
       <!-- IZQUIERDA -->
       <div class="info-card info-general">
-        <h2 class="card-title">Información General</h2>
+        <div class="card-title">Información general</div>
         <p class="description">
-          {{ description }}
+          {{ place.description }}
         </p>
       </div>
 
       <!-- DERECHA -->
       <div class="info-card info-lugar">
-        <h2 class="card-title">Información del Lugar</h2>
+        <div class="card-title">Información del lugar</div>
 
         <div class="info-list">
 
-          <!-- Nombre -->
-          <div class="info-item">
-            <span class="info-icon">🏞️</span>
-            <span class="info-text">{{ title }}</span>
-          </div>
-
-          <!-- Ubicación -->
           <div class="info-item">
             <span class="info-icon">📍</span>
-            <span class="info-text">{{ location }}</span>
+            <span class="info-text">{{ place.address }}</span>
           </div>
 
-          <!-- Teléfono -->
-          <div class="info-item">
-            <span class="info-icon">📞</span>
-            <span class="info-text">{{ phone }}</span>
-          </div>
-
-          <!-- Calificación -->
           <div class="info-item">
             <span class="info-icon">⭐</span>
-            <span class="info-text stars">★★★★☆</span>
+            <span class="stars">{{ getStars(place.rating) }}</span>
           </div>
 
-          <!-- Horario -->
-          <div class="info-item">
-            <span class="info-icon">🕐</span>
-            <span class="info-text">9:00 - 20:00</span>
-          </div>
-
-          <!-- Precio -->
-          <div class="info-item">
-            <span class="info-icon">💲</span>
-            <span class="info-text">Aprox. {{ price }}</span>
-          </div>
-
-          <!-- Categoría -->
-          <div class="info-item">
-            <span class="info-icon">🏷️</span>
-            <span class="info-text">{{ category }}</span>
+          <div class="info-item" *ngIf="place.is_event">
+            <span class="info-icon">📅</span>
+            <span class="info-text">
+              {{ place.start_date }} - {{ place.end_date }}
+            </span>
           </div>
 
         </div>
@@ -115,8 +80,8 @@
 
     </div>
 
-  </ng-container>
+  </div>
 
-</main>
+</div>
 
 <app-footer></app-footer>
