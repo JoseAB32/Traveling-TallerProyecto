@@ -14,11 +14,13 @@
   </div>
 
   <!-- ✅ CONTENIDO -->
-  <div *ngIf="place">
+  <div *ngIf="!loading && place">
 
     <!-- 🔶 BARRA DE TÍTULO -->
     <div class="title-bar">
-      <span class="location-name">{{ place.name }}</span>
+      <span class="location-name">
+        {{ place.name }}, {{ place.address }}
+      </span>
       <span class="favorite-icon">♡</span>
     </div>
 
@@ -31,12 +33,20 @@
 
       <!-- Imagen -->
       <div class="carousel-image">
-        <img [src]="'/' + place.image_url" alt="Imagen lugar">
+        <img 
+          *ngIf="images.length > 0"
+          [src]="images[currentImageIndex]"
+          alt="Imagen lugar"
+        >
       </div>
 
       <!-- Indicadores -->
       <div class="carousel-indicators">
-        <span class="dot active"></span>
+        <span 
+          *ngFor="let img of images; let i = index"
+          class="dot"
+          [class.active]="i === currentImageIndex">
+        </span>
       </div>
 
     </div>
@@ -59,7 +69,12 @@
         <div class="info-list">
 
           <div class="info-item">
-            <span class="info-icon">📍</span>
+            <span class="info-icon icon-name"></span>
+            <span class="info-text">{{ place.name }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon icon-location"></span>
             <span class="info-text">{{ place.address }}</span>
           </div>
 
@@ -69,9 +84,16 @@
           </div>
 
           <div class="info-item" *ngIf="place.is_event">
-            <span class="info-icon">📅</span>
+            <span class="info-icon icon-time"></span>
             <span class="info-text">
               {{ place.start_date }} - {{ place.end_date }}
+            </span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-icon icon-type"></span>
+            <span class="info-text">
+              {{ place.is_event ? 'Evento' : 'Natural' }}
             </span>
           </div>
 
