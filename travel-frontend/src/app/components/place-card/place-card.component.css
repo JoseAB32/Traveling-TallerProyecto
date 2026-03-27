@@ -9,18 +9,18 @@
 }
 
 .theme-blue {
-  background-color: #4a6d9b;
-  color: white;
+  background-color: var(--baltic-blue);
+  color: var(--beige);
 }
 
 .theme-orange {
-  background-color: #e6b68d;
-  color: #003366; 
+  background-color: var(--peach-glow);
+  color: var(--steel-azure); 
 }
 
 .image-section { flex: 1; }
 .white-frame {
-  background: white;
+  background: var(--white);
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -44,14 +44,15 @@
   justify-content: space-between;
   align-items: flex-start;
 }
-.card-header h3 { margin: 0; font-size: 1.5rem; font-weight: bold; }
+.card-header h3 { margin: 0; font-size: 1.5rem; font-weight: bold; max-width: 70%;}
 
 .heart-icon { font-size: 1.8rem; cursor: pointer; }
-.theme-blue .heart-icon { color: white; }
-.theme-orange .heart-icon { color: #003366; }
+.theme-blue .heart-icon { color: var(--beige); }
+.theme-orange .heart-icon { color: var(--steel-azure); }
 
-.stars-container { color: #f1c40f; font-size: 1.3rem; margin-bottom: 5px; }
-.theme-blue .stars-container { color: white; }
+.stars-container { color: var(--steel-azure); font-size: 1.3rem; margin-bottom: 5px; }
+.stars-container i{ padding-right: 5px;}
+.theme-blue .stars-container { color: var(--beige); }
 
 .label { font-weight: bold; font-size: 0.85rem; display: block; }
 .description-container p {
@@ -67,11 +68,11 @@
 .card-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
 .btn-ver-mas {
   padding: 8px 25px;
-  border-radius: 10px;
+  border-radius: 15px;
   border: none;
   font-weight: bold;
   cursor: pointer;
 }
 
-.theme-blue .btn-ver-mas { background: #e6b68d; color: #003366; }
-.theme-orange .btn-ver-mas { background: #004a80; color: white; }
+.theme-blue .btn-ver-mas { background: var(--beige); color: var(--steel-azure); }
+.theme-orange .btn-ver-mas { background: var(--steel-azure); color: var(--white); }
