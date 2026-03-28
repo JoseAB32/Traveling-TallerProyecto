@@ -169,7 +169,8 @@ input:focus, select:focus {
 }
 
 .error-general p {
-    background-color: rgba(186, 0, 0, 0.3);
+    background-color: rgba(186, 0, 0, 0.1);
+    /* background-color: blue; */
     font-size: 1rem;
     border-radius: 5px;
     padding: 5px 15px;
@@ -186,6 +187,10 @@ input:focus, select:focus {
 .button-container {
     padding: 15px 0;
     width: 80%;
+}
+
+svg {
+    color: var(--secondary-color);
 }
 
 .button-container button {

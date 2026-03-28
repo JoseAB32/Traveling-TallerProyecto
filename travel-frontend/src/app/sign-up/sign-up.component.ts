@@ -81,6 +81,10 @@ export class SignUpComponent implements OnInit {
     this.router.navigate(['/success-signup']); 
   }
 
+  goToLanding() {
+    this.router.navigate(['']);
+  }
+
   onSubmit(form: NgForm) {
     this.errorGeneral = '';
 
@@ -91,11 +95,6 @@ export class SignUpComponent implements OnInit {
 
     if (!this.contrasenaCoincide()) {
       this.errorGeneral = 'Las contraseñas no coinciden.';
-      return;
-    }
-
-    if (this.user.city_id === null || this.user.city_id === 0) {
-      this.errorGeneral = 'Debes seleccionar una ciudad válida.';
       return;
     }
 

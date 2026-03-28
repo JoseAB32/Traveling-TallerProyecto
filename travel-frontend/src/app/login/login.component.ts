@@ -1,6 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnInit {
   credentials = {
     userName: '',
     password: ''
@@ -28,19 +28,14 @@ export class LoginComponent implements OnDestroy {
     private router: Router
   ) {}
 
-  onSubmit(): void {
+  onSubmit(form: NgForm): void {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
     this.credentials.userName = this.credentials.userName.trim();
     this.credentials.password = this.credentials.password.trim();
-    
-    if (!this.credentials.userName) {
-      this.error = 'El nombre de usuario es requerido';
-      return;
-    }
-    
-    if (!this.credentials.password) {
-      this.error = 'La contraseña es requerida';
-      return;
-    }
 
     this.loading = true;
     this.error = '';
@@ -62,7 +57,14 @@ export class LoginComponent implements OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+  goToLanding() {
+    this.router.navigate(['']);
   }
+
+  ngOnInit(): void {
+  }
+
+  // ngOnDestroy(): void {
+  //   this.subscription?.unsubscribe();
+  // }
 }

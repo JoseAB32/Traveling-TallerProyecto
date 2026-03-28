@@ -82,13 +82,18 @@ export class AuthService {
   private handleError(error: HttpErrorResponse) {
     console.error('❌ Error:', error);
     
-    let errorMessage = 'Error en la autenticación';
+    // let errorMessage = 'Error en la autenticación';
+    let errorMessage = 'Usuario o contraseña incorrectos';
     
     if (error.status === 0) {
       errorMessage = 'No se pudo conectar al servidor. Verifica que el backend esté corriendo.';
-    } else if (error.error && typeof error.error === 'string') {
+    } else if (typeof error.error === 'string') {
       errorMessage = error.error;
-    } else if (error.error && error.error.error) {
+    } else if (error.error?.detail) {
+      errorMessage = error.error.detail;
+    } else if (error.error?.message) {
+      errorMessage = error.error.message;
+    } else if (error.error?.error) {
       errorMessage = error.error.error;
     } else if (error.status === 401) {
       errorMessage = 'Usuario o contraseña incorrectos';

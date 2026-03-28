@@ -1,109 +1,5 @@
-<!-- <div class="login-page">
-  <div class="login-container">
-
-    <div class="left-column">
-
-      <div class="photo-collage">
-
-        <div class="photo photo-1">
-          <img src="https://images.unsplash.com/photo-1542402026-4c7f3b9f3c3d?w=180&h=180&fit=crop" alt="Salar">
-        </div>
-        
-        <div class="photo photo-2">
-          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=180&h=180&fit=crop" alt="Montaña">
-        </div>
-        
-        <div class="photo photo-3">
-          <img src="https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=180&h=180&fit=crop" alt="Fuente">
-        </div>
-        
-        <div class="photo photo-4">
-          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=180&h=180&fit=crop" alt="Edificio">
-        </div>
-        
-        <div class="photo photo-5">
-          <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=180&h=180&fit=crop" alt="Intermedia">
-        </div>
-      </div>
-      
-      <div class="logo-container">
-        <img src="/traveling2white.svg" alt="TRAVELING" class="logo-svg">
-      </div>
-    </div>
-    
-    <div class="divider"></div>
-    
-    <div class="right-column">
-      <div class="login-card">
-        <h1 class="login-title">INICIAR SESIÓN</h1>
-        
-        <div *ngIf="error" class="alert alert-error">
-          {{ error }}
-        </div>
-        <div *ngIf="successMessage" class="alert alert-success">
-          {{ successMessage }}
-        </div>
-        
-        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-          <div class="form-group">
-            <label for="email" class="form-label">Correo electrónico</label>
-            <input 
-              type="email" 
-              id="email"
-              name="email"
-              [(ngModel)]="credentials.email"
-              required
-              email
-              #email="ngModel"
-              class="form-control"
-              [class.error]="email.invalid && email.touched"
-              [disabled]="loading"
-            >
-            <div *ngIf="email.invalid && email.touched && email.errors?.['required']" class="error-message">
-              El correo es requerido
-            </div>
-            <div *ngIf="email.invalid && email.touched && email.errors?.['email']" class="error-message">
-              Correo inválido
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="password" class="form-label">Contraseña</label>
-            <input 
-              type="password" 
-              id="password"
-              name="password"
-              [(ngModel)]="credentials.password"
-              required
-              #password="ngModel"
-              class="form-control"
-              [class.error]="password.invalid && password.touched"
-              [disabled]="loading"
-            >
-            <div *ngIf="password.invalid && password.touched" class="error-message">
-              La contraseña es requerida
-            </div>
-          </div>
-          
-          <button 
-            type="submit" 
-            [disabled]="loginForm.invalid || loading"
-            class="btn-login"
-          >
-            {{ loading ? 'INICIANDO...' : 'INICIAR SESIÓN' }}
-          </button>
-        </form>
-        
-        <p class="register-link">
-          ¿Aún no tienes una cuenta? <a routerLink="/register" class="register-link-text">Regístrate</a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <main class="content">
-    <section class="img-container">
+    <section class="img-container" (click)="goToLanding()">
         <div class="imgs-container">
           <div class="img-border" id="photo01">
             <img id="img01" src="https://www.civitatis.com/f/bolivia/uyuni/excursion-salar-uyuni-589x392.jpg" alt="Salar de Uyuni">
@@ -174,15 +70,8 @@
         </div>
     </section>
 
-    <div *ngIf="error" class="alert alert-error">
-      {{ error }}
-    </div>
-    <div *ngIf="successMessage" class="alert alert-success">
-      {{ successMessage }}
-    </div>
-
     <section class="form-container">
-        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="form-login">
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="form-login">
             <div class="title-container">
                 <h1>
                     INICIAR SESIÓN
@@ -193,7 +82,7 @@
                   [(ngModel)]="credentials.userName"
                   required
                   #userName="ngModel"
-                  [class.input-error]="userName.invalid && userName.touched"
+                  [class.input-error]="userName.invalid && (userName.touched || userName.dirty)"
                   [disabled]="loading">
                 <label for="nombreUsuario" class="label-form"
                 [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">Nombre de usuario</label>
@@ -203,19 +92,12 @@
                 </div>
             </div>
 
-            <!-- <div *ngIf="userName.invalid && userName.touched && userName.errors?.['required']" class="error-message">
-              El nombre de usuario es requerido
-            </div>
-            <div *ngIf="userName.invalid && userName.touched && userName.errors?.['userName']" class="error-message">
-              Nombre de usuario inválido
-            </div> -->
-
             <div class="input-container">
                 <input type="password" placeholder=" " class="form-input" id="contrasena" name="contrasena"
                   [(ngModel)]="credentials.password"
                   required
                   #password="ngModel"
-                  [class.input-error]="password.invalid && password.touched"
+                  [class.input-error]="password.invalid && (password.touched || password.dirty)"
                   [disabled]="loading">
                 <label for="contrasena" class="label-form"
                 [class.label-error]="password.invalid && (password.touched || password.dirty)">Contraseña</label>
@@ -225,16 +107,13 @@
                 </div>
             </div>
 
-            <!-- <div *ngIf="password.invalid && password.touched" class="error-message">
-              La contraseña es requerida
-            </div> -->
+            <div *ngIf="error" class="error-general">
+              <p> {{ error }} </p>
+            </div>
 
-            <!-- <div class="error-container">
-                <p>Error</p>
-            </div> -->
             <div class="button-container">
                 <button type="submit"
-                  [disabled]="loginForm.invalid || loading"
+                  [disabled]="loading"
                   class="btn-login">INICIAR SESIÓN</button>
             </div>
             <div class="login-container">
