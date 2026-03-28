@@ -48,7 +48,9 @@
 
 .heart-icon { font-size: 1.8rem; cursor: pointer; }
 .theme-blue .heart-icon { color: var(--beige); }
+.theme-blue .heart-icon:hover{ color: var(--white); }
 .theme-orange .heart-icon { color: var(--steel-azure); }
+.theme-orange .heart-icon:hover{ color: var(--baltic-blue); }
 
 .stars-container { color: var(--steel-azure); font-size: 1.3rem; margin-bottom: 5px; }
 .stars-container i{ padding-right: 5px;}
@@ -75,4 +77,6 @@
 }
 
 .theme-blue .btn-ver-mas { background: var(--beige); color: var(--steel-azure); }
+.theme-blue .btn-ver-mas:hover { background: var(--white); color: var(--baltic-blue); }
 .theme-orange .btn-ver-mas { background: var(--steel-azure); color: var(--white); }
+.theme-orange .btn-ver-mas:hover { background: var(--baltic-blue); color:var(--beige);}
