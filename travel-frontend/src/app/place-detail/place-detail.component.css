@@ -22,7 +22,7 @@ body {
    BARRA DE TÍTULO
 ======================================== */
 .title-bar {
-  background: #eeb591;
+  background: #F7C59F;
   padding: 10px 20px;
   border-radius: 25px;
   display: flex;
@@ -164,7 +164,7 @@ body {
 
 /* DERECHA */
 .info-lugar {
-  background: #eeb591;
+  background: #F7C59F;
   color: #2f4f7f;
 }
 
