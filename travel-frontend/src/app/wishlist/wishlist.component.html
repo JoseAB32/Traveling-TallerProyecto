@@ -6,10 +6,28 @@
     @for (lugar of Favoritos; track lugar.id; let i = $index) {
       <app-place-card 
         [place]="lugar" [isBlue]="i % 2 === 0"
-        (removeFavorite)="deleteFavorite($event)"
+        (onRemoveFavorite)="openConfirmModal(lugar.id)"
       >
       </app-place-card>
     }
   </div>
 </div>
+
+@if (isModalOpen) {
+  <div class="modal-overlay" (click)="closeConfirmModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()"> <!-- Evita que se cierre al hacer clic adentro -->
+      <div class="modal-header">
+        <i class="bi bi-exclamation-triangle-fill warning-icon"></i>
+        <h3>¿Quitar de favoritos?</h3>
+      </div>
+      <p>¿Estás seguro de que deseas eliminar este lugar de tu lista de favoritos? Esta acción no se puede deshacer.</p>
+      
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="closeConfirmModal()">Cancelar</button>
+        <button class="btn-confirm" (click)="confirmDelete()">Sí, quitar</button>
+      </div>
+    </div>
+  </div>
+}
+
 <app-footer></app-footer>

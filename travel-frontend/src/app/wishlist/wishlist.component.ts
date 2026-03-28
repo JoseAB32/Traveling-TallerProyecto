@@ -22,6 +22,9 @@ export class WishlistComponent implements OnInit, OnDestroy{
   private favoriteService = inject(FavoriteService);
   private authService = inject(AuthService);
 
+  isModalOpen: boolean = false;
+  placeToDeleteId: number | null = null;
+
   ngOnInit(): void {
     this.userSub = this.authService.currentUser$.subscribe(user => {
       if (user && user.id) {
@@ -48,6 +51,23 @@ export class WishlistComponent implements OnInit, OnDestroy{
     });
   }
 
+  openConfirmModal(placeId: number) {
+    this.placeToDeleteId = placeId;
+    this.isModalOpen = true;
+  }
+
+  closeConfirmModal() {
+    this.isModalOpen = false;
+    this.placeToDeleteId = null;
+  }
+
+  confirmDelete() {
+    if (this.placeToDeleteId !== null) {
+      this.deleteFavorite(this.placeToDeleteId); 
+      this.closeConfirmModal(); 
+    }
+  }
+
   deleteFavorite(placeId: number) {
     if (!this.currentUserId) {
       console.warn('No hay usuario logueado.');
@@ -56,6 +76,7 @@ export class WishlistComponent implements OnInit, OnDestroy{
 
     this.favoriteService.removeFavorite(this.currentUserId, placeId).subscribe({
       next: () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.Favoritos = this.Favoritos.filter(lugar => lugar.id !== placeId);
         console.log('Lugar eliminado de favoritos');
       },

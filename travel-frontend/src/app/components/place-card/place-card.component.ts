@@ -12,9 +12,9 @@ export class PlaceCardComponent {
   @Input() place: any;
   @Input() isBlue: boolean = true;
 
-  @Output() removeFavorite = new EventEmitter<number>();
+  @Output() onRemoveFavorite = new EventEmitter<number>();
 
-  onHeartClick() {
-    this.removeFavorite.emit(this.place.id);
+  triggerRemove() {
+    this.onRemoveFavorite.emit();
   }
 }
