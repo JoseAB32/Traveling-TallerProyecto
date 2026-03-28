@@ -87,6 +87,22 @@
 
 .btn-confirm:hover { background-color: var(--baltic-blue); }
 
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;     
+  height: 60vh;           
+  text-align: center;
+  color: var(--steel-azure);
+}
+
+.empty-gif {
+  width: 300px; 
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
