@@ -34,7 +34,7 @@
       </div>
 
       <!-- CARRUSEL -->
-      <div *ngIf="!isLoading" class="carousel-wrapper">
+      <div *ngIf="!isLoading && featuredPlaces.length > 0" class="carousel-wrapper">
 
         <button class="carousel-btn carousel-btn-prev"
                 (click)="prev()"
@@ -54,7 +54,6 @@
             *ngFor="let place of carouselPlaces; let i = index"
             class="col-12 col-md-4">
 
-            <!-- 🔥 CARD CLICKEABLE -->
             <div
               class="card border-0 shadow-sm travel-card rounded-4"
               [ngClass]="{
@@ -62,11 +61,11 @@
                 'bg-blue-dark text-white': i !== 1
               }"
               (click)="goToDetail(place.id)"
-              style="cursor: pointer;"
-            >
+              style="cursor: pointer;">
 
+              <!-- 🔥 CORREGIDO: imageUrl (con U mayúscula) -->
               <img
-                [src]="place.image_url"
+                [src]="place.imageUrl"
                 class="card-img-top p-2 rounded-4"
                 [alt]="place.name" />
 
@@ -89,7 +88,6 @@
 
         <!-- INDICADORES -->
         <div class="d-flex justify-content-center mt-3 gap-2">
-
           <button
             *ngFor="let _ of featuredPlaces; index as dotIndex"
             class="btn btn-sm"
@@ -101,10 +99,10 @@
             (click)="goTo(dotIndex)">
             •
           </button>
-
         </div>
 
       </div>
+
     </div>
   </section>
 

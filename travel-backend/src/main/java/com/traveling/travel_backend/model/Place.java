@@ -8,7 +8,7 @@ public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -19,21 +19,20 @@ public class Place {
     @Column(name = "address", length = 255)
     private String address;
 
-    // El default 5.0 que configuramos en el Trigger y la BD
     @Column(name = "rating")
-    private double rating = 5.0;
+    private Double rating;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @Column(name = "latitude")
-    private double latitude;
+    private Double latitude;
 
     @Column(name = "longitude")
-    private double longitude;
+    private Double longitude;
 
-    @Column(name = "place_type")
-    private String place_type;
+    @Column(name = "place_type", length = 50)
+    private String placeType;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
@@ -54,26 +53,9 @@ public class Place {
     @Column(name = "state", nullable = false)
     private boolean state = true;
 
-    public Place() {
-    }
-
-    // Constructor completo para facilitar inserts desde el código
-    public Place(String name, String description, String address, City city, String place_type, boolean isEvent, String imageUrl, double price, double latitude, double longitude) {
-        this.name = name;
-        this.description = description;
-        this.address = address;
-        this.city = city;
-        this.isEvent = isEvent;
-        this.imageUrl = imageUrl;
-        this.price = price;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.place_type = place_type;
-    }
-
-    // GETTERS Y SETTERS
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -84,8 +66,20 @@ public class Place {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
 
-    public double getRating() { return rating; }
-    public void setRating(double rating) { this.rating = rating; }
+    public Double getRating() { return rating; }
+    public void setRating(Double rating) { this.rating = rating; }
+
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+    public String getPlaceType() { return placeType; }
+    public void setPlaceType(String placeType) { this.placeType = placeType; }
 
     public City getCity() { return city; }
     public void setCity(City city) { this.city = city; }
@@ -104,16 +98,4 @@ public class Place {
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }
-
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-
-    public double getLatitude() { return latitude; }
-    public void setLatitude(double latitude) { this.latitude = latitude; }
-
-    public double getLongitude() { return longitude; }
-    public void setLongitude(double longitude) { this.longitude = longitude; }
-
-    public String getPlaceType() { return place_type; }
-    public void setPlaceType(String place_type) { this.place_type = place_type; }
 }
