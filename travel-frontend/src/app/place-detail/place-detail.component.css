@@ -12,9 +12,9 @@ body {
 ======================================== */
 .place-detail-container {
   max-width: 1100px;
-  margin: 50px auto; /* 🔥 corregido */
-  padding: 40px;     /* 🔥 corregido */
-  background: #f2f2f2;
+  margin: 50px auto;
+  padding: 40px;
+  background: white; 
   border-radius: 10px;
 }
 
@@ -38,13 +38,14 @@ body {
 }
 
 .favorite-icon {
-  font-size: 1.4rem;
+  font-size: 2rem; /* 🔥 más grande */
   cursor: pointer;
   transition: transform 0.2s;
+  line-height: 1;
 }
 
 .favorite-icon:hover {
-  transform: scale(1.1);
+  transform: scale(1.2); /* 🔥 efecto más notorio */
 }
 
 /* ========================================
@@ -262,4 +263,9 @@ body {
   .arrow.right {
     right: 10px;
   }
+}
+
+.info-icon svg {
+  width: 26px;   /* 🔥 antes 20px */
+  height: 26px;  /* 🔥 antes 20px */
 }
