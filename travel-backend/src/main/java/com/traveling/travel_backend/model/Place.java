@@ -1,5 +1,6 @@
 package com.traveling.travel_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,30 +9,24 @@ public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "address", length = 255)
     private String address;
 
-    @Column(name = "rating")
-    private Double rating;
+    private double rating = 5.0;
 
-    @Column(name = "price")
-    private Double price;
+    private double price;
 
-    @Column(name = "latitude")
-    private Double latitude;
+    private double latitude;
 
-    @Column(name = "longitude")
-    private Double longitude;
+    private double longitude;
 
-    @Column(name = "place_type", length = 50)
+    @Column(name = "place_type")
+    @JsonProperty("place_type") // 🔥 CLAVE
     private String placeType;
 
     @ManyToOne
@@ -39,63 +34,86 @@ public class Place {
     private City city;
 
     @Column(name = "is_event")
+    @JsonProperty("is_event") // 🔥 CLAVE
     private boolean isEvent = false;
 
     @Column(name = "start_date")
+    @JsonProperty("start_date") // 🔥 CLAVE
     private String startDate;
 
     @Column(name = "end_date")
+    @JsonProperty("end_date") // 🔥 CLAVE
     private String endDate;
 
-    @Column(name = "image_url", length = 300)
+    @Column(name = "image_url")
+    @JsonProperty("image_url") // 🔥 CLAVE
     private String imageUrl;
 
-    @Column(name = "state", nullable = false)
     private boolean state = true;
 
-    // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Place() {}
+
+    // GETTERS
+
+    public long getId() { return id; }
 
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
 
     public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
 
     public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
 
-    public Double getRating() { return rating; }
-    public void setRating(Double rating) { this.rating = rating; }
+    public double getRating() { return rating; }
 
-    public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
+    public double getPrice() { return price; }
 
-    public Double getLatitude() { return latitude; }
-    public void setLatitude(Double latitude) { this.latitude = latitude; }
+    public double getLatitude() { return latitude; }
 
-    public Double getLongitude() { return longitude; }
-    public void setLongitude(Double longitude) { this.longitude = longitude; }
+    public double getLongitude() { return longitude; }
 
     public String getPlaceType() { return placeType; }
-    public void setPlaceType(String placeType) { this.placeType = placeType; }
 
     public City getCity() { return city; }
-    public void setCity(City city) { this.city = city; }
 
     public boolean isEvent() { return isEvent; }
-    public void setEvent(boolean event) { isEvent = event; }
 
     public String getStartDate() { return startDate; }
-    public void setStartDate(String startDate) { this.startDate = startDate; }
 
     public String getEndDate() { return endDate; }
-    public void setEndDate(String endDate) { this.endDate = endDate; }
 
     public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public boolean isState() { return state; }
+
+    // SETTERS
+
+    public void setId(long id) { this.id = id; }
+
+    public void setName(String name) { this.name = name; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public void setAddress(String address) { this.address = address; }
+
+    public void setRating(double rating) { this.rating = rating; }
+
+    public void setPrice(double price) { this.price = price; }
+
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+
+    public void setLongitude(double longitude) { this.longitude = longitude; }
+
+    public void setPlaceType(String placeType) { this.placeType = placeType; }
+
+    public void setCity(City city) { this.city = city; }
+
+    public void setEvent(boolean event) { isEvent = event; }
+
+    public void setStartDate(String startDate) { this.startDate = startDate; }
+
+    public void setEndDate(String endDate) { this.endDate = endDate; }
+
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
     public void setState(boolean state) { this.state = state; }
 }

@@ -1,41 +1,24 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Place } from './place';
-import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceService {
 
-  private baseUrl = 'http://localhost:8080/api/places';
+  private apiUrl = 'http://localhost:8080/api';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  /**
-   * Obtiene todos los lugares ordenados por rating (mejores primero)
-   * Filtra solo los lugares con state = 1 (true) y rating >= 4
-   */
+  // 🔥 LISTAR
   getPlacesOrdenado(): Observable<Place[]> {
-    return this.httpClient.get<Place[]>(this.baseUrl).pipe(
-      map(places => places
-        .filter(place => place.state === true && place.rating >= 4)
-        .sort((a, b) => b.rating - a.rating)
-      )
-    );
+    return this.http.get<Place[]>(`${this.apiUrl}/places`);
   }
 
-  /**
-   * Obtiene un lugar por su ID
-   */
+  // 🔥 DETALLE POR ID
   getPlaceById(id: number): Observable<Place> {
-    return this.httpClient.get<Place>(`${this.baseUrl}/${id}`);
-  }
-
-  /**
-   * Obtiene todos los lugares (sin filtrar)
-   */
-  getPlaces(): Observable<Place[]> {
-    return this.httpClient.get<Place[]>(this.baseUrl);
+    return this.http.get<Place>(`${this.apiUrl}/places/${id}`);
   }
 }

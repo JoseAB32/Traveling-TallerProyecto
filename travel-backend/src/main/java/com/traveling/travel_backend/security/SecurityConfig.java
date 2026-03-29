@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
@@ -21,8 +22,16 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
 
+            .cors(cors -> {}) // 🔥 IMPORTANTE PARA ANGULAR
+
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/login", "/api/users", "/api/cities").permitAll()
+                .requestMatchers(
+                    "/api/login",
+                    "/api/users",
+                    "/api/cities",
+                    "/api/places/**" // 🔥 AQUÍ ESTÁ LA CLAVE
+                ).permitAll()
+
                 .anyRequest().authenticated()
             )
 
