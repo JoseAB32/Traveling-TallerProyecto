@@ -83,7 +83,7 @@ export class AuthService {
     console.error('❌ Error:', error);
     
     // let errorMessage = 'Error en la autenticación';
-    let errorMessage = 'Usuario o contraseña incorrectos';
+    let errorMessage = 'Usuario o contraseña incorrectos.';
     
     if (error.status === 0) {
       errorMessage = 'No se pudo conectar al servidor. Verifica que el backend esté corriendo.';

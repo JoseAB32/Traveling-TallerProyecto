@@ -83,12 +83,14 @@
                   required
                   #userName="ngModel"
                   [class.input-error]="userName.invalid && (userName.touched || userName.dirty)"
-                  [disabled]="loading">
+                  [disabled]="loading" 
+                  pattern="^\S+$">
                 <label for="nombreUsuario" class="label-form"
                 [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">Nombre de usuario</label>
 
                 <div class="error-container" *ngIf="userName.invalid && (userName.touched || userName.dirty)">
                     <p *ngIf="userName.errors?.['required']">El nombre de usuario es obligatorio.</p>
+                    <p *ngIf="userName.errors?.['pattern']">El nombre de usuario no puede contener espacios.</p>
                 </div>
             </div>
 
@@ -98,12 +100,14 @@
                   required
                   #password="ngModel"
                   [class.input-error]="password.invalid && (password.touched || password.dirty)"
-                  [disabled]="loading">
+                  [disabled]="loading"
+                  pattern="^\S+$">
                 <label for="contrasena" class="label-form"
                 [class.label-error]="password.invalid && (password.touched || password.dirty)">Contraseña</label>
 
                 <div class="error-container" *ngIf="password.invalid && (password.touched || password.dirty)">
                     <p *ngIf="password.errors?.['required']">La contraseña es obligatoria.</p>
+                    <p *ngIf="password.errors?.['pattern']">La contraseña no puede contener espacios.</p>
                 </div>
             </div>
 

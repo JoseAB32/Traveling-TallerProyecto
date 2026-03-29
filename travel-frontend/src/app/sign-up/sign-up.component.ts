@@ -3,7 +3,7 @@ import { User } from '../user';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../user.service';
 import { Router, RouterLink } from '@angular/router';
-import { NgForOf, NgIf } from "../../../node_modules/@angular/common";
+import { NgForOf, NgIf } from '@angular/common';
 import { CityService } from '../city.service';
 import { City } from '../city';
 
@@ -72,7 +72,7 @@ export class SignUpComponent implements OnInit {
       },
       error => {
         console.error('Error al crear usuario', error);
-        this.errorGeneral = 'No se pudo registrar el usuario. Revise datos e intente de nuevo.';
+        this.errorGeneral = error?.error?.message || 'No se pudo registrar el usuario. Revise datos e intente de nuevo.';
       }
     );
   }

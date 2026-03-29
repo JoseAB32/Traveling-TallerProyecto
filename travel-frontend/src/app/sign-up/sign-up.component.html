@@ -68,7 +68,7 @@
             </div>
             <div class="input-container">
                 <input type="text" placeholder=" " class="form-input input-text" id="nombreUsuario" name="nombreUsuario"
-                [(ngModel)] = "user.userName" #nombreUsuario="ngModel" required minlength="5"
+                [(ngModel)] = "user.userName" #nombreUsuario="ngModel" required minlength="5" pattern="^\S+$"
                 [class.input-error]="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">
                 <label for="nombreUsuario" class="label-form"
                 [class.label-error]="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">Nombre de usuario</label>
@@ -76,10 +76,11 @@
                 <div class="error-container" *ngIf="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">
                     <p *ngIf="nombreUsuario.errors?.['required']">El nombre de usuario es obligatorio.</p>
                     <p *ngIf="nombreUsuario.errors?.['minlength']">El nombre de usuario debe tener al menos 5 caracteres.</p>
+                    <p *ngIf="nombreUsuario.errors?.['pattern']">El nombre de usuario no puede contener espacios.</p>
                 </div>
             </div>
             <div class="input-container">
-                <input type="text" placeholder=" " class="form-input input-text" id="correo" name="correo"
+                <input type="email" placeholder=" " class="form-input input-text" id="correo" name="correo"
                 [(ngModel)] = "user.correo" #correo="ngModel" required email
                 [class.input-error]="correo.invalid && (correo.touched || correo.dirty)">
                 <label for="correo" class="label-form"
@@ -88,11 +89,12 @@
                 <div class="error-container" *ngIf="correo.invalid && (correo.touched || correo.dirty)">
                     <p *ngIf="correo.errors?.['required']">El correo electrónico es obligatorio.</p>
                     <p *ngIf="correo.errors?.['email']">Ingresa un correo electrónico válido.</p>
+                    <!-- <p *ngIf="correo.errors?.['pattern']">El correo electrónico no puede contener espacios.</p> -->
                 </div>
             </div>
             <div class="input-container">
                 <input type="password" placeholder=" " class="form-input input-text" id="contrasena" name="contrasena"
-                [(ngModel)] = "user.pass" #contrasena="ngModel" required minlength="8"
+                [(ngModel)] = "user.pass" #contrasena="ngModel" required minlength="8" pattern="^\S+$"
                 [class.input-error]="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
                 <label for="contrasena" class="label-form"
                 [class.label-error]="contrasena.invalid && (contrasena.touched || contrasena.dirty)">Contraseña</label>
@@ -100,17 +102,19 @@
                 <div class="error-container" *ngIf="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
                     <p *ngIf="contrasena.errors?.['required']">La contraseña es obligatoria.</p>
                     <p *ngIf="contrasena.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</p>
+                    <p *ngIf="contrasena.errors?.['pattern']">La contraseña no puede contener espacios.</p>
                 </div>
             </div>
             <div class="input-container">
                 <input type="password" placeholder=" " class="form-input input-text" id="confirmarContrasena" name="confirmarContrasena"
-                [(ngModel)]="confirmarContrasena" #confContrasena="ngModel" required
+                [(ngModel)]="confirmarContrasena" #confContrasena="ngModel" required pattern="^\S+$"
                 [class.input-error]="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">
                 <label for="confirmarContrasena" class="label-form"
                 [class.label-error]="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">Confirmar contraseña</label>
 
                 <div class="error-container" *ngIf="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">
                     <p *ngIf="confContrasena.errors?.['required']">La confirmación de la contraseña es obligatoria.</p>
+                    <p *ngIf="confContrasena.errors?.['pattern']">La confirmación de la contraseña no puede contener espacios.</p>
                 </div>
             </div>
             <div class="input-container">

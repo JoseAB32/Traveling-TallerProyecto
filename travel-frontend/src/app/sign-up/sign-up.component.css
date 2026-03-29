@@ -16,10 +16,12 @@
     background-color: var(--main-bg-color);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 100vh;
+    grid-template-rows: 100%;
     grid-template-areas: 
         "img-container form-container";
-    padding: 0 100px;
+    padding: 10px 100px;
+    min-height: 100vh;
+    height: auto;
 }
 
 .img-container {

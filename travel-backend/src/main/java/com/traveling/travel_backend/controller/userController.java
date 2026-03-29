@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.traveling.travel_backend.dto.ErrorResponse;
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
 import com.traveling.travel_backend.model.City;
@@ -49,17 +50,32 @@ public class userController {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-    
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-    
-    if (user.getCity() != null) {
-        City realCity = cityRepository.findById(user.getCity().getId()).orElse(null);
-        user.setCity(realCity); 
-    }
-    return userRepository.save(user);
-    }
 
+    @PostMapping("/users")
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        if (user.getUserName() == null || user.getUserName().trim().isEmpty()) {
+            return ResponseEntity
+                .badRequest()
+                .body(new ErrorResponse("El nombre de usuario es requerido."));
+        }
+
+        Optional<User> existingUser = userRepository.findByUserNameAndStateTrue(user.getUserName().trim());
+
+        if (existingUser.isPresent()) {
+            return ResponseEntity
+                .badRequest()
+                .body(new ErrorResponse("El nombre de usuario ya está en uso."));
+        }
+    
+        if (user.getCity() != null) {
+            City realCity = cityRepository.findById(user.getCity().getId()).orElse(null);
+            user.setCity(realCity); 
+        }
+        
+        User savedUser = userRepository.save(user);
+
+        return ResponseEntity.ok(savedUser);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest credentials) {
