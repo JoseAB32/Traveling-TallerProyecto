@@ -4,28 +4,43 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { Place } from '../place';
 import { PlaceService } from '../place.service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-search-places',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, RouterLink],
   templateUrl: './search-places.component.html',
   styleUrl: './search-places.component.css'
 })
 export class SearchPlacesComponent {
   places: Place[] = [];
   isLoading = true;
+  searchTerm: string = '';
 
-  constructor(private placeService: PlaceService) {}
+  constructor(private placeService: PlaceService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.placeService.getPlacesOrdenado().subscribe({
+  // Escuchamos los cambios en los parámetros de la URL
+    this.route.queryParams.pipe(
+      switchMap(params => {
+        this.isLoading = true;
+        this.searchTerm = params['q'] || ''; // Capturamos el "?q=..."
+        
+        if (this.searchTerm) {
+          return this.placeService.searchPlaces(this.searchTerm);
+        } else {
+          return this.placeService.getPlacesOrdenado(); // Si está vacío, muestra todos
+        }
+      })
+    ).subscribe({
       next: (data) => {
         this.places = data;
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error cargando lugares:', err);
+        console.error('Error en búsqueda:', err);
         this.isLoading = false;
       }
     });

@@ -22,6 +22,15 @@
   border-radius: 25px;
   padding: 5px 15px;
   width: 400px;
+  position: relative;
+  z-index: 1001; 
+  transition: border-radius 0.1s; 
+}
+
+.search-bar.active {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: #eee; 
 }
 
 .search-bar input {
@@ -93,3 +102,56 @@
 .menu-item i {
   font-size: 20px;
 }
+
+
+/*PARA SUGERENCIAS */
+.search-container {
+  position: relative;
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 2px solid #ff7841;
+  border-top: none; /* Quitamos el borde superior para que se una */
+  border-radius: 0 0 25px 25px; /* Solo redondeamos abajo */
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  z-index: 1000;
+  overflow: hidden;
+  margin-top: -2px; /* Ajuste mínimo para que los bordes laterales coincidan perfecto */
+}
+
+
+.suggestion-item {
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  color: black;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: #fff1eb; /* Un naranja muy suave */
+}
+
+.suggestion-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.suggestion-detail {
+  font-size: 11px;
+  color: #666;
+}
+
+

@@ -21,20 +21,30 @@
    Usamos !important para asegurar que el color del borde cambie 
 */
 .border-orange-travel { 
-  border-color: orange !important; 
+  border-color: #ff7841 !important; 
 }
 
 .border-blue-travel { 
-  border-color: blue !important; 
+  border-color: #667eea !important; 
+}
+
+.stars {
+  /* Sustituimos el tamaño de h5 por uno más grande (aprox 1.8rem o 28px) */
+  font-size: 1.8rem !important; 
+  letter-spacing: 2px; /* Un poco de espacio entre estrellas se ve más elegante */
+  line-height: 1;
+  /* Aseguramos que no se muevan de su sitio */
+  display: inline-block;
+  white-space: nowrap;
 }
 
 /* Variaciones de estrellas */
 .stars-orange { 
-  color: orange !important; 
+  color: #ff7841 !important; 
 }
 
 .stars-blue { 
-  color: blue !important; 
+  color: #667eea !important; 
 }
 
 /* Tipografía y Textos */

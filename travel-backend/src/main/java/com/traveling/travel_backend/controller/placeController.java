@@ -23,9 +23,21 @@ public class placeController {
     @Autowired
     private PlaceRepository placeRepository;
 
-   @GetMapping("/places")
-    public List<Place> getAll() {
+   @GetMapping("/places/top-rated")
+    public List<Place> getAllOrderList() {
         return placeRepository.findTop5ByOrderByRatingDesc();
     }
+
+    @GetMapping("/places")
+    public List<Place> getAll() {
+        return placeRepository.findAll();
+    }
+
+    @GetMapping("/places/search")
+    public List<Place> search(@RequestParam String q) {
+        return placeRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(q, q, q);
+    }
+
+
     
 }

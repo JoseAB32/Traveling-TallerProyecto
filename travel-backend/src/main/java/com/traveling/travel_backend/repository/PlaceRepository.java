@@ -10,4 +10,7 @@ import com.traveling.travel_backend.model.Place;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long>{
     List<Place> findTop5ByOrderByRatingDesc();
+    List<Place> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(
+        String name, String address, String cityName
+    );
 }

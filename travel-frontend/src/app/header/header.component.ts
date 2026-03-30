@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subscription} from 'rxjs';
+import { Place } from '../place';
+import { PlaceService } from '../place.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -17,7 +19,12 @@ export class HeaderComponent implements OnInit, OnDestroy{
   isMenuOpen: boolean = false; // El menú debe empezar cerrado
   private userSub!: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  searchTerm: string = '';
+  suggestions: Place[] = [];
+  allPlaces: Place[] = []; 
+  showSuggestions: boolean = false;
+
+  constructor(private authService: AuthService, private router: Router, private placeService: PlaceService, private el: ElementRef) {}
   
   ngOnInit(): void {
     //Para ver al user actual  
@@ -28,6 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
         this.isMenuOpen = false;
       }
     });
+
+    this.placeService.getPlaces().subscribe(data => this.allPlaces = data);
   }
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -44,4 +53,50 @@ export class HeaderComponent implements OnInit, OnDestroy{
       this.userSub.unsubscribe();
     }
   }
+
+
+  // Funciones para el buscador
+
+  onSearch(event: any) {
+    this.searchTerm = event.target.value.toLowerCase();
+    
+    if (this.searchTerm.length < 2) {
+      this.suggestions = [];
+      this.showSuggestions = false;
+      return;
+    }
+
+    // Filtrado por Nombre, Dirección o Ciudad (Triple coincidencia)
+    this.suggestions = this.allPlaces.filter(p => 
+      p.name.toLowerCase().includes(this.searchTerm) ||
+      p.address.toLowerCase().includes(this.searchTerm) ||
+      p.city?.name?.toLowerCase().includes(this.searchTerm) || false
+    ).slice(0, 5); // Solo 5 sugerencias para no saturar
+
+    this.showSuggestions = true;
+}
+
+selectSuggestion(place: Place) {
+    this.searchTerm = place.name;
+    this.showSuggestions = false;
+    // this.router.navigate(['/lugar', place.id]);  PARA NAVEGAR DIRECTO AL LUGAR SLEECCIONADO AL DAR CLICK REVISAR
+}
+
+goToSearch() {
+    if (this.searchTerm.trim()) {
+      this.showSuggestions = false;
+      // Navegamos al componente de búsqueda pasando el término por queryParams
+      this.router.navigate(['/SearchPlace'], { queryParams: { q: this.searchTerm } });
+    }
+}
+
+// Detectar clic fuera del buscador para cerrar sugerencias
+@HostListener('document:click', ['$event'])
+  clickout(event: any) {
+    if (!this.el.nativeElement.contains(event.target)) {
+      this.showSuggestions = false;
+    }
+  }
+
+
 }

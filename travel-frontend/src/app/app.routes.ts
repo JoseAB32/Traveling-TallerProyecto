@@ -17,12 +17,12 @@ export const routes: Routes = [
   {
     path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent 
   },
+  { path: 'login', component: LoginComponent },
+  { path: 'success-signup', component: SuccessSignupComponent },
   {
     path: '',
     component: LandingComponent
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'success-signup', component: SuccessSignupComponent },
   {
     path: '**', 
     redirectTo: '', 

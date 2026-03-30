@@ -13,6 +13,14 @@ export class PlaceService {
   constructor(private httpClient: HttpClient) { }
 
   getPlacesOrdenado():Observable<Place[]>{
-    return this.httpClient.get<Place[]>(`${this.baseUrl}`);  
+    return this.httpClient.get<Place[]>(`${this.baseUrl}/top-rated`);  
   }
+
+  getPlaces(): Observable<Place[]> {
+    return this.httpClient.get<Place[]>(this.baseUrl);
+  }
+
+  searchPlaces(term: string): Observable<Place[]> {
+  return this.httpClient.get<Place[]>(`${this.baseUrl}/search?q=${term}`);
+}
 }
