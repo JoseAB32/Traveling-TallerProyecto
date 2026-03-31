@@ -16,10 +16,12 @@
     background-color: var(--main-bg-color);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 100vh;
+    grid-template-rows: 100%;
     grid-template-areas: 
         "img-container form-container";
-    padding: 0 100px;
+    padding: 10px 100px;
+    min-height: 100vh;
+    height: auto;
 }
 
 .img-container {
@@ -169,7 +171,8 @@ input:focus, select:focus {
 }
 
 .error-general p {
-    background-color: rgba(186, 0, 0, 0.3);
+    background-color: rgba(186, 0, 0, 0.1);
+    /* background-color: blue; */
     font-size: 1rem;
     border-radius: 5px;
     padding: 5px 15px;
@@ -186,6 +189,10 @@ input:focus, select:focus {
 .button-container {
     padding: 15px 0;
     width: 80%;
+}
+
+svg {
+    color: var(--secondary-color);
 }
 
 .button-container button {
