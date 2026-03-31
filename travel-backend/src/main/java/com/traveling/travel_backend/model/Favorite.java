@@ -1,5 +1,6 @@
 package com.traveling.travel_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; 
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class Favorite {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne

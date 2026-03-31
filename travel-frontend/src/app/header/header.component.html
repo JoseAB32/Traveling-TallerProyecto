@@ -1,15 +1,34 @@
 <nav class="header">
-    <div class="logo">
+    <div class="logo" routerLink="/InicioLogueado">
       <img src="traveling2white.svg" alt="Traveling Logo">
     </div>
     @if (isLoggedIn) {
     <div class="search-container">
-      <div class="search-bar">
-        <input type="text" placeholder="Buscar departamento o lugar">
-        <button class="search-btn">
-          <img src="iconoBusqueda.svg" alt=""> 
+      <div class="search-bar" [ngClass]="{'active': showSuggestions && suggestions.length > 0}">
+        <input 
+          type="text" 
+          placeholder="Buscar departamento o lugar"
+          [value]="searchTerm"
+          (input)="onSearch($event)"
+          (focus)="showSuggestions = suggestions.length > 0"
+        >
+        <button class="search-btn" (click)="goToSearch()">
+          <img src="iconoBusqueda.svg" alt="Buscar"> 
         </button>
       </div>
+
+      @if (showSuggestions && suggestions.length > 0) {
+        <div class="suggestions-dropdown">
+          @for (s of suggestions; track s.id) {
+            <div class="suggestion-item" (click)="selectSuggestion(s)">
+              <div class="suggestion-info">
+                <span class="suggestion-name">{{ s.name }}</span>
+                <small class="suggestion-detail">{{ s.city?.name }} - {{ s.address }}</small>
+              </div>
+            </div>
+          }
+        </div>
+      }
     </div>
 
     <div class="profile-container">
@@ -29,7 +48,7 @@
             <img src="iconoItinerario.svg" alt=""> <span>Itinerarios</span>
           </div>
           <div class="menu-item">
-            <img src="iconoWishList.svg" alt=""> <span>Wish List</span>
+            <img src="iconoWishList.svg" alt=""> <span [routerLink]="['/wishlist']">Wishlist</span>
           </div>
           <div class="menu-item logout">
             <img src="Logout.svg" alt="">
