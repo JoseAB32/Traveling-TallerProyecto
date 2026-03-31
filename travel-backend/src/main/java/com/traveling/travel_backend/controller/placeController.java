@@ -1,11 +1,10 @@
 package com.traveling.travel_backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.repository.PlaceRepository;
@@ -16,28 +15,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("api/")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/places")
+@CrossOrigin(origins = "*")
 public class placeController {
-    
+
     @Autowired
     private PlaceRepository placeRepository;
 
-   @GetMapping("/places/top-rated")
+   @GetMapping("/top-rated")
     public List<Place> getAllOrderList() {
         return placeRepository.findTop5ByOrderByRatingDesc();
     }
 
-    @GetMapping("/places")
-    public List<Place> getAll() {
-        return placeRepository.findAll();
-    }
-
-    @GetMapping("/places/search")
+    @GetMapping("/search")
     public List<Place> search(@RequestParam String q) {
         return placeRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(q, q, q);
     }
 
 
     
+
+    // 🔥 LISTAR TODOS
+    @GetMapping
+    public List<Place> getAllPlaces() {
+        return placeRepository.findAll();
+    }
+
+    // 🔥 OBTENER POR ID
+    @GetMapping("/{id}")
+    public Place getPlaceById(@PathVariable Long id) {
+        Optional<Place> place = placeRepository.findById(id);
+        return place.orElse(null);
+    }
 }
