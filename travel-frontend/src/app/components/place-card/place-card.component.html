@@ -1,7 +1,7 @@
 <div class="card-container" [ngClass]="isBlue ? 'theme-blue' : 'theme-orange'">
   <div class="image-section">
     <div class="white-frame">
-      <img [src]="place.imageUrl" [alt]="place.name">
+      <img [src]="place.image_url" [alt]="place.name">
     </div>
   </div>
 
@@ -23,7 +23,7 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn-ver-mas" (click)="goToDetails()">Ver más</button>
+      <button class="btn-ver-mas" (click)="goToDetails(place.id)">Ver más</button>
     </div>
   </div>
 </div>

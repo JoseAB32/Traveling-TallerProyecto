@@ -20,10 +20,8 @@ export class PlaceCardComponent {
   triggerRemove() {
     this.onRemoveFavorite.emit();
   }
-  goToDetails() {
-    if (this.place && this.place.id) {
-      //Nota: Esto hay que modificar, no sé cómo es el manejo del lugar real, cuidao se me olvide
-      this.router.navigate(['/lugar', this.place.id]); 
-    }
+  
+  goToDetails(id: number) {
+    this.router.navigate(['/place', id]);
   }
 }

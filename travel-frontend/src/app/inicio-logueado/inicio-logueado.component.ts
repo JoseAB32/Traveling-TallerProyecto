@@ -69,7 +69,6 @@ export class InicioLogueadoComponent implements OnInit {
     this.updateCarousel();
   }
 
-  // 🔥 NAVEGACIÓN
   goToDetail(id: number) {
     this.router.navigate(['/place', id]);
   }
