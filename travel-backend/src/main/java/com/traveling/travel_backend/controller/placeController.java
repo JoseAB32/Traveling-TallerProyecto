@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.repository.PlaceRepository;
-import com.traveling.travel_backend.security.JwtService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @RestController
@@ -22,29 +21,53 @@ public class placeController {
     @Autowired
     private PlaceRepository placeRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(placeController.class);
+
    @GetMapping("/top-rated")
     public List<Place> getAllOrderList() {
-        return placeRepository.findTop5ByOrderByRatingDesc();
-    }
+        logger.info("Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated");
+
+        List<Place> topPlaces = placeRepository.findTop5ByOrderByRatingDesc();
+
+        logger.debug("Top 5 de lugares ordenados: {}", topPlaces);
+
+        return topPlaces;
+    }   
 
     @GetMapping("/search")
     public List<Place> search(@RequestParam String q) {
-        return placeRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(q, q, q);
+        logger.info("Solicitando búsqueda de lugares con criterio: '{}' - GET /api/places/search", q);
+
+        List<Place> resultPlaces = placeRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(q, q, q);
+
+        logger.debug("Resultados de búsqueda para criterio '{}': {}", q, resultPlaces);
+
+        return resultPlaces;
     }
 
-
-    
-
-    // 🔥 LISTAR TODOS
     @GetMapping
     public List<Place> getAllPlaces() {
-        return placeRepository.findAll();
+        logger.info("Solicitando lista completa de lugares - GET /api/places");
+
+        List<Place> allPlaces = placeRepository.findAll();
+
+        logger.debug("Lista completa de lugares: {}", allPlaces);
+
+        return allPlaces;
     }
 
-    // 🔥 OBTENER POR ID
     @GetMapping("/{id}")
     public Place getPlaceById(@PathVariable Long id) {
+        logger.info("Solicitando información del lugar con ID: {} - GET /api/places/{}", id, id);
+
         Optional<Place> place = placeRepository.findById(id);
+
+        if(place.isPresent()) {
+            logger.debug("Información del lugar con ID {}: {}", id, place.get());
+        } else {
+            logger.warn("Lugar con ID {} no encontrado", id);
+        }
+
         return place.orElse(null);
     }
 }
