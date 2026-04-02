@@ -1,0 +1,185 @@
+2026-04-02 13:03:32 [restartedMain] INFO  c.t.t.TravelBackendApplication - Starting TravelBackendApplication using Java 21.0.10 with PID 48340 (C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto\travel-backend\target\classes started by VANESSA in C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto)
+2026-04-02 13:03:32 [restartedMain] DEBUG c.t.t.TravelBackendApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
+2026-04-02 13:03:32 [restartedMain] INFO  c.t.t.TravelBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-02 13:03:32 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-02 13:03:32 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-02 13:03:32 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-02 13:03:33 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 72 ms. Found 7 JPA repository interfaces.
+2026-04-02 13:03:33 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-04-02 13:03:33 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-02 13:03:33 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2026-04-02 13:03:33 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-02 13:03:33 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1734 ms
+2026-04-02 13:03:33 [restartedMain] DEBUG c.t.t.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-02 13:03:34 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-02 13:03:34 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+2026-04-02 13:03:34 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2026-04-02 13:03:34 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-02 13:03:34 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-02 13:03:34 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@c2a10ab
+2026-04-02 13:03:34 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-02 13:03:34 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-02 13:03:35 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-02 13:03:35 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-02 13:03:36 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-02 13:03:36 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 528dfe78-be67-4701-a437-fc27b63a5e3f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-02 13:03:36 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5771738b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6b1d77de, org.springframework.security.web.context.SecurityContextHolderFilter@2f1a60d0, org.springframework.security.web.header.HeaderWriterFilter@4a82d95e, org.springframework.web.filter.CorsFilter@13768bbb, org.springframework.security.web.authentication.logout.LogoutFilter@6a518d33, com.traveling.travel_backend.security.JwtAuthenticationFilter@50d23a16, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@17ad0d02, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7d996596, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@341e5ee6, org.springframework.security.web.session.SessionManagementFilter@2eaa3dfa, org.springframework.security.web.access.ExceptionTranslationFilter@27a7baec, org.springframework.security.web.access.intercept.AuthorizationFilter@367e6f5]
+2026-04-02 13:03:36 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-04-02 13:03:36 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-04-02 13:03:36 [restartedMain] INFO  c.t.t.TravelBackendApplication - Started TravelBackendApplication in 5.266 seconds (process running for 5.694)
+2026-04-02 13:04:12 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-02 13:04:12 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-02 13:04:12 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-04-02 13:04:32 [http-nio-8080-exec-10] INFO  c.t.t.controller.placeController - Se obtuvo el top 5 de lugares ordenados por rating - GET /api/places/top-rated
+2026-04-02 13:04:32 [http-nio-8080-exec-10] DEBUG c.t.t.controller.placeController - Top 5 de lugares ordenados: [com.traveling.travel_backend.model.Place@5e733009, com.traveling.travel_backend.model.Place@2383e110, com.traveling.travel_backend.model.Place@59aa7bd5, com.traveling.travel_backend.model.Place@bf01996, com.traveling.travel_backend.model.Place@803617]
+2026-04-02 13:16:21 [restartedMain] INFO  c.t.t.TravelBackendApplication - Starting TravelBackendApplication using Java 21.0.10 with PID 61576 (C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto\travel-backend\target\classes started by VANESSA in C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto)
+2026-04-02 13:16:21 [restartedMain] DEBUG c.t.t.TravelBackendApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
+2026-04-02 13:16:21 [restartedMain] INFO  c.t.t.TravelBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-02 13:16:21 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-02 13:16:21 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-02 13:16:22 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-02 13:16:22 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 72 ms. Found 7 JPA repository interfaces.
+2026-04-02 13:16:23 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-04-02 13:16:23 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-02 13:16:23 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2026-04-02 13:16:23 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-02 13:16:23 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1667 ms
+2026-04-02 13:16:23 [restartedMain] DEBUG c.t.t.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-02 13:16:23 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-02 13:16:23 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+2026-04-02 13:16:23 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2026-04-02 13:16:23 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-02 13:16:23 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-02 13:16:23 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@305525fa
+2026-04-02 13:16:23 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-02 13:16:23 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-02 13:16:24 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-02 13:16:24 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-02 13:16:25 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-02 13:16:25 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: a2b2787d-8b84-4beb-b717-45a64a869379
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-02 13:16:25 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3b236fca, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@12649f1d, org.springframework.security.web.context.SecurityContextHolderFilter@16f8423a, org.springframework.security.web.header.HeaderWriterFilter@14f9745, org.springframework.web.filter.CorsFilter@7c3a6380, org.springframework.security.web.authentication.logout.LogoutFilter@7764eb36, com.traveling.travel_backend.security.JwtAuthenticationFilter@66f19f62, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4ce53434, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2b9e7d6f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6d2f86ea, org.springframework.security.web.session.SessionManagementFilter@c5f7e89, org.springframework.security.web.access.ExceptionTranslationFilter@2606fc45, org.springframework.security.web.access.intercept.AuthorizationFilter@1727c92a]
+2026-04-02 13:16:26 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-04-02 13:16:26 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-04-02 13:16:26 [restartedMain] INFO  c.t.t.TravelBackendApplication - Started TravelBackendApplication in 5.094 seconds (process running for 5.522)
+2026-04-02 13:16:37 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-02 13:16:37 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-02 13:16:37 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-04-02 13:16:37 [http-nio-8080-exec-1] INFO  c.t.t.controller.placeController - Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated
+2026-04-02 13:16:38 [http-nio-8080-exec-1] DEBUG c.t.t.controller.placeController - Top 5 de lugares ordenados: [com.traveling.travel_backend.model.Place@531d817a, com.traveling.travel_backend.model.Place@38d0097, com.traveling.travel_backend.model.Place@16b01a0b, com.traveling.travel_backend.model.Place@12b79a3, com.traveling.travel_backend.model.Place@632b7774]
+2026-04-02 13:16:59 [http-nio-8080-exec-5] INFO  c.t.t.controller.placeController - Solicitando búsqueda de lugares con query: parque
+2026-04-02 13:16:59 [http-nio-8080-exec-5] DEBUG c.t.t.controller.placeController - Resultados de búsqueda para query 'parque': [com.traveling.travel_backend.model.Place@7bf6d3db, com.traveling.travel_backend.model.Place@728735d4]
+2026-04-02 13:17:30 [http-nio-8080-exec-7] INFO  c.t.t.controller.placeController - Solicitando búsqueda de lugares con query: cochabamba
+2026-04-02 13:17:30 [http-nio-8080-exec-7] DEBUG c.t.t.controller.placeController - Resultados de búsqueda para query 'cochabamba': [com.traveling.travel_backend.model.Place@9b4c0a5, com.traveling.travel_backend.model.Place@bdd93bd, com.traveling.travel_backend.model.Place@316125f3]
+2026-04-02 13:23:25 [restartedMain] INFO  c.t.t.TravelBackendApplication - Starting TravelBackendApplication using Java 21.0.10 with PID 21380 (C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto\travel-backend\target\classes started by VANESSA in C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto)
+2026-04-02 13:23:25 [restartedMain] DEBUG c.t.t.TravelBackendApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
+2026-04-02 13:23:25 [restartedMain] INFO  c.t.t.TravelBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-02 13:23:25 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-02 13:23:25 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-02 13:23:26 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-02 13:23:26 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 72 ms. Found 7 JPA repository interfaces.
+2026-04-02 13:23:27 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-04-02 13:23:27 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-02 13:23:27 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2026-04-02 13:23:27 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-02 13:23:27 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1526 ms
+2026-04-02 13:23:27 [restartedMain] DEBUG c.t.t.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-02 13:23:27 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-02 13:23:27 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+2026-04-02 13:23:27 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2026-04-02 13:23:27 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-02 13:23:27 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-02 13:23:28 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@57ade2c2
+2026-04-02 13:23:28 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-02 13:23:28 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-02 13:23:28 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-02 13:23:29 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-02 13:23:29 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-02 13:23:29 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: bbf6f465-905b-4357-bce6-95b5573f009b
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-02 13:23:29 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5574f761, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7d133516, org.springframework.security.web.context.SecurityContextHolderFilter@1da8212d, org.springframework.security.web.header.HeaderWriterFilter@50001133, org.springframework.web.filter.CorsFilter@d8fec3a, org.springframework.security.web.authentication.logout.LogoutFilter@6e031efe, com.traveling.travel_backend.security.JwtAuthenticationFilter@5a3c889f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2045b999, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@13d23c21, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@21d68a73, org.springframework.security.web.session.SessionManagementFilter@43224035, org.springframework.security.web.access.ExceptionTranslationFilter@2c30f793, org.springframework.security.web.access.intercept.AuthorizationFilter@3f5775e]
+2026-04-02 13:23:29 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-04-02 13:23:29 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-04-02 13:23:29 [restartedMain] INFO  c.t.t.TravelBackendApplication - Started TravelBackendApplication in 4.515 seconds (process running for 4.956)
+2026-04-02 13:23:36 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-02 13:23:36 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-02 13:23:36 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-04-02 13:23:37 [http-nio-8080-exec-3] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 13:23:37 [http-nio-8080-exec-1] INFO  c.t.t.controller.placeController - Solicitando búsqueda de lugares con criterio: 'cochabamba' - GET /api/places/search
+2026-04-02 13:23:37 [http-nio-8080-exec-3] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@599540f, com.traveling.travel_backend.model.Place@2eb62e20, com.traveling.travel_backend.model.Place@22304b00, com.traveling.travel_backend.model.Place@22891d89, com.traveling.travel_backend.model.Place@1e94643b, com.traveling.travel_backend.model.Place@373962a8, com.traveling.travel_backend.model.Place@53be40e7]
+2026-04-02 13:23:37 [http-nio-8080-exec-1] DEBUG c.t.t.controller.placeController - Resultados de búsqueda para criterio 'cochabamba': [com.traveling.travel_backend.model.Place@5e588b42, com.traveling.travel_backend.model.Place@63ce5e51, com.traveling.travel_backend.model.Place@61b90267]
+2026-04-02 13:25:26 [http-nio-8080-exec-5] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 13:25:26 [http-nio-8080-exec-5] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@39572714, com.traveling.travel_backend.model.Place@4179bfeb, com.traveling.travel_backend.model.Place@18bbc3d, com.traveling.travel_backend.model.Place@c8ebb9, com.traveling.travel_backend.model.Place@2408084d, com.traveling.travel_backend.model.Place@4bfc9662, com.traveling.travel_backend.model.Place@6d37a0ea]
+2026-04-02 13:26:36 [http-nio-8080-exec-8] INFO  c.t.t.controller.placeController - Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated
+2026-04-02 13:26:36 [http-nio-8080-exec-9] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 13:26:36 [http-nio-8080-exec-9] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@4b33d593, com.traveling.travel_backend.model.Place@179f7231, com.traveling.travel_backend.model.Place@4e9c2cae, com.traveling.travel_backend.model.Place@68c12e47, com.traveling.travel_backend.model.Place@415c3848, com.traveling.travel_backend.model.Place@5c8da90a, com.traveling.travel_backend.model.Place@2f62af27]
+2026-04-02 13:26:36 [http-nio-8080-exec-8] DEBUG c.t.t.controller.placeController - Top 5 de lugares ordenados: [com.traveling.travel_backend.model.Place@4e3d9981, com.traveling.travel_backend.model.Place@3d1eed8b, com.traveling.travel_backend.model.Place@207d1fcd, com.traveling.travel_backend.model.Place@448ee5bb, com.traveling.travel_backend.model.Place@29c570a8]
+2026-04-02 15:10:30 [restartedMain] INFO  c.t.t.TravelBackendApplication - Starting TravelBackendApplication using Java 21.0.10 with PID 44000 (C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto\travel-backend\target\classes started by VANESSA in C:\Users\VANESSA\Downloads\proyectoTSI\Traveling-TallerProyecto)
+2026-04-02 15:10:30 [restartedMain] DEBUG c.t.t.TravelBackendApplication - Running with Spring Boot v3.1.5, Spring v6.0.13
+2026-04-02 15:10:30 [restartedMain] INFO  c.t.t.TravelBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-02 15:10:30 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-02 15:10:30 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-02 15:10:31 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-02 15:10:31 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 93 ms. Found 7 JPA repository interfaces.
+2026-04-02 15:10:32 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2026-04-02 15:10:32 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-02 15:10:32 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+2026-04-02 15:10:32 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-02 15:10:32 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2280 ms
+2026-04-02 15:10:32 [restartedMain] DEBUG c.t.t.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2026-04-02 15:10:33 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-02 15:10:33 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+2026-04-02 15:10:33 [restartedMain] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2026-04-02 15:10:33 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-02 15:10:33 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-02 15:10:33 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7c8cc030
+2026-04-02 15:10:33 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-02 15:10:34 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-02 15:10:35 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-02 15:10:35 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-02 15:10:36 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-02 15:10:36 [restartedMain] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: ef5e9302-20e1-4c8a-93ee-9ecf18913c4b
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-02 15:10:36 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@53ebaed7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@37b49a39, org.springframework.security.web.context.SecurityContextHolderFilter@55d063c, org.springframework.security.web.header.HeaderWriterFilter@45a4a498, org.springframework.web.filter.CorsFilter@45a85ec9, org.springframework.security.web.authentication.logout.LogoutFilter@281462dc, com.traveling.travel_backend.security.JwtAuthenticationFilter@1b2e5dca, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@13d23c21, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@a719089, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5038c11d, org.springframework.security.web.session.SessionManagementFilter@4cdaf945, org.springframework.security.web.access.ExceptionTranslationFilter@59f0c72a, org.springframework.security.web.access.intercept.AuthorizationFilter@7d133516]
+2026-04-02 15:10:37 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2026-04-02 15:10:37 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2026-04-02 15:10:37 [restartedMain] INFO  c.t.t.TravelBackendApplication - Started TravelBackendApplication in 7.405 seconds (process running for 7.949)
+2026-04-02 15:10:41 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-02 15:10:41 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-02 15:10:41 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-04-02 15:10:42 [http-nio-8080-exec-7] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 15:10:42 [http-nio-8080-exec-3] INFO  c.t.t.controller.placeController - Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated
+2026-04-02 15:10:42 [http-nio-8080-exec-7] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@4f96a490, com.traveling.travel_backend.model.Place@73da8ae1, com.traveling.travel_backend.model.Place@197b8806, com.traveling.travel_backend.model.Place@1b478365, com.traveling.travel_backend.model.Place@17c95d9e, com.traveling.travel_backend.model.Place@71ea7753, com.traveling.travel_backend.model.Place@134fac2e]
+2026-04-02 15:10:42 [http-nio-8080-exec-3] DEBUG c.t.t.controller.placeController - Top 5 de lugares ordenados: [com.traveling.travel_backend.model.Place@287de617, com.traveling.travel_backend.model.Place@16c5afb3, com.traveling.travel_backend.model.Place@4998541e, com.traveling.travel_backend.model.Place@1df22b51, com.traveling.travel_backend.model.Place@6bf1321c]
+2026-04-02 15:11:00 [http-nio-8080-exec-8] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 15:11:00 [http-nio-8080-exec-8] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@4f11a7dd, com.traveling.travel_backend.model.Place@72b72982, com.traveling.travel_backend.model.Place@125c6750, com.traveling.travel_backend.model.Place@46c08629, com.traveling.travel_backend.model.Place@c77fd1d, com.traveling.travel_backend.model.Place@4d741908, com.traveling.travel_backend.model.Place@7c7dd8f]
+2026-04-02 15:11:00 [http-nio-8080-exec-5] INFO  c.t.t.controller.placeController - Solicitando búsqueda de lugares con criterio: 'cochabamba' - GET /api/places/search
+2026-04-02 15:11:00 [http-nio-8080-exec-5] DEBUG c.t.t.controller.placeController - Resultados de búsqueda para criterio 'cochabamba': [com.traveling.travel_backend.model.Place@7bf6d3db, com.traveling.travel_backend.model.Place@2197e11d, com.traveling.travel_backend.model.Place@36b15191]
+2026-04-02 15:11:01 [http-nio-8080-exec-9] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 15:11:01 [http-nio-8080-exec-6] INFO  c.t.t.controller.placeController - Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated
+2026-04-02 15:11:01 [http-nio-8080-exec-9] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@bd6fbae, com.traveling.travel_backend.model.Place@44396ebb, com.traveling.travel_backend.model.Place@1eddc095, com.traveling.travel_backend.model.Place@3bfe8e4a, com.traveling.travel_backend.model.Place@ff7207c, com.traveling.travel_backend.model.Place@7a0135c0, com.traveling.travel_backend.model.Place@8376e34]
+2026-04-02 15:11:01 [http-nio-8080-exec-6] DEBUG c.t.t.controller.placeController - Top 5 de lugares ordenados: [com.traveling.travel_backend.model.Place@24d1e30a, com.traveling.travel_backend.model.Place@3f69b5ed, com.traveling.travel_backend.model.Place@681b89ff, com.traveling.travel_backend.model.Place@4845c290, com.traveling.travel_backend.model.Place@216d73c2]
+2026-04-02 15:11:06 [http-nio-8080-exec-1] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 15:11:06 [http-nio-8080-exec-1] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@140cb116, com.traveling.travel_backend.model.Place@622bf79e, com.traveling.travel_backend.model.Place@3ba56d94, com.traveling.travel_backend.model.Place@3e03a643, com.traveling.travel_backend.model.Place@65b3dd22, com.traveling.travel_backend.model.Place@7619562f, com.traveling.travel_backend.model.Place@9663846]
+2026-04-02 15:11:11 [http-nio-8080-exec-2] INFO  c.t.t.controller.placeController - Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated
+2026-04-02 15:11:11 [http-nio-8080-exec-7] INFO  c.t.t.controller.placeController - Solicitando lista completa de lugares - GET /api/places
+2026-04-02 15:11:11 [http-nio-8080-exec-7] DEBUG c.t.t.controller.placeController - Lista completa de lugares: [com.traveling.travel_backend.model.Place@50674f9f, com.traveling.travel_backend.model.Place@17917943, com.traveling.travel_backend.model.Place@16b264a6, com.traveling.travel_backend.model.Place@7481ab9, com.traveling.travel_backend.model.Place@480b70a9, com.traveling.travel_backend.model.Place@243bdda7, com.traveling.travel_backend.model.Place@46a13ff7]
+2026-04-02 15:11:11 [http-nio-8080-exec-2] DEBUG c.t.t.controller.placeController - Top 5 de lugares ordenados: [com.traveling.travel_backend.model.Place@122bdd83, com.traveling.travel_backend.model.Place@7a90644a, com.traveling.travel_backend.model.Place@15d6a066, com.traveling.travel_backend.model.Place@931346f, com.traveling.travel_backend.model.Place@77c50c72]
+2026-04-02 15:44:29 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m55s330ms863µs700ns).
