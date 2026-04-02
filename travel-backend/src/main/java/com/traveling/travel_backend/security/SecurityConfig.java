@@ -1,7 +1,5 @@
 package com.traveling.travel_backend.security;
 
-import org.springframework.security.config.Customizer;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -26,8 +24,6 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
 
-            .cors(cors -> {})
-
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/login",
@@ -36,7 +32,6 @@ public class SecurityConfig {
                     "/api/favorites/**",
                     "/api/places/**"
                 ).permitAll()
-
                 .anyRequest().authenticated()
             )
 

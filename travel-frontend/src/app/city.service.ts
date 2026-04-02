@@ -1,18 +1,34 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap, catchError, throwError } from 'rxjs';
 import { City } from './city';
+import { CONSTANTS } from './utils/constants'; // 👈 IMPORT CORRECTO CASO 2
 
 @Injectable({
   providedIn: 'root'
 })
 export class CityService {
 
-  private baseURL= "http://localhost:8080/api/cities";
+  private baseURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.CITIES;
 
   constructor(private httpClient: HttpClient) { }
 
-  getCities(): Observable<City[]>{
-    return this.httpClient.get<City[]>(`${this.baseURL}`);
+  getCities(): Observable<City[]> {
+
+    console.log(CONSTANTS.LOGS.API_CALL, this.baseURL);
+
+    return this.httpClient.get<City[]>(this.baseURL).pipe(
+
+      tap((data) => {
+        console.log(CONSTANTS.LOGS.SUCCESS, data);
+        console.log("Cantidad de ciudades:", data.length);
+      }),
+
+      catchError((error) => {
+        console.error(CONSTANTS.MESSAGES.ERROR.LOAD_CITIES, error);
+        return throwError(() => error);
+      })
+
+    );
   }
 }
