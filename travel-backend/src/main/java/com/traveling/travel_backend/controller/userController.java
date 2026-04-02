@@ -52,21 +52,21 @@ public class userController {
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        logger.info("Recibida solicitud para obtener la lista de todos los usuarios.");
+        logger.info("👤 [USERS] Recibida solicitud para obtener la lista de todos los usuarios.");
 
         List<User> users = userRepository.findAll();
         
-        logger.debug("Se recuperaron {} usuarios de la base de datos.", users.size());
+        logger.debug("👤 [USERS] Se recuperaron {} usuarios de la base de datos.", users.size());
         
         return users;
     }
 
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@RequestBody User user) {
-        logger.info("Recibida solicitud para crear un nuevo usuario. Nombre de usuario: {}", user.getUserName());
+        logger.info("👤 [USERS] Recibida solicitud para crear un nuevo usuario. Nombre de usuario: {}", user.getUserName());
 
         if (user.getUserName() == null || user.getUserName().trim().isEmpty()) {
-            logger.warn("Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.");
+            logger.warn("❌ [USERS] Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.");
 
             return ResponseEntity
                 .badRequest()
@@ -77,7 +77,7 @@ public class userController {
         Optional<User> existingUser = userRepository.findByUserNameAndStateTrue(trimmedUserName);
 
         if (existingUser.isPresent()) {
-            logger.warn("Creación de usuario rechazada: El nombre de usuario '{}' ya se encuentra en uso.", trimmedUserName);
+            logger.warn("❌ [USERS] Creación de usuario rechazada: El nombre de usuario '{}' ya se encuentra en uso.", trimmedUserName);
 
             return ResponseEntity
                 .badRequest()
@@ -85,14 +85,14 @@ public class userController {
         }
     
         if (user.getCity() != null) {
-            logger.debug("Buscando información de la ciudad con ID: {}", user.getCity().getId());
+            logger.debug("👤 [USERS] Buscando información de la ciudad con ID: {}", user.getCity().getId());
 
             City realCity = cityRepository.findById(user.getCity().getId()).orElse(null);
             user.setCity(realCity); 
         }
         
         User savedUser = userRepository.save(user);
-        logger.info("Usuario '{}' creado exitosamente con el ID: {}", savedUser.getUserName(), savedUser.getId());
+        logger.info("👤 [USERS] Usuario '{}' creado exitosamente con el ID: {}", savedUser.getUserName(), savedUser.getId());
 
         return ResponseEntity.ok(savedUser);
     }
@@ -102,25 +102,25 @@ public class userController {
             String userName = credentials.getUserName();
             String pass = credentials.getPass();
             
-            logger.info("Intento de inicio de sesión para el usuario: {}", userName != null ? userName : "DESCONOCIDO");
+            logger.info("👤 [USERS] Intento de inicio de sesión para el usuario: {}", userName != null ? userName : "DESCONOCIDO");
             
             if (userName == null || userName.trim().isEmpty()) {
-                logger.warn("Login rechazado: El nombre de usuario es nulo o está vacío.");
+                logger.warn("❌ [USERS] Login rechazado: El nombre de usuario es nulo o está vacío.");
 
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de usuario es requerido.");
             }
             if (pass == null || pass.trim().isEmpty()) {
-                logger.warn("Login rechazado para el usuario '{}': La contraseña está vacía.", userName);
+                logger.warn("❌ [USERS] Login rechazado para el usuario '{}': La contraseña está vacía.", userName);
 
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es requerida.");
             }
 
-            logger.debug("Buscando al usuario '{}' en la base de datos.", userName);
+            logger.debug("👤 [USERS] Buscando al usuario '{}' en la base de datos.", userName);
 
             Optional<User> optionalUser = userRepository.findByUserName(userName);
 
             if(optionalUser.isEmpty()) {
-                logger.warn("Login fallido: No se encontró ningún usuario con el nombre '{}'.", userName);
+                logger.warn("❌ [USERS] Login fallido: No se encontró ningún usuario con el nombre '{}'.", userName);
 
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
             }
@@ -128,18 +128,18 @@ public class userController {
             User user = optionalUser.get(); //Obtenemos el valor que guarda Optional.
             
             if (!user.isState()) {
-                logger.warn("Login fallido: El usuario '{}' (ID: {}) intentó acceder pero está inactivo.", user.getUserName(), user.getId());
+                logger.warn("❌ [USERS] Login fallido: El usuario '{}' (ID: {}) intentó acceder pero está inactivo.", user.getUserName(), user.getId());
 
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario desactivado.");
             }
             
             if (!user.getPass().equals(pass)) {
-                logger.warn("Login fallido: Contraseña incorrecta para el usuario '{}'.", user.getUserName());
+                logger.warn("❌ [USERS] Login fallido: Contraseña incorrecta para el usuario '{}'.", user.getUserName());
 
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
             }
 
-            logger.debug("Generando token JWT para el usuario '{}'.", user.getUserName());
+            logger.debug("👤 [USERS] Generando token JWT para el usuario '{}'.", user.getUserName());
 
             String token = jwtService.generateToken(user.getUserName(), user.getId());
 
@@ -152,7 +152,7 @@ public class userController {
                 "Login exitoso"
             );
 
-            logger.info("Inicio de sesión exitoso para el usuario '{}' (ID: {}).", user.getUserName(), user.getId());
+            logger.info("👤 [USERS] Inicio de sesión exitoso para el usuario '{}' (ID: {}).", user.getUserName(), user.getId());
 
             return ResponseEntity.ok(response);
     }

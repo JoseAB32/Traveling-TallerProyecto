@@ -29,13 +29,13 @@ public class cityController {
     @GetMapping("/cities")
     public List<City> getAllCities() {
 
-        logger.info("Petición recibida: GET /api/cities");
+        logger.info("🏙️ [CIUDADES] Petición recibida: GET /api/cities");
 
         List<City> cities = cityRepository.findAll();
 
-        logger.debug("Número de ciudades encontradas: {}", cities.size());
+        logger.debug("🏙️ [CIUDADES] Número de ciudades encontradas: {}", cities.size());
 
-        logger.info("Respuesta enviada correctamente");
+        logger.info("🏙️ [CIUDADES] Ciudades encontradas: {} y devueltas correctamente.", cities.size());
 
         return cities;
     }

@@ -25,47 +25,47 @@ public class placeController {
 
    @GetMapping("/top-rated")
     public List<Place> getAllOrderList() {
-        logger.info("Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated");
+        logger.info("📍 [PLACES] Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated");
 
         List<Place> topPlaces = placeRepository.findTop5ByOrderByRatingDesc();
 
-        logger.debug("Top 5 de lugares ordenados: {}", topPlaces);
+        logger.debug("📍 [PLACES] Top 5 de lugares ordenados: {}", topPlaces);
 
         return topPlaces;
     }   
 
     @GetMapping("/search")
     public List<Place> search(@RequestParam String q) {
-        logger.info("Solicitando búsqueda de lugares con criterio: '{}' - GET /api/places/search", q);
+        logger.info("📍 [PLACES] Solicitando búsqueda de lugares con criterio: '{}' - GET /api/places/search", q);
 
         List<Place> resultPlaces = placeRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(q, q, q);
 
-        logger.debug("Resultados de búsqueda para criterio '{}': {}", q, resultPlaces);
+        logger.debug("📍 [PLACES] Resultados de búsqueda para criterio '{}': {}", q, resultPlaces);
 
         return resultPlaces;
     }
 
     @GetMapping
     public List<Place> getAllPlaces() {
-        logger.info("Solicitando lista completa de lugares - GET /api/places");
+        logger.info("📍 [PLACES] Solicitando lista completa de lugares - GET /api/places");
 
         List<Place> allPlaces = placeRepository.findAll();
 
-        logger.debug("Lista completa de lugares: {}", allPlaces);
+        logger.debug("📍 [PLACES] Lista completa de lugares: {}", allPlaces);
 
         return allPlaces;
     }
 
     @GetMapping("/{id}")
     public Place getPlaceById(@PathVariable Long id) {
-        logger.info("Solicitando información del lugar con ID: {} - GET /api/places/{}", id, id);
+        logger.info("📍 [PLACES] Solicitando información del lugar con ID: {} - GET /api/places/{}", id, id);
 
         Optional<Place> place = placeRepository.findById(id);
 
         if(place.isPresent()) {
-            logger.debug("Información del lugar con ID {}: {}", id, place.get());
+            logger.debug("📍 [PLACES] Información del lugar con ID {}: {}", id, place.get());
         } else {
-            logger.warn("Lugar con ID {} no encontrado", id);
+            logger.warn("📍 [PLACES] Lugar con ID {} no encontrado", id);
         }
 
         return place.orElse(null);
