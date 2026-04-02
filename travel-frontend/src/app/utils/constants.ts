@@ -18,9 +18,9 @@ export const CONSTANTS = {
   },
 
   LOGS: {
-    API_CALL: '📡 Llamando a API:',
-    SUCCESS: '✅ Operación exitosa',
-    ERROR: '❌ Error detectado'
+    API_CALL: 'Llamando a API:',
+    SUCCESS: 'Operación exitosa',
+    ERROR: 'Error detectado'
   }
 
 };

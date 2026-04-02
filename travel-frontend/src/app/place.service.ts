@@ -1,24 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { Place } from './place';
+import { of, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceService {
 
-  private apiUrl = 'http://localhost:8080/api';
+  private baseUrl = 'http://localhost:8080/api/places';
 
-  constructor(private http: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
-  // 🔥 LISTAR
-  getPlacesOrdenado(): Observable<Place[]> {
-    return this.http.get<Place[]>(`${this.apiUrl}/places`);
+  getPlacesOrdenado():Observable<Place[]>{
+    return this.httpClient.get<Place[]>(`${this.baseUrl}/top-rated`);  
   }
 
+  getPlaces(): Observable<Place[]> {
+    return this.httpClient.get<Place[]>(this.baseUrl);
+  }
+
+  searchPlaces(term: string): Observable<Place[]> {
+  return this.httpClient.get<Place[]>(`${this.baseUrl}/search?q=${term}`);
+}
   // 🔥 DETALLE POR ID
   getPlaceById(id: number): Observable<Place> {
-    return this.http.get<Place>(`${this.apiUrl}/places/${id}`);
+    return this.httpClient.get<Place>(`${this.baseUrl}/${id}`);
   }
 }

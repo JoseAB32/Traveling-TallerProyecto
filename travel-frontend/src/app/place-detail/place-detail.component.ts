@@ -38,9 +38,15 @@ export class PlaceDetailComponent implements OnInit {
 
           // 🔥 USAMOS LA MISMA IMAGEN 3 VECES PARA EL CARRUSEL
           this.images = [
+<<<<<<< HEAD
             data.image_url,
             data.image_url,
             data.image_url
+=======
+            data.imageUrl,
+            data.imageUrl,
+            data.imageUrl
+>>>>>>> aa59b61a5dacebb05d9ad491c8756710b1deab76
           ];
 
           this.loading = false;

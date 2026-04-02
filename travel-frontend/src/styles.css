@@ -1,13 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import "bootstrap-icons/font/bootstrap-icons.css";
 :root {
   --main-bg-color: #004E89;
   --on-bg-color: white;
   --secondary-color: #FF6B35;
   --steel-azure: #004E89;
   --steel-azure-08op: rgba(0, 78, 137, 0.8);
-  --baltic-blue: #1a659e;
-  --atomic-tangerine: #ff6b35;
-  --white: #ffffff;
+  --baltic-blue: #1A659E;
+  --atomic-tangerine: #FF6B35;
+  --peach-glow: #F7C59F;
+  --beige: #EFEFD0;
+  --white: #FFFFFF;
 }
 
 .outfit-regular {

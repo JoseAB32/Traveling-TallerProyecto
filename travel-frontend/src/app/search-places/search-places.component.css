@@ -1,0 +1,76 @@
+/* Base de la tarjeta de búsqueda */
+.search-card {
+  background-color: #fff;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #000; /* Color por defecto por si algo falla */
+  border-radius: 18px;
+  padding: 25px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Reseteamos sombras de Bootstrap si las hubiera */
+  box-shadow: none;
+}
+
+/* Hover profesional */
+.search-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* CLASES DE INTERCALADO 
+   Usamos !important para asegurar que el color del borde cambie 
+*/
+.border-orange-travel { 
+  border-color: #ff7841 !important; 
+}
+
+.border-blue-travel { 
+  border-color: #667eea !important; 
+}
+
+.stars {
+  /* Sustituimos el tamaño de h5 por uno más grande (aprox 1.8rem o 28px) */
+  font-size: 1.8rem !important; 
+  letter-spacing: 2px; /* Un poco de espacio entre estrellas se ve más elegante */
+  line-height: 1;
+  /* Aseguramos que no se muevan de su sitio */
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Variaciones de estrellas */
+.stars-orange { 
+  color: #ff7841 !important; 
+}
+
+.stars-blue { 
+  color: #667eea !important; 
+}
+
+/* Tipografía y Textos */
+.place-title {
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 5px;
+  font-family: sans-serif; /* O la que uses en tu proyecto */
+}
+
+.place-location {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  /* Bootstrap 5 usa fw-bold, pero aquí lo forzamos en CSS */
+  font-weight: 700; 
+}
+
+.place-description {
+  font-size: 0.85rem;
+  color: #6c757d;
+  line-height: 1.4;
+  margin-bottom: 0;
+  
+  /* Efecto de truncado (Line-clamp) */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

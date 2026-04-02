@@ -1,0 +1,82 @@
+.card-container {
+  display: flex;
+  border-radius: 25px;
+  padding: 30px;
+  margin-bottom: 30px;
+  gap: 30px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  align-items: flex-start;
+}
+
+.theme-blue {
+  background-color: var(--baltic-blue);
+  color: var(--beige);
+}
+
+.theme-orange {
+  background-color: var(--peach-glow);
+  color: var(--steel-azure); 
+}
+
+.image-section { flex: 1; }
+.white-frame {
+  background: var(--white);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.white-frame img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.info-section {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.card-header h3 { margin: 0; font-size: 1.5rem; font-weight: bold; max-width: 70%;}
+
+.heart-icon { font-size: 1.8rem; cursor: pointer; }
+.theme-blue .heart-icon { color: var(--beige); }
+.theme-blue .heart-icon:hover{ color: var(--white); }
+.theme-orange .heart-icon { color: var(--steel-azure); }
+.theme-orange .heart-icon:hover{ color: var(--baltic-blue); }
+
+.stars-container { color: var(--steel-azure); font-size: 1.3rem; margin-bottom: 5px; }
+.stars-container i{ padding-right: 5px;}
+.theme-blue .stars-container { color: var(--beige); }
+
+.label { font-weight: bold; font-size: 0.85rem; display: block; }
+.description-container p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 5px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer { display: flex; justify-content: flex-end; margin-top: 10px; }
+.btn-ver-mas {
+  padding: 8px 25px;
+  border-radius: 15px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.theme-blue .btn-ver-mas { background: var(--beige); color: var(--steel-azure); }
+.theme-blue .btn-ver-mas:hover { background: var(--white); color: var(--baltic-blue); }
+.theme-orange .btn-ver-mas { background: var(--steel-azure); color: var(--white); }
+.theme-orange .btn-ver-mas:hover { background: var(--baltic-blue); color:var(--beige);}

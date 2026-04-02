@@ -21,7 +21,7 @@ export class CityService {
 
       tap((data) => {
         console.log(CONSTANTS.LOGS.SUCCESS, data);
-        console.log("📊 Cantidad de ciudades:", data.length);
+        console.log("Cantidad de ciudades:", data.length);
       }),
 
       catchError((error) => {

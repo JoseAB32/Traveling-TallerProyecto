@@ -45,8 +45,7 @@ public class Place {
     @JsonProperty("end_date") // 🔥 CLAVE
     private String endDate;
 
-    @Column(name = "image_url")
-    @JsonProperty("image_url") // 🔥 CLAVE
+    @Column(name = "image_url", length = 300)
     private String imageUrl;
 
     private boolean state = true;

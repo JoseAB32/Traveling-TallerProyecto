@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.repository.PlaceRepository;
+import com.traveling.travel_backend.security.JwtService;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/places")
@@ -16,17 +21,4 @@ public class placeController {
 
     @Autowired
     private PlaceRepository placeRepository;
-
-    // 🔥 LISTAR TODOS
-    @GetMapping
-    public List<Place> getAllPlaces() {
-        return placeRepository.findAll();
-    }
-
-    // 🔥 OBTENER POR ID
-    @GetMapping("/{id}")
-    public Place getPlaceById(@PathVariable Long id) {
-        Optional<Place> place = placeRepository.findById(id);
-        return place.orElse(null);
-    }
 }

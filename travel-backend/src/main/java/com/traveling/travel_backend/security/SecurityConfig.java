@@ -1,7 +1,10 @@
 package com.traveling.travel_backend.security;
 
+import org.springframework.security.config.Customizer;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,18 +23,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+            .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
 
-            .cors(cors -> {}) // 🔥 IMPORTANTE PARA ANGULAR
-
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/api/login",
-                    "/api/users",
-                    "/api/cities",
-                    "/api/places/**" // 🔥 AQUÍ ESTÁ LA CLAVE
-                ).permitAll()
-
+                .requestMatchers("/api/login", "/api/users", "/api/cities").permitAll()
                 .anyRequest().authenticated()
             )
 
