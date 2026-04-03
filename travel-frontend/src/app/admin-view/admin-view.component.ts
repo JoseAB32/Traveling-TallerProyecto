@@ -25,7 +25,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   showErrorModal: boolean = false;
   modalMessage: string = '';
 
-  modules = ['AUTH', 'USERS', 'PLACES', 'FAVORITES', 'SYSTEM'];
+  modules = ['CIUDADES', 'USERS', 'PLACES', 'FAVORITES'];
   levels = ['INFO', 'WARN', 'ERROR', 'DEBUG'];
 
   filterModule: string = '';
@@ -70,7 +70,6 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       this.loggerService.getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)
         .subscribe(data => this.logs = data.slice(0, 20));
     } else {
-      // Cambio de alert a Modal
       this.modalMessage = 'Todos los campos de filtro son obligatorios para realizar la búsqueda precisa.';
       this.showErrorModal = true;
     }

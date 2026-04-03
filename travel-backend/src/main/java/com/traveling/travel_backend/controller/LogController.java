@@ -3,6 +3,7 @@ package com.traveling.travel_backend.controller;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class LogController {
             return List.of();
         }
         log.info("🖥️ [ADMIN] Solicitud de visualización de logs generales");
-        return logRepository.findAll();
+        return logRepository.findAll(Sort.by(Sort.Direction.DESC, "timestamp"));
     }
 
     @GetMapping("/filter")
