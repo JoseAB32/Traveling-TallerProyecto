@@ -1,0 +1,54 @@
+.bg-traveling {
+    background-color: #004a80 !important;
+}
+
+.text-traveling {
+    color: #004a80;
+    font-weight: 700;
+}
+
+.btn-traveling {
+    background-color: #004a80;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-traveling:hover {
+    background-color: #00365d;
+    color: #ff9800; /* Naranja Traveling */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Estilo para los TABS del mini-menu */
+.nav-tabs .nav-link {
+    color: #6c757d;
+    border: none;
+    padding: 12px 25px;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #004a80;
+}
+
+.active-tab {
+    color: #004a80 !important;
+    border-bottom: 3px solid #004a80 !important;
+    background-color: transparent !important;
+}
+
+/* Tabla y tarjetas */
+.table thead th {
+    font-weight: 500;
+    border: none;
+    padding: 15px;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+/* Modal personalizado */
+.modal-content {
+    border-radius: 15px;
+}
