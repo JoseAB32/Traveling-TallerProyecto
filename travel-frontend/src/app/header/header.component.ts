@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Subscription} from 'rxjs';
 import { Place } from '../place';
 import { PlaceService } from '../place.service';
+import { FEATURES } from '../features/features';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,9 @@ import { PlaceService } from '../place.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy{
   
+  isAdmin: boolean = false;
+  isLogsEnabled: boolean = FEATURES.adminLogsEnabled;
+
   isLoggedIn: boolean = false;
   isMenuOpen: boolean = false; // El menú debe empezar cerrado
   private userSub!: Subscription;
@@ -27,6 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
   constructor(private authService: AuthService, private router: Router, private placeService: PlaceService, private el: ElementRef) {}
   
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
     //Para ver al user actual  
     this.userSub = this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user; // true si existe usuario, false si es null

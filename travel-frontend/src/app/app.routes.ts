@@ -7,6 +7,8 @@ import { WishlistComponent} from './wishlist/wishlist.component'
 import { authGuard } from './guards/auth.guard';
 import { SuccessSignupComponent } from './success-signup/success-signup.component';
 import { SearchPlacesComponent } from './search-places/search-places.component';
+import { adminGuard } from './guards/admin.guard';
+import { AdminViewComponent } from './admin-view/admin-view.component';
 
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
@@ -18,6 +20,7 @@ export const routes: Routes = [
   { path: 'success-signup', component: SuccessSignupComponent },
   { path: '', component: LandingComponent },
   { path: 'wishlist', canActivate: [authGuard], component: WishlistComponent },
+  { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
   {
     path: 'place/:id',
     loadComponent: () => import('./place-detail/place-detail.component')

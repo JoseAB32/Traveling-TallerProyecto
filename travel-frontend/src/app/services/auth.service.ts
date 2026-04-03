@@ -79,6 +79,21 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  isAdmin(): boolean {
+  const token = this.getToken();
+  if (!token) return false;
+
+  try {
+    // Decodifica la parte media (payload) del JWT
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    
+    // Verifica el 'sub' (username) o el 'role' según cómo lo configuraste en Spring
+    return payload.sub === 'admin'; 
+  } catch (e) {
+    return false;
+  }
+}
+
   private handleError(error: HttpErrorResponse) {
     console.error('❌ Error:', error);
     

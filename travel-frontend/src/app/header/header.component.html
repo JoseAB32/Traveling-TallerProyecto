@@ -105,6 +105,12 @@
             <img src="Logout.svg" alt="">
             <span (click)="logout()">Cerrar Sesión</span>
           </div>
+          @if (isAdmin) {
+            <div class="menu-item">
+              <!-- <img src="iconoAdmin.svg" alt="">  -->
+              <span [routerLink]="['/admin-view']">Configuración</span>
+            </div>
+          }
         </div>
       }
     </div>

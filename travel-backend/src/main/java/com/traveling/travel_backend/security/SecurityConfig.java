@@ -30,7 +30,8 @@ public class SecurityConfig {
                     "/api/users",
                     "/api/cities",
                     "/api/favorites/**",
-                    "/api/places/**"
+                    "/api/places/**",
+                    "/api/admin/logs/filter"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
