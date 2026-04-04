@@ -1,9 +1,9 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 //Para que arregle Leaflet
-const iconRetinaUrl = 'assets/marker-icon-2x.png';
-const iconUrl = 'assets/marker-icon.png';
-const shadowUrl = 'assets/marker-shadow.png';
+const iconRetinaUrl = 'marker-icon-2x.png';
+const iconUrl = 'marker-icon.png';
+const shadowUrl = 'marker-shadow.png';
 const iconDefault = L.icon({
   iconRetinaUrl,
   iconUrl,
@@ -52,12 +52,11 @@ export class MapComponent implements AfterViewInit {
           // Crea el pin y el popup con la información
           L.marker(latLng)
             .addTo(this.map)
-            .bindPopup(`
-              <b>${place.name}</b><br>
-              ${place.address}<br>
-              ⭐ ${place.rating}
-            `);
-
+             .bindPopup(`
+               <b>${place.name}</b><br>
+               ${place.address}<br>
+               ${place.rating}
+             `);
           bounds.push(latLng); // Guarda las coordenadas
         }
       });

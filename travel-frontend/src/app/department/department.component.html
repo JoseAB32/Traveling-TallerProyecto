@@ -1,0 +1,17 @@
+<app-header></app-header>
+
+<div class="department-page">
+  <h2>Lugares Turísticos del Departamento</h2>
+
+  <div *ngIf="loading">Cargando mapa...</div>
+
+  <div *ngIf="!loading">
+    <app-map [places]="places"></app-map>
+  </div>
+  
+  <div *ngIf="!loading && places.length === 0">
+    <p>No hay lugares registrados en este departamento.</p>
+  </div>
+</div>
+
+<app-footer></app-footer>
