@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.dto.ErrorResponse;
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
@@ -34,8 +35,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(AppConstants.API_BASE_PATH)
+@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
 public class userController {
     
     private static final Logger logger = LoggerFactory.getLogger(userController.class);
@@ -55,47 +56,47 @@ public class userController {
         this.jwtService = jwtService;
     }
 
-    @GetMapping("/users")
+    @GetMapping(AppConstants.USERS_ENDPOINT)
     public List<User> getAllUsers() {
-        logger.info("👤 [USERS] Recibida solicitud para obtener la lista de todos los usuarios.");
-        logRepository.save(new LogEntity("USERS", "INFO", "Recibida solicitud para obtener la lista de todos los usuarios.", null));
+        logger.info(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Recibida solicitud para obtener la lista de todos los usuarios.");
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO, "Recibida solicitud para obtener la lista de todos los usuarios.", null));
 
         List<User> users = userRepository.findAll();
         
-        logger.debug("👤 [USERS] Se recuperaron {} usuarios de la base de datos.", users.size());
-        logRepository.save(new LogEntity("USERS", "DEBUG", "Se recuperaron " + users.size() + " usuarios de la base de datos.", null));
+        logger.debug(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Se recuperaron {} usuarios de la base de datos.", users.size());
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG, "Se recuperaron " + users.size() + " usuarios de la base de datos.", null));
         
         return users;
     }
 
-    @PostMapping("/users")
+    @PostMapping(AppConstants.USERS_ENDPOINT)
     public ResponseEntity<?> createUser(@RequestBody User user) {
-        logger.info("👤 [USERS] Recibida solicitud para crear un nuevo usuario. Nombre de usuario: {}", user.getUserName());
-        logRepository.save(new LogEntity("USERS", "INFO", "Recibida solicitud para crear un nuevo usuario. Nombre de usuario: " + user.getUserName(), null));
+        logger.info(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Recibida solicitud para crear un nuevo usuario. Nombre de usuario: {}", user.getUserName());
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO, "Recibida solicitud para crear un nuevo usuario. Nombre de usuario: " + user.getUserName(), null));
 
         if (user.getUserName() == null || user.getUserName().trim().isEmpty()) {
-            logger.warn("❌ [USERS] Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.");
-            logRepository.save(new LogEntity("USERS", "WARN", "Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.", null));
+            logger.warn(AppConstants.PREFIX_ERROR + " [" + AppConstants.LOG_USERS + "] Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.");
+            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN, "Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.", null));
             return ResponseEntity
                 .badRequest()
-                .body(new ErrorResponse("El nombre de usuario es requerido."));
+                .body(new ErrorResponse(AppConstants.USER_REQUIRED));
         }
 
         String trimmedUserName = user.getUserName().trim();
         Optional<User> existingUser = userRepository.findByUserNameAndStateTrue(trimmedUserName);
 
         if (existingUser.isPresent()) {
-            logger.warn("❌ [USERS] Creación de usuario rechazada: El nombre de usuario '{}' ya se encuentra en uso.", trimmedUserName);
-            logRepository.save(new LogEntity("USERS", "WARN", "Creación de usuario rechazada: El nombre de usuario '" + trimmedUserName + "' ya se encuentra en uso.", null));
+            logger.warn(AppConstants.PREFIX_ERROR + " [" + AppConstants.LOG_USERS + "] Creación de usuario rechazada: El nombre de usuario '{}' ya se encuentra en uso.", trimmedUserName);
+            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN, "Creación de usuario rechazada: El nombre de usuario '" + trimmedUserName + "' ya se encuentra en uso.", null));
 
             return ResponseEntity
                 .badRequest()
-                .body(new ErrorResponse("El nombre de usuario ya está en uso."));
+                .body(new ErrorResponse(AppConstants.USER_ALREADY_IN_USE));
         }
     
         if (user.getCity() != null) {
-            logger.debug("👤 [USERS] Buscando información de la ciudad con ID: {}", user.getCity().getId());
-            logRepository.save(new LogEntity("USERS", "DEBUG", "Buscando información de la ciudad con ID: " + user.getCity().getId(), null));
+            logger.debug(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Buscando información de la ciudad con ID: {}", user.getCity().getId());
+            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG, "Buscando información de la ciudad con ID: " + user.getCity().getId(), null));
 
             City realCity = cityRepository.findById(user.getCity().getId()).orElse(null);
             user.setCity(realCity); 

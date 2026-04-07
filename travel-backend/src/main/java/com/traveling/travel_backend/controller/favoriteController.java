@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.model.Favorite;
 import com.traveling.travel_backend.model.LogEntity;
 import com.traveling.travel_backend.repository.FavoriteRepository;
@@ -14,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;    
 
 @RestController
-@RequestMapping("api/favorites")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(AppConstants.API_BASE_PATH + AppConstants.FAVORITES_ENDPOINT)
+@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
 public class favoriteController {
 
     public static final Logger log = LoggerFactory.getLogger(favoriteController.class);
