@@ -97,8 +97,13 @@ export class InicioLogueadoComponent implements OnInit {
   }
 
 
-  getStars(rating: number): string {
+  // getStars(rating: number): string {
+  //   const score = Math.max(0, Math.min(Math.floor(rating), 5));
+  //   return '★'.repeat(score) + '☆'.repeat(5 - score);
+  // }
+
+  getStarsArray(rating: number): boolean[] {
     const score = Math.max(0, Math.min(Math.floor(rating), 5));
-    return '★'.repeat(score) + '☆'.repeat(5 - score);
+    return Array(5).fill(false).map((_, i) => i < score);
   }
 }
