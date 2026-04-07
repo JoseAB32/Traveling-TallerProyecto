@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.model.LogEntity;
 import com.traveling.travel_backend.repository.LogRepository;
 
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
     
 
 @RestController
-@RequestMapping("/api/admin/logs")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(AppConstants.API_BASE_PATH + "/admin/logs")
+@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
 public class LogController {
 
     public static final Logger log = LoggerFactory.getLogger(LogController.class);
