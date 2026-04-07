@@ -6,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { NgForOf, NgIf } from '@angular/common';
 import { CityService } from '../city.service';
 import { City } from '../city';
+import { CONSTANTS } from '../utils/constants';
 
 @Component({
   selector: 'app-sign-up',
@@ -26,6 +27,8 @@ export class SignUpComponent implements OnInit {
   errorGeneral: string = '';
   isDateFocused: boolean = false;
   isCityFocused: boolean = false;
+
+  constants = CONSTANTS;
 
   constructor (private userService: UserService, private router: Router, private cityService: CityService) {
     this.cityService.getCities().subscribe(
@@ -72,7 +75,7 @@ export class SignUpComponent implements OnInit {
       },
       error => {
         console.error('Error al crear usuario', error);
-        this.errorGeneral = error?.error?.message || 'No se pudo registrar el usuario. Revise datos e intente de nuevo.';
+        this.errorGeneral = error?.error?.message || CONSTANTS.MESSAGES.ERROR.SIGNUP_GENERAL;
       }
     );
   }
@@ -94,7 +97,7 @@ export class SignUpComponent implements OnInit {
     }
 
     if (!this.contrasenaCoincide()) {
-      this.errorGeneral = 'Las contraseñas no coinciden.';
+      this.errorGeneral = CONSTANTS.MESSAGES.ERROR.PASSWORD_MISMATCH;
       return;
     }
 

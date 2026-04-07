@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Place } from './place';
 import { of, Observable } from 'rxjs';
+import { CONSTANTS } from './utils/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceService {
 
-  private baseUrl = 'http://localhost:8080/api/places';
+  private baseUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.PLACES;
 
   constructor(private httpClient: HttpClient) { }
 
