@@ -9,7 +9,7 @@ import { SuccessSignupComponent } from './success-signup/success-signup.componen
 import { SearchPlacesComponent } from './search-places/search-places.component';
 import { adminGuard } from './guards/admin.guard';
 import { AdminViewComponent } from './admin-view/admin-view.component';
-
+import { DepartmentComponent } from './department/department.component'
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   {
@@ -26,6 +26,10 @@ export const routes: Routes = [
     loadComponent: () => import('./place-detail/place-detail.component')
       .then(m => m.PlaceDetailComponent),
     canActivate: [authGuard]
+  },
+  { 
+    path: 'department/:id', 
+    component: DepartmentComponent,canActivate: [authGuard]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

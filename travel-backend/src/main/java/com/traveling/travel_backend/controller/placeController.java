@@ -82,4 +82,20 @@ public class placeController {
 
         return place.orElse(null);
     }
+
+    @GetMapping("/department/{cityId}")
+    public List<Place> getPlacesByDepartment(@PathVariable Long cityId) {
+        logger.info("📍 [PLACES] Solicitando lugares para el departamento (ID): {} - GET /api/places/department/{}", cityId, cityId);
+        logRepository.save(new LogEntity("PLACES", "INFO", "Solicitando lugares para departamento ID: " + cityId, null));
+
+        List<Place> places = placeRepository.findByCityIdAndStateTrue(cityId);
+
+        if (places.isEmpty()) {
+            logger.warn("📍 [PLACES] No se encontraron lugares para el departamento ID: {}", cityId);
+        } else {
+            logger.debug("📍 [PLACES] Se encontraron {} lugares para el departamento ID: {}", places.size(), cityId);
+        }
+
+        return places;
+    }
 }
