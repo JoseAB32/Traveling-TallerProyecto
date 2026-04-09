@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
+import { CONSTANTS } from '../utils/constants';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit {
       this.credentials.password
     ).subscribe({
       next: () => {
-        this.successMessage = '¡Login exitoso!';
+        this.successMessage = CONSTANTS.MESSAGES.SUCCESS.LOGIN;
         this.loading = false;
         this.router.navigate(['/InicioLogueado']);
       },

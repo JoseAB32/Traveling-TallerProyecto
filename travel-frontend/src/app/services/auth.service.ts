@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { CONSTANTS } from '../utils/constants';
 
 export interface User {
   id?: number;
@@ -22,7 +23,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.LOGIN;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -44,7 +45,7 @@ export class AuthService {
   }
 
   login(userName: string, pass: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { userName, pass })
+    return this.http.post<LoginResponse>(`${this.apiUrl}`, { userName, pass })
       .pipe(
         tap(response => {
           console.log('✅ Login exitoso:', response);

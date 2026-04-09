@@ -2,13 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Logger } from './logger';
+import { CONSTANTS } from './utils/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoggerService {
 
-  private baseURL= "http://localhost:8080/api/admin/logs";
+  private baseURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.LOGS;
 
   constructor(private httpClient: HttpClient) { }
 

@@ -1,48 +1,114 @@
+.main-content {
+    padding: 0 100px;
+}
+
+.mapa-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 50px 10px;
+}
+
+.mapa-container {
+    width: 55%;
+}
+
+.texto-container {
+    width: 45%;
+}
+
+.mapa-texto {
+    font-size: 2.2rem;
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+}
+
 /* Colores y Tipografía */
+.container {
+    padding: 0;
+}
+
 .text-orange {
-    color: #ff6b35; /* Naranja de los títulos */
+    color: #ff6b35;
+    font-weight: 700;
+    padding: 20px 0 50px 0;
+}
+
+.carousel-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.tarjeta {
+    width: 30%;
 }
 
 .bg-blue-dark {
     background-color: #004a87 !important; /* Azul de las tarjetas y fondo inferior */
+    color: #EFEFD0;
+}
+
+.bg-blue-dark svg {
+    color: #EFEFD0;
 }
 
 .bg-orange-soft {
     background-color: #fce1c5 !important; /* Naranja suave de la tarjeta central */
+    color: #FF6B35;
 }
 
-/* Hero Section */
-.section-title-hero {
-    line-height: 1.2;
-    font-size: 1.8rem;
-}
-
-.mapa-vector {
-    max-height: 450px;
-    transition: filter 0.3s ease;
-}
-
-/* Tarjetas de Lugares */
-.travel-card {
-    border-radius: 25px !important;
-    overflow: hidden;
+.card-background {
+    height: 600px;
+    border-radius: 15px;
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
 }
 
-.travel-card:hover {
+.card-background:hover {
     transform: translateY(-10px);
 }
 
-.travel-card img {
-    height: 550px;
+.card-imagen {
+    width: 90%;
+    height: 80%;
     object-fit: cover;
-    border-radius: 20px !important;
+    border-radius: 15px;
 }
 
 .stars {
-    color: #ffc107; /* Color dorado para las estrellas */
-    font-size: 1.1rem;
-    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+}
+
+.stars svg {
+    width: 10%;
+}
+
+.text-different {
+    color: #FF6B35;
+}
+
+.info-container {
+    width: 90%;
+    padding: 0px 0;
+}
+
+.nombre-container {
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.5rem;
 }
 
 /* Sección de Itinerario (Inferior) */
@@ -75,63 +141,51 @@
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.14);
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
+    background: none;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.75rem;
     line-height: 1;
-    color: #004a87;
-    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease;
     z-index: 10;
+}
+
+.carousel-btn svg {
+    color: #004E89;
+    width: 50px;
 }
 
 .carousel-btn:hover {
     transform: translateY(-50%) scale(1.08);
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 14px 22px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-btn:focus {
     outline: none;
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.35);
 }
 
 .carousel-btn-prev {
-    left: -28px;
+    left: -10px;
 }
 
 .carousel-btn-next {
-    right: -28px;
+    right: -10px;
 }
 
-/* Ajuste para que las imágenes mantengan tamaño similar al original */
-.travel-card img {
-    height: 550px;
-    object-fit: cover;
-    border-radius: 20px !important;
+.btn-indicador {
+    border: none;
+    background: none;
+    font-size: 2.5rem;
+    color: #004E89;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease;
 }
 
-@media (max-width: 768px) {
-    .carousel-btn-prev {
-        left: 8px;
-    }
-
-    .carousel-btn-next {
-        right: 8px;
-    }
-
-    .travel-card img {
-        height: 450px;
-    }
-}
-
-/* Ajustes para Móviles */
-@media (max-width: 768px) {
-    .section-title-hero {
-        font-size: 1.4rem;
-        text-align: center;
-    }
+.btn-indicador:hover {
+    transform: translateY(-10%) scale(1.08);
 }

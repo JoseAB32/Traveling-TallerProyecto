@@ -74,9 +74,9 @@
                 [class.label-error]="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">Nombre de usuario</label>
 
                 <div class="error-container" *ngIf="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">
-                    <p *ngIf="nombreUsuario.errors?.['required']">El nombre de usuario es obligatorio.</p>
-                    <p *ngIf="nombreUsuario.errors?.['minlength']">El nombre de usuario debe tener al menos 5 caracteres.</p>
-                    <p *ngIf="nombreUsuario.errors?.['pattern']">El nombre de usuario no puede contener espacios.</p>
+                    <p *ngIf="nombreUsuario.errors?.['required']">{{ constants.MESSAGES.ERROR.USERNAME_REQUIRED }}</p>
+                    <p *ngIf="nombreUsuario.errors?.['minlength']">{{ constants.MESSAGES.ERROR.USERNAME_MINLENGTH }}</p>
+                    <p *ngIf="nombreUsuario.errors?.['pattern']">{{ constants.MESSAGES.ERROR.USERNAME_PATTERN }}</p>
                 </div>
             </div>
             <div class="input-container">
@@ -87,8 +87,8 @@
                 [class.label-error]="correo.invalid && (correo.touched || correo.dirty)">Correo electrónico</label>
 
                 <div class="error-container" *ngIf="correo.invalid && (correo.touched || correo.dirty)">
-                    <p *ngIf="correo.errors?.['required']">El correo electrónico es obligatorio.</p>
-                    <p *ngIf="correo.errors?.['email']">Ingresa un correo electrónico válido.</p>
+                    <p *ngIf="correo.errors?.['required']">{{ constants.MESSAGES.ERROR.EMAIL_REQUIRED }}</p>
+                    <p *ngIf="correo.errors?.['email']">{{ constants.MESSAGES.ERROR.EMAIL_INVALID }}</p>
                     <!-- <p *ngIf="correo.errors?.['pattern']">El correo electrónico no puede contener espacios.</p> -->
                 </div>
             </div>
@@ -100,9 +100,9 @@
                 [class.label-error]="contrasena.invalid && (contrasena.touched || contrasena.dirty)">Contraseña</label>
 
                 <div class="error-container" *ngIf="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
-                    <p *ngIf="contrasena.errors?.['required']">La contraseña es obligatoria.</p>
-                    <p *ngIf="contrasena.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</p>
-                    <p *ngIf="contrasena.errors?.['pattern']">La contraseña no puede contener espacios.</p>
+                    <p *ngIf="contrasena.errors?.['required']">{{ constants.MESSAGES.ERROR.PASSWORD_REQUIRED }}</p>
+                    <p *ngIf="contrasena.errors?.['minlength']">{{ constants.MESSAGES.ERROR.PASSWORD_MINLENGTH }}</p>
+                    <p *ngIf="contrasena.errors?.['pattern']">{{ constants.MESSAGES.ERROR.PASSWORD_PATTERN }}</p>
                 </div>
             </div>
             <div class="input-container">

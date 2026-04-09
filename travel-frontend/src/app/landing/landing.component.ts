@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { CONSTANTS } from '../utils/constants';
 
 @Component({
   selector: 'app-landing',
@@ -11,8 +12,9 @@ import { FooterComponent } from '../footer/footer.component';
   styleUrl: './landing.component.css'
 })
 export class LandingComponent implements OnInit {
-  constructor (private router: Router) {
+  constants = CONSTANTS;
 
+  constructor (private router: Router) {
   }
 
   ngOnInit(): void {

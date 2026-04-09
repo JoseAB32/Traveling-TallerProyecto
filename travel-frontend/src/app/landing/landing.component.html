@@ -8,10 +8,10 @@
         <img src="asset_3.png" class="img-bottom" alt="Lago">
       </div>
       <div class="text-block">
-        <h1>Planifica tu viaje y disfruta de los mejores lugares turísticos de toda Bolivia!</h1>
+        <h1>{{ constants.LANDING.TEXT_START_HERE }}</h1>
         <div class="cta-buttons">
-          <button class="btn btn-primary" (click)="irASignUp()">EMPIEZA AQUÍ</button>
-          <button class="btn btn-outline" (click)="irALogIn()">YA TENGO UNA CUENTA</button>
+          <button class="btn btn-primary" (click)="irASignUp()">{{ constants.LANDING.SIGN_UP }}</button>
+          <button class="btn btn-outline" (click)="irALogIn()">{{ constants.LANDING.LOGIN }}</button>
         </div>
       </div>
     </div>
@@ -24,10 +24,9 @@
         <img src="asset_4.png" class="img-small" alt="Salar 2">
       </div>
       <div class="text-block white-text">
-        <h2>fácil, accesible y gratis</h2>
+        <h2>{{ constants.LANDING.SUBTITLE_1 }}</h2>
         <p>
-            Explora de forma simple y gratis las distintas atracciones turísticas que se encuentran en Bolivia
-            para planificar un increíble y productivo  viaje sin perderte maravillosos paisajes.
+            {{ constants.LANDING.TEXT_1 }}
         </p>
       </div>
     </div>
@@ -41,10 +40,9 @@
          <img src="asset_8.png" class="img-bottom-2" alt="Isla">
       </div>
       <div class="text-block">
-        <h2>información actualizada y completa</h2>
+        <h2>{{ constants.LANDING.SUBTITLE_2 }}</h2>
         <p>
-            Explora de forma simple y gratis las distintas atracciones turísticas que se encuentran en Bolivia
-            para planificar un increíble y productivo  viaje sin perderte maravillosos paisajes.
+            {{ constants.LANDING.TEXT_2 }}
         </p>
       </div>
     </div>

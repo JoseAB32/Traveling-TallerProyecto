@@ -6,6 +6,7 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { LoggerService } from '../logger.service';
 import { Logger } from '../logger';
+import { CONSTANTS } from '../utils/constants';
 
 @Component({
   selector: 'app-admin-view',
@@ -70,7 +71,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       this.loggerService.getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)
         .subscribe(data => this.logs = data.slice(0, 20));
     } else {
-      this.modalMessage = 'Todos los campos de filtro son obligatorios para realizar la búsqueda precisa.';
+      this.modalMessage = CONSTANTS.MESSAGES.ERROR.FILTER_REQUIRED;
       this.showErrorModal = true;
     }
   }

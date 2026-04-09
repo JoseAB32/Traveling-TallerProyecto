@@ -5,22 +5,23 @@
   align-items: center;
   padding: 15px 100px;
   color: white;
-  height: 100px;
+  height: 110px;
   position: relative;
   z-index: 10;
 }
 
 svg {
-  width: 35%;
+  width: 40%;
   color: white;
 }
 
 .search-bar {
   display: flex;
+  gap: 5px;
   background: white;
   border: 2px solid #ff7841; 
   border-radius: 25px;
-  padding: 5px 15px;
+  padding: 5px 10px;
   width: 400px;
   position: relative;
   z-index: 1001; 
@@ -37,7 +38,7 @@ svg {
   border: none;
   outline: none;
   flex-grow: 1;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 .search-btn {
@@ -53,17 +54,28 @@ svg {
   justify-content: center;
 }
 
+.search-btn svg {
+  width: 20px;
+  color: white;
+}
+
 .profile-container {
-  position: relative;
+  position: relative; 
 }
 
 .profile-pic {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   border: 2px solid #ff7841;
   cursor: pointer;
   object-fit: cover;
+  margin-right: 8px;
+}
+
+.profile-container svg {
+  width: 30px;
+  color: #ff7841;
 }
 
 .dropdown-menu {
@@ -87,8 +99,13 @@ svg {
   color: white;
   font-weight: bold;
   cursor: pointer;
-  border-bottom: 1px solid rgba(255, 120, 65, 0.3); 
+  border-bottom: 1px solid rgba(255, 120, 65, 0.5); 
   gap: 15px;
+}
+
+.menu-item svg {
+  color: white;
+  width: 30px;
 }
 
 .menu-item:last-child {
@@ -153,5 +170,3 @@ svg {
   font-size: 11px;
   color: #666;
 }
-
-
