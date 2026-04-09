@@ -37,15 +37,15 @@
       
       <!-- SI ES PAR: Tarjeta Azul Oscuro (Imagen Izquierda) -->
       @if (i % 2 === 0) {
-        <div class="card border-0 custom-card-blue text-white shadow mb-5">
-          <div class="row g-0 align-items-center">
-            <div class="col-md-5 position-relative z-1 text-center">
+        <div class="card border-0 custom-card-blue text-white shadow mb-5" (click)="goToDetail(place.id)" style="cursor: pointer;">
+          <div class="row gx-5 align-items-center">
+            <div class="col-md-6 position-relative z-1 text-center">
               <!-- Asume que tu Place tiene una propiedad imageUrl -->
               <img [src]="place.imageUrl" 
                   class="img-fluid tilted-img-left shadow-lg" 
                   [alt]="place.name">
             </div>
-            <div class="col-md-7 p-4 p-md-5">
+            <div class="col-md-6 p-4 p-md-5 ps-lg-5">
               <h3 class="fw-bold">{{ place.name }},<br>{{ place.city?.name }}</h3>
               
               <div class="text-white fs-5 mb-3">
@@ -79,14 +79,14 @@
       
       <!-- SI ES IMPAR: Tarjeta Melocotón (Imagen Derecha) -->
       @else {
-        <div class="card border-0 custom-card-peach shadow mb-5">
-          <div class="row g-0 align-items-center flex-md-row-reverse">
-            <div class="col-md-5 position-relative z-1 text-center">
+        <div class="card border-0 custom-card-peach shadow mb-5" (click)="goToDetail(place.id)" style="cursor: pointer;">
+          <div class="row gx-5 align-items-center flex-md-row-reverse">
+            <div class="col-md-6 position-relative z-1 text-center">
               <img [src]="place.imageUrl" 
                   class="img-fluid tilted-img-right shadow-lg" 
                   [alt]="place.name">
             </div>
-            <div class="col-md-7 p-4 p-md-5">
+            <div class="col-md-6 p-4 p-md-5 pe-lg-5">
               <h3 class="fw-bold text-traveling-blue">{{ place.name }},<br>{{ place.city?.name }}</h3>
               
               <div class="text-traveling-blue fs-5 mb-3">

@@ -43,15 +43,15 @@
 .custom-card-blue {
   background-color: #1a6b9a;
   border-radius: 20px;
-  margin-top: 5rem;    /* Un poco más de aire arriba */
-  margin-bottom: 4rem; /* 👈 CLAVE: Aire abajo para que la foto no choque con la siguiente */
+  margin-top: 140px;    /* 👈 Espacio masivo arriba para la esquina que sube */
+  margin-bottom: 140px; /* 👈 Espacio masivo abajo para la esquina que baja */
 }
 
 .custom-card-peach {
   background-color: #F7C59F; 
   border-radius: 20px;
-  margin-top: 5rem;
-  margin-bottom: 4rem;
+  margin-top: 140px;
+  margin-bottom: 140px;
 }
 
 /* --- EFECTO FOTO POLAROID --- */
@@ -69,23 +69,23 @@
 }
 
 .tilted-img-left {
-  transform: rotate(-20deg) translateX(-10px);
+  transform: rotate(-20deg) translateX(-30px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tilted-img-right {
-  transform: rotate(20deg) translateX(10px);
+  transform: rotate(20deg) translateX(30px);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 
 .tilted-img-left:hover {
-  transform: rotate(-3deg) scale(1.05) translateX(-10px);
+  transform: rotate(-10deg) scale(1.05) translateX(-20px);
   box-shadow: 0 15px 30px rgba(0,0,0,0.25);
   z-index: 10; /* Asegura que la foto resalte por encima de todo al pasar el mouse */
 }
 
 .tilted-img-right:hover {
-  transform: rotate(3deg) scale(1.05) translateX(10px);
+  transform: rotate(10deg) scale(1.05) translateX(20px);
   box-shadow: 0 15px 30px rgba(0,0,0,0.25);
   z-index: 10;
 }
@@ -94,6 +94,10 @@
 .review-bubble {
   border-radius: 15px;
   border-top-left-radius: 2px; 
+}
+
+main.container {
+  padding-bottom: 50px !important; 
 }
 
 /* --- RESPONSIVIDAD (Móviles) --- */

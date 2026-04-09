@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PlaceService } from '../place.service';
 import { MapComponent } from '../components/map/map.component'
 import { HeaderComponent } from "../header/header.component";
@@ -10,7 +10,7 @@ import { CommonModule} from '@angular/common';
 @Component({
   selector: 'app-department',
   standalone: true,
-  imports: [MapComponent, FooterComponent, HeaderComponent, CommonModule],
+  imports: [MapComponent, FooterComponent, HeaderComponent, CommonModule, RouterLink],
   templateUrl: './department.component.html',
   styleUrl: './department.component.css'
 })
@@ -24,6 +24,7 @@ export class DepartmentComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -51,5 +52,9 @@ export class DepartmentComponent implements OnInit {
           }
         });
 
+  }
+
+  goToDetail(id: number) {
+    this.router.navigate(['/place', id]);
   }
 }
