@@ -17,7 +17,9 @@ import { CommonModule} from '@angular/common';
 export class DepartmentComponent implements OnInit {
   departmentId!: number;
   places: any[] = [];
+  placesTop: any[] = [];
   loading: boolean = true;
+  loadingTop: boolean = true;
   private placeService = inject(PlaceService);
 
   constructor(
@@ -37,5 +39,17 @@ export class DepartmentComponent implements OnInit {
         this.loading = false;
         }
       });
+
+      this.placeService.getTopPlacesByDepartment(this.departmentId).subscribe({
+        next: (data: Place[]) => {
+          this.placesTop = data;
+          this.loadingTop = false;
+        },
+        error: (err) => {
+          console.error('Error cargando lugares', err);
+          this.loadingTop = false;
+          }
+        });
+
   }
 }

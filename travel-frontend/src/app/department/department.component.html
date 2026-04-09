@@ -11,7 +11,7 @@
     </div>
   }
 
-  @if (!loading) {
+  @if (!loadingTop) {
     <div class="row align-items-center mb-5 pb-4">
       <div class="col-lg-6 mb-4 mb-lg-0">
         <div class="map-wrapper shadow-sm border rounded p-2 bg-white">
@@ -32,52 +32,72 @@
     <h4 class="fw-bold text-traveling-orange mb-5 text-uppercase">Lugares mejor calificados</h4>
 
     
-    <!-- Tarjeta 1: Azul Oscuro (Imagen a la izquierda) -->
-    <div class="card border-0 custom-card-blue text-white shadow mb-5">
-      <div class="row g-0 align-items-center">
-        <div class="col-md-5 position-relative z-1 text-center">
-          <img src="https://hotelreginabolivia.com/wp-content/uploads/2019/02/cristo_concordia-650x350.jpg" 
-               class="img-fluid tilted-img-left shadow-lg" 
-               alt="Cristo de la Concordia">
-        </div>
-        <!-- Columna de Texto -->
-        <div class="col-md-7 p-4 p-md-5">
-          <h3 class="fw-bold">Cristo de la Concordia,<br>Cochabamba</h3>
-          <div class="text-white fs-5 mb-3">
-            <i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i>
+    <!-- Iteramos sobre tu nueva variable placesTop -->
+    @for (place of placesTop; track place.id; let i = $index) {
+      
+      <!-- SI ES PAR: Tarjeta Azul Oscuro (Imagen Izquierda) -->
+      @if (i % 2 === 0) {
+        <div class="card border-0 custom-card-blue text-white shadow mb-5">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-5 position-relative z-1 text-center">
+              <!-- Asume que tu Place tiene una propiedad imageUrl -->
+              <img [src]="place.imageUrl" 
+                  class="img-fluid tilted-img-left shadow-lg" 
+                  [alt]="place.name">
+            </div>
+            <div class="col-md-7 p-4 p-md-5">
+              <h3 class="fw-bold">{{ place.name }},<br>{{ place.city?.name }}</h3>
+              
+              <!-- Estrellas estáticas por ahora (puedes hacer una función para pintarlas dinámicamente según place.rating) -->
+              <div class="text-white fs-5 mb-3">
+                <i class="bi bi-star-fill"></i> Promedio: {{ place.rating }}
+              </div>
+              
+              <p class="fw-bold small mb-2 text-uppercase">Mejor reseña:</p>
+              <div class="review-bubble bg-white text-dark p-3 shadow-sm">
+                <!-- Asume que el backend te manda la mejor reseña en este objeto -->
+                <p class="small mb-2">{{ place.bestReview?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <div class="text-end text-muted" style="font-size: 0.75rem;">
+                  Por {{ place.bestReview?.author || 'Anónimo' }}
+                </div>
+              </div>
+            </div>
           </div>
-          <p class="fw-bold small mb-2 text-uppercase">Mejor reseña:</p>
-          <div class="review-bubble bg-white text-dark p-3 shadow-sm">
-            <p class="small mb-2">El lugar me pareció muy bonito, cuenta con áreas verdes para pasar el rato bajo el sol o jugando con tu familia, y cerca hay una cafetería para disfrutar de un agradable desayuno o brunch.</p>
-            <div class="text-end text-muted" style="font-size: 0.75rem;">Por Eliana Vargas</div>
+        </div>
+      } 
+      
+      <!-- SI ES IMPAR: Tarjeta Melocotón (Imagen Derecha) -->
+      @else {
+        <div class="card border-0 custom-card-peach shadow mb-5">
+          <div class="row g-0 align-items-center flex-md-row-reverse">
+            <div class="col-md-5 position-relative z-1 text-center">
+              <img [src]="place.imageUrl" 
+                  class="img-fluid tilted-img-right shadow-lg" 
+                  [alt]="place.name">
+            </div>
+            <div class="col-md-7 p-4 p-md-5">
+              <h3 class="fw-bold text-traveling-blue">{{ place.name }},<br>{{ place.city?.name }}</h3>
+              
+              <div class="text-traveling-blue fs-5 mb-3">
+                <i class="bi bi-star-fill"></i> Promedio: {{ place.rating }}
+              </div>
+              
+              <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">Mejor reseña:</p>
+              <div class="review-bubble bg-white text-dark p-3 shadow-sm">
+                <p class="small mb-2">{{ place.bestReview?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <div class="text-end text-muted" style="font-size: 0.75rem;">
+                  Por {{ place.bestReview?.author || 'Anónimo' }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      }
+    } @empty {
+      <div class="alert alert-info text-center mt-4">
+        Aún no hay lugares destacados para este departamento.
       </div>
-    </div>
-
-    <!-- Tarjeta 2: Melocotón (Imagen a la derecha) -->
-    <div class="card border-0 custom-card-peach shadow mb-5">
-      <div class="row g-0 align-items-center flex-md-row-reverse">
-        <div class="col-md-5 position-relative z-1 text-center">
-          <img src="https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?q=80&w=800&auto=format&fit=crop" 
-               class="img-fluid tilted-img-right shadow-lg" 
-               alt="Parque de la Familia">
-        </div>
-        <!-- Columna de Texto -->
-        <div class="col-md-7 p-4 p-md-5">
-          <h3 class="fw-bold text-traveling-blue">Parque de la Familia,<br>Cochabamba</h3>
-          <div class="text-traveling-blue fs-5 mb-3">
-            <i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i> <i class="bi bi-star"></i>
-          </div>
-          <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">Mejor reseña:</p>
-          <div class="review-bubble bg-white text-dark p-3 shadow-sm">
-            <p class="small mb-2">El mejor espectáculo se puede observar de noche, así que es recomendable ir por la tarde-noche, el ambiente y la música son increíbles y en ciertas zonas cuentan con áreas para los más pequeños.</p>
-            <div class="text-end text-muted" style="font-size: 0.75rem;">Por Juan Torrico</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    }
     @if (places.length === 0) {
       <div class="alert alert-info text-center mt-4">
         No hay lugares registrados en este departamento.

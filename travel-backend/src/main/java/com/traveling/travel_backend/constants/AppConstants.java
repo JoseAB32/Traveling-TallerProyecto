@@ -16,6 +16,8 @@ public class AppConstants {
     public static final String USERS_ENDPOINT = "/users";
     public static final String CITIES_ENDPOINT = "/cities";
     public static final String PLACES_ENDPOINT = "/places";
+    public static final String PLACES_DEPARTMENT = "/department/{cityId}";
+    public static final String PLACES_DEPARTMENT_TOP = "/departmentTop/{cityId}";
     public static final String REVIEWS_ENDPOINT = "/reviews";
     public static final String FAVORITES_ENDPOINT = "/favorites";
     public static final String TRIPS_ENDPOINT = "/trips";
@@ -90,6 +92,7 @@ public class AppConstants {
     public static final int DEFAULT_PAGE_SIZE = 20;
     public static final int MAX_PAGE_SIZE = 100;
     public static final int TOP_RATED_LIMIT = 5;
+    public static final int TOP_PLACES_BY_DEPARTMENT_LIMIT = 10;
 
     // ==================== CATEGORIES ====================
     public static final String CATEGORY_BEACH = "PLAYA";

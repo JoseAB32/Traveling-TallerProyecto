@@ -14,4 +14,5 @@ public interface PlaceRepository extends JpaRepository<Place, Long>{
         String name, String address, String cityName
     );
     List<Place> findByCityIdAndStateTrue(Long cityId);
+    List<Place> findTop3ByCityIdAndStateTrueOrderByRatingDesc(Long cityId);
 }
