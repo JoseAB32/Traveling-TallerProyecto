@@ -23,4 +23,6 @@ export class Place {
     
     imageUrl: string = "";
     state: boolean = true;
+
+    // bestReview: Review;
 }

@@ -13,4 +13,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long>{
     List<Place> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(
         String name, String address, String cityName
     );
+    List<Place> findByCityIdAndStateTrue(Long cityId);
+    List<Place> findTop3ByCityIdAndStateTrueOrderByRatingDesc(Long cityId);
 }

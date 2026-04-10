@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.traveling.travel_backend.constants.AppConstants;
 
 
+
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH + AppConstants.PLACES_ENDPOINT)
 @CrossOrigin(origins = AppConstants.CORS_ALL)
@@ -82,4 +83,37 @@ public class placeController {
 
         return place.orElse(null);
     }
+
+    @GetMapping(AppConstants.PLACES_DEPARTMENT)
+    public List<Place> getPlacesByDepartment(@PathVariable Long cityId) {
+        logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando lugares para el departamento (ID): {} - GET /api/places/department/{}", cityId, cityId);
+        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO, "Solicitando lugares para departamento ID: " + cityId, null));
+
+        List<Place> places = placeRepository.findByCityIdAndStateTrue(cityId);
+
+        if (places.isEmpty()) {
+            logger.warn(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] No se encontraron lugares para el departamento ID: {}", cityId);
+        } else {
+            logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Se encontraron {} lugares para el departamento ID: {}", places.size(), cityId);
+        }
+
+        return places;
+    }
+
+    @GetMapping(AppConstants.PLACES_DEPARTMENT_TOP)
+    public List<Place> getPlacesTopByDepartment(@PathVariable Long cityId) {
+        logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando lugares mejor calificados para el departamento (ID): {} - GET /api/places/department/{}", cityId, cityId);
+        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO, "Solicitando lugares mejor calificados para departamento ID: " + cityId, null));
+
+        List<Place> places = placeRepository.findTop3ByCityIdAndStateTrueOrderByRatingDesc(cityId);
+
+        if (places.isEmpty()) {
+            logger.warn(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] No se encontraron lugares para el departamento ID: {}", cityId);
+        } else {
+            logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Se encontraron {} lugares para el departamento ID: {}", places.size(), cityId);
+        }
+
+        return places;
+    }
+    
 }

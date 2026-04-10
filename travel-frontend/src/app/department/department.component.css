@@ -1,0 +1,168 @@
+/* --- COLORES CORPORATIVOS TRAVELING --- */
+.text-traveling-orange {
+  color: #ff6b35 !important;
+}
+
+.text-traveling-blue {
+  color: #1a6b9a !important; 
+}
+
+/* --- BOTÓN NARANJA --- */
+.btn-traveling-orange {
+  background-color: #ff6b35;
+  color: white;
+  transition: all 0.3s ease;
+  padding: 12px 24px;
+}
+
+.btn-traveling-orange:hover {
+  background-color: #e55a29;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4) !important;
+}
+
+/* --- MAPA --- */
+.map-wrapper {
+  height: 450px; 
+  width: 100%;
+  border: 4px solid #1a6b9a; 
+  border-radius: 8px; /* Bordes redondeados */
+  overflow: hidden; 
+  padding: 0 !important; 
+}
+
+/* Forzamos al componente de Angular a tomar todo el espacio */
+.map-wrapper app-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- TARJETAS --- */
+.custom-card-blue {
+  background-color: #1a6b9a;
+  border-radius: 20px;
+  margin-top: 140px;    /* 👈 Espacio masivo arriba para la esquina que sube */
+  margin-bottom: 140px; /* 👈 Espacio masivo abajo para la esquina que baja */
+}
+
+.custom-card-peach {
+  background-color: #F7C59F; 
+  border-radius: 20px;
+  margin-top: 140px;
+  margin-bottom: 140px;
+}
+
+/* --- EFECTO FOTO POLAROID --- */
+
+.tilted-img-left, .tilted-img-right {
+  border: 8px solid white; 
+  border-radius: 4px; 
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15); /* 👈 Sombra para que el borde blanco resalte sobre fondos claros */
+  
+  /* LÍMITES DE TAMAÑO */
+  width: 100%; 
+  max-height: 350px; 
+  aspect-ratio: 3/2; 
+  object-fit: cover; 
+}
+
+.tilted-img-left {
+  transform: rotate(-20deg) translateX(-30px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tilted-img-right {
+  transform: rotate(20deg) translateX(30px);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.tilted-img-left:hover {
+  transform: rotate(-10deg) scale(1.05) translateX(-20px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  z-index: 10; /* Asegura que la foto resalte por encima de todo al pasar el mouse */
+}
+
+.tilted-img-right:hover {
+  transform: rotate(10deg) scale(1.05) translateX(20px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  z-index: 10;
+}
+
+/* --- BURBUJA DE RESEÑA --- */
+.review-bubble {
+  border-radius: 15px;
+  border-top-left-radius: 2px; 
+}
+
+main.container {
+  padding-bottom: 50px !important; 
+}
+
+/* --- ANIMACIONES DE LA TARJETA DEL MAPA --- */
+
+/* 1. Contenedor Mágico (Superpone los elementos) */
+.content-switcher {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+}
+
+/* 2. Propiedades compartidas: Ambas cajas viven en la misma celda (1,1) */
+.default-content, .info-card-blue {
+  grid-column: 1;
+  grid-row: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Transición muy fluida */
+}
+
+/* Tarjeta azul (Ajustes visuales estáticos) */
+.info-card-blue {
+  background-color: #1a6b9a;
+  color: white;
+  border-radius: 12px;
+}
+
+/* --- ESTADO INICIAL (No hay nada seleccionado en el mapa) --- */
+.default-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.info-card-blue {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(30px); /* La tarjeta azul espera oculta un poco a la derecha */
+}
+
+/* --- ESTADO ACTIVO (Cuando pasas el ratón por un pin) --- */
+/* El texto por defecto se desvanece y flota hacia arriba */
+.content-switcher.show-card .default-content {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px); 
+}
+
+/* La tarjeta azul aparece y se desliza hacia el centro */
+.content-switcher.show-card .info-card-blue {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0); 
+}
+
+/* --- RESPONSIVIDAD (Móviles) --- */
+@media (max-width: 768px) {
+  .tilted-img-left, .tilted-img-right {
+    transform: rotate(0) translateX(0); /* Quitamos rotación en celulares */
+    width: 100%; 
+    max-height: 220px;
+    margin-top: -3rem; /* Sube la foto un poco sobre la tarjeta */
+    margin-bottom: 1rem;
+  }
+  
+  .custom-card-blue, .custom-card-peach {
+    margin-top: 4rem;
+  }
+}

@@ -1,0 +1,153 @@
+<app-header></app-header>
+
+<main class="container my-5">
+  <!-- ESTADO DE CARGA -->
+  @if (loading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando mapa...</span>
+      </div>
+      <p class="mt-2 text-muted">Cargando información del departamento...</p>
+    </div>
+  }
+
+  @if (!loading) {
+    <div class="row align-items-center mb-5 pb-4">
+  
+      <!-- Izquierda: El Mapa -->
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="map-wrapper shadow-sm border rounded p-2 bg-white">
+          <!-- 1. Escuchamos el evento (placeInteracted) del hijo -->
+          <app-map [places]="places" (placeSelected)="onMapInteraction($event)"></app-map>
+        </div>
+      </div>
+      
+      <!-- Derecha: Contenido Dinámico con Animaciones Suaves -->
+      <div class="col-lg-6 text-center px-lg-5">
+        
+        <!-- Contenedor que maneja el cambio de estados -->
+        <div class="content-switcher" [class.show-card]="selectedPlaceFromMap">
+          
+          <!-- ESTADO 1: TEXTO POR DEFECTO -->
+          <div class="default-content">
+            <h3 class="fw-bold mb-4" style="color: #000;">
+              Explora los diferentes lugares turísticos de Cochabamba o empieza a armar tu itinerario para visitar Cochabamba.
+            </h3>
+            <button class="btn btn-traveling-orange btn-lg px-4 fw-bold rounded-3 shadow-sm">
+              ARMA TU ITINERARIO AQUÍ
+            </button>
+          </div>
+
+          <!-- ESTADO 2: TARJETA AZUL -->
+          <div class="info-card-blue p-4 shadow-lg text-start">
+            <h4 class="fw-bold mb-2">{{ selectedPlaceFromMap?.name || 'Cargando...' }}</h4>
+            <hr class="border-white opacity-100 mb-3">
+            <p class="small text-white" style="line-height: 1.6;">
+              {{ selectedPlaceFromMap?.description || 'Descripción detallada de este lugar turístico. Explora sus hermosas vistas y su gran historia en Cochabamba.' }}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <h4 class="fw-bold text-traveling-orange mb-5 text-uppercase">Lugares mejor calificados</h4>
+
+    
+    <!-- Iteramos sobre tu nueva variable placesTop -->
+    @for (place of placesTop; track place.id; let i = $index) {
+      <!-- SI ES PAR: Tarjeta Azul Oscuro (Imagen Izquierda) -->
+      @if (i % 2 === 0) {
+        <div class="card border-0 custom-card-blue text-white shadow mb-5" (click)="goToDetail(place.id)" style="cursor: pointer;">
+          <div class="row gx-5 align-items-center">
+            <div class="col-md-6 position-relative z-1 text-center">
+              <!-- Asume que tu Place tiene una propiedad imageUrl -->
+              <img [src]="place.imageUrl" 
+                  class="img-fluid tilted-img-left shadow-lg" 
+                  [alt]="place.name">
+            </div>
+            <div class="col-md-6 p-4 p-md-5 ps-lg-5">
+              <h3 class="fw-bold">{{ place.name }},<br>{{ place.city?.name }}</h3>
+              
+              <div class="text-white fs-5 mb-3">
+              <!-- Iteramos del 1 al 5 para crear las 5 posiciones de estrellas -->
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                
+                @if (place.rating >= star) {
+                  <i class="bi bi-star-fill fs-2"></i> <!-- Estrella completa -->
+                } @else if (place.rating >= star - 0.5) {
+                  <i class="bi bi-star-half fs-2"></i> <!-- Media estrella -->
+                } @else {
+                  <i class="bi bi-star fs-2"></i>      <!-- Estrella vacía -->
+                }
+                
+              }
+              <span class="ms-2 fs-6">({{ place.rating }})</span>
+            </div>
+              
+              <p class="fw-bold small mb-2 text-uppercase">Mejor reseña:</p>
+              <div class="review-bubble bg-white text-dark p-3 shadow-sm">
+                <!-- Asume que el backend te manda la mejor reseña en este objeto -->
+                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <div class="text-end text-muted" style="font-size: 0.75rem;">
+                  Por {{ bestReviews[place.id]?.user?.userName || 'Anónimo' }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } 
+      
+      <!-- SI ES IMPAR: Tarjeta Melocotón (Imagen Derecha) -->
+      @else {
+        <div class="card border-0 custom-card-peach shadow mb-5" (click)="goToDetail(place.id)" style="cursor: pointer;">
+          <div class="row gx-5 align-items-center flex-md-row-reverse">
+            <div class="col-md-6 position-relative z-1 text-center">
+              <img [src]="place.imageUrl" 
+                  class="img-fluid tilted-img-right shadow-lg" 
+                  [alt]="place.name">
+            </div>
+            <div class="col-md-6 p-4 p-md-5 pe-lg-5">
+              <h3 class="fw-bold text-traveling-blue">{{ place.name }},<br>{{ place.city?.name }}</h3>
+              
+              <div class="text-traveling-blue fs-5 mb-3">
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                
+                @if (place.rating >= star) {
+                  <i class="bi bi-star-fill fs-2"></i>
+                } @else if (place.rating >= star - 0.5) {
+                  <i class="bi bi-star-half fs-2"></i>
+                } @else {
+                  <i class="bi bi-star fs-2"></i>
+                }
+                
+              }
+              <span class="ms-2 fs-6 fw-bold">({{ place.rating }})</span>
+            </div>
+              
+              <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">Mejor reseña:</p>
+              <div class="review-bubble bg-white text-dark p-3 shadow-sm">
+                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <div class="text-end text-muted" style="font-size: 0.75rem;">
+                  Por {{ bestReviews[place.id]?.user?.userName || 'Anónimo' }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    } @empty {
+      <div class="alert alert-info text-center mt-4">
+        Aún no hay lugares destacados para este departamento.
+      </div>
+    }
+    @if (places.length === 0) {
+      <div class="alert alert-info text-center mt-4">
+        No hay lugares registrados en este departamento.
+      </div>
+    }
+  }
+</main>
+
+<app-footer></app-footer>
