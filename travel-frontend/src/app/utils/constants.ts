@@ -64,6 +64,7 @@ export const CONSTANTS = {
     CITIES: '/api/cities',
     PLACES: '/api/places',
     USERS: '/api/users',
+    REVIEWS: '/api/reviews',
     LOGIN: '/api/login',
     LOGS: '/api/admin/logs',
     FAVORITES: '/api/favorites'

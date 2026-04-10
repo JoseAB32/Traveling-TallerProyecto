@@ -6,6 +6,8 @@ import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { Place } from '../place';
 import { CommonModule} from '@angular/common';
+import { Review } from '../review';
+import { ReviewService } from '../review.service';
 
 @Component({
   selector: 'app-department',
@@ -21,7 +23,10 @@ export class DepartmentComponent implements OnInit {
   loading: boolean = true;
   loadingTop: boolean = true;
   selectedPlaceFromMap: any = null;
+  bestReviews: { [placeId: number]: Review | undefined } = {};
   private placeService = inject(PlaceService);
+  private reviewService = inject(ReviewService);
+
 
   constructor(
     private route: ActivatedRoute,
@@ -42,16 +47,30 @@ export class DepartmentComponent implements OnInit {
         }
       });
 
-      this.placeService.getTopPlacesByDepartment(this.departmentId).subscribe({
-        next: (data: Place[]) => {
-          this.placesTop = data;
-          this.loadingTop = false;
-        },
-        error: (err) => {
-          console.error('Error cargando lugares', err);
-          this.loadingTop = false;
-          }
+
+    this.placeService.getTopPlacesByDepartment(this.departmentId).subscribe({
+      next: (data: Place[]) => {
+        this.placesTop = data;
+        this.loadingTop = false;
+
+        // 2. MAGIA AQUÍ: Apenas llegan los lugares, pedimos sus reseñas
+        this.placesTop.forEach(place => {
+          this.reviewService.getTopReviewByPlaceId(place.id).subscribe({
+            next: (review: Review) => {
+              if (review) {
+                // Guardamos la reseña en el diccionario usando el ID del lugar
+                this.bestReviews[place.id] = review; 
+              }
+            },
+            error: (err) => console.error('Error cargando reseña para lugar', place.id, err)
+          });
         });
+      },
+      error: (err) => {
+        console.error('Error cargando lugares', err);
+        this.loadingTop = false;
+      }
+    });
 
   }
 
