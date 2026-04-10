@@ -20,6 +20,7 @@ export class DepartmentComponent implements OnInit {
   placesTop: any[] = [];
   loading: boolean = true;
   loadingTop: boolean = true;
+  selectedPlaceFromMap: any = null;
   private placeService = inject(PlaceService);
 
   constructor(
@@ -56,5 +57,9 @@ export class DepartmentComponent implements OnInit {
 
   goToDetail(id: number) {
     this.router.navigate(['/place', id]);
+  }
+
+  onMapInteraction(place: any) {
+    this.selectedPlaceFromMap = place;
   }
 }

@@ -100,6 +100,58 @@ main.container {
   padding-bottom: 50px !important; 
 }
 
+/* --- ANIMACIONES DE LA TARJETA DEL MAPA --- */
+
+/* 1. Contenedor Mágico (Superpone los elementos) */
+.content-switcher {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+}
+
+/* 2. Propiedades compartidas: Ambas cajas viven en la misma celda (1,1) */
+.default-content, .info-card-blue {
+  grid-column: 1;
+  grid-row: 1;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Transición muy fluida */
+}
+
+/* Tarjeta azul (Ajustes visuales estáticos) */
+.info-card-blue {
+  background-color: #1a6b9a;
+  color: white;
+  border-radius: 12px;
+}
+
+/* --- ESTADO INICIAL (No hay nada seleccionado en el mapa) --- */
+.default-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.info-card-blue {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(30px); /* La tarjeta azul espera oculta un poco a la derecha */
+}
+
+/* --- ESTADO ACTIVO (Cuando pasas el ratón por un pin) --- */
+/* El texto por defecto se desvanece y flota hacia arriba */
+.content-switcher.show-card .default-content {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px); 
+}
+
+/* La tarjeta azul aparece y se desliza hacia el centro */
+.content-switcher.show-card .info-card-blue {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0); 
+}
+
 /* --- RESPONSIVIDAD (Móviles) --- */
 @media (max-width: 768px) {
   .tilted-img-left, .tilted-img-right {

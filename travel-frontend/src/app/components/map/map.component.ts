@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import * as L from 'leaflet';
 //Para que arregle Leaflet
 const iconRetinaUrl = 'marker-icon-2x.png';
@@ -25,6 +25,7 @@ L.Marker.prototype.options.icon = iconDefault;
 })
 export class MapComponent implements AfterViewInit {
   @Input() places: any[] = []; // Lista de los lugares
+  @Output() placeSelected = new EventEmitter<any>(); // Evento para enviar el lugar seleccionado al componente padre
   private map: any;
 
   ngAfterViewInit(): void {
@@ -50,14 +51,30 @@ export class MapComponent implements AfterViewInit {
           const latLng: L.LatLngTuple = [place.latitude, place.longitude];
           
           // Crea el pin y el popup con la información
-          L.marker(latLng)
-            .addTo(this.map)
-             .bindPopup(`
-               <b>${place.name}</b><br>
-               ${place.address}<br>
-               ${place.rating}
-             `);
-          bounds.push(latLng); // Guarda las coordenadas
+          const marker = L.marker(latLng).addTo(this.map);
+
+          // 3. Prepara el contenido del Popup
+          const popupContent = `
+            <b>${place.name}</b><br>
+            ${place.address}<br>
+            ⭐ ${place.rating}
+          `;
+
+          // 4. Bindea el popup pero no dejes que el clic lo maneje solo
+          marker.bindPopup(popupContent);
+
+          // 5. Agrega los eventos de HOVER
+          marker.on('mouseover', (e) => {
+            marker.openPopup(); // 'this' hace referencia al marcador
+            this.placeSelected.emit(place);
+          });
+
+          marker.on('mouseout', (e) => {
+            marker.closePopup();
+            this.placeSelected.emit(null);
+          });
+
+          bounds.push(latLng);
         }
       });
 

@@ -11,21 +11,44 @@
     </div>
   }
 
-  @if (!loadingTop) {
+  @if (!loading) {
     <div class="row align-items-center mb-5 pb-4">
+  
+      <!-- Izquierda: El Mapa -->
       <div class="col-lg-6 mb-4 mb-lg-0">
         <div class="map-wrapper shadow-sm border rounded p-2 bg-white">
-           <app-map [places]="places"></app-map>
+          <!-- 1. Escuchamos el evento (placeInteracted) del hijo -->
+          <app-map [places]="places" (placeSelected)="onMapInteraction($event)"></app-map>
         </div>
       </div>
       
+      <!-- Derecha: Contenido Dinámico con Animaciones Suaves -->
       <div class="col-lg-6 text-center px-lg-5">
-        <h3 class="fw-bold mb-4" style="color: #000;">
-          Explora los diferentes lugares turísticos de Cochabamba o empieza a armar tu itinerario para visitar Cochabamba.
-        </h3>
-        <button class="btn btn-traveling-orange btn-lg px-4 fw-bold rounded-3 shadow-sm">
-          ARMA TU ITINERARIO AQUÍ
-        </button>
+        
+        <!-- Contenedor que maneja el cambio de estados -->
+        <div class="content-switcher" [class.show-card]="selectedPlaceFromMap">
+          
+          <!-- ESTADO 1: TEXTO POR DEFECTO -->
+          <div class="default-content">
+            <h3 class="fw-bold mb-4" style="color: #000;">
+              Explora los diferentes lugares turísticos de Cochabamba o empieza a armar tu itinerario para visitar Cochabamba.
+            </h3>
+            <button class="btn btn-traveling-orange btn-lg px-4 fw-bold rounded-3 shadow-sm">
+              ARMA TU ITINERARIO AQUÍ
+            </button>
+          </div>
+
+          <!-- ESTADO 2: TARJETA AZUL -->
+          <div class="info-card-blue p-4 shadow-lg text-start">
+            <h4 class="fw-bold mb-2">{{ selectedPlaceFromMap?.name || 'Cargando...' }}</h4>
+            <hr class="border-white opacity-100 mb-3">
+            <p class="small text-white" style="line-height: 1.6;">
+              {{ selectedPlaceFromMap?.description || 'Descripción detallada de este lugar turístico. Explora sus hermosas vistas y su gran historia en Cochabamba.' }}
+            </p>
+          </div>
+
+        </div>
+
       </div>
     </div>
 
