@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription} from 'rxjs';
-import { Place } from '../../place';
+import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
 import { FEATURES } from '../../features/features';
 

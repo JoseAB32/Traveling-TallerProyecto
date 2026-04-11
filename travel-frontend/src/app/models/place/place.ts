@@ -1,4 +1,4 @@
-import { City } from './city';
+import { City } from '../city/city';
 
 export class Place {
     id: number = 0; 

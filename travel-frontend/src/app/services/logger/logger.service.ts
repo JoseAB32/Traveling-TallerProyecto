@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Logger } from '../../logger';
+import { Logger } from '../../models/logger/logger';
 import { CONSTANTS } from '../../utils/constants';
 
 @Injectable({

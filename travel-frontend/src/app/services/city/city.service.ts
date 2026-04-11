@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
-import { City } from '../../city';
+import { City } from '../../models/city/city';
 import { CONSTANTS } from '../../utils/constants';
 
 @Injectable({

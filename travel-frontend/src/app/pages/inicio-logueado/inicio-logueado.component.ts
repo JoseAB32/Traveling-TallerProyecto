@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Place } from '../../place';
-import { PlaceService } from '../../place.service';
+import { Place } from '../../models/place/place';
+import { PlaceService } from '../../services/place/place.service';
 import { HeaderComponent } from "../../components/header/header.component";
 import { FooterComponent } from "../../components/footer/footer.component";
 import { Router } from '@angular/router';

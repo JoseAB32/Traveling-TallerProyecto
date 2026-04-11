@@ -4,9 +4,9 @@ import { PlaceService } from '../../services/place/place.service';
 import { MapComponent } from '../../components/map/map.component'
 import { HeaderComponent } from "../../components/header/header.component";
 import { FooterComponent } from "../../components/footer/footer.component";
-import { Place } from '../../place';
+import { Place } from '../../models/place/place';
 import { CommonModule} from '@angular/common';
-import { Review } from '../../review';
+import { Review } from '../../models/review/review';
 import { ReviewService } from '../../services/review/review.service';
 
 @Component({

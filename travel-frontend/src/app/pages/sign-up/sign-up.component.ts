@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../user';
+import { User } from '../../models/user/user';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../../services/user/user.service';
 import { Router, RouterLink } from '@angular/router';
 import { NgForOf, NgIf } from '@angular/common';
 import { CityService } from '../../services/city/city.service';
-import { City } from '../../city';
+import { City } from '../../models/city/city';
 import { CONSTANTS } from '../../utils/constants';
 
 @Component({
