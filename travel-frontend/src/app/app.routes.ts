@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
-import { InicioLogueadoComponent } from './inicio-logueado/inicio-logueado.component';
-import { LandingComponent } from './landing/landing.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
-import { LoginComponent } from './login/login.component';
-import { WishlistComponent} from './wishlist/wishlist.component'
+import { InicioLogueadoComponent } from './pages/inicio-logueado/inicio-logueado.component';
+import { LandingComponent } from './pages/landing/landing.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { LoginComponent } from './pages//login/login.component';
+import { WishlistComponent} from './pages/wishlist/wishlist.component'
 import { authGuard } from './guards/auth.guard';
 import { SuccessSignupComponent } from './components/success-signup/success-signup.component';
-import { SearchPlacesComponent } from './search-places/search-places.component';
+import { SearchPlacesComponent } from './pages//search-places/search-places.component';
 import { adminGuard } from './guards/admin.guard';
-import { AdminViewComponent } from './admin-view/admin-view.component';
-import { DepartmentComponent } from './department/department.component'
+import { AdminViewComponent } from './pages/admin-view/admin-view.component';
+import { DepartmentComponent } from './pages//department/department.component'
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   {
@@ -23,7 +23,7 @@ export const routes: Routes = [
   { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
   {
     path: 'place/:id',
-    loadComponent: () => import('./place-detail/place-detail.component')
+    loadComponent: () => import('./pages/place-detail/place-detail.component')
       .then(m => m.PlaceDetailComponent),
     canActivate: [authGuard]
   },

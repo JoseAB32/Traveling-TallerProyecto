@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../user';
+import { User } from '../../user';
 import { FormsModule, NgForm } from '@angular/forms';
-import { UserService } from '../user.service';
+import { UserService } from '../../user.service';
 import { Router, RouterLink } from '@angular/router';
 import { NgForOf, NgIf } from '@angular/common';
-import { CityService } from '../city.service';
-import { City } from '../city';
-import { CONSTANTS } from '../utils/constants';
+import { CityService } from '../../city.service';
+import { City } from '../../city';
+import { CONSTANTS } from '../../utils/constants';
 
 @Component({
   selector: 'app-sign-up',

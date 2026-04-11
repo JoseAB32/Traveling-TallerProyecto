@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Place } from '../place';
-import { PlaceService } from '../place.service';
-import { HeaderComponent } from "../components/header/header.component";
-import { FooterComponent } from "../components/footer/footer.component";
+import { Place } from '../../place';
+import { PlaceService } from '../../place.service';
+import { HeaderComponent } from "../../components/header/header.component";
+import { FooterComponent } from "../../components/footer/footer.component";
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 

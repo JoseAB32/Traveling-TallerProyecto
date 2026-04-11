@@ -1,18 +1,18 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { PlaceService } from '../place.service';
-import { MapComponent } from '../components/map/map.component'
-import { HeaderComponent } from "../components/header/header.component";
-import { FooterComponent } from "../components/footer/footer.component";
-import { Place } from '../place';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PlaceService } from '../../place.service';
+import { MapComponent } from '../../components/map/map.component'
+import { HeaderComponent } from "../../components/header/header.component";
+import { FooterComponent } from "../../components/footer/footer.component";
+import { Place } from '../../place';
 import { CommonModule} from '@angular/common';
-import { Review } from '../review';
-import { ReviewService } from '../review.service';
+import { Review } from '../../review';
+import { ReviewService } from '../../review.service';
 
 @Component({
   selector: 'app-department',
   standalone: true,
-  imports: [MapComponent, FooterComponent, HeaderComponent, CommonModule, RouterLink],
+  imports: [MapComponent, FooterComponent, HeaderComponent, CommonModule],
   templateUrl: './department.component.html',
   styleUrl: './department.component.css'
 })

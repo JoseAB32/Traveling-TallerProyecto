@@ -2,11 +2,11 @@ import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { HeaderComponent } from '../components/header/header.component';
-import { FooterComponent } from '../components/footer/footer.component';
-import { LoggerService } from '../logger.service';
-import { Logger } from '../logger';
-import { CONSTANTS } from '../utils/constants';
+import { HeaderComponent } from '../../components/header/header.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { LoggerService } from '../../logger.service';
+import { Logger } from '../../logger';
+import { CONSTANTS } from '../../utils/constants';
 
 @Component({
   selector: 'app-admin-view',
