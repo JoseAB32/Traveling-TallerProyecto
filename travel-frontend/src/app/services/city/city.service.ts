@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
-import { City } from './city';
-import { CONSTANTS } from './utils/constants'; // 👈 IMPORT CORRECTO CASO 2
+import { City } from '../../city';
+import { CONSTANTS } from '../../utils/constants';
 
 @Injectable({
   providedIn: 'root'

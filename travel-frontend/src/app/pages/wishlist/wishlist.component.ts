@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { HeaderComponent } from "../../components/header/header.component";
 import { FooterComponent } from "../../components/footer/footer.component";
 import { PlaceCardComponent } from '../../components/place-card/place-card.component';
-import { PlaceService } from '../../place.service';
+import { PlaceService } from '../../services/place/place.service';
 import { Subscription, forkJoin } from 'rxjs';
 
 @Component({

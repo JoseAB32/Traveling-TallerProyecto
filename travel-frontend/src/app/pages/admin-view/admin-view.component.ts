@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { LoggerService } from '../../logger.service';
+import { LoggerService } from '../../services/logger/logger.service';
 import { Logger } from '../../logger';
 import { CONSTANTS } from '../../utils/constants';
 

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription} from 'rxjs';
 import { Place } from '../../place';
-import { PlaceService } from '../../place.service';
+import { PlaceService } from '../../services/place/place.service';
 import { FEATURES } from '../../features/features';
 
 @Component({
