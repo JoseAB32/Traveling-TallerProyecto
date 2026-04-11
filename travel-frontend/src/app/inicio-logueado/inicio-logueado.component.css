@@ -73,6 +73,21 @@
     top: 234.5px;
 }
 
+.tooltip {
+  position: fixed;
+  background: var(--atomic-tangerine);
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 1rem;
+  z-index: 999999;
+  pointer-events: none;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  font-weight: 700;
+}
+
 .texto-container {
     width: 40%;
 }
