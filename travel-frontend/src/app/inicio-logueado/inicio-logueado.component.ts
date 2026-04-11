@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-inicio-logueado',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, ],
+  imports: [CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './inicio-logueado.component.html',
   styleUrl: './inicio-logueado.component.css'
 })
@@ -99,5 +99,9 @@ export class InicioLogueadoComponent implements OnInit {
   getStarsArray(rating: number): boolean[] {
     const score = Math.max(0, Math.min(Math.floor(rating), 5));
     return Array(5).fill(false).map((_, i) => i < score);
+  }
+
+  goToDepartment(id: number) {
+    this.router.navigate(['/department', id]);
   }
 }

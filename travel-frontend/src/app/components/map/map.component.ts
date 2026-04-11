@@ -26,6 +26,7 @@ L.Marker.prototype.options.icon = iconDefault;
 export class MapComponent implements AfterViewInit {
   @Input() places: any[] = []; // Lista de los lugares
   @Output() placeSelected = new EventEmitter<any>(); // Evento para enviar el lugar seleccionado al componente padre
+  @Output() placeClicked = new EventEmitter<any>();
   private map: any;
 
   ngAfterViewInit(): void {
@@ -72,6 +73,10 @@ export class MapComponent implements AfterViewInit {
           marker.on('mouseout', (e) => {
             marker.closePopup();
             this.placeSelected.emit(null);
+          });
+
+          marker.on('click', (e) => {
+            this.placeClicked.emit(place);
           });
 
           bounds.push(latLng);

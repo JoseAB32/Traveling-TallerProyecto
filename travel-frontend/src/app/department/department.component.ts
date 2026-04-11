@@ -23,6 +23,7 @@ export class DepartmentComponent implements OnInit {
   loading: boolean = true;
   loadingTop: boolean = true;
   selectedPlaceFromMap: any = null;
+  clickedPlaceFromMap: any = null;
   bestReviews: { [placeId: number]: Review | undefined } = {};
   private placeService = inject(PlaceService);
   private reviewService = inject(ReviewService);
@@ -80,5 +81,10 @@ export class DepartmentComponent implements OnInit {
 
   onMapInteraction(place: any) {
     this.selectedPlaceFromMap = place;
+  }
+
+  onMapClicked(place: any) {
+    this.clickedPlaceFromMap = place;
+    this.router.navigate(['/place', this.clickedPlaceFromMap.id]);
   }
 }

@@ -18,7 +18,7 @@
       <div class="col-lg-6 mb-4 mb-lg-0">
         <div class="map-wrapper shadow-sm border rounded p-2 bg-white">
           <!-- 1. Escuchamos el evento (placeInteracted) del hijo -->
-          <app-map [places]="places" (placeSelected)="onMapInteraction($event)"></app-map>
+          <app-map [places]="places" (placeSelected)="onMapInteraction($event)" (placeClicked)="onMapClicked($event)"></app-map>
         </div>
       </div>
       
