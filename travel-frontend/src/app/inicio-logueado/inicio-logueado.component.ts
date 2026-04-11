@@ -5,11 +5,12 @@ import { PlaceService } from '../place.service';
 import { HeaderComponent } from "../header/header.component";
 import { FooterComponent } from "../footer/footer.component";
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-inicio-logueado',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, ],
+  imports: [CommonModule, HeaderComponent, FooterComponent, NgIf],
   templateUrl: './inicio-logueado.component.html',
   styleUrl: './inicio-logueado.component.css'
 })
@@ -32,6 +33,15 @@ export class InicioLogueadoComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  hoverDepto: string = '';
+  tooltipX: number = 0;
+  tooltipY: number = 0;
+
+  onMouseMove(event: MouseEvent): void {
+    this.tooltipX = event.clientX + 10;
+    this.tooltipY = event.clientY + 10;
   }
 
   get carouselPlaces(): Place[] {
@@ -99,5 +109,9 @@ export class InicioLogueadoComponent implements OnInit {
   getStarsArray(rating: number): boolean[] {
     const score = Math.max(0, Math.min(Math.floor(rating), 5));
     return Array(5).fill(false).map((_, i) => i < score);
+  }
+
+  goToDepartment(id: number) {
+    this.router.navigate(['/department', id]);
   }
 }

@@ -11,11 +11,85 @@
 }
 
 .mapa-container {
-    width: 55%;
+    width: 60%;
+    height: 820px;
+    position: relative;
+}
+
+.mapa-container svg {
+    position: absolute;
+}
+
+.mapa-container svg path {
+    color: #fce1c5;
+    transition: all 0.7s ease;
+}
+
+.mapa-container svg path:hover {
+    color: var(--peach-glow);
+}
+
+.pando {
+    left: 0;
+}
+
+.beni {
+    left: 129px;
+    top: 46px;
+}
+
+.lapaz {
+    left: 7px;
+    top: 141px;
+}
+
+.oruro {
+    left: 39.5px;
+    top: 481.5px;
+}
+
+.potosi {
+    left: 66.5px;
+    top: 508.4px;
+}
+
+.cochabamba {
+    left: 165px;
+    top: 376px;
+}
+
+.chuquisaca {
+    left: 244.7px;
+    top: 540.3px;
+}
+
+.tarija {
+    left: 271px;
+    top: 696.5px;
+}
+
+.santacruz {
+    left: 295.5px;
+    top: 234.5px;
+}
+
+.tooltip {
+  position: fixed;
+  background: var(--atomic-tangerine);
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 1rem;
+  z-index: 999999;
+  pointer-events: none;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  font-weight: 700;
 }
 
 .texto-container {
-    width: 45%;
+    width: 40%;
 }
 
 .mapa-texto {
