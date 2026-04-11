@@ -5,8 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PlaceService } from '../place.service';
 import { Place } from '../place';
 
-import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../components/header/header.component';
+import { FooterComponent } from '../components/footer/footer.component';
 
 @Component({
   selector: 'app-place-detail',

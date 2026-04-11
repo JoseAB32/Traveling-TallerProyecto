@@ -5,7 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LoginComponent } from './login/login.component';
 import { WishlistComponent} from './wishlist/wishlist.component'
 import { authGuard } from './guards/auth.guard';
-import { SuccessSignupComponent } from './success-signup/success-signup.component';
+import { SuccessSignupComponent } from './components/success-signup/success-signup.component';
 import { SearchPlacesComponent } from './search-places/search-places.component';
 import { adminGuard } from './guards/admin.guard';
 import { AdminViewComponent } from './admin-view/admin-view.component';
