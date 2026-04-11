@@ -23,6 +23,9 @@ export class PlaceDetailComponent implements OnInit {
   images: string[] = [];
   currentImageIndex = 0;
 
+  // ❤️ FAVORITOS
+  isFavorite: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private placeService: PlaceService
@@ -36,7 +39,6 @@ export class PlaceDetailComponent implements OnInit {
         next: (data) => {
           this.place = data;
 
-          // 🔥 USAMOS LA MISMA IMAGEN 3 VECES PARA EL CARRUSEL
           this.images = [
             data.imageUrl,
             data.imageUrl,
@@ -44,12 +46,40 @@ export class PlaceDetailComponent implements OnInit {
           ];
 
           this.loading = false;
+
+          // 🔥 verificar si ya es favorito
+          this.checkIfFavorite();
         },
         error: () => {
           this.loading = false;
         }
       });
     }
+  }
+
+  // 🔥 VERIFICAR SI YA ESTÁ EN WISHLIST
+  checkIfFavorite() {
+    if (!this.place) return;
+
+    const wishList: number[] = JSON.parse(localStorage.getItem('wishList') || '[]');
+    this.isFavorite = wishList.includes(this.place.id);
+  }
+
+  // ❤️ TOGGLE FAVORITO
+  toggleFavorite() {
+    if (!this.place) return;
+
+    let wishList: number[] = JSON.parse(localStorage.getItem('wishList') || '[]');
+
+    if (this.isFavorite) {
+      wishList = wishList.filter(id => id !== this.place!.id);
+      this.isFavorite = false;
+    } else {
+      wishList.push(this.place.id);
+      this.isFavorite = true;
+    }
+
+    localStorage.setItem('wishList', JSON.stringify(wishList));
   }
 
   nextImage() {
