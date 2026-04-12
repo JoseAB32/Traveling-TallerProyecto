@@ -108,7 +108,7 @@ Abre una **nueva terminal**, navega a la carpeta del frontend y ejecuta:
 
 
 ## 👥 Autores
-* Canavriri Zoto VanessaArias Balderrama Jose Maria
-* Arias Balderrama Jose Maria
-* Mateo Gandarillas
-* Marcelo Navia
+* Vanessa Canavriri Zoto 
+* Jose Maria Arias Balderrama 
+* Mateo Sebastian Gandarillas Navia
+* Marcelo David Navia Rocabado
