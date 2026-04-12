@@ -8,6 +8,7 @@ import { Place } from '../../models/place/place';
 import { CommonModule} from '@angular/common';
 import { Review } from '../../models/review/review';
 import { ReviewService } from '../../services/review/review.service';
+import { FeatureService } from '../../services/features/feature.service';
 
 @Component({
   selector: 'app-department',
@@ -27,6 +28,8 @@ export class DepartmentComponent implements OnInit {
   bestReviews: { [placeId: number]: Review | undefined } = {};
   private placeService = inject(PlaceService);
   private reviewService = inject(ReviewService);
+  featureService = inject(FeatureService);
+  features: any = {};
 
 
   constructor(
@@ -35,6 +38,7 @@ export class DepartmentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.featureService.getFeatures().subscribe((data: any) => this.features = data);
     this.departmentId = Number(this.route.snapshot.paramMap.get('id'));
 
     this.placeService.getPlacesByDepartment(this.departmentId).subscribe({
@@ -85,6 +89,8 @@ export class DepartmentComponent implements OnInit {
 
   onMapClicked(place: any) {
     this.clickedPlaceFromMap = place;
-    this.router.navigate(['/place', this.clickedPlaceFromMap.id]);
+    if (this.features.pinRedirection) { 
+      this.router.navigate(['/place', this.clickedPlaceFromMap.id]);
+    }
   }
 }
