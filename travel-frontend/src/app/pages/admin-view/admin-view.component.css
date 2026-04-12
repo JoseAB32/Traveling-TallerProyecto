@@ -16,15 +16,15 @@
 
 .btn-traveling:hover {
     background-color: #00365d;
-    color: #ff9800; /* Naranja Traveling */
+    color: #ff9800;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-/* Estilo para los TABS del mini-menu */
 .nav-tabs .nav-link {
     color: #6c757d;
     border: none;
     padding: 12px 25px;
+    transition: all 0.2s;
 }
 
 .nav-tabs .nav-link:hover {
@@ -37,18 +37,27 @@
     background-color: transparent !important;
 }
 
-/* Tabla y tarjetas */
 .table thead th {
-    font-weight: 500;
+    font-weight: 600;
     border: none;
     padding: 15px;
 }
 
-.card {
-    border-radius: 12px;
+.form-switch .form-check-input {
+    width: 3.5rem;
+    height: 1.75rem;
+    cursor: pointer;
 }
 
-/* Modal personalizado */
-.modal-content {
+.form-switch .form-check-input:checked {
+    background-color: #004a80;
+    border-color: #004a80;
+}
+
+.card {
     border-radius: 15px;
+}
+
+.modal-content {
+    border-radius: 20px;
 }
