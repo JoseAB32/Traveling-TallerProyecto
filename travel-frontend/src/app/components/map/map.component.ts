@@ -1,5 +1,6 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, AfterViewInit, Output, EventEmitter, Inject, inject } from '@angular/core';
 import * as L from 'leaflet';
+import { FeatureService } from '../../services/features/feature.service';
 //Para que arregle Leaflet
 const iconRetinaUrl = 'marker-icon-2x.png';
 const iconUrl = 'marker-icon.png';
@@ -29,8 +30,12 @@ export class MapComponent implements AfterViewInit {
   @Output() placeClicked = new EventEmitter<any>();
   private map: any;
 
+  featureService = inject(FeatureService);
+  features: any = {};
+
   ngAfterViewInit(): void {
     this.initMap();
+    this.featureService.getFeatures().subscribe((data: any) => this.features = data);
   }
 
   private initMap(): void {
@@ -76,7 +81,11 @@ export class MapComponent implements AfterViewInit {
           });
 
           marker.on('click', (e) => {
-            this.placeClicked.emit(place);
+            if (this.features.pinRedirection) {
+              this.placeClicked.emit(place);
+            } else {
+              console.log('Click bloqueado: PinRedirection está desactivado.');
+            }
           });
 
           bounds.push(latLng);

@@ -1,7 +1,6 @@
 <app-header></app-header>
 
 <main class="container my-5 min-vh-100">
-  <!-- TÍTULO DINÁMICO -->
   <div class="row mb-4">
     <div class="col">
       <h2 class="text-traveling">
@@ -10,53 +9,53 @@
     </div>
   </div>
 
-  <!-- MINI MENÚ (TABS) -->
   <ul class="nav nav-tabs mb-4 border-bottom-0">
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold" 
               [class.active-tab]="activeTab === 'logs'"
               (click)="activeTab = 'logs'">
-        <i class="bi bi-list-columns-reverse"></i> Logs
+        <i class="bi bi-list-columns-reverse"></i> Logs de Sistema
       </button>
     </li>
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold" 
               [class.active-tab]="activeTab === 'toggles'"
               (click)="activeTab = 'toggles'">
-        <i class="bi bi-toggle-on"></i> Toggles
+        <i class="bi bi-toggle-on"></i> Feature Toggles
       </button>
     </li>
   </ul>
 
-  <!-- CONTENIDO DE LOGS -->
   @if (activeTab === 'logs') {
     <div class="card shadow-sm mb-4 border-0">
       <div class="card-body bg-light rounded">
         <div class="row g-3 align-items-end">
           <div class="col-md-3">
-            <label class="form-label fw-bold">Módulo</label>
+            <label class="form-label fw-bold small">Módulo</label>
             <select class="form-select" [(ngModel)]="filterModule">
-              <option value="">Seleccionar...</option>
+              <option value="">Todos los módulos</option>
               @for (mod of modules; track mod) { <option [value]="mod">{{mod}}</option> }
             </select>
           </div>
           <div class="col-md-2">
-            <label class="form-label fw-bold">Nivel</label>
+            <label class="form-label fw-bold small">Nivel</label>
             <select class="form-select" [(ngModel)]="filterLevel">
-              <option value="">Seleccionar...</option>
+              <option value="">Todos los niveles</option>
               @for (lvl of levels; track lvl) { <option [value]="lvl">{{lvl}}</option> }
             </select>
           </div>
           <div class="col-md-3">
-            <label class="form-label fw-bold">Desde</label>
+            <label class="form-label fw-bold small">Desde</label>
             <input type="datetime-local" class="form-control" [(ngModel)]="startDate">
           </div>
           <div class="col-md-3">
-            <label class="form-label fw-bold">Hasta</label>
+            <label class="form-label fw-bold small">Hasta</label>
             <input type="datetime-local" class="form-control" [(ngModel)]="endDate">
           </div>
           <div class="col-md-1">
-            <button class="btn btn-traveling w-100" (click)="applyFilters()">Filtrar</button>
+            <button class="btn btn-traveling w-100" (click)="applyFilters()">
+              <i class="bi bi-search"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -76,47 +75,77 @@
         <tbody>
           @for (log of logs; track log.id) {
             <tr>
-              <td class="text-nowrap small">{{ log.timestamp | date:'short' }}</td>
+              <td class="text-nowrap small text-muted">{{ log.timestamp | date:'short' }}</td>
               <td><span class="badge bg-secondary opacity-75">{{ log.module }}</span></td>
               <td>
-                <span class="badge" [ngClass]="{'bg-success': log.level === 'INFO', 'bg-warning text-dark': log.level === 'WARN', 'bg-danger': log.level === 'ERROR', 'bg-info text-dark': log.level === 'DEBUG'}">
-                  {{ log.level }}
-                </span>
+                <span class="badge" [ngClass]="{
+                  'bg-success': log.level === 'INFO',
+                  'bg-warning text-dark': log.level === 'WARN',
+                  'bg-danger': log.level === 'ERROR',
+                  'bg-info text-dark': log.level === 'DEBUG'
+                }">{{ log.level }}</span>
               </td>
-              <td class="small">{{ log.message }}</td>
-              <td>{{ log.userId || '---' }}</td>
+              <td class="small w-50">{{ log.message }}</td>
+              <td class="text-muted">{{ log.userId || 'Sistema' }}</td>
             </tr>
           } @empty {
-            <tr><td colspan="5" class="text-center py-5 text-muted">No hay registros para mostrar.</td></tr>
+            <tr><td colspan="5" class="text-center py-5 text-muted">No se encontraron registros.</td></tr>
           }
         </tbody>
       </table>
     </div>
   }
 
-  <!-- CONTENIDO DE TOGGLES -->
   @if (activeTab === 'toggles') {
-    <div class="card p-5 text-center shadow-sm border-0 bg-white">
-      <i class="bi bi-tools display-1 text-muted mb-3"></i>
-      <h3 class="text-muted">Módulo de Toggles</h3>
-      <p>La configuración de interruptores de funcionalidad estará disponible en la próxima versión.</p>
+    <div class="card shadow-sm border-0 bg-white p-4">
+      <div class="d-flex align-items-center mb-4">
+        <h4 class="text-traveling mb-0"><i class="bi bi-sliders"></i> Control de Funcionalidades</h4>
+        <span class="badge bg-info ms-3">Persistencia en JSON</span>
+      </div>
+
+      <div class="list-group list-group-flush border-top">
+        
+        <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
+          <div class="pe-4">
+            <h6 class="mb-1 fw-bold text-dark">Redirección en Pines (PinRedirection)</h6>
+            <p class="small text-muted mb-0">Habilita la navegación automática al hacer clic sobre los marcadores del mapa turístico.</p>
+          </div>
+          <div class="form-check form-switch fs-2">
+            <input class="form-check-input" type="checkbox" role="switch"
+                   [checked]="featuresData['pinRedirection']"
+                   (change)="toggleFeature('pinRedirection')">
+          </div>
+        </div>
+
+        <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
+          <div class="pe-4">
+            <h6 class="mb-1 fw-bold text-dark">Auto-crear Itinerario (AutoCreateItinerary)</h6>
+            <p class="small text-muted mb-0">Permite al sistema generar sugerencias automaticas de viaje basadas en los lugares seleccionados.</p>
+          </div>
+          <div class="form-check form-switch fs-2">
+            <input class="form-check-input" type="checkbox" role="switch"
+                   [checked]="featuresData['autoCreateItinerary']"
+                   (change)="toggleFeature('autoCreateItinerary')">
+          </div>
+        </div>
+
+      </div>
     </div>
   }
 
-  <!-- MODAL DE ERROR (BOOTSTRAP STYLE) -->
   @if (showErrorModal) {
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);">
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.6);">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-          <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Datos incompletos</h5>
+        <div class="modal-content border-0 shadow-lg">
+          <div class="modal-header bg-danger text-white border-0">
+            <h5 class="modal-title"><i class="bi bi-exclamation-circle-fill"></i> Acción requerida</h5>
             <button type="button" class="btn-close btn-close-white" (click)="showErrorModal = false"></button>
           </div>
-          <div class="modal-body py-4">
-            <p class="mb-0 text-center fw-medium">{{ modalMessage }}</p>
+          <div class="modal-body text-center py-4">
+            <p class="fs-5 mb-0">{{ modalMessage }}</p>
           </div>
-          <div class="modal-footer border-0">
-            <button type="button" class="btn btn-secondary px-4" (click)="showErrorModal = false">Entendido</button>
+          <div class="modal-footer border-0 pt-0">
+            <button type="button" class="btn btn-secondary w-100 rounded-pill" (click)="showErrorModal = false">Cerrar</button>
           </div>
         </div>
       </div>
