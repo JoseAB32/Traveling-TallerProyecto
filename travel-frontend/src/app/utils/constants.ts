@@ -6,6 +6,7 @@ interface ApiConstants {
   LOGIN: string;
   LOGS: string;
   FAVORITES: string;
+  FEATURES: string;
 }
 
 interface LandingConstants {
@@ -60,14 +61,15 @@ export const CONSTANTS = {
   } as LandingConstants,
 
   API: {
-    BASE_URL: 'http://localhost:8080',
+    BASE_URL: 'https://traveling-backend-oac4.onrender.com',
     CITIES: '/api/cities',
     PLACES: '/api/places',
     USERS: '/api/users',
     REVIEWS: '/api/reviews',
     LOGIN: '/api/login',
     LOGS: '/api/admin/logs',
-    FAVORITES: '/api/favorites'
+    FAVORITES: '/api/favorites',
+    FEATURES: '/api/features'
   } as ApiConstants,
 
   MESSAGES: {
