@@ -1,3 +1,5 @@
+import { environment } from "../../environments/environment";
+
 interface ApiConstants {
   BASE_URL: string;
   CITIES: string;
@@ -61,7 +63,7 @@ export const CONSTANTS = {
   } as LandingConstants,
 
   API: {
-    BASE_URL: 'https://traveling-backend-oac4.onrender.com',
+    BASE_URL: environment.apiUrl,
     CITIES: '/api/cities',
     PLACES: '/api/places',
     USERS: '/api/users',
