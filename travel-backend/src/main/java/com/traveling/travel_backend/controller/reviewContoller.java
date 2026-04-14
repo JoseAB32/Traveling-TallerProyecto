@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH + AppConstants.REVIEWS_ENDPOINT)
-@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
+@CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
 public class reviewContoller {
     
     @Autowired

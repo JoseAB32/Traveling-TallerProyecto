@@ -10,7 +10,7 @@ import com.traveling.travel_backend.repository.TripItemRepository;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH)
-@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
+@CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
 public class TripItemController {
 
     @Autowired

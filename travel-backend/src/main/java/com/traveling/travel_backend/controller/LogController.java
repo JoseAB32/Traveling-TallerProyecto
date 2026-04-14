@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH + "/admin/logs")
-@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
+@CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
 public class LogController {
 
     public static final Logger log = LoggerFactory.getLogger(LogController.class);

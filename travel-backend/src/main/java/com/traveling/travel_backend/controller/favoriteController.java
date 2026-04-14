@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH + AppConstants.FAVORITES_ENDPOINT)
-@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
+@CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
 public class favoriteController {
 
     public static final Logger log = LoggerFactory.getLogger(favoriteController.class);
