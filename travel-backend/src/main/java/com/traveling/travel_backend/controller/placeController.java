@@ -11,6 +11,8 @@ import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.PlaceRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +57,7 @@ public class placeController {
         return resultPlaces;
     }
 
+    @Operation(summary = "Returns a list of all plcaes")
     @GetMapping
     public List<Place> getAllPlaces() {
         logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando lista completa de lugares - GET /api/places");
