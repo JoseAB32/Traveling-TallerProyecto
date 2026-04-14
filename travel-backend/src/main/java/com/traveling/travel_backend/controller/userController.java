@@ -36,7 +36,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH)
-@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
+@CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
 public class userController {
     
     private static final Logger logger = LoggerFactory.getLogger(userController.class);

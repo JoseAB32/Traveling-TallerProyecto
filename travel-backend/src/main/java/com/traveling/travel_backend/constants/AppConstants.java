@@ -29,6 +29,7 @@ public class AppConstants {
 
     // ==================== CORS ====================
     public static final String CORS_LOCALHOST = "http://localhost:4200";
+    public static final String CORS_NETLIFY = "https://travelingitinerary.netlify.app";
     public static final String CORS_ALL = "*";
 
     // ==================== HTTP STATUS CODES ====================
