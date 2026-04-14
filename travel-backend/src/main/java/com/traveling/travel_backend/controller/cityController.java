@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH)
-@CrossOrigin(origins = AppConstants.CORS_LOCALHOST)
+@CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
 public class cityController {
 
     // LOGGER
