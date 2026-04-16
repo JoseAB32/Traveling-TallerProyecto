@@ -1,0 +1,41 @@
+{ 
+    "header": {
+    },
+    "footer": {
+    },
+    "landing": {
+    },
+    "formLoginAndSignin": {
+        "signIn": {
+            "titleForm": "REGÍSTRATE",
+            "buttonRegistrarse": "REGISTRARSE",
+            "tienesCuenta": "¿Ya tienes una cuenta?",
+            "irLogin": "Iniciar Sesión"
+        },
+        "login": {
+            "titleForm": "INICIAR SESIÓN",
+            "buttonIniciarSesion": "INICIAR SESIÓN",
+            "noTienesCuenta": "¿Aún no tienes una cuenta?",
+            "irRegistro": "Regístrate"
+        },
+        "textoInputs": {
+            "nombreUsuario": "Nombre de usuario",
+            "correo": "Correo electrónico",
+            "contrasena": "Contraseña",
+            "confContrasena": "Confirmar contraseña",
+            "fechaNac": "Fecha de nacimiento",
+            "ciudad": "Ciudad"
+        }
+    },
+    "inicioLogueado": {
+        "mejores_lugares": "LUGARES MEJOR CALIFICADOS",
+        "elige_y_empieza": "Selecciona un departamento y empieza a explorar la magia de cada panorama que ofrece Bolivia, un país lleno de cultura."
+    },
+    "wishlist": {
+    },
+    "placeDetail": {
+    },
+    "adminConfiguration": {
+    }
+}
+

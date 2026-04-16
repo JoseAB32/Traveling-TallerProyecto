@@ -7,11 +7,12 @@ import { NgForOf, NgIf } from '@angular/common';
 import { CityService } from '../../services/city/city.service';
 import { City } from '../../models/city/city';
 import { CONSTANTS } from '../../utils/constants';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [FormsModule, NgForOf, NgIf, RouterLink],
+  imports: [FormsModule, NgForOf, NgIf, RouterLink, TranslocoModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })

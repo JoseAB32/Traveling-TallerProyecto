@@ -3,18 +3,19 @@ import { Router } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CONSTANTS } from '../../utils/constants';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [HeaderComponent,FooterComponent],
+  imports: [HeaderComponent,FooterComponent,TranslocoModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
 export class LandingComponent implements OnInit {
   constants = CONSTANTS;
 
-  constructor (private router: Router) {
+  constructor (private router: Router ) {
   }
 
   ngOnInit(): void {
