@@ -2,6 +2,12 @@
     "header": {
     },
     "footer": {
+        "termsTitle": "Términos y privacidad",
+        "communityRules": "Normas de la comunidad",
+        "terms": "Términos",
+        "privacy": "Privacidad",
+        "about": "Sobre nosotros",
+        "mission": "Misión"
     },
     "landing": {
     },
@@ -26,12 +32,21 @@
             "fechaNac": "Fecha de nacimiento",
             "ciudad": "Ciudad"
         }
+        
     },
     "inicioLogueado": {
         "mejores_lugares": "LUGARES MEJOR CALIFICADOS",
         "elige_y_empieza": "Selecciona un departamento y empieza a explorar la magia de cada panorama que ofrece Bolivia, un país lleno de cultura."
     },
     "wishlist": {
+         "title": "Mis favoritos",
+         "empty": "No tienes lugares en tu lista de favoritos.",
+         "modal": {
+         "title": "Eliminar de favoritos",
+        "message": "¿Estás seguro de que deseas eliminar este lugar de tu lista?",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar"
+        }
     },
     "placeDetail": {
     },

@@ -2,6 +2,12 @@
     "header": {
     },
     "footer": {
+        "termsTitle": "Terms and Privacy",
+        "communityRules": "Community Rules",
+        "terms": "Terms",
+        "privacy": "Privacy",
+        "about": "About Us",
+        "mission": "Mission"
     },
     "landing": {
     },
@@ -26,12 +32,21 @@
             "fechaNac": "Birthdate",
             "ciudad": "City"
         }
+        
     },
     "inicioLogueado": {
         "mejores_lugares": "TOP RATED PLACES",
         "elige_y_empieza": "Select a department and start exploring the magic of each panorama that Bolivia, a country full of culture, has to offer."
     },
     "wishlist": {
+          "title": "My Wishlist",
+          "empty": "You don't have any places in your wishlist.",
+          "modal": {
+          "title": "Remove from Wishlist",
+          "message": "Are you sure you want to remove this place from your list?",
+          "cancel": "Cancel",
+          "confirm": "Remove"
+        }
     },
     "placeDetail": {
     },
