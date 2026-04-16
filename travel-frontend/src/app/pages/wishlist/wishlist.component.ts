@@ -4,17 +4,11 @@ import { FooterComponent } from "../../components/footer/footer.component";
 import { PlaceCardComponent } from '../../components/place-card/place-card.component';
 import { PlaceService } from '../../services/place/place.service';
 import { Subscription, forkJoin } from 'rxjs';
-import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [
-    HeaderComponent,
-    FooterComponent,
-    PlaceCardComponent,
-    TranslocoModule
-  ],
+  imports: [HeaderComponent, FooterComponent, PlaceCardComponent],
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.css'
 })

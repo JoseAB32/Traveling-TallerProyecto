@@ -1,11 +1,11 @@
 <app-header></app-header>
 
 <div class="wishlist-container">
-  <h2 class="page-title">{{ 'wishlist.title' | transloco }}</h2>
+  <h2 class="page-title">TUS LUGARES FAVORITOS</h2>
 
   <div class="list">
 
-    @if (Favoritos && Favoritos.length > 0) {
+    @if (Favoritos != null && Favoritos.length != 0) {
 
       @for (lugar of Favoritos; track lugar.id; let i = $index) {
         <app-place-card 
@@ -18,8 +18,8 @@
     } @else {
 
       <div class="empty-container">
-        <img src="cat-google-maps.gif" alt="Empty wishlist" class="empty-gif">
-        <p>{{ 'wishlist.empty' | transloco }}</p>
+        <img src="cat-google-maps.gif" alt="Cat google maps gif" class="empty-gif">
+        <p>No tienes lugares favoritos aún</p>
       </div>
 
     }
@@ -35,21 +35,17 @@
 
       <div class="modal-header">
         <i class="bi bi-exclamation-triangle-fill warning-icon"></i>
-        <h3>{{ 'wishlist.modal.title' | transloco }}</h3>
+        <h3>¿Quitar de favoritos?</h3>
       </div>
 
       <p>
-        {{ 'wishlist.modal.message' | transloco }}
+        ¿Estás seguro de que deseas eliminar este lugar de tu lista de favoritos?
+        Esta acción no se puede deshacer.
       </p>
 
       <div class="modal-actions">
-        <button class="btn-cancel" (click)="closeConfirmModal()">
-          {{ 'wishlist.modal.cancel' | transloco }}
-        </button>
-
-        <button class="btn-confirm" (click)="confirmDelete()">
-          {{ 'wishlist.modal.confirm' | transloco }}
-        </button>
+        <button class="btn-cancel" (click)="closeConfirmModal()">Cancelar</button>
+        <button class="btn-confirm" (click)="confirmDelete()">Sí, quitar</button>
       </div>
 
     </div>

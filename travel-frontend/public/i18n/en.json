@@ -1,56 +1,93 @@
-{ 
-    "header": {
+{
+  "header": {},
+  "footer": {
+    "termsTitle": "Terms and Privacy",
+    "communityRules": "Community Rules",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "about": "About Us",
+    "mission": "Mission"
+  },
+  "landing": {},
+  "formLoginAndSignin": {
+    "signIn": {
+      "titleForm": "REGISTER",
+      "buttonRegistrarse": "REGISTER",
+      "tienesCuenta": "Do you already have an account?",
+      "irLogin": "Login"
     },
-    "footer": {
-        "termsTitle": "Terms and Privacy",
-        "communityRules": "Community Rules",
-        "terms": "Terms",
-        "privacy": "Privacy",
-        "about": "About Us",
-        "mission": "Mission"
+    "login": {
+      "titleForm": "LOGIN",
+      "buttonIniciarSesion": "LOGIN",
+      "noTienesCuenta": "Don't have an account yet?",
+      "irRegistro": "Register"
     },
-    "landing": {
-    },
-    "formLoginAndSignin": {
-        "signIn": {
-            "titleForm": "REGISTER",
-            "buttonRegistrarse": "REGISTER",
-            "tienesCuenta": "Do you already have an account?",
-            "irLogin": "Login"
-        },
-        "login": {
-            "titleForm": "LOGIN",
-            "buttonIniciarSesion": "LOGIN",
-            "noTienesCuenta": "Don't have an account yet?",
-            "irRegistro": "Register"
-        },
-        "textoInputs": {
-            "nombreUsuario": "Username",
-            "correo": "Email",
-            "contrasena": "Password",
-            "confContrasena": "Confirm Password",
-            "fechaNac": "Birthdate",
-            "ciudad": "City"
-        }
-        
-    },
-    "inicioLogueado": {
-        "mejores_lugares": "TOP RATED PLACES",
-        "elige_y_empieza": "Select a department and start exploring the magic of each panorama that Bolivia, a country full of culture, has to offer."
-    },
-    "wishlist": {
-          "title": "My Wishlist",
-          "empty": "You don't have any places in your wishlist.",
-          "modal": {
-          "title": "Remove from Wishlist",
-          "message": "Are you sure you want to remove this place from your list?",
-          "cancel": "Cancel",
-          "confirm": "Remove"
-        }
-    },
-    "placeDetail": {
-    },
-    "adminConfiguration": {
+    "textoInputs": {
+      "nombreUsuario": "Username",
+      "correo": "Email",
+      "contrasena": "Password",
+      "confContrasena": "Confirm Password",
+      "fechaNac": "Birthdate",
+      "ciudad": "City"
     }
-}
+  },
+  "inicioLogueado": {
+    "mejores_lugares": "TOP RATED PLACES",
+    "elige_y_empieza": "Select a department and start exploring the magic of each panorama that Bolivia has to offer."
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "empty": "You don't have any places in your wishlist.",
+    "modal": {
+      "title": "Remove from Wishlist",
+      "message": "Are you sure you want to remove this place from your list?",
+      "cancel": "Cancel",
+      "confirm": "Remove"
+    }
+  },
+  "placeDetail": {
+    "loading": "Loading place...",
+    "notFound": "Place not found",
 
+    "generalInfo": "General Information",
+    "placeInfo": "Place Information",
+
+    "name": "Place name",
+    "location": "Location",
+    "rating": "Rating",
+    "schedule": "Schedule",
+    "price": "Approximate price",
+    "type": "Place type",
+
+    "places": {
+      "tiwanaku": {
+        "description": "The Spiritual and Political Center of the Tiwanaku Culture has been a World Heritage Site since 2000...",
+        "name": "Tiwanaku",
+        "location": "Tihuanaco",
+        "rating": "★★★★☆",
+        "type": "Cultural"
+      },
+      "uyuni": {
+        "description": "The Salar de Uyuni is one of the most spectacular places in South America...",
+        "name": "Uyuni Salt Flats",
+        "location": "Daniel Campos Province",
+        "rating": "★★★★★",
+        "type": "Natural"
+      },
+      "parqueFamilia": {
+        "description": "The Family Park is a tourist space designed for recreational activities...",
+        "name": "Family Park",
+        "location": "Hamiraya Street",
+        "rating": "★★★☆☆",
+        "type": "Entertainment"
+      },
+      "casaMoneda": {
+        "description": "The National Mint House is a national repository, museum and archive..."
+      },
+      "cristo": {
+        "description": "Christ of the Concord is considered the largest statue of Jesus..."
+      }
+    }
+  },
+  "adminConfiguration": {}
+}

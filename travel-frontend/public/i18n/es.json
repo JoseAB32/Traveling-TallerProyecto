@@ -1,56 +1,93 @@
-{ 
-    "header": {
+{
+  "header": {},
+  "footer": {
+    "termsTitle": "Términos y privacidad",
+    "communityRules": "Normas de la comunidad",
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "about": "Sobre nosotros",
+    "mission": "Misión"
+  },
+  "landing": {},
+  "formLoginAndSignin": {
+    "signIn": {
+      "titleForm": "REGÍSTRATE",
+      "buttonRegistrarse": "REGISTRARSE",
+      "tienesCuenta": "¿Ya tienes una cuenta?",
+      "irLogin": "Iniciar Sesión"
     },
-    "footer": {
-        "termsTitle": "Términos y privacidad",
-        "communityRules": "Normas de la comunidad",
-        "terms": "Términos",
-        "privacy": "Privacidad",
-        "about": "Sobre nosotros",
-        "mission": "Misión"
+    "login": {
+      "titleForm": "INICIAR SESIÓN",
+      "buttonIniciarSesion": "INICIAR SESIÓN",
+      "noTienesCuenta": "¿Aún no tienes una cuenta?",
+      "irRegistro": "Regístrate"
     },
-    "landing": {
-    },
-    "formLoginAndSignin": {
-        "signIn": {
-            "titleForm": "REGÍSTRATE",
-            "buttonRegistrarse": "REGISTRARSE",
-            "tienesCuenta": "¿Ya tienes una cuenta?",
-            "irLogin": "Iniciar Sesión"
-        },
-        "login": {
-            "titleForm": "INICIAR SESIÓN",
-            "buttonIniciarSesion": "INICIAR SESIÓN",
-            "noTienesCuenta": "¿Aún no tienes una cuenta?",
-            "irRegistro": "Regístrate"
-        },
-        "textoInputs": {
-            "nombreUsuario": "Nombre de usuario",
-            "correo": "Correo electrónico",
-            "contrasena": "Contraseña",
-            "confContrasena": "Confirmar contraseña",
-            "fechaNac": "Fecha de nacimiento",
-            "ciudad": "Ciudad"
-        }
-        
-    },
-    "inicioLogueado": {
-        "mejores_lugares": "LUGARES MEJOR CALIFICADOS",
-        "elige_y_empieza": "Selecciona un departamento y empieza a explorar la magia de cada panorama que ofrece Bolivia, un país lleno de cultura."
-    },
-    "wishlist": {
-         "title": "Mis favoritos",
-         "empty": "No tienes lugares en tu lista de favoritos.",
-         "modal": {
-         "title": "Eliminar de favoritos",
-        "message": "¿Estás seguro de que deseas eliminar este lugar de tu lista?",
-        "cancel": "Cancelar",
-        "confirm": "Eliminar"
-        }
-    },
-    "placeDetail": {
-    },
-    "adminConfiguration": {
+    "textoInputs": {
+      "nombreUsuario": "Nombre de usuario",
+      "correo": "Correo electrónico",
+      "contrasena": "Contraseña",
+      "confContrasena": "Confirmar contraseña",
+      "fechaNac": "Fecha de nacimiento",
+      "ciudad": "Ciudad"
     }
-}
+  },
+  "inicioLogueado": {
+    "mejores_lugares": "LUGARES MEJOR CALIFICADOS",
+    "elige_y_empieza": "Selecciona un departamento y empieza a explorar la magia de cada panorama que ofrece Bolivia, un país lleno de cultura."
+  },
+  "wishlist": {
+    "title": "Mis favoritos",
+    "empty": "No tienes lugares en tu lista de favoritos.",
+    "modal": {
+      "title": "Eliminar de favoritos",
+      "message": "¿Estás seguro de que deseas eliminar este lugar de tu lista?",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    }
+  },
+  "placeDetail": {
+    "loading": "Cargando lugar...",
+    "notFound": "Lugar no encontrado",
 
+    "generalInfo": "Información General",
+    "placeInfo": "Información del Lugar",
+
+    "name": "Nombre lugar",
+    "location": "Ubicación del lugar",
+    "rating": "Calificación",
+    "schedule": "Horario",
+    "price": "Precio aproximado",
+    "type": "Tipo de lugar",
+
+    "places": {
+      "tiwanaku": {
+        "description": "El Centro Espiritual y Político de la Cultura Tiwanaku es Patrimonio Mundial desde el año 2000...",
+        "name": "Tiwanaku",
+        "location": "Tihuanaco",
+        "rating": "★★★★☆",
+        "type": "Cultural"
+      },
+      "uyuni": {
+        "description": "El Salar de Uyuni es uno de los lugares más espectaculares de América del Sur...",
+        "name": "Salar de Uyuni",
+        "location": "Provincia de Daniel Campos",
+        "rating": "★★★★★",
+        "type": "Natural"
+      },
+      "parqueFamilia": {
+        "description": "El Parque de la Familia es un espacio turístico, destinado a la orientación alternativa recreacional...",
+        "name": "Parque de la Familia",
+        "location": "Calle Hamiraya",
+        "rating": "★★★☆☆",
+        "type": "Entretenimiento"
+      },
+      "casaMoneda": {
+        "description": "La Casa Nacional de Moneda es un Repositorio Nacional, Museo y Archivo del Estado Plurinacional de Bolivia..."
+      },
+      "cristo": {
+        "description": "El Cristo de la Concordia es considerada la estatua de Jesús más grande que existe..."
+      }
+    }
+  },
+  "adminConfiguration": {}
+}
