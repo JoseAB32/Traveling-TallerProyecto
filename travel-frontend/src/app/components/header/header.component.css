@@ -59,6 +59,73 @@ svg {
   color: white;
 }
 
+.idioma-container {
+  /* background-color: aqua; */
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: flex-end;
+  width: 5%;
+  padding: 0;
+}
+
+.idioma-container:hover {
+  border: 2px solid #FF6B35;
+}
+
+.id-seleccionado {
+  font-size: 1.3rem;
+  /* background-color: brown; */
+  margin: 0;
+  padding: 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lista-idiomas {
+  list-style: none;
+  position: absolute;
+  top: 120%;
+  background-color: #ffe6cc;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border-radius: 5px;
+  border: 2px solid var(--atomic-tangerine);
+  gap: 0;
+}
+
+.lista-idiomas li {
+  padding: 3% 0;
+}
+
+.active-lang {
+  background-color: var(--peach-glow);
+  color: white;
+  font-weight: bold;
+}
+
+.first-item {
+  border-radius: 5px 5px 0 0;
+}
+
+.last-item {
+  border-radius: 0 0 5px 5px;
+}
+
+.lista-idiomas li button {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  color: var(--steel-azure);
+  font-weight: 500;
+}
+
 .profile-container {
   position: relative; 
 }

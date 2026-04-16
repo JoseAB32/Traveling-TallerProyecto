@@ -6,6 +6,7 @@ import { Subscription} from 'rxjs';
 import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
 import { FEATURES } from '../../features/features';
+import { TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-header',
@@ -15,12 +16,15 @@ import { FEATURES } from '../../features/features';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit, OnDestroy{
+
+  idiomaDef: string = "ES";
   
   isAdmin: boolean = false;
   isLogsEnabled: boolean = FEATURES.adminLogsEnabled;
 
   isLoggedIn: boolean = false;
   isMenuOpen: boolean = false; // El menú debe empezar cerrado
+  isListaOpen: boolean = false;
   private userSub!: Subscription;
 
   searchTerm: string = '';
@@ -28,7 +32,13 @@ export class HeaderComponent implements OnInit, OnDestroy{
   allPlaces: Place[] = []; 
   showSuggestions: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private placeService: PlaceService, private el: ElementRef) {}
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private placeService: PlaceService, 
+              private el: ElementRef,
+              private translocoService: TranslocoService) {
+                this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
+              }
   
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
@@ -43,6 +53,17 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
     this.placeService.getPlaces().subscribe(data => this.allPlaces = data);
   }
+
+  changeLang(lang: string) {
+    this.translocoService.setActiveLang(lang);
+    this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
+    this.isListaOpen = !this.isListaOpen;
+  }
+
+  toggleLista() {
+    this.isListaOpen = !this.isListaOpen;
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
@@ -100,6 +121,8 @@ goToSearch() {
   clickout(event: any) {
     if (!this.el.nativeElement.contains(event.target)) {
       this.showSuggestions = false;
+      this.isListaOpen = !this.isListaOpen;
+      this.isMenuOpen = !this.isMenuOpen;
     }
   }
 

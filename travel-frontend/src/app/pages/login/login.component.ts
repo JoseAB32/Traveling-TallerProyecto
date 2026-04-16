@@ -5,11 +5,12 @@ import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { CONSTANTS } from '../../utils/constants';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, TranslocoModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })

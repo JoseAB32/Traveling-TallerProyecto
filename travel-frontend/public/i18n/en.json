@@ -1,0 +1,41 @@
+{ 
+    "header": {
+    },
+    "footer": {
+    },
+    "landing": {
+    },
+    "formLoginAndSignin": {
+        "signIn": {
+            "titleForm": "REGISTER",
+            "buttonRegistrarse": "REGISTER",
+            "tienesCuenta": "Do you already have an account?",
+            "irLogin": "Login"
+        },
+        "login": {
+            "titleForm": "LOGIN",
+            "buttonIniciarSesion": "LOGIN",
+            "noTienesCuenta": "Don't have an account yet?",
+            "irRegistro": "Register"
+        },
+        "textoInputs": {
+            "nombreUsuario": "Username",
+            "correo": "Email",
+            "contrasena": "Password",
+            "confContrasena": "Confirm Password",
+            "fechaNac": "Birthdate",
+            "ciudad": "City"
+        }
+    },
+    "inicioLogueado": {
+        "mejores_lugares": "TOP RATED PLACES",
+        "elige_y_empieza": "Select a department and start exploring the magic of each panorama that Bolivia, a country full of culture, has to offer."
+    },
+    "wishlist": {
+    },
+    "placeDetail": {
+    },
+    "adminConfiguration": {
+    }
+}
+

@@ -53,7 +53,7 @@
             id="path20" /></g>
       </svg>
     </div>
-    @if (isLoggedIn) {
+  @if (isLoggedIn) {
     <div class="search-container">
       <div class="search-bar" [ngClass]="{'active': showSuggestions && suggestions.length > 0}">
         <input 
@@ -84,7 +84,21 @@
         </div>
       }
     </div>
-
+  }
+    <div class="idioma-container">
+      <p class="id-seleccionado" (click)="toggleLista()">{{ idiomaDef }}</p>
+      @if (isListaOpen) {
+        <ul class="lista-idiomas">
+          <li class="first-item" [ngClass]="{ 'active-lang': idiomaDef === 'ES' }">
+            <button (click)="changeLang('es')">ES</button>
+          </li>
+          <li class="last-item" [ngClass]="{ 'active-lang': idiomaDef === 'EN' }">
+            <button (click)="changeLang('en')">EN</button>
+          </li>
+        </ul>
+      }
+    </div>
+  @if (isLoggedIn) {
     <div class="profile-container" (click)="toggleMenu()">
       <img 
         src="fotoPerfilDef.svg" 
