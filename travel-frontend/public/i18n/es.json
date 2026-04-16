@@ -1,5 +1,11 @@
 { 
     "header": {
+        "searchPlaceholder": "Buscar departamento o lugar",
+        "profile": "Perfil",
+        "itineraries": "Itinerarios",
+        "wishlist": "Deseados",
+        "logout": "Cerrar Sesión",
+        "adminConfig": "Configuración"
     },
     "footer": {
     },

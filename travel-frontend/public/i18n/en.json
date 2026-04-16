@@ -1,5 +1,11 @@
 { 
     "header": {
+        "searchPlaceholder": "Search department or place",
+        "profile": "Profile",
+        "itineraries": "Itineraries",
+        "wishlist": "Wishlist",
+        "logout": "Log Out",
+        "adminConfig": "Configuration"
     },
     "footer": {
     },

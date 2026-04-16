@@ -6,12 +6,12 @@ import { Subscription} from 'rxjs';
 import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
 import { FEATURES } from '../../features/features';
-import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslocoModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
