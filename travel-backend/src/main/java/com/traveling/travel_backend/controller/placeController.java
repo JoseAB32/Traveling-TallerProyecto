@@ -114,7 +114,7 @@ public class placeController {
 
     @Operation(
         summary = "Get all places by department",
-        description = "Returns a list of all place locaated in requested department",
+        description = "Returns a list of all place located in requested department",
         tags = {"Places"},
         operationId = "getPlacesByDepartment"
     )
