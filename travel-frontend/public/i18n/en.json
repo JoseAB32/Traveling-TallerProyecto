@@ -36,6 +36,46 @@
     "placeDetail": {
     },
     "adminConfiguration": {
+        "title": "Administration Panel",
+        "tabs": {
+            "logs": "System Logs",
+            "toggles": "Feature Toggles"
+        },
+        "logs": {
+            "filters": {
+                "module": "Module",
+                "allModules": "All modules",
+                "level": "Level",
+                "allLevels": "All levels",
+                "from": "From",
+                "to": "To"
+            },
+            "table": {
+                "date": "Date",
+                "module": "Module",
+                "level": "Level",
+                "message": "Message",
+                "user": "User",
+                "noRecords": "No records found.",
+                "system": "System"
+            }
+        },
+        "toggles": {
+            "title": "Features Control",
+            "persistence": "JSON Persistence",
+            "pinRedirection": {
+                "title": "Pin Redirection (PinRedirection)",
+                "description": "Enables automatic navigation when clicking on the markers of the tourist map."
+            },
+            "autoCreateItinerary": {
+                "title": "Auto-create Itinerary (AutoCreateItinerary)",
+                "description": "Allows the system to generate automatic travel suggestions based on selected places."
+            }
+        },
+        "modal": {
+            "title": "Action required",
+            "close": "Close"
+        }
     }
 }
 
