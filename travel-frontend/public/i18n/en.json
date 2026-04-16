@@ -4,6 +4,16 @@
     "footer": {
     },
     "landing": {
+        "textStartHere": "START HERE",
+        "signUp": "SIGN UP",
+        "login": "LOG IN",
+        "subtitle1": "Explore Bolivia's most stunning landscapes",
+        "text1": "From the infinite mirror of the Uyuni Salt Flats to the snow-capped peaks of the Andes, discover destinations that seem out of this world.",
+        "subtitle2": "Living culture in every corner",
+        "text2": "Immerse yourself in the historical richness of our colonial cities, ancient traditions, and the warmth of our people in every region.",
+        "ctaRouteTitle": "Plan routes to visit the places you want",
+        "ctaRouteText": "Build your travel route based on the places you wish to visit, set up an efficient itinerary, and just enjoy the journey.",
+        "freeTrialButton": "TRY 1 WEEK FREE"
     },
     "formLoginAndSignin": {
         "signIn": {

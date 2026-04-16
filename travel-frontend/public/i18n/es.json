@@ -4,6 +4,16 @@
     "footer": {
     },
     "landing": {
+        "textStartHere": "EMPIEZA AQUÍ",
+        "signUp": "REGÍSTRATE",
+        "login": "INICIAR SESIÓN",
+        "subtitle1": "Explora los paisajes más asombrosos de Bolivia",
+        "text1": "Desde el espejo infinito del Salar de Uyuni hasta las cumbres nevadas de los Andes, descubre destinos que parecen sacados de otro mundo.",
+        "subtitle2": "Cultura viva en cada rincón",
+        "text2": "Sumérgete en la riqueza histórica de nuestras ciudades coloniales, tradiciones milenarias y la calidez de nuestra gente en cada departamento.",
+        "ctaRouteTitle": "Planifica rutas para visitar los lugares que quieras",
+        "ctaRouteText": "Construye tu ruta de viaje en base a los lugares que desees visitar, arma un eficiente itinerario y solo disfruta del viaje.",
+        "freeTrialButton": "PROBAR 1 SEMANA GRATIS"
     },
     "formLoginAndSignin": {
         "signIn": {
