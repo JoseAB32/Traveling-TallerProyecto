@@ -23,15 +23,17 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
+
   private apiUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.LOGIN;
+  private authUrl = CONSTANTS.API.BASE_URL + '/auth';
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(
-    private http: HttpClient
-  ) {
+  constructor(private http: HttpClient) {
     this.loadStoredUser();
   }
+
 
   private loadStoredUser() {
     const storedUser = localStorage.getItem('currentUser');
@@ -44,18 +46,22 @@ export class AuthService {
     }
   }
 
+
   login(userName: string, pass: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}`, { userName, pass })
       .pipe(
         tap(response => {
           console.log('✅ Login exitoso:', response);
+
           const user: User = {
             id: response.id,
             correo: response.correo,
             userName: response.userName
           };
+
           localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', JSON.stringify(user));
+
           this.currentUserSubject.next(user);
         }),
         catchError(this.handleError)
@@ -81,26 +87,46 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-  const token = this.getToken();
-  if (!token) return false;
+    const token = this.getToken();
+    if (!token) return false;
 
-  try {
-    // Decodifica la parte media (payload) del JWT
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    
-    // Verifica el 'sub' (username) o el 'role' según cómo lo configuraste en Spring
-    return payload.sub === 'admin'; 
-  } catch (e) {
-    return false;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub === 'admin';
+    } catch {
+      return false;
+    }
   }
-}
+
+  forgotPassword(correo: string): Observable<any> {
+    return this.http.post(`${this.authUrl}/forgot-password`, { correo })
+      .pipe(
+        tap(() => console.log('📧 Solicitud de recuperación enviada')),
+        catchError(this.handleError)
+      );
+  }
+
+  resetPassword(
+    token: string,
+    password: string,
+    confirmPassword: string
+  ): Observable<boolean> {
+
+    return this.http.post<boolean>(`${this.authUrl}/reset-password`, {
+      token,
+      password,
+      confirmPassword
+    }).pipe(
+      tap(res => console.log('🔑 Reset password response:', res)),
+      catchError(this.handleError)
+    );
+  }
 
   private handleError(error: HttpErrorResponse) {
     console.error('❌ Error:', error);
-    
-    // let errorMessage = 'Error en la autenticación';
-    let errorMessage = 'Usuario o contraseña incorrectos.';
-    
+
+    let errorMessage = 'Error en la autenticación';
+
     if (error.status === 0) {
       errorMessage = 'No se pudo conectar al servidor. Verifica que el backend esté corriendo.';
     } else if (typeof error.error === 'string') {
@@ -116,7 +142,7 @@ export class AuthService {
     } else if (error.status === 400) {
       errorMessage = error.error?.error || 'Error en la solicitud';
     }
-    
+
     return throwError(() => errorMessage);
   }
 }

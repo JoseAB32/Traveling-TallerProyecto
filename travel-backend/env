@@ -1,0 +1,6 @@
+SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require
+SPRING_DATASOURCE_USERNAME=postgres.dhvydlgrmnevytwspgpr
+SPRING_DATASOURCE_PASSWORD=BD.Traveling.Dev
+
+JWT_SECRET=ClaveSecretaParaLaFirmaDelToken2026
+JWT_EXPIRATION=86400000

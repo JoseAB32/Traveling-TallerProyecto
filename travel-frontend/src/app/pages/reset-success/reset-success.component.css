@@ -1,0 +1,72 @@
+.bg-pattern {
+  height: 100vh;
+  background: repeating-linear-gradient(
+    90deg,
+    #2f4a7a,
+    #2f4a7a 40px,
+    #35548a 40px,
+    #35548a 80px
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+}
+
+.logo {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #e9dede;
+  padding: 40px;
+  border-radius: 20px;
+  width: 400px;
+}
+
+h2 {
+  color: #2f4a7a;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 2px solid #2f4a7a;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(to right, #f26a3d, #e85c30);
+  color: white;
+  font-weight: bold;
+}
+
+.back {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.mensaje {
+  margin-top: 10px;
+}
+
+.success {
+  text-align: center;
+}
+
+.icon {
+  font-size: 60px;
+  color: green;
+  margin-bottom: 10px;
+}
