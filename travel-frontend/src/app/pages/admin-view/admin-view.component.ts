@@ -8,11 +8,12 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { FeatureService } from '../../services/features/feature.service'; // Nuevo servicio
 import { Logger } from '../../models/logger/logger';
 import { CONSTANTS } from '../../utils/constants';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-admin-view',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, TranslocoModule],
   templateUrl: './admin-view.component.html',
   styleUrl: './admin-view.component.css'
 })
