@@ -1,15 +1,29 @@
 <footer class="footer blue-bg">
-    <div class="footer-column">
-      <h4>Términos y privacidad</h4>
-      <a href="#">Normas de la comunidad</a>
-      <a href="#">Términos</a>
-      <a href="#">Privacidad</a>
-    </div>
-    <div class="divider"></div>
-    <div class="footer-column">
-      <h4>Sobre nosotros</h4>
-      <p><img src="Hand.svg"><img> Misión</p>
-      <p><img src="Phone.svg"><img> 73586467</p>
-      <p><img src="Mail.svg"><img> traveling.plat07&#64;gmail.com</p>
-    </div>
+  <div class="footer-column">
+    <h4>{{ 'footer.termsTitle' | transloco }}</h4>
+    <a href="#">{{ 'footer.communityRules' | transloco }}</a>
+    <a href="#">{{ 'footer.terms' | transloco }}</a>
+    <a href="#">{{ 'footer.privacy' | transloco }}</a>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="footer-column">
+    <h4>{{ 'footer.about' | transloco }}</h4>
+    
+    <p>
+      <img src="Hand.svg" alt="icon">
+      {{ 'footer.mission' | transloco }}
+    </p>
+
+    <p>
+      <img src="Phone.svg" alt="icon">
+      73586467
+    </p>
+
+    <p>
+      <img src="Mail.svg" alt="icon">
+      traveling.plat07&#64;gmail.com
+    </p>
+  </div>
 </footer>

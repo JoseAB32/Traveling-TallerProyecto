@@ -1,81 +1,86 @@
-{ 
-    "header": {
+{
+  "header": {
+  },
+  "footer": {
+    "termsTitle": "Terms and Privacy",
+    "communityRules": "Community Rules",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "about": "About Us",
+    "mission": "Mission"
+  },
+  "landing": {
+  },
+  "formLoginAndSignin": {
+    "signIn": {
+      "titleForm": "REGISTER",
+      "buttonRegistrarse": "REGISTER",
+      "tienesCuenta": "Do you already have an account?",
+      "irLogin": "Login"
     },
-    "footer": {
+    "login": {
+      "titleForm": "LOGIN",
+      "buttonIniciarSesion": "LOGIN",
+      "noTienesCuenta": "Don't have an account yet?",
+      "irRegistro": "Register"
     },
-    "landing": {
-    },
-    "formLoginAndSignin": {
-        "signIn": {
-            "titleForm": "REGISTER",
-            "buttonRegistrarse": "REGISTER",
-            "tienesCuenta": "Do you already have an account?",
-            "irLogin": "Login"
-        },
-        "login": {
-            "titleForm": "LOGIN",
-            "buttonIniciarSesion": "LOGIN",
-            "noTienesCuenta": "Don't have an account yet?",
-            "irRegistro": "Register"
-        },
-        "textoInputs": {
-            "nombreUsuario": "Username",
-            "correo": "Email",
-            "contrasena": "Password",
-            "confContrasena": "Confirm Password",
-            "fechaNac": "Birthdate",
-            "ciudad": "City"
-        }
-    },
-    "inicioLogueado": {
-        "mejores_lugares": "TOP RATED PLACES",
-        "elige_y_empieza": "Select a department and start exploring the magic of each panorama that Bolivia, a country full of culture, has to offer."
-    },
-    "wishlist": {
-    },
-    "placeDetail": {
-    },
-    "adminConfiguration": {
-        "title": "Administration Panel",
-        "tabs": {
-            "logs": "System Logs",
-            "toggles": "Feature Toggles"
-        },
-        "logs": {
-            "filters": {
-                "module": "Module",
-                "allModules": "All modules",
-                "level": "Level",
-                "allLevels": "All levels",
-                "from": "From",
-                "to": "To"
-            },
-            "table": {
-                "date": "Date",
-                "module": "Module",
-                "level": "Level",
-                "message": "Message",
-                "user": "User",
-                "noRecords": "No records found.",
-                "system": "System"
-            }
-        },
-        "toggles": {
-            "title": "Features Control",
-            "persistence": "JSON Persistence",
-            "pinRedirection": {
-                "title": "Pin Redirection (PinRedirection)",
-                "description": "Enables automatic navigation when clicking on the markers of the tourist map."
-            },
-            "autoCreateItinerary": {
-                "title": "Auto-create Itinerary (AutoCreateItinerary)",
-                "description": "Allows the system to generate automatic travel suggestions based on selected places."
-            }
-        },
-        "modal": {
-            "title": "Action required",
-            "close": "Close"
-        }
+    "textoInputs": {
+      "nombreUsuario": "Username",
+      "correo": "Email",
+      "contrasena": "Password",
+      "confContrasena": "Confirm Password",
+      "fechaNac": "Birthdate",
+      "ciudad": "City"
     }
+  },
+  "inicioLogueado": {
+    "mejores_lugares": "TOP RATED PLACES",
+    "elige_y_empieza": "Select a department and start exploring the magic of each panorama that Bolivia, a country full of culture, has to offer."
+  },
+  "wishlist": {
+    "title": "YOUR FAVORITE PLACES",
+    "empty": "You don't have any favorite places yet",
+    "modal": {
+      "title": "Remove from favorites?",
+      "message": "Are you sure you want to remove this place from your favorites list? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Yes, remove"
+    }
+  },
+  "placeDetail": {
+    "places": {
+      "cristo": {
+        "name": "Christ of Concord",
+        "description": "The Christ of Concord is considered the largest statue of Jesus in existence. Even surpassing Christ the Redeemer in Rio de Janeiro, Brazil.",
+        "location": "Cochabamba, Bolivia",
+        "type": "Religious Monument"
+      },
+      "tiwanaku": {
+        "name": "Tiwanaku",
+        "description": "Spiritual and political center of the Tiwanaku culture, one of the most important civilizations in pre-Columbian America.",
+        "location": "La Paz, Bolivia",
+        "type": "Archaeological Site"
+      },
+      "uyuni": {
+        "name": "Salar de Uyuni",
+        "description": "The world's largest salt flat, covering more than 10,000 km². A unique and surreal landscape.",
+        "location": "Potosí, Bolivia",
+        "type": "Natural Wonder"
+      },
+      "parqueFamilia": {
+        "name": "Family Park",
+        "description": "Family recreational area with playgrounds, green areas and spaces for outdoor activities.",
+        "location": "Cochabamba, Bolivia",
+        "type": "Park"
+      },
+      "casaMoneda": {
+        "name": "Casa de la Moneda",
+        "description": "Numismatic and historical museum that holds the history of currency in Bolivia and South America.",
+        "location": "Potosí, Bolivia",
+        "type": "Museum"
+      }
+    }
+  },
+  "adminConfiguration": {
+  }
 }
-
