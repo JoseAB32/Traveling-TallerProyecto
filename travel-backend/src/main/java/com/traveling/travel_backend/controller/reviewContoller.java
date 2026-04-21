@@ -13,6 +13,8 @@ import com.traveling.travel_backend.model.Review;
 import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.ReviewRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import java.util.Optional;
 
 import org.apache.commons.logging.Log;
@@ -35,7 +37,12 @@ public class reviewContoller {
 
     private static final Logger logger = LoggerFactory.getLogger(placeController.class);
 
-
+    @Operation(
+        summary = "Get best place review",
+        description = "Returns the best rewiew of a specific place",
+        tags = {"Review"},
+        operationId = "getBestReview"
+    )
     @GetMapping("/mejor-resenia")
     public Optional<Review> getBestReview(@RequestParam Long placeId) {
         
@@ -50,9 +57,4 @@ public class reviewContoller {
 
         return bestReview;
     }
-    
-
-
-
-
 }

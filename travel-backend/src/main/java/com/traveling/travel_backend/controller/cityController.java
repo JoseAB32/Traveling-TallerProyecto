@@ -14,6 +14,8 @@ import com.traveling.travel_backend.model.LogEntity;
 import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.LogRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 // IMPORTS DE LOGGING
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,12 @@ public class cityController {
     @Autowired
     private LogRepository logRepository; 
 
+    @Operation(
+        summary = "Get all cities/deparmetents",
+        description = "Returns a list of all cities/departments in the database",
+        tags = {"Cities"},
+        operationId = "getAllCities"
+    )
     @GetMapping(AppConstants.CITIES_ENDPOINT)
     public List<City> getAllCities() {
 
