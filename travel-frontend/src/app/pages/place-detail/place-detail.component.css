@@ -18,6 +18,19 @@ body {
   border-radius: 10px;
 }
 
+.back-row {
+  margin-bottom: 16px;
+}
+
+.back-btn {
+  background: #2f4f7f;
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
 /* ========================================
    BARRA DE TÍTULO
 ======================================== */

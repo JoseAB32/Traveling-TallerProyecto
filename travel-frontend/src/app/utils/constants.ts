@@ -5,10 +5,12 @@ interface ApiConstants {
   CITIES: string;
   PLACES: string;
   USERS: string;
+  REVIEWS: string;
   LOGIN: string;
   LOGS: string;
   FAVORITES: string;
   FEATURES: string;
+  TRIPS: string;
 }
 
 interface LandingConstants {
@@ -71,7 +73,8 @@ export const CONSTANTS = {
     LOGIN: '/api/login',
     LOGS: '/api/admin/logs',
     FAVORITES: '/api/favorites',
-    FEATURES: '/api/features'
+    FEATURES: '/api/features',
+    TRIPS: '/api/trips'
   } as ApiConstants,
 
   MESSAGES: {

@@ -1,0 +1,102 @@
+<app-header></app-header>
+
+<main class="itinerary-page">
+  <section class="section-title peach">
+    <span>1. Selecciona el departamento o ciudad</span>
+  </section>
+
+  <section class="city-selector">
+    <select
+      [disabled]="isLoadingCities || cities.length === 0"
+      [(ngModel)]="selectedCityId"
+      (ngModelChange)="onCityChange()"
+    >
+      <option [ngValue]="null" disabled>Selecciona una ciudad</option>
+      @for (city of cities; track city.id) {
+        <option [ngValue]="city.id">{{ city.name }}</option>
+      }
+    </select>
+  </section>
+
+  <section class="section-title blue">
+    <span>2. Selecciona los lugares que quieres visitar</span>
+  </section>
+
+  <section class="map-and-info">
+    <div class="map-box">
+      @if (isLoadingPlaces) {
+        <div class="loading-box">Cargando lugares...</div>
+      } @else if (!selectedCityId) {
+        <div class="loading-box">Selecciona una ciudad para ver su mapa.</div>
+      } @else if (cityPlaces.length === 0) {
+        <div class="loading-box no-places">No hay lugares disponibles en esta ciudad.</div>
+      } @else {
+        <app-map [places]="cityPlaces" (placeClicked)="onMapPlaceClick($event)"></app-map>
+      }
+    </div>
+
+    <div class="place-info">
+      @if (!selectedPlace) {
+        <h3>Haz click en un pin para ver el lugar</h3>
+        <p>Selecciona un lugar del mapa para revisar su información y agregarlo al itinerario.</p>
+      } @else {
+        <h3>{{ selectedPlace.name }}</h3>
+        <p>{{ selectedPlace.description }}</p>
+
+        <div class="actions">
+          <button class="btn add" (click)="addSelectedPlace()">Agregar</button>
+          <button class="btn view" (click)="goToPlaceDetail(selectedPlace.id)">Ver más</button>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="section-title peach">
+    <span>3. Verifica los lugares que seleccionaste</span>
+  </section>
+
+  <section class="selected-list">
+    @if (selectedPlaces.length === 0) {
+      <div class="empty-state">Aún no seleccionaste lugares.</div>
+    } @else {
+      @for (place of selectedPlaces; track place.id) {
+        <div class="selected-item">
+          <span class="name">{{ place.name }}</span>
+          <div class="item-actions">
+            <button class="inline-link" (click)="goToPlaceDetail(place.id)">Ver más</button>
+            <button class="remove" (click)="removeSelectedPlace(place.id)">X</button>
+          </div>
+        </div>
+      }
+    }
+  </section>
+
+  <section class="section-title blue">
+    <span>4. Establece las fechas de tu itinerario</span>
+  </section>
+
+  <section class="date-section">
+    <div class="date-field">
+      <label for="startDate">Fecha de inicio</label>
+      <input id="startDate" type="date" [(ngModel)]="startDate" (change)="onDateChange()" />
+    </div>
+
+    <div class="date-field">
+      <label for="endDate">Fecha de finalización</label>
+      <input id="endDate" type="date" [(ngModel)]="endDate" (change)="onDateChange()" />
+    </div>
+  </section>
+
+  <section class="save-status">
+    <button class="btn add" [disabled]="isSavingDraft || !hasPendingChanges" (click)="saveSelection()">
+      @if (isSavingDraft) {
+        Guardando...
+      } @else {
+        Guardar seleccion
+      }
+    </button>
+    <span>{{ saveMessage }}</span>
+  </section>
+</main>
+
+<app-footer></app-footer>
