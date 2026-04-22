@@ -2,6 +2,9 @@ package com.traveling.travel_backend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -10,13 +13,18 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/features")
-@CrossOrigin(origins = "*") // Ajusta esto según tus CORS
+@CrossOrigin(origins = "*") 
 public class FeatureController {
 
-    // El archivo se creará en la raíz de tu proyecto backend
     private final String FILE_PATH = "features.json"; 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Operation(
+        summary = "Get features JSON configuration",
+        description = "Returns a map of all feature flags/toggles for app features",
+        tags = {"Feature"},
+        operationId = "getFeatures"
+    )
     @GetMapping
     public Map<String, Boolean> getFeatures() throws IOException {
         File file = new File(FILE_PATH);
@@ -35,6 +43,12 @@ public class FeatureController {
         return objectMapper.readValue(file, new TypeReference<Map<String, Boolean>>() {});
     }
 
+    @Operation(
+        summary = "Update features JSON configuration",
+        description = "Update values of flags/toggles for app features",
+        tags = {"Feature"},
+        operationId = "updateFeatures"
+    )
     @PutMapping
     public Map<String, Boolean> updateFeatures(@RequestBody Map<String, Boolean> features) throws IOException {
         File file = new File(FILE_PATH);

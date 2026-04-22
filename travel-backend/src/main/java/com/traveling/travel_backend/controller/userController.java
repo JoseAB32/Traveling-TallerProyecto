@@ -24,6 +24,8 @@ import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.UserRepository;
 import com.traveling.travel_backend.security.JwtService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,6 +55,12 @@ public class userController {
         this.jwtService = jwtService;
     }
 
+    @Operation(
+        summary = "Get all users",
+        description = "Returns a list with the information of all users",
+        tags = {"User"},
+        operationId = "getAllUsers"
+    )
     @GetMapping(AppConstants.USERS_ENDPOINT)
     public List<User> getAllUsers() {
         logger.info(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS
@@ -70,6 +78,12 @@ public class userController {
         return users;
     }
 
+    @Operation(
+        summary = "Create new user",
+        description = "Create new user if all the checks pass",
+        tags = {"User"},
+        operationId = "createUser"
+    )
     @PostMapping(AppConstants.USERS_ENDPOINT)
     public ResponseEntity<?> createUser(@RequestBody User user) {
         logger.info(
@@ -126,6 +140,12 @@ public class userController {
         return ResponseEntity.ok(savedUser);
     }
 
+    @Operation(
+        summary = "Login request",
+        description = "Login request & checks to gain acccess to app with valid credentials",
+        tags = {"User"},
+        operationId = "login"
+    )
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest credentials) {
         String userName = credentials.getUserName();

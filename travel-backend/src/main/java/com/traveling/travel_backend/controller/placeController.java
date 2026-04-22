@@ -11,6 +11,10 @@ import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.PlaceRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +34,14 @@ public class placeController {
     private LogRepository logRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(placeController.class);
-
-   @GetMapping(AppConstants.TOP_RATED)
+    
+    @Operation(
+        summary = "Top 5 rated places",
+        description = "Returns the top 5 rated places in descending order",
+        tags = {"Places"},
+        operationId = "getAllOrderList"
+    )
+    @GetMapping(AppConstants.TOP_RATED)
     public List<Place> getAllOrderList() {
         logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated");
         logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO, "Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated", null));
@@ -43,6 +53,12 @@ public class placeController {
         return topPlaces;
     }   
 
+    @Operation(
+        summary = "Search a place",
+        description = "Returns a place searched by name, address or city",
+        tags = {"Places"},
+        operationId = "search"
+    )
     @GetMapping(AppConstants.SEARCH)
     public List<Place> search(@RequestParam String q) {
         logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando búsqueda de lugares con criterio: '{}' - GET /api/places/search", q);
@@ -55,6 +71,12 @@ public class placeController {
         return resultPlaces;
     }
 
+    @Operation(
+        summary = "Get all places",
+        description = "Returns a complete list of places stored in the database",
+        tags = {"Places"},
+        operationId = "getAllPlaces"
+    )
     @GetMapping
     public List<Place> getAllPlaces() {
         logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando lista completa de lugares - GET /api/places");
@@ -67,6 +89,12 @@ public class placeController {
         return allPlaces;
     }
 
+    @Operation(
+        summary = "Get place by Id",
+        description = "Returns a place information requested by Id",
+        tags = {"Places"},
+        operationId = "getPlaceById"
+    )
     @GetMapping("/{id}")
     public Place getPlaceById(@PathVariable Long id) {
         logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando información del lugar con ID: {} - GET /api/places/{}", id, id);
@@ -84,6 +112,12 @@ public class placeController {
         return place.orElse(null);
     }
 
+    @Operation(
+        summary = "Get all places by department",
+        description = "Returns a list of all place located in requested department",
+        tags = {"Places"},
+        operationId = "getPlacesByDepartment"
+    )
     @GetMapping(AppConstants.PLACES_DEPARTMENT)
     public List<Place> getPlacesByDepartment(@PathVariable Long cityId) {
         logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando lugares para el departamento (ID): {} - GET /api/places/department/{}", cityId, cityId);
@@ -100,6 +134,12 @@ public class placeController {
         return places;
     }
 
+    @Operation(
+        summary = "Get top rated places by department",
+        description = "Returns a list the top 3 rated places by department",
+        tags = {"Places"},
+        operationId = "getPlacesTopByDepartment"
+    )
     @GetMapping(AppConstants.PLACES_DEPARTMENT_TOP)
     public List<Place> getPlacesTopByDepartment(@PathVariable Long cityId) {
         logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Solicitando lugares mejor calificados para el departamento (ID): {} - GET /api/places/department/{}", cityId, cityId);
