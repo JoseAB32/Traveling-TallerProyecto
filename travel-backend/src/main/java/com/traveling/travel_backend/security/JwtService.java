@@ -1,7 +1,6 @@
 package com.traveling.travel_backend.security;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

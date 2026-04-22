@@ -2,6 +2,10 @@
 
 <div class="place-detail-container">
 
+  <div class="back-row" *ngIf="showBackToItinerary">
+    <button class="back-btn" (click)="backToItinerary()">Volver a itinerario</button>
+  </div>
+
   <!-- LOADING -->
   <div *ngIf="loading" class="loading-container">
     <div class="spinner"></div>

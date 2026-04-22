@@ -1,5 +1,6 @@
 package com.traveling.travel_backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +40,7 @@ public class FeatureController {
         }
         
         // Leemos el archivo JSON y lo devolvemos como un Map
-        return objectMapper.readValue(file, Map.class);
+        return objectMapper.readValue(file, new TypeReference<Map<String, Boolean>>() {});
     }
 
     @Operation(
