@@ -1,16 +1,19 @@
 package com.traveling.travel_backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.model.City;
 import com.traveling.travel_backend.model.LogEntity;
+import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.LogRepository;
 
@@ -47,4 +50,21 @@ public class cityController {
 
         return cities;
     }
+
+    @GetMapping(AppConstants.CITIES_ENDPOINT + "/{id}")
+    public City getCityById(@PathVariable Long id) {
+        logger.info(AppConstants.PREFIX_CITY + " [" + AppConstants.LOG_CITIES + "] Solicitando información de la ciudad con ID: {} - GET /api/cities/{}", id, id);
+        logRepository.save(new LogEntity(AppConstants.LOG_CITIES, AppConstants.LOG_INFO, "Solicitando información de la ciudad con ID: " + id + " - GET /api/cities/" + id, null));
+
+        Optional<City> city = cityRepository.findById(id);
+
+        if(city.isPresent()) {
+            logger.debug(AppConstants.PREFIX_CITY + " [" + AppConstants.LOG_CITIES + "] Información de la ciudad con ID {}: {}", id, city.get());
+        } else {
+            logger.warn(AppConstants.PREFIX_CITY + " [" + AppConstants.LOG_CITIES + "] Ciudad con ID {} no encontrado", id);
+            logRepository.save(new LogEntity(AppConstants.LOG_CITIES, AppConstants.LOG_WARN, "Ciudad con ID " + id + " no encontrado - GET /api/cities/" + id, null));
+        }
+
+        return city.orElse(null);
+    }    
 }

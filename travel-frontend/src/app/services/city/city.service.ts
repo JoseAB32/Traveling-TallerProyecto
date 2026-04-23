@@ -31,4 +31,10 @@ export class CityService {
 
     );
   }
+
+  getCityById(id: number): Observable<City> {
+    console.log(CONSTANTS.LOGS.API_CALL, this.baseURL);
+
+    return this.httpClient.get<City>(`${this.baseURL}/${id}`);
+  }
 }

@@ -31,10 +31,10 @@
           <!-- ESTADO 1: TEXTO POR DEFECTO -->
           <div class="default-content">
             <h3 class="fw-bold mb-4" style="color: #000;">
-              Explora los diferentes lugares turísticos de Cochabamba o empieza a armar tu itinerario para visitar Cochabamba.
+              {{ 'department.textExploreCity' | transloco:{ cityName: city?.name } }}
             </h3>
             <button class="btn btn-traveling-orange btn-lg px-4 fw-bold rounded-3 shadow-sm">
-              ARMA TU ITINERARIO AQUÍ
+              {{ 'department.buttonItinerary' | transloco }}
             </button>
           </div>
 
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <h4 class="fw-bold text-traveling-orange mb-5 text-uppercase">Lugares mejor calificados</h4>
+    <h4 class="fw-bold text-traveling-orange mb-5 text-uppercase">{{ 'department.titleBestPlaces' | transloco }}</h4>
 
     
     <!-- Iteramos sobre tu nueva variable placesTop -->
@@ -86,7 +86,7 @@
               <span class="ms-2 fs-6">({{ place.rating }})</span>
             </div>
               
-              <p class="fw-bold small mb-2 text-uppercase">Mejor reseña:</p>
+              <p class="fw-bold small mb-2 text-uppercase">{{ 'department.textBestReview' | transloco }}</p>
               <div class="review-bubble bg-white text-dark p-3 shadow-sm">
                 <!-- Asume que el backend te manda la mejor reseña en este objeto -->
                 <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
@@ -126,7 +126,7 @@
               <span class="ms-2 fs-6 fw-bold">({{ place.rating }})</span>
             </div>
               
-              <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">Mejor reseña:</p>
+              <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">{{ 'department.textBestReview' | transloco }}</p>
               <div class="review-bubble bg-white text-dark p-3 shadow-sm">
                 <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
                 <div class="text-end text-muted" style="font-size: 0.75rem;">

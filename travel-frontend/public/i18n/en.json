@@ -63,7 +63,11 @@
             "confirm": "Yes, remove"
         }
     },
-    "placeDetail": {
+    "department": {
+        "textExploreCity": "Explore the different tourist attractions of {{cityName}} or start putting together your itinerary to visit {{cityName}}.",
+        "buttonItinerary": "CREATE YOUR ITINERARY HERE",
+        "titleBestPlaces": "TOP RATED PLACES",
+        "textBestReview": "Best review:"
     },
     "adminConfiguration": {
         "title": "Administration Panel",

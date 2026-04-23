@@ -63,7 +63,11 @@
             "confirm": "Sí, quitar"
         }
     },
-    "placeDetail": {
+    "department": {
+        "textExploreCity": "Explora los diferentes lugares turísticos de {{cityName}} o empieza a armar tu itinerario para visitar {{cityName}}.",
+        "buttonItinerary": "ARMA TU ITINERARIO AQUÍ",
+        "titleBestPlaces": "LUGARES MEJOR CALIFICADOS",
+        "textBestReview": "Mejor reseña:"
     },
     "adminConfiguration": {
         "title": "Panel de Administración",
