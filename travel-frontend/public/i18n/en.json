@@ -8,6 +8,12 @@
         "adminConfig": "Configuration"
     },
     "footer": {
+        "termsTitle": "Terms and Privacy",
+        "communityRules": "Community Rules",
+        "terms": "Terms",
+        "privacy": "Privacy",
+        "about": "About Us",
+        "mission": "Mission"
     },
     "landing": {
         "textStartHere": "Plan your trip and enjoy the best tourist destinations in all of Bolivia!",
@@ -48,6 +54,14 @@
         "elige_y_empieza": "Select a department and start exploring the magic of each panorama that Bolivia, a country full of culture, has to offer."
     },
     "wishlist": {
+        "title": "YOUR FAVORITE PLACES",
+        "empty": "You don't have any favorite places yet",
+        "modal": {
+            "title": "Remove from favorites?",
+            "message": "Are you sure you want to remove this place from your favorites list? This action cannot be undone.",
+            "cancel": "Cancel",
+            "confirm": "Yes, remove"
+        }
     },
     "placeDetail": {
     },
@@ -94,4 +108,3 @@
         }
     }
 }
-

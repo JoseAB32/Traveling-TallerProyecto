@@ -8,6 +8,12 @@
         "adminConfig": "Configuración"
     },
     "footer": {
+        "termsTitle": "Términos y privacidad",
+        "communityRules": "Normas de la comunidad",
+        "terms": "Términos",
+        "privacy": "Privacidad",
+        "about": "Sobre nosotros",
+        "mission": "Misión"
     },
     "landing": {
         "textStartHere": "Planifica tu viaje y disfruta de los mejores lugares turísticos de toda Bolivia!",
@@ -48,6 +54,14 @@
         "elige_y_empieza": "Selecciona un departamento y empieza a explorar la magia de cada panorama que ofrece Bolivia, un país lleno de cultura."
     },
     "wishlist": {
+        "title": "TUS LUGARES FAVORITOS",
+        "empty": "No tienes lugares favoritos aún",
+        "modal": {
+            "title": "¿Quitar de favoritos?",
+            "message": "¿Estás seguro de que deseas eliminar este lugar de tu lista de favoritos? Esta acción no se puede deshacer.",
+            "cancel": "Cancelar",
+            "confirm": "Sí, quitar"
+        }
     },
     "placeDetail": {
     },
@@ -94,4 +108,3 @@
         }
     }
 }
-
