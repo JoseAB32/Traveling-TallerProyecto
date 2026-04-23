@@ -1,0 +1,35 @@
+<main class="content">
+
+  <!-- LOGO -->
+  <section class="img-container" (click)="goToLanding()">
+    <div class="logo">
+      <img src="traveling2white.svg" alt="Logo Traveling" />
+    </div>
+  </section>
+
+  <!-- CARD -->
+  <section class="form-container">
+
+    <div class="form-login success-card">
+
+      <!-- ICONO -->
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <!-- TÍTULO -->
+      <h2>Recuperación de contraseña exitosa</h2>
+
+      <!-- TEXTO -->
+      <p>
+        Se realizó el cambio de contraseña correctamente.
+        Por favor inicie sesión para ingresar a la plataforma.
+      </p>
+
+      <!-- LINK -->
+      <a [routerLink]="['/login']">Ir al Login</a>
+
+    </div>
+
+  </section>
+</main>

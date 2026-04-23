@@ -10,6 +10,9 @@ import { SearchPlacesComponent } from './pages//search-places/search-places.comp
 import { adminGuard } from './guards/admin.guard';
 import { AdminViewComponent } from './pages/admin-view/admin-view.component';
 import { DepartmentComponent } from './pages//department/department.component'
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ResetSuccessComponent } from './pages/reset-success/reset-success.component';
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   {
@@ -21,6 +24,9 @@ export const routes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'wishlist', canActivate: [authGuard], component: WishlistComponent },
   { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'reset-success', component: ResetSuccessComponent },
   {
     path: 'place/:id',
     loadComponent: () => import('./pages/place-detail/place-detail.component')
