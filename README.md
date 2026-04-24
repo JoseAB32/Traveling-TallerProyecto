@@ -61,7 +61,8 @@ Administrados mediante un archivo TypeScript compilable (`features.ts`). Se util
 Administrados en tiempo real mediante un archivo `features.json` gestionado por Spring Boot (`/api/features`). Permite a los administradores encender o apagar lógicas de negocio en vivo desde el panel de control sin necesidad de reiniciar el servidor o recompilar Angular.
 * **`pinRedirection`:** Habilita/deshabilita la redirección automática a las páginas de detalles cuando un usuario hace clic en los marcadores del mapa interactivo.
 * **`autoCreateItinerary`:** Activa la funcionalidad de generación inteligente de viajes para los usuarios.
-
+* **`showSearchPlaces`:** Habilita/deshabilita la barra de búsqueda de lugares en la barra de navagación.
+* **`showFavorites`:** Habilita/deshabilita la funcionalidad de añadir un lugar como favorito.
 ---
 
 ## 🔌 API Endpoints (Backend)
