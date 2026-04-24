@@ -89,8 +89,8 @@
                 [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">{{ 'formLoginAndSignin.textoInputs.nombreUsuario' | transloco }}</label>
 
                 <div class="error-container" *ngIf="userName.invalid && (userName.touched || userName.dirty)">
-                    <p *ngIf="userName.errors?.['required']">El nombre de usuario es obligatorio.</p>
-                    <p *ngIf="userName.errors?.['pattern']">El nombre de usuario no puede contener espacios.</p>
+                    <p *ngIf="userName.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.userNameRequired' | transloco }}</p>
+                    <p *ngIf="userName.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.userNameContainSpace' | transloco }}</p>
                 </div>
             </div>
 
@@ -106,8 +106,8 @@
                 [class.label-error]="password.invalid && (password.touched || password.dirty)">{{ 'formLoginAndSignin.textoInputs.contrasena' | transloco }}</label>
 
                 <div class="error-container" *ngIf="password.invalid && (password.touched || password.dirty)">
-                    <p *ngIf="password.errors?.['required']">La contraseña es obligatoria.</p>
-                    <p *ngIf="password.errors?.['pattern']">La contraseña no puede contener espacios.</p>
+                    <p *ngIf="password.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.passwordRequired' | transloco }}</p>
+                    <p *ngIf="password.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.passwordContainSpace' | transloco }}</p>
                 </div>
             </div>
 

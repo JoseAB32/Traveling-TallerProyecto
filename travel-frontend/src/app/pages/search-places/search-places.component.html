@@ -4,7 +4,7 @@
   <div class="container">
     
     <div class="mb-4" *ngIf="searchTerm">
-      <h3>Resultados para: <span class="text-orange-travel">"{{ searchTerm }}"</span></h3>
+      <h3>{{ 'searchPlaces.textResultsFor' | transloco}} <span class="text-orange-travel">"{{ searchTerm }}"</span></h3>
     </div>
 
     <div class="row justify-content-center">
@@ -12,7 +12,7 @@
         
         <div *ngIf="isLoading" class="text-center my-5">
           <div class="spinner-border text-primary" role="status"></div>
-          <p>Buscando en Bolivia...</p>
+          <p>{{ 'searchPlaces.textSearchInBolivia' | transloco}}</p>
         </div>
 
         <div *ngIf="!isLoading && places.length > 0">
@@ -23,7 +23,7 @@
               <div class="pe-3">
                 <h4 class="place-title">{{ place.name }}</h4>
                 <p class="place-location">
-                  <strong>Ubicado en {{ place.address }}</strong>
+                  <strong>{{ 'searchPlaces.textLocated' | transloco}} {{ place.address }}</strong>
                 </p>
                 <p class="place-description">
                   {{ place.description }}
@@ -40,9 +40,9 @@
 
         <div *ngIf="!isLoading && places.length === 0" class="text-center my-5 no-results">
           <img src="notFound.webp" alt="No encontrado" style="width: 200px; opacity: 0.5;">
-          <h4 class="mt-4">¡Ups! No se encontraron coincidencias.</h4>
-          <p class="text-muted">Intenta con otro departamento, nombre de parque o dirección.</p>
-          <a class="btn btn-outline-primary mt-3" routerLink="/InicioLogueado">Volver al inicio</a>
+          <h4 class="mt-4">{{ 'searchPlaces.textNoMatchesFound' | transloco}}</h4>
+          <p class="text-muted">{{ 'searchPlaces.textTryAnother' | transloco}}</p>
+          <a class="btn btn-outline-primary mt-3" routerLink="/InicioLogueado">{{ 'searchPlaces.textBack' | transloco}}</a>
         </div>
 
       </div>

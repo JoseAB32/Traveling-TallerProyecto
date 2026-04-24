@@ -17,7 +17,7 @@ import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 })
 export class HeaderComponent implements OnInit, OnDestroy{
 
-  idiomaDef: string = "ES";
+  idiomaDef: string = "";
   
   isAdmin: boolean = false;
   isLogsEnabled: boolean = FEATURES.adminLogsEnabled;
@@ -41,6 +41,9 @@ export class HeaderComponent implements OnInit, OnDestroy{
               }
   
   ngOnInit(): void {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
+    this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
     this.isAdmin = this.authService.isAdmin();
     //Para ver al user actual  
     this.userSub = this.authService.currentUser$.subscribe(user => {
@@ -56,6 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   changeLang(lang: string) {
     this.translocoService.setActiveLang(lang);
+    localStorage.setItem('lang', lang);
     this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
     this.isListaOpen = !this.isListaOpen;
   }

@@ -45,19 +45,6 @@ export class WishlistComponent implements OnInit, OnDestroy {
     });
   }
 
-  // 🔥 CLAVE PARA TRANSLATIONS
-  getPlaceKey(place: Place): string {
-    const name = place.name.toLowerCase();
-
-    if (name.includes('tiwanaku')) return 'tiwanaku';
-    if (name.includes('uyuni')) return 'uyuni';
-    if (name.includes('familia')) return 'parqueFamilia';
-    if (name.includes('moneda')) return 'casaMoneda';
-    if (name.includes('cristo')) return 'cristo';
-
-    return '';
-  }
-
   openConfirmModal(placeId: number) {
     this.placeToDeleteId = placeId;
     this.isModalOpen = true;

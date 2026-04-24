@@ -6,11 +6,12 @@ import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { switchMap } from 'rxjs';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-search-places',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, RouterLink],
+  imports: [CommonModule, HeaderComponent, FooterComponent, RouterLink, TranslocoModule],
   templateUrl: './search-places.component.html',
   styleUrl: './search-places.component.css'
 })

@@ -85,8 +85,8 @@
       }
     </div>
   }
-    <div class="idioma-container">
-      <p class="id-seleccionado" (click)="toggleLista()">{{ idiomaDef }}</p>
+    <div class="idioma-container" (click)="toggleLista()">
+      <p class="id-seleccionado">{{ idiomaDef }}</p>
       @if (isListaOpen) {
         <ul class="lista-idiomas">
           <li class="first-item" [ngClass]="{ 'active-lang': idiomaDef === 'ES' }">

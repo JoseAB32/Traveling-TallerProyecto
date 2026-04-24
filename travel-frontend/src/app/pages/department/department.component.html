@@ -5,9 +5,9 @@
   @if (loading) {
     <div class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando mapa...</span>
+        <span class="visually-hidden">{{ 'department.textLoadingMap' | transloco }}</span>
       </div>
-      <p class="mt-2 text-muted">Cargando información del departamento...</p>
+      <p class="mt-2 text-muted">{{ 'department.textLoadingInfo' | transloco }}</p>
     </div>
   }
 
@@ -139,14 +139,14 @@
       }
     } @empty {
       <div class="alert alert-info text-center mt-4">
-        Aún no hay lugares destacados para este departamento.
+        {{ 'department.textThereAreNoPlaces' | transloco }}
       </div>
     }
-    @if (places.length === 0) {
+    <!-- @if (places.length === 0) {
       <div class="alert alert-info text-center mt-4">
         No hay lugares registrados en este departamento.
       </div>
-    }
+    } -->
   }
 </main>
 

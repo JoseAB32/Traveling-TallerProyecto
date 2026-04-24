@@ -47,6 +47,20 @@
             "confContrasena": "Confirm Password",
             "fechaNac": "Birthdate",
             "ciudad": "City"
+        },
+        "errorInputs": {
+            "userNameRequired": "The username is required.",
+            "userNameContainSpace": "The username cannot contain spaces.",
+            "userNameMinLength": "The username must be at least 5 characters long.",
+            "passwordRequired": "The password is required.",
+            "passwordContainSpace": "The password cannot contain spaces.",
+            "passwordMinLength": "The password must be at least 8 characters long.",
+            "emailRequired": "The email address is required.",
+            "emailInvalid": "The email address is invalid.",
+            "confirmPasswordRequired": "Password confirmation is required.",
+            "confirmPasswordContainSpace": "The password confirmation cannot contain spaces.",
+            "birthdateRequired": "Date of birth is required.",
+            "cityRequired": "The city is required."
         }
     },
     "inicioLogueado": {
@@ -67,7 +81,10 @@
         "textExploreCity": "Explore the different tourist attractions of {{cityName}} or start putting together your itinerary to visit {{cityName}}.",
         "buttonItinerary": "CREATE YOUR ITINERARY HERE",
         "titleBestPlaces": "TOP RATED PLACES",
-        "textBestReview": "Best review:"
+        "textBestReview": "Best review:",
+        "textLoadingInfo": "Loading department information...",
+        "textThereAreNoPlaces": "There are no featured places for this department yet.",
+        "textLoadingMap": "Loading map..."
     },
     "adminConfiguration": {
         "title": "Administration Panel",
@@ -108,7 +125,30 @@
         },
         "modal": {
             "title": "Action required",
-            "close": "Close"
+            "close": "Close",
+            "textError": "Error saving the change on the server.",
+            "textErrorFilter": "All filter fields are required to perform an accurate search."
         }
+    },
+    "searchPlaces": {
+        "textResultsFor": "Results for:",
+        "textSearchInBolivia": "Searching in Bolivia...",
+        "textLocated": "Located in",
+        "textNoMatchesFound": "Oops! No matches found.",
+        "textTryAnother": "Try another department, place name, or address.",
+        "textBack": "Back to top"
+    },
+    "placeDetail": {
+        "textLoading": "Loading place...",
+        "textPlaceNotFound": "Place not found",
+        "textGeneralInfo": "General Information",
+        "textInfoPlace": "Location Information"
+    },
+    "components": {
+        "cardTextGeneralInfo": "GENERAL INFORMATION:",
+        "cardButtonSeeMore": "See more",
+        "signUpSuccessTextSuccess": "Successful registration",
+        "signUpSuccessTextMessage": "The process has been completed successfully. Please log in to access the platform.",
+        "signUpSuccessTextLink": "Go to Login"
     }
 }

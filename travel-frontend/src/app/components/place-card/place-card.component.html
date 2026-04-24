@@ -18,12 +18,12 @@
     </div>
 
     <div class="description-container">
-      <span class="label">INFORMACIÓN GENERAL:</span>
+      <span class="label">{{ 'components.cardTextGeneralInfo' | transloco}}</span>
       <p>{{ place.description }}</p>
     </div>
 
     <div class="card-footer">
-      <button class="btn-ver-mas" (click)="goToDetails(place.id)">Ver más</button>
+      <button class="btn-ver-mas" (click)="goToDetails(place.id)">{{ 'components.cardButtonSeeMore' | transloco}}</button>
     </div>
   </div>
 </div>

@@ -47,6 +47,20 @@
             "confContrasena": "Confirmar contraseña",
             "fechaNac": "Fecha de nacimiento",
             "ciudad": "Ciudad"
+        },
+        "errorInputs": {
+            "userNameRequired": "El nombre de usuario es obligatorio.",
+            "userNameContainSpace": "El nombre de usuario no puede contener espacios.",
+            "userNameMinLength": "El nombre de usuario debe tener al menos 5 caracteres.",
+            "passwordRequired": "La contraseña es obligatoria.",
+            "passwordContainSpace": "La contraseña no puede contener espacios.",
+            "passwordMinLength": "La contraseña debe tener al menos 8 caracteres.",
+            "emailRequired": "El correo electrónico es obligatorio.",
+            "emailInvalid": "El correo electrónico no es válido.",
+            "confirmPasswordRequired": "La confirmación de la contraseña es obligatoria.",
+            "confirmPasswordContainSpace": "La confirmación de la contraseña no puede contener espacios.",
+            "birthdateRequired": "La fecha de nacimiento es obligatoria.",
+            "cityRequired": "La ciudad es obligatoria."
         }
     },
     "inicioLogueado": {
@@ -67,7 +81,10 @@
         "textExploreCity": "Explora los diferentes lugares turísticos de {{cityName}} o empieza a armar tu itinerario para visitar {{cityName}}.",
         "buttonItinerary": "ARMA TU ITINERARIO AQUÍ",
         "titleBestPlaces": "LUGARES MEJOR CALIFICADOS",
-        "textBestReview": "Mejor reseña:"
+        "textBestReview": "Mejor reseña:",
+        "textLoadingInfo": "Cargando información del departamento...",
+        "textThereAreNoPlaces": "Aún no hay lugares destacados para este departamento.",
+        "textLoadingMap": "Cargando mapa..."
     },
     "adminConfiguration": {
         "title": "Panel de Administración",
@@ -108,7 +125,30 @@
         },
         "modal": {
             "title": "Acción requerida",
-            "close": "Cerrar"
+            "close": "Cerrar",
+            "textErrorServer": "Error al guardar el cambio en el servidor.",
+            "textErrorFilter": "Todos los campos de filtro son obligatorios para realizar la búsqueda precisa."
         }
+    },
+    "searchPlaces": {
+        "textResultsFor": "Resultados para:",
+        "textSearchInBolivia": "Buscando en Bolivia...",
+        "textLocated": "Ubicado en",
+        "textNoMatchesFound": "¡Ups! No se encontraron coincidencias.",
+        "textTryAnother": "Intenta con otro departamento, nombre de lugar o dirección.",
+        "textBack": "Volver al inicio"
+    },
+    "placeDetail": {
+        "textLoading": "Cargando lugar...",
+        "textPlaceNotFound": "Lugar no encontrado",
+        "textGeneralInfo": "Información General",
+        "textInfoPlace": "Información del Lugar"
+    },
+    "components": {
+        "cardTextGeneralInfo": "INFORMACIÓN GENERAL:",
+        "cardButtonSeeMore": "Ver más",
+        "signUpSuccessTextSuccess": "Registro exitoso",
+        "signUpSuccessTextMessage": "El proceso se ha realizado correctamente. Por favor inicie sesión para ingresar a la plataforma.",
+        "signUpSuccessTextLink": "Ir al Login"
     }
 }

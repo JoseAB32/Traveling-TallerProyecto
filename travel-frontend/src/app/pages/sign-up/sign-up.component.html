@@ -74,9 +74,9 @@
                 [class.label-error]="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">{{ 'formLoginAndSignin.textoInputs.nombreUsuario' | transloco }}</label>
 
                 <div class="error-container" *ngIf="nombreUsuario.invalid && (nombreUsuario.touched || nombreUsuario.dirty)">
-                    <p *ngIf="nombreUsuario.errors?.['required']">{{ constants.MESSAGES.ERROR.USERNAME_REQUIRED }}</p>
-                    <p *ngIf="nombreUsuario.errors?.['minlength']">{{ constants.MESSAGES.ERROR.USERNAME_MINLENGTH }}</p>
-                    <p *ngIf="nombreUsuario.errors?.['pattern']">{{ constants.MESSAGES.ERROR.USERNAME_PATTERN }}</p>
+                    <p *ngIf="nombreUsuario.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.userNameRequired' | transloco }}</p>
+                    <p *ngIf="nombreUsuario.errors?.['minlength']">{{ 'formLoginAndSignin.errorInputs.userNameMinLength' | transloco }}</p>
+                    <p *ngIf="nombreUsuario.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.userNameContainSpace' | transloco }}</p>
                 </div>
             </div>
             <div class="input-container">
@@ -87,8 +87,8 @@
                 [class.label-error]="correo.invalid && (correo.touched || correo.dirty)">{{ 'formLoginAndSignin.textoInputs.correo' | transloco }}</label>
 
                 <div class="error-container" *ngIf="correo.invalid && (correo.touched || correo.dirty)">
-                    <p *ngIf="correo.errors?.['required']">{{ constants.MESSAGES.ERROR.EMAIL_REQUIRED }}</p>
-                    <p *ngIf="correo.errors?.['email']">{{ constants.MESSAGES.ERROR.EMAIL_INVALID }}</p>
+                    <p *ngIf="correo.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.emailRequired' | transloco }}</p>
+                    <p *ngIf="correo.errors?.['email']">{{ 'formLoginAndSignin.errorInputs.emailInvalid' | transloco }}</p>
                     <!-- <p *ngIf="correo.errors?.['pattern']">El correo electrónico no puede contener espacios.</p> -->
                 </div>
             </div>
@@ -100,9 +100,9 @@
                 [class.label-error]="contrasena.invalid && (contrasena.touched || contrasena.dirty)">{{ 'formLoginAndSignin.textoInputs.contrasena' | transloco }}</label>
 
                 <div class="error-container" *ngIf="contrasena.invalid && (contrasena.touched || contrasena.dirty)">
-                    <p *ngIf="contrasena.errors?.['required']">{{ constants.MESSAGES.ERROR.PASSWORD_REQUIRED }}</p>
-                    <p *ngIf="contrasena.errors?.['minlength']">{{ constants.MESSAGES.ERROR.PASSWORD_MINLENGTH }}</p>
-                    <p *ngIf="contrasena.errors?.['pattern']">{{ constants.MESSAGES.ERROR.PASSWORD_PATTERN }}</p>
+                    <p *ngIf="contrasena.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.passwordRequired' | transloco }}</p>
+                    <p *ngIf="contrasena.errors?.['minlength']">{{ 'formLoginAndSignin.errorInputs.passwordMinLength' | transloco }}</p>
+                    <p *ngIf="contrasena.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.passwordContainSpace' | transloco }}</p>
                 </div>
             </div>
             <div class="input-container">
@@ -113,8 +113,8 @@
                 [class.label-error]="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">{{ 'formLoginAndSignin.textoInputs.confContrasena' | transloco }}</label>
 
                 <div class="error-container" *ngIf="confContrasena.invalid && (confContrasena.touched || confContrasena.dirty)">
-                    <p *ngIf="confContrasena.errors?.['required']">La confirmación de la contraseña es obligatoria.</p>
-                    <p *ngIf="confContrasena.errors?.['pattern']">La confirmación de la contraseña no puede contener espacios.</p>
+                    <p *ngIf="confContrasena.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.confirmPasswordRequired' | transloco }}</p>
+                    <p *ngIf="confContrasena.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.confirmPasswordContainSpace' | transloco }}</p>
                 </div>
             </div>
             <div class="input-container">
@@ -126,7 +126,7 @@
                 [class.label-error]="fechaNacimiento.invalid && (fechaNacimiento.touched || fechaNacimiento.dirty)">{{ 'formLoginAndSignin.textoInputs.fechaNac' | transloco }}</label>
 
                 <div class="error-container" *ngIf="fechaNacimiento.invalid && (fechaNacimiento.touched || fechaNacimiento.dirty)">
-                    <p *ngIf="fechaNacimiento.errors?.['required']">La fecha de nacimiento es obligatoria.</p>
+                    <p *ngIf="fechaNacimiento.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.birthdateRequired' | transloco }}</p>
                 </div>
             </div>
             <div class="input-container">
@@ -140,7 +140,7 @@
                 [class.label-error]="ciudad.invalid && (ciudad.touched || ciudad.dirty)">{{ 'formLoginAndSignin.textoInputs.ciudad' | transloco }}</label>
 
                 <div class="error-container" *ngIf="ciudad.invalid && (ciudad.touched || ciudad.dirty)">
-                    <p *ngIf="ciudad.errors?.['required']">La ciudad es obligatoria.</p>
+                    <p *ngIf="ciudad.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.cityRequired' | transloco }}</p>
                 </div>
             </div>
 
