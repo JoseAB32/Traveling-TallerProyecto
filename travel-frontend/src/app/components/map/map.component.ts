@@ -1,19 +1,20 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy, inject } from '@angular/core';
+import { 
+  Component, Input, AfterViewInit, Output, EventEmitter, 
+  OnChanges, SimpleChanges, OnDestroy, inject 
+} from '@angular/core';
 import * as L from 'leaflet';
 import { FeatureService } from '../../services/features/feature.service';
-//Para que arregle Leaflet
-const iconRetinaUrl = 'marker-icon-2x.png';
-const iconUrl = 'marker-icon.png';
-const shadowUrl = 'marker-shadow.png';
+
+// Fix Leaflet icons
 const iconDefault = L.icon({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconRetinaUrl: 'marker-icon-2x.png',
+  iconUrl:       'marker-icon.png',
+  shadowUrl:     'marker-shadow.png',
+  iconSize:    [25, 41],
+  iconAnchor:  [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
+  shadowSize:  [41, 41]
 });
 L.Marker.prototype.options.icon = iconDefault;
 
@@ -28,15 +29,14 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() places: any[] = []; // Lista de los lugares
   @Output() placeSelected = new EventEmitter<any>(); // Evento para enviar el lugar seleccionado al componente padre
   @Output() placeClicked = new EventEmitter<any>();
+
   private map: L.Map | null = null;
   private markerLayer = L.layerGroup();
 
-  featureService = inject(FeatureService);
-  features: any = {};
+  private featureService = inject(FeatureService);
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.featureService.getFeatures().subscribe((data: any) => this.features = data);
     this.renderMarkers();
   }
 
@@ -54,48 +54,39 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private initMap(): void {
-    // Inicializa el mapa
     this.map = L.map('map');
     this.markerLayer.addTo(this.map);
 
-    // Añade la capa de OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // Coordenadas por defecto: Cochabamba, Bolivia
     this.map.setView([-17.3895, -66.1568], 13);
   }
 
   private renderMarkers(): void {
-    if (!this.map) {
-      return;
-    }
+    if (!this.map) return;
 
     this.markerLayer.clearLayers();
     const bounds: L.LatLngTuple[] = [];
 
-    if (!this.places || this.places.length === 0) {
+    if (!this.places?.length) {
       this.map.setView([-17.3895, -66.1568], 13);
       return;
     }
 
     this.places.forEach(place => {
-      if (!place.latitude || !place.longitude) {
-        return;
-      }
+      if (!place.latitude || !place.longitude) return;
 
       const latLng: L.LatLngTuple = [place.latitude, place.longitude];
       const marker = L.marker(latLng).addTo(this.markerLayer);
 
-      const popupContent = `
+      marker.bindPopup(`
         <b>${place.name}</b><br>
         ${place.address}<br>
         ⭐ ${place.rating}
-      `;
-
-      marker.bindPopup(popupContent);
+      `);
 
       marker.on('mouseover', () => {
         marker.openPopup();
@@ -108,7 +99,9 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
       });
 
       marker.on('click', () => {
-        this.placeClicked.emit(place);
+        if (this.featureService.isEnabled('pinRedirection')) {
+          this.placeClicked.emit(place);
+        }
       });
 
       bounds.push(latLng);
