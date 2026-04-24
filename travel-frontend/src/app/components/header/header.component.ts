@@ -61,7 +61,6 @@ export class HeaderComponent implements OnInit, OnDestroy{
     this.translocoService.setActiveLang(lang);
     localStorage.setItem('lang', lang);
     this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
-    this.isListaOpen = !this.isListaOpen;
   }
 
   toggleLista() {
