@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { Place } from '../../models/place/place';
 
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-
+import { FeatureService } from '../../services/features/feature.service'
 @Component({
   selector: 'app-place-detail',
   standalone: true,
@@ -20,7 +20,7 @@ export class PlaceDetailComponent implements OnInit {
   place: Place | null = null;
   loading = true;
   showBackToItinerary = false;
-
+  featureService = inject(FeatureService);
   images: string[] = [];
   currentImageIndex = 0;
 
