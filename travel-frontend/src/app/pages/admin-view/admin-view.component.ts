@@ -24,7 +24,6 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   logs: Logger[] = [];
   activeTab: string = 'logs';
 
-  // En lugar de featuresData local, exponemos el signal del servicio al template
   readonly featuresData = this.featureService.features;
 
   showErrorModal: boolean = false;
@@ -45,7 +44,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   }
 
   loadFeatures(): void {
-    // loadFeatures() actualiza el signal internamente — no necesitamos guardar nada aquí
+    // loadFeatures() actualiza el signal internamente 
     this.featureService.loadFeatures().subscribe({
       error: (err) => console.error('Error cargando features', err)
     });
@@ -54,17 +53,14 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   toggleFeature(featureKey: keyof Features): void {
     // Construimos el nuevo estado a partir del signal actual
     const updated: Features = {
-      ...this.featuresData(),         // leemos el signal con ()
+      ...this.featuresData(),        
       [featureKey]: !this.featuresData()[featureKey]
     };
 
     this.featureService.updateFeatures(updated).subscribe({
-      next: () => console.log(`Feature '${featureKey}' actualizado.`),
       error: () => {
         this.modalMessage = 'Error al guardar el cambio en el servidor.';
         this.showErrorModal = true;
-        // No necesitamos revertir manualmente — el signal no se actualizó
-        // porque updateFeatures solo hace set() en el tap() del next
       }
     });
   }

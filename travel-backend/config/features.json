@@ -1,6 +1,6 @@
 {
-  "pinRedirection" : false,
-  "autoCreateItinerary" : false,
+  "pinRedirection" : true,
+  "autoCreateItinerary" : true,
   "showSearchPlaces" : true,
-  "showFavorites" : false
+  "showFavorites" : true
 }
