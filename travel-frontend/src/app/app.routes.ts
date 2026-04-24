@@ -10,6 +10,7 @@ import { SearchPlacesComponent } from './pages//search-places/search-places.comp
 import { adminGuard } from './guards/admin.guard';
 import { AdminViewComponent } from './pages/admin-view/admin-view.component';
 import { DepartmentComponent } from './pages//department/department.component'
+import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   {
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path: 'success-signup', component: SuccessSignupComponent },
   { path: '', component: LandingComponent },
   { path: 'wishlist', canActivate: [authGuard], component: WishlistComponent },
+  { path: 'itinerarios', canActivate: [authGuard], component: CreateItineraryComponent },
   { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
   {
     path: 'place/:id',

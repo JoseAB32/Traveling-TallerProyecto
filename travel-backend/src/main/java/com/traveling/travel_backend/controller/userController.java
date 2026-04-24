@@ -24,6 +24,8 @@ import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.UserRepository;
 import com.traveling.travel_backend.security.JwtService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,16 +33,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH)
-@CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
+@CrossOrigin(origins = { AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY })
 public class userController {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(userController.class);
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -56,125 +55,176 @@ public class userController {
         this.jwtService = jwtService;
     }
 
+    @Operation(
+        summary = "Get all users",
+        description = "Returns a list with the information of all users",
+        tags = {"User"},
+        operationId = "getAllUsers"
+    )
     @GetMapping(AppConstants.USERS_ENDPOINT)
     public List<User> getAllUsers() {
-        logger.info(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Recibida solicitud para obtener la lista de todos los usuarios.");
-        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO, "Recibida solicitud para obtener la lista de todos los usuarios.", null));
+        logger.info(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS
+                + "] Recibida solicitud para obtener la lista de todos los usuarios.");
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
+                "Recibida solicitud para obtener la lista de todos los usuarios.", null));
 
         List<User> users = userRepository.findAll();
-        
-        logger.debug(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Se recuperaron {} usuarios de la base de datos.", users.size());
-        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG, "Se recuperaron " + users.size() + " usuarios de la base de datos.", null));
-        
+
+        logger.debug(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS
+                + "] Se recuperaron {} usuarios de la base de datos.", users.size());
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG,
+                "Se recuperaron " + users.size() + " usuarios de la base de datos.", null));
+
         return users;
     }
 
+    @Operation(
+        summary = "Create new user",
+        description = "Create new user if all the checks pass",
+        tags = {"User"},
+        operationId = "createUser"
+    )
     @PostMapping(AppConstants.USERS_ENDPOINT)
     public ResponseEntity<?> createUser(@RequestBody User user) {
-        logger.info(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Recibida solicitud para crear un nuevo usuario. Nombre de usuario: {}", user.getUserName());
-        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO, "Recibida solicitud para crear un nuevo usuario. Nombre de usuario: " + user.getUserName(), null));
+        logger.info(
+                AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS
+                        + "] Recibida solicitud para crear un nuevo usuario. Nombre de usuario: {}",
+                user.getUserName());
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
+                "Recibida solicitud para crear un nuevo usuario. Nombre de usuario: " + user.getUserName(), null));
 
         if (user.getUserName() == null || user.getUserName().trim().isEmpty()) {
-            logger.warn(AppConstants.PREFIX_ERROR + " [" + AppConstants.LOG_USERS + "] Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.");
-            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN, "Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.", null));
+            logger.warn(AppConstants.PREFIX_ERROR + " [" + AppConstants.LOG_USERS
+                    + "] Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.");
+            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
+                    "Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.", null));
             return ResponseEntity
-                .badRequest()
-                .body(new ErrorResponse(AppConstants.USER_REQUIRED));
+                    .badRequest()
+                    .body(new ErrorResponse(AppConstants.USER_REQUIRED));
         }
 
         String trimmedUserName = user.getUserName().trim();
         Optional<User> existingUser = userRepository.findByUserNameAndStateTrue(trimmedUserName);
 
         if (existingUser.isPresent()) {
-            logger.warn(AppConstants.PREFIX_ERROR + " [" + AppConstants.LOG_USERS + "] Creación de usuario rechazada: El nombre de usuario '{}' ya se encuentra en uso.", trimmedUserName);
-            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN, "Creación de usuario rechazada: El nombre de usuario '" + trimmedUserName + "' ya se encuentra en uso.", null));
+            logger.warn(
+                    AppConstants.PREFIX_ERROR + " [" + AppConstants.LOG_USERS
+                            + "] Creación de usuario rechazada: El nombre de usuario '{}' ya se encuentra en uso.",
+                    trimmedUserName);
+            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
+                    "Creación de usuario rechazada: El nombre de usuario '" + trimmedUserName
+                            + "' ya se encuentra en uso.",
+                    null));
 
             return ResponseEntity
-                .badRequest()
-                .body(new ErrorResponse(AppConstants.USER_ALREADY_IN_USE));
+                    .badRequest()
+                    .body(new ErrorResponse(AppConstants.USER_ALREADY_IN_USE));
         }
-    
+
         if (user.getCity() != null) {
-            logger.debug(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS + "] Buscando información de la ciudad con ID: {}", user.getCity().getId());
-            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG, "Buscando información de la ciudad con ID: " + user.getCity().getId(), null));
+            logger.debug(AppConstants.PREFIX_USER + " [" + AppConstants.LOG_USERS
+                    + "] Buscando información de la ciudad con ID: {}", user.getCity().getId());
+            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG,
+                    "Buscando información de la ciudad con ID: " + user.getCity().getId(), null));
 
             City realCity = cityRepository.findById(user.getCity().getId()).orElse(null);
-            user.setCity(realCity); 
+            user.setCity(realCity);
         }
-        
+
         User savedUser = userRepository.save(user);
-        logger.info("👤 [USERS] Usuario '{}' creado exitosamente con el ID: {}", savedUser.getUserName(), savedUser.getId());
-        logRepository.save(new LogEntity("USERS", "INFO", "Usuario '" + savedUser.getUserName() + "' creado exitosamente con el ID: " + savedUser.getId(), null));
+        logger.info("👤 [USERS] Usuario '{}' creado exitosamente con el ID: {}", savedUser.getUserName(),
+                savedUser.getId());
+        logRepository.save(new LogEntity("USERS", "INFO",
+                "Usuario '" + savedUser.getUserName() + "' creado exitosamente con el ID: " + savedUser.getId(), null));
 
         return ResponseEntity.ok(savedUser);
     }
 
+    @Operation(
+        summary = "Login request",
+        description = "Login request & checks to gain acccess to app with valid credentials",
+        tags = {"User"},
+        operationId = "login"
+    )
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest credentials) {
-            String userName = credentials.getUserName();
-            String pass = credentials.getPass();
-            
-            logger.info("👤 [USERS] Intento de inicio de sesión para el usuario: {}", userName != null ? userName : "DESCONOCIDO");
-            logRepository.save(new LogEntity("USERS", "INFO", "Intento de inicio de sesión para el usuario: " + (userName != null ? userName : "DESCONOCIDO"), null));
-            
-            if (userName == null || userName.trim().isEmpty()) {
-                logger.warn("❌ [USERS] Login rechazado: El nombre de usuario es nulo o está vacío.");
-                logRepository.save(new LogEntity("USERS", "WARN", "Login rechazado: El nombre de usuario es nulo o está vacío.", null));
+        String userName = credentials.getUserName();
+        String pass = credentials.getPass();
 
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de usuario es requerido.");
-            }
-            if (pass == null || pass.trim().isEmpty()) {
-                logger.warn("❌ [USERS] Login rechazado para el usuario '{}': La contraseña está vacía.", userName);
-                logRepository.save(new LogEntity("USERS", "WARN", "Login rechazado para el usuario '" + userName + "': La contraseña está vacía.", null));
+        logger.info("👤 [USERS] Intento de inicio de sesión para el usuario: {}",
+                userName != null ? userName : "DESCONOCIDO");
+        logRepository.save(new LogEntity("USERS", "INFO",
+                "Intento de inicio de sesión para el usuario: " + (userName != null ? userName : "DESCONOCIDO"), null));
 
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es requerida.");
-            }
+        if (userName == null || userName.trim().isEmpty()) {
+            logger.warn("❌ [USERS] Login rechazado: El nombre de usuario es nulo o está vacío.");
+            logRepository.save(new LogEntity("USERS", "WARN",
+                    "Login rechazado: El nombre de usuario es nulo o está vacío.", null));
 
-            logger.debug("👤 [USERS] Buscando al usuario '{}' en la base de datos.", userName);
-            logRepository.save(new LogEntity("USERS", "DEBUG", "Buscando al usuario '" + userName + "' en la base de datos.", null));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de usuario es requerido.");
+        }
+        if (pass == null || pass.trim().isEmpty()) {
+            logger.warn("❌ [USERS] Login rechazado para el usuario '{}': La contraseña está vacía.", userName);
+            logRepository.save(new LogEntity("USERS", "WARN",
+                    "Login rechazado para el usuario '" + userName + "': La contraseña está vacía.", null));
 
-            Optional<User> optionalUser = userRepository.findByUserName(userName);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es requerida.");
+        }
 
-            if(optionalUser.isEmpty()) {
-                logger.warn("❌ [USERS] Login fallido: No se encontró ningún usuario con el nombre '{}'.", userName);
-                logRepository.save(new LogEntity("USERS", "WARN", "Login fallido: No se encontró ningún usuario con el nombre '" + userName + "'.", null));
+        logger.debug("👤 [USERS] Buscando al usuario '{}' en la base de datos.", userName);
+        logRepository.save(
+                new LogEntity("USERS", "DEBUG", "Buscando al usuario '" + userName + "' en la base de datos.", null));
 
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
-            }
+        Optional<User> optionalUser = userRepository.findByUserName(userName);
 
-            User user = optionalUser.get(); //Obtenemos el valor que guarda Optional.
-            
-            if (!user.isState()) {
-                logger.warn("❌ [USERS] Login fallido: El usuario '{}' (ID: {}) intentó acceder pero está inactivo.", user.getUserName(), user.getId());
-                logRepository.save(new LogEntity("USERS", "WARN", "Login fallido: El usuario '" + user.getUserName() + "' (ID: " + user.getId() + ") intentó acceder pero está inactivo.", user.getId()));
+        if (optionalUser.isEmpty()) {
+            logger.warn("❌ [USERS] Login fallido: No se encontró ningún usuario con el nombre '{}'.", userName);
+            logRepository.save(new LogEntity("USERS", "WARN",
+                    "Login fallido: No se encontró ningún usuario con el nombre '" + userName + "'.", null));
 
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario desactivado.");
-            }
-            
-            if (!user.getPass().equals(pass)) {
-                logger.warn("❌ [USERS] Login fallido: Contraseña incorrecta para el usuario '{}'.", user.getUserName());
-                logRepository.save(new LogEntity("USERS", "WARN", "Login fallido: Contraseña incorrecta para el usuario '" + user.getUserName() + "'.", user.getId()));
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
+        }
 
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
-            }
+        User user = optionalUser.get(); // Obtenemos el valor que guarda Optional.
 
-            logger.debug("👤 [USERS] Generando token JWT para el usuario '{}'.", user.getUserName());
-            logRepository.save(new LogEntity("USERS", "DEBUG", "Generando token JWT para el usuario '" + user.getUserName() + "'.", user.getId()));
+        if (!user.isState()) {
+            logger.warn("❌ [USERS] Login fallido: El usuario '{}' (ID: {}) intentó acceder pero está inactivo.",
+                    user.getUserName(), user.getId());
+            logRepository.save(new LogEntity("USERS", "WARN", "Login fallido: El usuario '" + user.getUserName()
+                    + "' (ID: " + user.getId() + ") intentó acceder pero está inactivo.", user.getId()));
 
-            String token = jwtService.generateToken(user.getUserName(), user.getId());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario desactivado.");
+        }
 
-            LoginResponse response = new LoginResponse(
+        if (!user.getPass().equals(pass)) {
+            logger.warn("❌ [USERS] Login fallido: Contraseña incorrecta para el usuario '{}'.", user.getUserName());
+            logRepository.save(new LogEntity("USERS", "WARN",
+                    "Login fallido: Contraseña incorrecta para el usuario '" + user.getUserName() + "'.",
+                    user.getId()));
+
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
+        }
+
+        logger.debug("👤 [USERS] Generando token JWT para el usuario '{}'.", user.getUserName());
+        logRepository.save(new LogEntity("USERS", "DEBUG",
+                "Generando token JWT para el usuario '" + user.getUserName() + "'.", user.getId()));
+
+        String token = jwtService.generateToken(user.getUserName(), user.getId());
+
+        LoginResponse response = new LoginResponse(
                 token,
                 "Bearer",
                 user.getId(),
                 user.getUserName(),
                 user.getCorreo(),
-                "Login exitoso"
-            );
+                "Login exitoso");
 
-            logger.info("👤 [USERS] Inicio de sesión exitoso para el usuario '{}' (ID: {}).", user.getUserName(), user.getId());
-            logRepository.save(new LogEntity("USERS", "INFO", "Inicio de sesión exitoso para el usuario '" + user.getUserName() + "' (ID: " + user.getId() + ").", user.getId()));
+        logger.info("👤 [USERS] Inicio de sesión exitoso para el usuario '{}' (ID: {}).", user.getUserName(),
+                user.getId());
+        logRepository.save(new LogEntity("USERS", "INFO",
+                "Inicio de sesión exitoso para el usuario '" + user.getUserName() + "' (ID: " + user.getId() + ").",
+                user.getId()));
 
-            return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
     }
 }

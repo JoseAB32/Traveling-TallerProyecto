@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter, Inject, inject } from '@angular/core';
+import { Component, Input, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy, inject } from '@angular/core';
 import * as L from 'leaflet';
 import { FeatureService } from '../../services/features/feature.service';
 //Para que arregle Leaflet
@@ -24,11 +24,12 @@ L.Marker.prototype.options.icon = iconDefault;
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() places: any[] = []; // Lista de los lugares
   @Output() placeSelected = new EventEmitter<any>(); // Evento para enviar el lugar seleccionado al componente padre
   @Output() placeClicked = new EventEmitter<any>();
-  private map: any;
+  private map: L.Map | null = null;
+  private markerLayer = L.layerGroup();
 
   featureService = inject(FeatureService);
   features: any = {};
@@ -36,11 +37,26 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     this.featureService.getFeatures().subscribe((data: any) => this.features = data);
+    this.renderMarkers();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['places'] && this.map) {
+      this.renderMarkers();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.map) {
+      this.map.remove();
+      this.map = null;
+    }
   }
 
   private initMap(): void {
     // Inicializa el mapa
     this.map = L.map('map');
+    this.markerLayer.addTo(this.map);
 
     // Añade la capa de OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -48,56 +64,58 @@ export class MapComponent implements AfterViewInit {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // Si hay lugares, se ponen los pines
-    if (this.places && this.places.length > 0) {
-      const bounds: L.LatLngTuple[] = []; // Para centrar el mapa automáticamente
+    // Coordenadas por defecto: Cochabamba, Bolivia
+    this.map.setView([-17.3895, -66.1568], 13);
+  }
 
-      this.places.forEach(place => {
-        if (place.latitude && place.longitude) {
-          const latLng: L.LatLngTuple = [place.latitude, place.longitude];
-          
-          // Crea el pin y el popup con la información
-          const marker = L.marker(latLng).addTo(this.map);
+  private renderMarkers(): void {
+    if (!this.map) {
+      return;
+    }
 
-          // 3. Prepara el contenido del Popup
-          const popupContent = `
-            <b>${place.name}</b><br>
-            ${place.address}<br>
-            ⭐ ${place.rating}
-          `;
+    this.markerLayer.clearLayers();
+    const bounds: L.LatLngTuple[] = [];
 
-          // 4. Bindea el popup pero no dejes que el clic lo maneje solo
-          marker.bindPopup(popupContent);
+    if (!this.places || this.places.length === 0) {
+      this.map.setView([-17.3895, -66.1568], 13);
+      return;
+    }
 
-          // 5. Agrega los eventos de HOVER
-          marker.on('mouseover', (e) => {
-            marker.openPopup(); // 'this' hace referencia al marcador
-            this.placeSelected.emit(place);
-          });
+    this.places.forEach(place => {
+      if (!place.latitude || !place.longitude) {
+        return;
+      }
 
-          marker.on('mouseout', (e) => {
-            marker.closePopup();
-            this.placeSelected.emit(null);
-          });
+      const latLng: L.LatLngTuple = [place.latitude, place.longitude];
+      const marker = L.marker(latLng).addTo(this.markerLayer);
 
-          marker.on('click', (e) => {
-            if (this.features.pinRedirection) {
-              this.placeClicked.emit(place);
-            } else {
-              console.log('Click bloqueado: PinRedirection está desactivado.');
-            }
-          });
+      const popupContent = `
+        <b>${place.name}</b><br>
+        ${place.address}<br>
+        ⭐ ${place.rating}
+      `;
 
-          bounds.push(latLng);
-        }
+      marker.bindPopup(popupContent);
+
+      marker.on('mouseover', () => {
+        marker.openPopup();
+        this.placeSelected.emit(place);
       });
 
-      if (bounds.length > 0) {
-        this.map.fitBounds(bounds);
-      }
-   } else {
-      // Coordenadas por defecto: Cochabamba, Bolivia
-      this.map.setView([-17.3895, -66.1568], 13);
+      marker.on('mouseout', () => {
+        marker.closePopup();
+        this.placeSelected.emit(null);
+      });
+
+      marker.on('click', () => {
+        this.placeClicked.emit(place);
+      });
+
+      bounds.push(latLng);
+    });
+
+    if (bounds.length > 0) {
+      this.map.fitBounds(bounds);
     }
   }
 }

@@ -97,6 +97,10 @@ export class DepartmentComponent implements OnInit {
     this.router.navigate(['/place', id]);
   }
 
+  goToItinerary() {
+    this.router.navigate(['/itinerarios'], { queryParams: { cityId: this.departmentId } });
+  }
+
   onMapInteraction(place: any) {
     this.selectedPlaceFromMap = place;
   }

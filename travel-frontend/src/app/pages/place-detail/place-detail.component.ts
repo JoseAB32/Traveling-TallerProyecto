@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { PlaceService } from '../../services/place/place.service';
 import { Place } from '../../models/place/place';
@@ -20,6 +20,7 @@ export class PlaceDetailComponent implements OnInit {
 
   place: Place | null = null;
   loading = true;
+  showBackToItinerary = false;
 
   images: string[] = [];
   currentImageIndex = 0;
@@ -29,10 +30,13 @@ export class PlaceDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private placeService: PlaceService
   ) {}
 
   ngOnInit(): void {
+    this.showBackToItinerary = this.route.snapshot.queryParamMap.get('returnTo') === 'itinerarios';
+
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
@@ -96,5 +100,9 @@ export class PlaceDetailComponent implements OnInit {
   getStars(rating: number): string {
     const score = Math.floor(rating || 0);
     return '★'.repeat(score) + '☆'.repeat(5 - score);
+  }
+
+  backToItinerary(): void {
+    this.router.navigate(['/itinerarios']);
   }
 }
