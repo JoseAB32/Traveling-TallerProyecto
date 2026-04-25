@@ -49,11 +49,12 @@ export class DepartmentComponent implements OnInit {
     this.cityService.getCityById(this.departmentId).subscribe({
       next: (data) => {
         this.city = data;
+      },
+      error: (err) => {
+        console.error(err);
+        console.log(err.error.message);
       }
     });
-
-    // this.cityName = String(this.city.name);
-    // console.log(this.cityName);
 
     this.placeService.getPlacesByDepartment(this.departmentId).subscribe({
       next: (data: Place[]) => {

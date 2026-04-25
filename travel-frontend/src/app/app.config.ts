@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes), 
-    provideHttpClient(withInterceptors([authInterceptor])), provideHttpClient(), provideTransloco({
+    provideHttpClient(withInterceptors([authInterceptor])), provideTransloco({
         config: { 
           availableLangs: ['es', 'en'],
           defaultLang: 'es',
