@@ -6,21 +6,25 @@ import { Subscription} from 'rxjs';
 import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
 import { FEATURES } from '../../features/features';
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslocoModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit, OnDestroy{
+
+  idiomaDef: string = "";
   
   isAdmin: boolean = false;
   isLogsEnabled: boolean = FEATURES.adminLogsEnabled;
 
   isLoggedIn: boolean = false;
   isMenuOpen: boolean = false; // El menú debe empezar cerrado
+  isListaOpen: boolean = false;
   private userSub!: Subscription;
 
   searchTerm: string = '';
@@ -28,9 +32,18 @@ export class HeaderComponent implements OnInit, OnDestroy{
   allPlaces: Place[] = []; 
   showSuggestions: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private placeService: PlaceService, private el: ElementRef) {}
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private placeService: PlaceService, 
+              private el: ElementRef,
+              private translocoService: TranslocoService) {
+                this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
+              }
   
   ngOnInit(): void {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
+    this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
     this.isAdmin = this.authService.isAdmin();
     //Para ver al user actual  
     this.userSub = this.authService.currentUser$.subscribe(user => {
@@ -43,6 +56,17 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
     this.placeService.getPlaces().subscribe(data => this.allPlaces = data);
   }
+
+  changeLang(lang: string) {
+    this.translocoService.setActiveLang(lang);
+    localStorage.setItem('lang', lang);
+    this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
+  }
+
+  toggleLista() {
+    this.isListaOpen = !this.isListaOpen;
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }

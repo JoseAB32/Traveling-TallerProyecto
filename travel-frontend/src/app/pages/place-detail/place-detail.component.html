@@ -9,12 +9,12 @@
   <!-- LOADING -->
   <div *ngIf="loading" class="loading-container">
     <div class="spinner"></div>
-    <p>Cargando lugar...</p>
+    <p>{{ 'placeDetail.textLoading' | transloco }}</p>
   </div>
 
   <!-- ERROR -->
   <div *ngIf="!loading && !place" class="error-container">
-    <p class="error-message">Lugar no encontrado</p>
+    <p class="error-message">{{ 'placeDetail.textPlaceNotFound' | transloco }}</p>
   </div>
 
   <!-- CONTENIDO -->
@@ -69,7 +69,7 @@
       <!-- INFORMACIÓN GENERAL -->
       <div class="info-card info-general">
         <div class="card-title">
-          Información General
+          {{ 'placeDetail.textGeneralInfo' | transloco }}
         </div>
         <p class="description">
           {{ place.description }}
@@ -79,7 +79,7 @@
       <!-- INFORMACIÓN DEL LUGAR -->
       <div class="info-card info-lugar">
         <div class="card-title">
-          Información del Lugar
+          {{ 'placeDetail.textInfoPlace' | transloco }}
         </div>
 
         <div class="info-list">
@@ -92,7 +92,7 @@
               </svg>
             </span>
             <span class="info-text">
-              <strong>Nombre lugar:</strong> {{ place.name }}
+              {{ place.name }}
             </span>
           </div>
 
@@ -104,7 +104,7 @@
               </svg>
             </span>
             <span class="info-text">
-              <strong>Ubicación del lugar:</strong> {{ place.address }}
+              {{ place.address }}
             </span>
           </div>
 
@@ -116,7 +116,7 @@
               </svg>
             </span>
             <span class="info-text">
-              <strong>Calificación:</strong> {{ getStars(place.rating) }}
+              {{ getStars(place.rating) }}
             </span>
           </div>
 
@@ -128,7 +128,7 @@
               </svg>
             </span>
             <span class="info-text">
-              <strong>Horario:</strong> 9:00 - 20:00
+              9:00 - 20:00
             </span>
           </div>
 
@@ -140,7 +140,7 @@
               </svg>
             </span>
             <span class="info-text">
-              <strong>Precio aproximado:</strong> 15$
+              15$
             </span>
           </div>
 
@@ -157,7 +157,7 @@
               </svg>
             </span>
             <span class="info-text">
-              <strong>Tipo de lugar:</strong> {{ place.place_type }}
+              {{ place.place_type }}
             </span>
           </div>
 

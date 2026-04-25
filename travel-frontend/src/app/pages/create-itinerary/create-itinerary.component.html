@@ -2,7 +2,7 @@
 
 <main class="itinerary-page">
   <section class="section-title peach">
-    <span>1. Selecciona el departamento o ciudad</span>
+    <span>{{ 'createItinerary.textFirstStep' | transloco }}</span>
   </section>
 
   <section class="city-selector">
@@ -11,7 +11,7 @@
       [(ngModel)]="selectedCityId"
       (ngModelChange)="onCityChange()"
     >
-      <option [ngValue]="null" disabled>Selecciona una ciudad</option>
+      <option [ngValue]="null" disabled>{{ 'createItinerary.textInputSelectCity' | transloco }}</option>
       @for (city of cities; track city.id) {
         <option [ngValue]="city.id">{{ city.name }}</option>
       }
@@ -19,17 +19,17 @@
   </section>
 
   <section class="section-title blue">
-    <span>2. Selecciona los lugares que quieres visitar</span>
+    <span>{{ 'createItinerary.textSecondStep' | transloco }}</span>
   </section>
 
   <section class="map-and-info">
     <div class="map-box">
       @if (isLoadingPlaces) {
-        <div class="loading-box">Cargando lugares...</div>
+        <div class="loading-box">{{ 'createItinerary.textLoadingPlaces' | transloco }}</div>
       } @else if (!selectedCityId) {
-        <div class="loading-box">Selecciona una ciudad para ver su mapa.</div>
+        <div class="loading-box">{{ 'createItinerary.textSelectCity' | transloco }}</div>
       } @else if (cityPlaces.length === 0) {
-        <div class="loading-box no-places">No hay lugares disponibles en esta ciudad.</div>
+        <div class="loading-box no-places">{{ 'createItinerary.textThereAreNoPlaces' | transloco }}</div>
       } @else {
         <app-map [places]="cityPlaces" (placeClicked)="onMapPlaceClick($event)"></app-map>
       }
@@ -37,33 +37,33 @@
 
     <div class="place-info">
       @if (!selectedPlace) {
-        <h3>Haz click en un pin para ver el lugar</h3>
-        <p>Selecciona un lugar del mapa para revisar su información y agregarlo al itinerario.</p>
+        <h3>{{ 'createItinerary.textClickPin' | transloco }}</h3>
+        <p>{{ 'createItinerary.textSelectPlace' | transloco }}</p>
       } @else {
         <h3>{{ selectedPlace.name }}</h3>
         <p>{{ selectedPlace.description }}</p>
 
         <div class="actions">
-          <button class="btn add" (click)="addSelectedPlace()">Agregar</button>
-          <button class="btn view" (click)="goToPlaceDetail(selectedPlace.id)">Ver más</button>
+          <button class="btn add" (click)="addSelectedPlace()">{{ 'createItinerary.textButtonAdd' | transloco }}</button>
+          <button class="btn view" (click)="goToPlaceDetail(selectedPlace.id)">{{ 'createItinerary.textButtonSeeMore' | transloco }}</button>
         </div>
       }
     </div>
   </section>
 
   <section class="section-title peach">
-    <span>3. Verifica los lugares que seleccionaste</span>
+    <span>{{ 'createItinerary.textThirdStep' | transloco }}</span>
   </section>
 
   <section class="selected-list">
     @if (selectedPlaces.length === 0) {
-      <div class="empty-state">Aún no seleccionaste lugares.</div>
+      <div class="empty-state">{{ 'createItinerary.textHaventSelectPlaces' | transloco }}</div>
     } @else {
       @for (place of selectedPlaces; track place.id) {
         <div class="selected-item">
           <span class="name">{{ place.name }}</span>
           <div class="item-actions">
-            <button class="inline-link" (click)="goToPlaceDetail(place.id)">Ver más</button>
+            <button class="inline-link" (click)="goToPlaceDetail(place.id)">{{ 'createItinerary.textButtonSeeMore' | transloco }}</button>
             <button class="remove" (click)="removeSelectedPlace(place.id)">X</button>
           </div>
         </div>
@@ -72,17 +72,17 @@
   </section>
 
   <section class="section-title blue">
-    <span>4. Establece las fechas de tu itinerario</span>
+    <span>{{ 'createItinerary.textFourthStep' | transloco }}</span>
   </section>
 
   <section class="date-section">
     <div class="date-field">
-      <label for="startDate">Fecha de inicio</label>
+      <label for="startDate">{{ 'createItinerary.textLabelStart' | transloco }}</label>
       <input id="startDate" type="date" [(ngModel)]="startDate" (change)="onDateChange()" />
     </div>
 
     <div class="date-field">
-      <label for="endDate">Fecha de finalización</label>
+      <label for="endDate">{{ 'createItinerary.textLabelEnd' | transloco }}</label>
       <input id="endDate" type="date" [(ngModel)]="endDate" (change)="onDateChange()" />
     </div>
   </section>

@@ -5,9 +5,9 @@
   @if (loading) {
     <div class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando mapa...</span>
+        <span class="visually-hidden">{{ 'department.textLoadingMap' | transloco }}</span>
       </div>
-      <p class="mt-2 text-muted">Cargando información del departamento...</p>
+      <p class="mt-2 text-muted">{{ 'department.textLoadingInfo' | transloco }}</p>
     </div>
   }
 
@@ -31,19 +31,19 @@
           <!-- ESTADO 1: TEXTO POR DEFECTO -->
           <div class="default-content">
             <h3 class="fw-bold mb-4" style="color: #000;">
-              Explora los diferentes lugares turísticos de Cochabamba o empieza a armar tu itinerario para visitar Cochabamba.
+              {{ 'department.textExploreCity' | transloco:{ cityName: city?.name } }}
             </h3>
             <button class="btn btn-traveling-orange btn-lg px-4 fw-bold rounded-3 shadow-sm" (click)="goToItinerary()">
-              ARMA TU ITINERARIO AQUÍ
+              {{ 'department.buttonItinerary' | transloco }}
             </button>
           </div>
 
           <!-- ESTADO 2: TARJETA AZUL -->
           <div class="info-card-blue p-4 shadow-lg text-start">
-            <h4 class="fw-bold mb-2">{{ selectedPlaceFromMap?.name || 'Cargando...' }}</h4>
+            <h4 class="fw-bold mb-2">{{ selectedPlaceFromMap?.name || 'department.textLoading' | transloco }}</h4>
             <hr class="border-white opacity-100 mb-3">
             <p class="small text-white" style="line-height: 1.6;">
-              {{ selectedPlaceFromMap?.description || 'Descripción detallada de este lugar turístico. Explora sus hermosas vistas y su gran historia en Cochabamba.' }}
+              {{ selectedPlaceFromMap?.description || 'department.textGenericDescription' | transloco:{ cityName: city?.name } }}
             </p>
           </div>
 
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <h4 class="fw-bold text-traveling-orange mb-5 text-uppercase">Lugares mejor calificados</h4>
+    <h4 class="fw-bold text-traveling-orange mb-5 text-uppercase">{{ 'department.titleBestPlaces' | transloco }}</h4>
 
     
     <!-- Iteramos sobre tu nueva variable placesTop -->
@@ -86,12 +86,12 @@
               <span class="ms-2 fs-6">({{ place.rating }})</span>
             </div>
               
-              <p class="fw-bold small mb-2 text-uppercase">Mejor reseña:</p>
+              <p class="fw-bold small mb-2 text-uppercase">{{ 'department.textBestReview' | transloco }}</p>
               <div class="review-bubble bg-white text-dark p-3 shadow-sm">
                 <!-- Asume que el backend te manda la mejor reseña en este objeto -->
-                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'department.textThereAreNoReviews' | transloco }}</p>
                 <div class="text-end text-muted" style="font-size: 0.75rem;">
-                  Por {{ bestReviews[place.id]?.user?.userName || 'Anónimo' }}
+                  {{ 'department.textBy' | transloco }} {{ bestReviews[place.id]?.user?.userName || 'department.textAnonymous' | transloco }}
                 </div>
               </div>
             </div>
@@ -126,11 +126,11 @@
               <span class="ms-2 fs-6 fw-bold">({{ place.rating }})</span>
             </div>
               
-              <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">Mejor reseña:</p>
+              <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">{{ 'department.textBestReview' | transloco }}</p>
               <div class="review-bubble bg-white text-dark p-3 shadow-sm">
-                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'department.textThereAreNoReviews' | transloco }}</p>
                 <div class="text-end text-muted" style="font-size: 0.75rem;">
-                  Por {{ bestReviews[place.id]?.user?.userName || 'Anónimo' }}
+                  {{ 'department.textBy' | transloco }} {{ bestReviews[place.id]?.user?.userName || 'department.textAnonymous' | transloco }}
                 </div>
               </div>
             </div>
@@ -139,14 +139,14 @@
       }
     } @empty {
       <div class="alert alert-info text-center mt-4">
-        Aún no hay lugares destacados para este departamento.
+        {{ 'department.textThereAreNoPlaces' | transloco }}
       </div>
     }
-    @if (places.length === 0) {
+    <!-- @if (places.length === 0) {
       <div class="alert alert-info text-center mt-4">
         No hay lugares registrados en este departamento.
       </div>
-    }
+    } -->
   }
 </main>
 

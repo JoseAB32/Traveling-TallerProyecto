@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="wishlist-container">
-  <h2 class="page-title">TUS LUGARES FAVORITOS</h2>
+  <h2 class="page-title">{{ 'wishlist.title' | transloco }}</h2>
 
   <div class="list">
 
@@ -19,7 +19,7 @@
 
       <div class="empty-container">
         <img src="cat-google-maps.gif" alt="Cat google maps gif" class="empty-gif">
-        <p>No tienes lugares favoritos aún</p>
+        <p>{{ 'wishlist.empty' | transloco }}</p>
       </div>
 
     }
@@ -35,17 +35,20 @@
 
       <div class="modal-header">
         <i class="bi bi-exclamation-triangle-fill warning-icon"></i>
-        <h3>¿Quitar de favoritos?</h3>
+        <h3>{{ 'wishlist.modal.title' | transloco }}</h3>
       </div>
 
       <p>
-        ¿Estás seguro de que deseas eliminar este lugar de tu lista de favoritos?
-        Esta acción no se puede deshacer.
+        {{ 'wishlist.modal.message' | transloco }}
       </p>
 
       <div class="modal-actions">
-        <button class="btn-cancel" (click)="closeConfirmModal()">Cancelar</button>
-        <button class="btn-confirm" (click)="confirmDelete()">Sí, quitar</button>
+        <button class="btn-cancel" (click)="closeConfirmModal()">
+          {{ 'wishlist.modal.cancel' | transloco }}
+        </button>
+        <button class="btn-confirm" (click)="confirmDelete()">
+          {{ 'wishlist.modal.confirm' | transloco }}
+        </button>
       </div>
 
     </div>

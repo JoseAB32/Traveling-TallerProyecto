@@ -16,13 +16,15 @@ import {
   ItineraryDraftResponse
 } from '../../services/itinerary/itinerary.service';
 
+import { TranslocoModule } from '@jsverse/transloco';
+
 import { City } from '../../models/city/city';
 import { Place } from '../../models/place/place';
 
 @Component({
   selector: 'app-create-itinerary',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, MapComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, MapComponent, TranslocoModule],
   templateUrl: './create-itinerary.component.html',
   styleUrl: './create-itinerary.component.css'
 })

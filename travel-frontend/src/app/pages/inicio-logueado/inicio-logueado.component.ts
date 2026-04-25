@@ -6,11 +6,12 @@ import { HeaderComponent } from "../../components/header/header.component";
 import { FooterComponent } from "../../components/footer/footer.component";
 import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-inicio-logueado',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, NgIf],
+  imports: [CommonModule, HeaderComponent, FooterComponent, NgIf, TranslocoModule],
   templateUrl: './inicio-logueado.component.html',
   styleUrl: './inicio-logueado.component.css'
 })

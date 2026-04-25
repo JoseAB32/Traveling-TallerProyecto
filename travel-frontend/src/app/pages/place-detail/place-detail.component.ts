@@ -7,11 +7,12 @@ import { Place } from '../../models/place/place';
 
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-place-detail',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, TranslocoModule],
   templateUrl: './place-detail.component.html',
   styleUrls: ['./place-detail.component.css']
 })

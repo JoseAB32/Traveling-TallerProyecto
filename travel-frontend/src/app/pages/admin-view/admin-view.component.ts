@@ -8,17 +8,19 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { FeatureService } from '../../services/features/feature.service'; // Nuevo servicio
 import { Logger } from '../../models/logger/logger';
 import { CONSTANTS } from '../../utils/constants';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-admin-view',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, TranslocoModule],
   templateUrl: './admin-view.component.html',
   styleUrl: './admin-view.component.css'
 })
 export class AdminViewComponent implements OnInit, OnDestroy {
   private loggerService = inject(LoggerService);
   private featureService = inject(FeatureService);
+  private translocoService = inject(TranslocoService);
   private logSub!: Subscription;
 
   // Datos de Logs
@@ -61,7 +63,8 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     this.featureService.updateFeatures(this.featuresData).subscribe({
       next: () => console.log(`Feature ${featureKey} actualizado.`),
       error: () => {
-        this.modalMessage = 'Error al guardar el cambio en el servidor.';
+        this.modalMessage = this.translocoService.translate('adminConfiguration.modal.textErrorServer');
+        console.log(this.modalMessage);
         this.showErrorModal = true;
         this.featuresData[featureKey] = !this.featuresData[featureKey]; // Revertir
       }
@@ -81,7 +84,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       this.loggerService.getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)
         .subscribe(data => this.logs = data.slice(0, 20));
     } else {
-      this.modalMessage = CONSTANTS.MESSAGES.ERROR.FILTER_REQUIRED;
+      this.modalMessage = this.translocoService.translate('adminConfiguration.modal.textErrorFilter');
       this.showErrorModal = true;
     }
   }

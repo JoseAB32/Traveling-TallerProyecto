@@ -8,10 +8,14 @@
         <img src="asset_3.png" class="img-bottom" alt="Lago">
       </div>
       <div class="text-block">
-        <h1>{{ constants.LANDING.TEXT_START_HERE }}</h1>
+        <h1>{{ 'landing.textStartHere' | transloco }}</h1>
         <div class="cta-buttons">
-          <button class="btn btn-primary" (click)="irASignUp()">{{ constants.LANDING.SIGN_UP }}</button>
-          <button class="btn btn-outline" (click)="irALogIn()">{{ constants.LANDING.LOGIN }}</button>
+          <button class="btn btn-primary" (click)="irASignUp()">
+            {{ 'landing.signUp' | transloco }}
+          </button>
+          <button class="btn btn-outline" (click)="irALogIn()">
+            {{ 'landing.login' | transloco }}
+          </button>
         </div>
       </div>
     </div>
@@ -24,10 +28,8 @@
         <img src="asset_4.png" class="img-small" alt="Salar 2">
       </div>
       <div class="text-block white-text">
-        <h2>{{ constants.LANDING.SUBTITLE_1 }}</h2>
-        <p>
-            {{ constants.LANDING.TEXT_1 }}
-        </p>
+        <h2>{{ 'landing.subtitle1' | transloco }}</h2>
+        <p>{{ 'landing.text1' | transloco }}</p>
       </div>
     </div>
   </section>
@@ -40,10 +42,8 @@
          <img src="asset_8.png" class="img-bottom-2" alt="Isla">
       </div>
       <div class="text-block">
-        <h2>{{ constants.LANDING.SUBTITLE_2 }}</h2>
-        <p>
-            {{ constants.LANDING.TEXT_2 }}
-        </p>
+        <h2>{{ 'landing.subtitle2' | transloco }}</h2>
+        <p>{{ 'landing.text2' | transloco }}</p>
       </div>
     </div>
   </section>
@@ -52,11 +52,11 @@
     <div class="cta-card">
       <img src="asset_9.png" class="full-img" alt="Avión">
       <div class="text-block white-text centered">
-        <h3>Planifica rutas para visitar los lugares que quieras</h3>
-        <p>
-            Construye tu ruta de viaje en base a los lugares que desees visitar, arma un eficiente itinerario solo disfuta del viaje.
-        </p>
-        <button class="btn btn-orange">PROBAR 1 SEMANA GRATIS</button>
+        <h3>{{ 'landing.ctaRouteTitle' | transloco }}</h3>
+        <p>{{ 'landing.ctaRouteText' | transloco }}</p>
+        <button class="btn btn-orange">
+            {{ 'landing.freeTrialButton' | transloco }}
+        </button>
       </div>
     </div>
   </section>

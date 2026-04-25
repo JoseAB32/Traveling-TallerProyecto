@@ -1,0 +1,176 @@
+{ 
+    "header": {
+        "searchPlaceholder": "Buscar departamento o lugar",
+        "profile": "Perfil",
+        "itineraries": "Itinerarios",
+        "wishlist": "Deseados",
+        "logout": "Cerrar Sesión",
+        "adminConfig": "Configuración"
+    },
+    "footer": {
+        "termsTitle": "Términos y privacidad",
+        "communityRules": "Normas de la comunidad",
+        "terms": "Términos",
+        "privacy": "Privacidad",
+        "about": "Sobre nosotros",
+        "mission": "Misión"
+    },
+    "landing": {
+        "textStartHere": "Planifica tu viaje y disfruta de los mejores lugares turísticos de toda Bolivia!",
+        "signUp": "EMPIEZA AQUÍ",
+        "login": "YA TENGO UNA CUENTA",
+        "subtitle1": "Explora los paisajes más asombrosos de Bolivia",
+        "text1": "Desde el espejo infinito del Salar de Uyuni hasta las cumbres nevadas de los Andes, descubre destinos que parecen sacados de otro mundo.",
+        "subtitle2": "Cultura viva en cada rincón",
+        "text2": "Sumérgete en la riqueza histórica de nuestras ciudades coloniales, tradiciones milenarias y la calidez de nuestra gente en cada departamento.",
+        "ctaRouteTitle": "Planifica rutas para visitar los lugares que quieras",
+        "ctaRouteText": "Construye tu ruta de viaje en base a los lugares que desees visitar, arma un eficiente itinerario y solo disfruta del viaje.",
+        "freeTrialButton": "PROBAR 1 SEMANA GRATIS"
+    },
+    "formLoginAndSignin": {
+        "signIn": {
+            "titleForm": "REGÍSTRATE",
+            "buttonRegistrarse": "REGISTRARSE",
+            "tienesCuenta": "¿Ya tienes una cuenta?",
+            "irLogin": "Iniciar Sesión"
+        },
+        "login": {
+            "titleForm": "INICIAR SESIÓN",
+            "buttonIniciarSesion": "INICIAR SESIÓN",
+            "noTienesCuenta": "¿Aún no tienes una cuenta?",
+            "irRegistro": "Regístrate"
+        },
+        "textoInputs": {
+            "nombreUsuario": "Nombre de usuario",
+            "correo": "Correo electrónico",
+            "contrasena": "Contraseña",
+            "confContrasena": "Confirmar contraseña",
+            "fechaNac": "Fecha de nacimiento",
+            "ciudad": "Ciudad"
+        },
+        "errorInputs": {
+            "userNameRequired": "El nombre de usuario es obligatorio.",
+            "userNameContainSpace": "El nombre de usuario no puede contener espacios.",
+            "userNameMinLength": "El nombre de usuario debe tener al menos 5 caracteres.",
+            "passwordRequired": "La contraseña es obligatoria.",
+            "passwordContainSpace": "La contraseña no puede contener espacios.",
+            "passwordMinLength": "La contraseña debe tener al menos 8 caracteres.",
+            "emailRequired": "El correo electrónico es obligatorio.",
+            "emailInvalid": "El correo electrónico no es válido.",
+            "confirmPasswordRequired": "La confirmación de la contraseña es obligatoria.",
+            "confirmPasswordContainSpace": "La confirmación de la contraseña no puede contener espacios.",
+            "birthdateRequired": "La fecha de nacimiento es obligatoria.",
+            "cityRequired": "La ciudad es obligatoria."
+        }
+    },
+    "inicioLogueado": {
+        "mejores_lugares": "LUGARES MEJOR CALIFICADOS",
+        "elige_y_empieza": "Selecciona un departamento y empieza a explorar la magia de cada panorama que ofrece Bolivia, un país lleno de cultura."
+    },
+    "wishlist": {
+        "title": "TUS LUGARES FAVORITOS",
+        "empty": "No tienes lugares favoritos aún",
+        "modal": {
+            "title": "¿Quitar de favoritos?",
+            "message": "¿Estás seguro de que deseas eliminar este lugar de tu lista de favoritos? Esta acción no se puede deshacer.",
+            "cancel": "Cancelar",
+            "confirm": "Sí, quitar"
+        }
+    },
+    "department": {
+        "textExploreCity": "Explora los diferentes lugares turísticos de {{cityName}} o empieza a armar tu itinerario para visitar {{cityName}}.",
+        "buttonItinerary": "ARMA TU ITINERARIO AQUÍ",
+        "titleBestPlaces": "LUGARES MEJOR CALIFICADOS",
+        "textBestReview": "Mejor reseña:",
+        "textLoadingInfo": "Cargando información del departamento...",
+        "textThereAreNoPlaces": "Aún no hay lugares destacados para este departamento.",
+        "textLoadingMap": "Cargando mapa...",
+        "textThereAreNoReviews": "Aún no hay reseñas para este lugar.",
+        "textLoading": "Cargando...",
+        "textBy": "Por",
+        "textAnonymous": "Anónimo",
+        "textGenericDescription": "Descripción detallada de este lugar turístico. Explora sus hermosas vistas y su gran historia en {{cityName}}."
+    },
+    "adminConfiguration": {
+        "title": "Panel de Administración",
+        "tabs": {
+            "logs": "Logs de Sistema",
+            "toggles": "Feature Toggles"
+        },
+        "logs": {
+            "filters": {
+                "module": "Módulo",
+                "allModules": "Todos los módulos",
+                "level": "Nivel",
+                "allLevels": "Todos los niveles",
+                "from": "Desde",
+                "to": "Hasta"
+            },
+            "table": {
+                "date": "Fecha",
+                "module": "Módulo",
+                "level": "Nivel",
+                "message": "Mensaje",
+                "user": "Usuario",
+                "noRecords": "No se encontraron registros.",
+                "system": "Sistema"
+            }
+        },
+        "toggles": {
+            "title": "Control de Funcionalidades",
+            "persistence": "Persistencia en JSON",
+            "pinRedirection": {
+                "title": "Redirección en Pines (PinRedirection)",
+                "description": "Habilita la navegación automática al hacer clic sobre los marcadores del mapa turístico."
+            },
+            "autoCreateItinerary": {
+                "title": "Auto-crear Itinerario (AutoCreateItinerary)",
+                "description": "Permite al sistema generar sugerencias automaticas de viaje basadas en los lugares seleccionados."
+            }
+        },
+        "modal": {
+            "title": "Acción requerida",
+            "close": "Cerrar",
+            "textErrorServer": "Error al guardar el cambio en el servidor.",
+            "textErrorFilter": "Todos los campos de filtro son obligatorios para realizar la búsqueda precisa."
+        }
+    },
+    "searchPlaces": {
+        "textResultsFor": "Resultados para:",
+        "textSearchInBolivia": "Buscando en Bolivia...",
+        "textLocated": "Ubicado en",
+        "textNoMatchesFound": "¡Ups! No se encontraron coincidencias.",
+        "textTryAnother": "Intenta con otro departamento, nombre de lugar o dirección.",
+        "textBack": "Volver al inicio"
+    },
+    "placeDetail": {
+        "textLoading": "Cargando lugar...",
+        "textPlaceNotFound": "Lugar no encontrado",
+        "textGeneralInfo": "Información General",
+        "textInfoPlace": "Información del Lugar"
+    },
+    "components": {
+        "cardTextGeneralInfo": "INFORMACIÓN GENERAL:",
+        "cardButtonSeeMore": "Ver más",
+        "signUpSuccessTextSuccess": "Registro exitoso",
+        "signUpSuccessTextMessage": "El proceso se ha realizado correctamente. Por favor inicie sesión para ingresar a la plataforma.",
+        "signUpSuccessTextLink": "Ir al Login"
+    },
+    "createItinerary": {
+        "textFirstStep": "1. Selecciona el departamento o ciudad",
+        "textSecondStep": "2. Selecciona los lugares que quieres visitar",
+        "textThirdStep": "3. Verifica los lugares que seleccionaste",
+        "textFourthStep": "4. Establece las fechas de tu itinerario",
+        "textInputSelectCity": "Selecciona una ciudad",
+        "textLoadingPlaces": "Cargando lugares...",
+        "textSelectCity": "Selecciona una ciudad para ver su mapa.",
+        "textThereAreNoPlaces": "No hay lugares disponibles en esta ciudad.",
+        "textClickPin": "Haz click en un pin para ver el lugar",
+        "textSelectPlace": "Selecciona un lugar del mapa para revisar su información y agregarlo al itinerario.",
+        "textButtonAdd": "Agregar",
+        "textButtonSeeMore": "Ver más",
+        "textHaventSelectPlaces": "Aún no seleccionaste lugares.",
+        "textLabelStart": "Fecha de inicio",
+        "textLabelEnd": "Fecha de finalización"
+    }
+}
