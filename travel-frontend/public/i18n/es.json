@@ -84,7 +84,12 @@
         "textBestReview": "Mejor reseña:",
         "textLoadingInfo": "Cargando información del departamento...",
         "textThereAreNoPlaces": "Aún no hay lugares destacados para este departamento.",
-        "textLoadingMap": "Cargando mapa..."
+        "textLoadingMap": "Cargando mapa...",
+        "textThereAreNoReviews": "Aún no hay reseñas para este lugar.",
+        "textLoading": "Cargando...",
+        "textBy": "Por",
+        "textAnonymous": "Anónimo",
+        "textGenericDescription": "Descripción detallada de este lugar turístico. Explora sus hermosas vistas y su gran historia en {{cityName}}."
     },
     "adminConfiguration": {
         "title": "Panel de Administración",
@@ -150,5 +155,22 @@
         "signUpSuccessTextSuccess": "Registro exitoso",
         "signUpSuccessTextMessage": "El proceso se ha realizado correctamente. Por favor inicie sesión para ingresar a la plataforma.",
         "signUpSuccessTextLink": "Ir al Login"
+    },
+    "createItinerary": {
+        "textFirstStep": "1. Selecciona el departamento o ciudad",
+        "textSecondStep": "2. Selecciona los lugares que quieres visitar",
+        "textThirdStep": "3. Verifica los lugares que seleccionaste",
+        "textFourthStep": "4. Establece las fechas de tu itinerario",
+        "textInputSelectCity": "Selecciona una ciudad",
+        "textLoadingPlaces": "Cargando lugares...",
+        "textSelectCity": "Selecciona una ciudad para ver su mapa.",
+        "textThereAreNoPlaces": "No hay lugares disponibles en esta ciudad.",
+        "textClickPin": "Haz click en un pin para ver el lugar",
+        "textSelectPlace": "Selecciona un lugar del mapa para revisar su información y agregarlo al itinerario.",
+        "textButtonAdd": "Agregar",
+        "textButtonSeeMore": "Ver más",
+        "textHaventSelectPlaces": "Aún no seleccionaste lugares.",
+        "textLabelStart": "Fecha de inicio",
+        "textLabelEnd": "Fecha de finalización"
     }
 }

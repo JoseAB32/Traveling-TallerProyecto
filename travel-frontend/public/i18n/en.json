@@ -84,7 +84,12 @@
         "textBestReview": "Best review:",
         "textLoadingInfo": "Loading department information...",
         "textThereAreNoPlaces": "There are no featured places for this department yet.",
-        "textLoadingMap": "Loading map..."
+        "textLoadingMap": "Loading map...",
+        "textThereAreNoReviews": "There are no reviews for this place yet.",
+        "textLoading": "Loading...",
+        "textBy": "By",
+        "textAnonymous": "Anonymous",
+        "textGenericDescription": "Detailed description of this tourist destination. Explore its beautiful views and rich history in {{cityName}}."
     },
     "adminConfiguration": {
         "title": "Administration Panel",
@@ -150,5 +155,22 @@
         "signUpSuccessTextSuccess": "Successful registration",
         "signUpSuccessTextMessage": "The process has been completed successfully. Please log in to access the platform.",
         "signUpSuccessTextLink": "Go to Login"
+    },
+    "createItinerary": {
+        "textFirstStep": "1. Select the department or city",
+        "textSecondStep": "2. Select the places you want to visit",
+        "textThirdStep": "3. Check the places you selected",
+        "textFourthStep": "4. Set the dates for your itinerary",
+        "textInputSelectCity": "Select a city",
+        "textLoadingPlaces": "Loading places...",
+        "textSelectCity": "Select a city to view its map.",
+        "textThereAreNoPlaces": "There are no places available in this city.",
+        "textClickPin": "Click on a pin to see the location",
+        "textSelectPlace": "Select a location on the map to review its information and add it to your itinerary.",
+        "textButtonAdd": "Add",
+        "textButtonSeeMore": "See more",
+        "textHaventSelectPlaces": "You haven't selected any places yet.",
+        "textLabelStart": "Start date",
+        "textLabelEnd": "End date"
     }
 }

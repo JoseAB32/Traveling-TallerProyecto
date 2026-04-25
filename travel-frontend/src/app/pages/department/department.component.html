@@ -40,10 +40,10 @@
 
           <!-- ESTADO 2: TARJETA AZUL -->
           <div class="info-card-blue p-4 shadow-lg text-start">
-            <h4 class="fw-bold mb-2">{{ selectedPlaceFromMap?.name || 'Cargando...' }}</h4>
+            <h4 class="fw-bold mb-2">{{ selectedPlaceFromMap?.name || 'department.textLoading' | transloco }}</h4>
             <hr class="border-white opacity-100 mb-3">
             <p class="small text-white" style="line-height: 1.6;">
-              {{ selectedPlaceFromMap?.description || 'Descripción detallada de este lugar turístico. Explora sus hermosas vistas y su gran historia en Cochabamba.' }}
+              {{ selectedPlaceFromMap?.description || 'department.textGenericDescription' | transloco:{ cityName: city?.name } }}
             </p>
           </div>
 
@@ -89,9 +89,9 @@
               <p class="fw-bold small mb-2 text-uppercase">{{ 'department.textBestReview' | transloco }}</p>
               <div class="review-bubble bg-white text-dark p-3 shadow-sm">
                 <!-- Asume que el backend te manda la mejor reseña en este objeto -->
-                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'department.textThereAreNoReviews' | transloco }}</p>
                 <div class="text-end text-muted" style="font-size: 0.75rem;">
-                  Por {{ bestReviews[place.id]?.user?.userName || 'Anónimo' }}
+                  {{ 'department.textBy' | transloco }} {{ bestReviews[place.id]?.user?.userName || 'department.textAnonymous' | transloco }}
                 </div>
               </div>
             </div>
@@ -128,9 +128,9 @@
               
               <p class="fw-bold small mb-2 text-uppercase text-traveling-blue">{{ 'department.textBestReview' | transloco }}</p>
               <div class="review-bubble bg-white text-dark p-3 shadow-sm">
-                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'Aún no hay reseñas para este lugar.' }}</p>
+                <p class="small mb-2">{{ bestReviews[place.id]?.comment || 'department.textThereAreNoReviews' | transloco }}</p>
                 <div class="text-end text-muted" style="font-size: 0.75rem;">
-                  Por {{ bestReviews[place.id]?.user?.userName || 'Anónimo' }}
+                  {{ 'department.textBy' | transloco }} {{ bestReviews[place.id]?.user?.userName || 'department.textAnonymous' | transloco }}
                 </div>
               </div>
             </div>
