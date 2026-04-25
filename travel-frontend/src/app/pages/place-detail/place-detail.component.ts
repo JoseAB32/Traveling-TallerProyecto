@@ -7,7 +7,7 @@ import { Place } from '../../models/place/place';
 
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { FeatureService } from '../../services/features/feature.service'
+import { FeatureService } from '../../services/features/feature.service';
 import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({

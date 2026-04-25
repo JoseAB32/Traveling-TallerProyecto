@@ -18,9 +18,9 @@ export class FeatureService {
   private http = inject(HttpClient);
   private baseUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.FEATURES; 
 
-  // Signal para reactividad
+  // Signal para reactividad - fallback
   private _features = signal<Features>({
-    pinRedirection: false,
+    pinRedirection: true,
     autoCreateItinerary: true,
     showSearchPlaces: true,
     showFavorites: true,
