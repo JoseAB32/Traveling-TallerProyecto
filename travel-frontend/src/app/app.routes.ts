@@ -11,6 +11,7 @@ import { adminGuard } from './guards/admin.guard';
 import { AdminViewComponent } from './pages/admin-view/admin-view.component';
 import { DepartmentComponent } from './pages//department/department.component'
 import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
+import { featureGuard } from './guards/feature.guard';
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   {
@@ -20,7 +21,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'success-signup', component: SuccessSignupComponent },
   { path: '', component: LandingComponent },
-  { path: 'wishlist', canActivate: [authGuard], component: WishlistComponent },
+  { path: 'wishlist', canActivate: [authGuard, featureGuard('showFavorites')], component: WishlistComponent },
   { path: 'itinerarios', canActivate: [authGuard], component: CreateItineraryComponent },
   { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
   {
