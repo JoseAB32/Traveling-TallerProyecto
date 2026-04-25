@@ -3,18 +3,21 @@ import { HeaderComponent } from "../../components/header/header.component";
 import { FooterComponent } from "../../components/footer/footer.component";
 import { PlaceCardComponent } from '../../components/place-card/place-card.component';
 import { PlaceService } from '../../services/place/place.service';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription, forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { TranslocoModule } from '@jsverse/transloco';
+import { Place } from '../../models/place/place';
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, PlaceCardComponent],
+  imports: [HeaderComponent, FooterComponent, PlaceCardComponent, TranslocoModule],
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.css'
 })
 export class WishlistComponent implements OnInit, OnDestroy {
 
-  Favoritos: any[] = [];
+  Favoritos: Place[] = [];
   private placeService = inject(PlaceService);
   private userSub!: Subscription;
 
@@ -34,11 +37,20 @@ export class WishlistComponent implements OnInit, OnDestroy {
     }
 
     const requests = wishListIds.map(id =>
-      this.placeService.getPlaceById(id)
+      this.placeService.getPlaceById(id).pipe(
+        catchError(error => {
+          console.error(`Error cargando lugar con ID ${id}`, error);
+          return of(null);
+        })
+      )
     );
 
-    forkJoin(requests).subscribe({
-      next: (places) => this.Favoritos = places,
+    forkJoin(requests).pipe(
+      map(places => places.filter((place): place is Place => place !== null))
+    ).subscribe({
+      next: (places) => {
+        this.Favoritos = places;
+      },
       error: () => console.error('Error cargando favoritos')
     });
   }

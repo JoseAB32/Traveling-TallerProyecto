@@ -9,11 +9,14 @@ import { CommonModule} from '@angular/common';
 import { Review } from '../../models/review/review';
 import { ReviewService } from '../../services/review/review.service';
 import { FeatureService } from '../../services/features/feature.service';
+import { CityService } from '../../services/city/city.service';
+import { City } from '../../models/city/city';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-department',
   standalone: true,
-  imports: [MapComponent, FooterComponent, HeaderComponent, CommonModule],
+  imports: [MapComponent, FooterComponent, HeaderComponent, CommonModule, TranslocoModule],
   templateUrl: './department.component.html',
   styleUrl: './department.component.css'
 })
@@ -28,8 +31,10 @@ export class DepartmentComponent implements OnInit {
   bestReviews: { [placeId: number]: Review | undefined } = {};
   private placeService = inject(PlaceService);
   private reviewService = inject(ReviewService);
+  private cityService = inject(CityService);
   featureService = inject(FeatureService);
   features: any = {};
+  city: City | null = null;
 
 
   constructor(
@@ -39,6 +44,16 @@ export class DepartmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.departmentId = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.cityService.getCityById(this.departmentId).subscribe({
+      next: (data) => {
+        this.city = data;
+      },
+      error: (err) => {
+        console.error(err);
+        console.log(err.error.message);
+      }
+    });
 
     this.placeService.getPlacesByDepartment(this.departmentId).subscribe({
       next: (data: Place[]) => {

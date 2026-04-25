@@ -108,11 +108,16 @@
     font-weight: 500;
 }
 
+.labelFecha {
+    padding: 0 50px 0 5px;
+}
+
 .label-above {
     top: -10px;
     font-size: 0.8rem;
     /* opacity: 1; */
     font-weight: 500;
+    padding: 0 5px;
 }
 
 .input-container .input-text:focus ~ label,

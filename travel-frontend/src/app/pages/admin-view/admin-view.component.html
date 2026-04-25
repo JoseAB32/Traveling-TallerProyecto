@@ -4,7 +4,7 @@
   <div class="row mb-4">
     <div class="col">
       <h2 class="text-traveling">
-        <i class="bi bi-gear-fill"></i> Panel de Administración
+        <i class="bi bi-gear-fill"></i> {{ 'adminConfiguration.title' | transloco }}
       </h2>
     </div>
   </div>
@@ -14,14 +14,14 @@
       <button class="nav-link text-uppercase fw-bold" 
               [class.active-tab]="activeTab === 'logs'"
               (click)="activeTab = 'logs'">
-        <i class="bi bi-list-columns-reverse"></i> Logs de Sistema
+        <i class="bi bi-list-columns-reverse"></i> {{ 'adminConfiguration.tabs.logs' | transloco }}
       </button>
     </li>
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold" 
               [class.active-tab]="activeTab === 'toggles'"
               (click)="activeTab = 'toggles'">
-        <i class="bi bi-toggle-on"></i> Feature Toggles
+        <i class="bi bi-toggle-on"></i> {{ 'adminConfiguration.tabs.toggles' | transloco }}
       </button>
     </li>
   </ul>
@@ -31,25 +31,25 @@
       <div class="card-body bg-light rounded">
         <div class="row g-3 align-items-end">
           <div class="col-md-3">
-            <label class="form-label fw-bold small">Módulo</label>
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.module' | transloco }}</label>
             <select class="form-select" [(ngModel)]="filterModule">
-              <option value="">Todos los módulos</option>
+              <option value="">{{ 'adminConfiguration.logs.filters.allModules' | transloco }}</option>
               @for (mod of modules; track mod) { <option [value]="mod">{{mod}}</option> }
             </select>
           </div>
           <div class="col-md-2">
-            <label class="form-label fw-bold small">Nivel</label>
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.level' | transloco }}</label>
             <select class="form-select" [(ngModel)]="filterLevel">
-              <option value="">Todos los niveles</option>
+              <option value="">{{ 'adminConfiguration.logs.filters.allLevels' | transloco }}</option>
               @for (lvl of levels; track lvl) { <option [value]="lvl">{{lvl}}</option> }
             </select>
           </div>
           <div class="col-md-3">
-            <label class="form-label fw-bold small">Desde</label>
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.from' | transloco }}</label>
             <input type="datetime-local" class="form-control" [(ngModel)]="startDate">
           </div>
           <div class="col-md-3">
-            <label class="form-label fw-bold small">Hasta</label>
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.to' | transloco }}</label>
             <input type="datetime-local" class="form-control" [(ngModel)]="endDate">
           </div>
           <div class="col-md-1">
@@ -65,11 +65,11 @@
       <table class="table table-hover align-middle bg-white mb-0">
         <thead class="bg-traveling text-white">
           <tr>
-            <th>Fecha</th>
-            <th>Módulo</th>
-            <th>Nivel</th>
-            <th>Mensaje</th>
-            <th>Usuario</th>
+            <th>{{ 'adminConfiguration.logs.table.date' | transloco }}</th>
+            <th>{{ 'adminConfiguration.logs.table.module' | transloco }}</th>
+            <th>{{ 'adminConfiguration.logs.table.level' | transloco }}</th>
+            <th>{{ 'adminConfiguration.logs.table.message' | transloco }}</th>
+            <th>{{ 'adminConfiguration.logs.table.user' | transloco }}</th>
           </tr>
         </thead>
         <tbody>
@@ -86,10 +86,10 @@
                 }">{{ log.level }}</span>
               </td>
               <td class="small w-50">{{ log.message }}</td>
-              <td class="text-muted">{{ log.userId || 'Sistema' }}</td>
+              <td class="text-muted">{{ log.userId || ('adminConfiguration.logs.table.system' | transloco) }}</td>
             </tr>
           } @empty {
-            <tr><td colspan="5" class="text-center py-5 text-muted">No se encontraron registros.</td></tr>
+            <tr><td colspan="5" class="text-center py-5 text-muted">{{ 'adminConfiguration.logs.table.noRecords' | transloco }}</td></tr>
           }
         </tbody>
       </table>
@@ -99,16 +99,16 @@
   @if (activeTab === 'toggles') {
     <div class="card shadow-sm border-0 bg-white p-4">
       <div class="d-flex align-items-center mb-4">
-        <h4 class="text-traveling mb-0"><i class="bi bi-sliders"></i> Control de Funcionalidades</h4>
-        <span class="badge bg-info ms-3">Persistencia en JSON</span>
+        <h4 class="text-traveling mb-0"><i class="bi bi-sliders"></i> {{ 'adminConfiguration.toggles.title' | transloco }}</h4>
+        <span class="badge bg-info ms-3">{{ 'adminConfiguration.toggles.persistence' | transloco }}</span>
       </div>
 
       <div class="list-group list-group-flush border-top">
         
         <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
           <div class="pe-4">
-            <h6 class="mb-1 fw-bold text-dark">Redirección en Pines (PinRedirection)</h6>
-            <p class="small text-muted mb-0">Habilita la navegación automática al hacer clic sobre los marcadores del mapa turístico.</p>
+            <h6 class="mb-1 fw-bold text-dark">{{ 'adminConfiguration.toggles.pinRedirection.title' | transloco }}</h6>
+            <p class="small text-muted mb-0">{{ 'adminConfiguration.toggles.pinRedirection.description' | transloco }}</p>
           </div>
           <div class="form-check form-switch fs-2">
             <input class="form-check-input" type="checkbox" role="switch"
@@ -119,8 +119,8 @@
 
         <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
           <div class="pe-4">
-            <h6 class="mb-1 fw-bold text-dark">Auto-crear Itinerario (AutoCreateItinerary)</h6>
-            <p class="small text-muted mb-0">Permite al sistema generar sugerencias automaticas de viaje basadas en los lugares seleccionados.</p>
+            <h6 class="mb-1 fw-bold text-dark">{{ 'adminConfiguration.toggles.autoCreateItinerary.title' | transloco }}</h6>
+            <p class="small text-muted mb-0">{{ 'adminConfiguration.toggles.autoCreateItinerary.description' | transloco }}</p>
           </div>
           <div class="form-check form-switch fs-2">
             <input class="form-check-input" type="checkbox" role="switch"
@@ -162,14 +162,14 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
           <div class="modal-header bg-danger text-white border-0">
-            <h5 class="modal-title"><i class="bi bi-exclamation-circle-fill"></i> Acción requerida</h5>
+            <h5 class="modal-title"><i class="bi bi-exclamation-circle-fill"></i> {{ 'adminConfiguration.modal.title' | transloco }}</h5>
             <button type="button" class="btn-close btn-close-white" (click)="showErrorModal = false"></button>
           </div>
           <div class="modal-body text-center py-4">
             <p class="fs-5 mb-0">{{ modalMessage }}</p>
           </div>
           <div class="modal-footer border-0 pt-0">
-            <button type="button" class="btn btn-secondary w-100 rounded-pill" (click)="showErrorModal = false">Cerrar</button>
+            <button type="button" class="btn btn-secondary w-100 rounded-pill" (click)="showErrorModal = false">{{ 'adminConfiguration.modal.close' | transloco }}</button>
           </div>
         </div>
       </div>

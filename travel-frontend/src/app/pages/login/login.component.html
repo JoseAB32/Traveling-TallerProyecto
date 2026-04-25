@@ -74,7 +74,7 @@
         <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="form-login">
             <div class="title-container">
                 <h1>
-                    INICIAR SESIÓN
+                    {{ 'formLoginAndSignin.login.titleForm' | transloco }}
                 </h1>
             </div>
             <div class="input-container">
@@ -86,11 +86,11 @@
                   [disabled]="loading" 
                   pattern="^\S+$">
                 <label for="nombreUsuario" class="label-form"
-                [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">Nombre de usuario</label>
+                [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">{{ 'formLoginAndSignin.textoInputs.nombreUsuario' | transloco }}</label>
 
                 <div class="error-container" *ngIf="userName.invalid && (userName.touched || userName.dirty)">
-                    <p *ngIf="userName.errors?.['required']">El nombre de usuario es obligatorio.</p>
-                    <p *ngIf="userName.errors?.['pattern']">El nombre de usuario no puede contener espacios.</p>
+                    <p *ngIf="userName.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.userNameRequired' | transloco }}</p>
+                    <p *ngIf="userName.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.userNameContainSpace' | transloco }}</p>
                 </div>
             </div>
 
@@ -103,11 +103,11 @@
                   [disabled]="loading"
                   pattern="^\S+$">
                 <label for="contrasena" class="label-form"
-                [class.label-error]="password.invalid && (password.touched || password.dirty)">Contraseña</label>
+                [class.label-error]="password.invalid && (password.touched || password.dirty)">{{ 'formLoginAndSignin.textoInputs.contrasena' | transloco }}</label>
 
                 <div class="error-container" *ngIf="password.invalid && (password.touched || password.dirty)">
-                    <p *ngIf="password.errors?.['required']">La contraseña es obligatoria.</p>
-                    <p *ngIf="password.errors?.['pattern']">La contraseña no puede contener espacios.</p>
+                    <p *ngIf="password.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.passwordRequired' | transloco }}</p>
+                    <p *ngIf="password.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.passwordContainSpace' | transloco }}</p>
                 </div>
             </div>
 
@@ -118,13 +118,13 @@
             <div class="button-container">
                 <button type="submit"
                   [disabled]="loading"
-                  class="btn-login">INICIAR SESIÓN</button>
+                  class="btn-login">{{ 'formLoginAndSignin.login.buttonIniciarSesion' | transloco }}</button>
             </div>
             <div class="login-container">
                 <p>
-                    ¿Aún no tienes una cuenta?
+                    {{ 'formLoginAndSignin.login.noTienesCuenta' | transloco }}
                 </p>
-                <a [routerLink]="['/sign-up']">Regístrate</a>
+                <a [routerLink]="['/sign-up']">{{ 'formLoginAndSignin.login.irRegistro' | transloco }}</a>
             </div>
         </form>
     </section>
