@@ -1,6 +1,7 @@
 package com.traveling.travel_backend.controller;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 import com.traveling.travel_backend.dto.PasswordResetRequest;
 import com.traveling.travel_backend.dto.NewPasswordRequest;
 import com.traveling.travel_backend.service.PasswordResetService;
@@ -23,5 +24,15 @@ public class PasswordResetController {
     @PostMapping("/reset")
     public String reset(@RequestBody NewPasswordRequest request) {
         return service.resetPassword(request.getToken(), request.getPassword());
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestParam String token) {
+        boolean isValid = service.isValidToken(token);
+        if (isValid) {
+            return ResponseEntity.ok("Token válido");
+        } else {
+            return ResponseEntity.badRequest().body("El enlace ha expirado o es inválido");
+        }
     }
 }

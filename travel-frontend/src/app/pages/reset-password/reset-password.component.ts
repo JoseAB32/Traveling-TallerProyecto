@@ -19,6 +19,10 @@ export class ResetPasswordComponent implements OnInit {
 
   loading: boolean = false;
   error: string = '';
+  
+  // 🔥 NUEVAS VARIABLES
+  validatingToken: boolean = true;
+  tokenValid: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -27,13 +31,42 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 🔥 Obtener token desde URL ?token=xxxx
     this.route.queryParams.subscribe(params => {
       this.token = params['token'] || '';
+      
+      // 🔥 VALIDAR TOKEN AL INICIO
+      if (this.token) {
+        this.validateToken();
+      } else {
+        this.validatingToken = false;
+        this.tokenValid = false;
+        this.error = 'Token inválido o inexistente';
+      }
+    });
+  }
+
+  // 🔥 NUEVO MÉTODO
+  validateToken() {
+    this.authService.validateResetToken(this.token).subscribe({
+      next: () => {
+        this.tokenValid = true;
+        this.validatingToken = false;
+      },
+      error: (err) => {
+        this.tokenValid = false;
+        this.validatingToken = false;
+        this.error = err || 'El enlace ha expirado o es inválido';
+      }
     });
   }
 
   onSubmit(form: NgForm) {
+    // 🔥 VALIDACIÓN ADICIONAL
+    if (!this.tokenValid) {
+      this.error = 'El enlace ha expirado. Solicita un nuevo restablecimiento.';
+      return;
+    }
+
     if (form.invalid) return;
 
     if (this.password !== this.confirmPassword) {

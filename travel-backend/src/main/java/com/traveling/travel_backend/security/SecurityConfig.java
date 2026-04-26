@@ -2,7 +2,6 @@ package com.traveling.travel_backend.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .cors(Customizer.withDefaults())
+            .cors(cors -> cors.disable())
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
@@ -35,7 +34,6 @@ public class SecurityConfig {
                     "/api/admin/logs/filter",
                     "/api/password/**"
                 ).permitAll()
-
                 .anyRequest().authenticated()
             )
 

@@ -130,4 +130,9 @@ export class AuthService {
 
     return throwError(() => errorMessage);
   }
+
+  validateResetToken(token: string): Observable<string> {
+  return this.http.get(`${this.PASSWORD_URL}/validate?token=${token}`, { responseType: 'text' })
+    .pipe(catchError(this.handleError));
+  }
 }

@@ -76,4 +76,16 @@ public class PasswordResetService {
 
         return "Contraseña actualizada correctamente";
     }
+
+    // 🔹 Validar token (NUEVO)
+    public boolean isValidToken(String token) {
+        PasswordResetToken resetToken = tokenRepository.findByToken(token).orElse(null);
+        
+        if (resetToken == null) {
+            return false;
+        }
+        
+        // Misma lógica que usas en resetPassword
+        return !resetToken.getExpiration().isBefore(LocalDateTime.now());
+    }
 }
