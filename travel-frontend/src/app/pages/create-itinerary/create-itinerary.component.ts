@@ -71,9 +71,9 @@ export class CreateItineraryComponent implements OnInit {
     const hasSessionState = this.restoreUiState();
 
     this.loadCities();
-    if (!hasSessionState) {
-      this.loadDraft();
-    }
+    // if (!hasSessionState) {
+    //   this.loadDraft();
+    // }
 
     this.route.queryParamMap.subscribe(params => {
       const cityIdParam = params.get('cityId');
