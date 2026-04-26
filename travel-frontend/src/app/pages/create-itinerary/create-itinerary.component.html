@@ -173,10 +173,36 @@
         </app-map>
       </div>
       <section class="section-button-save">
-        <button class="btn-save-it" [disabled]="selectedPlaces.length < 2 || startDate == '' || endDate == ''" (click)="generateItineraryByDistance()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
+        <button class="btn-save-it" [disabled]="selectedPlaces.length < 2 || startDate == '' || endDate == ''" (click)="openSaveModal()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
       </section>
     }
   </section>
+
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-field">
+          <input
+            id="itineraryName"
+            type="text"
+            [(ngModel)]="itineraryName"
+            placeholder=" "
+            (input)="itineraryNameError = ''"
+          />
+          <label for="itineraryName">Nombre Itinerario</label>
+          @if (itineraryNameError) {
+            <p class="modal-error">{{ itineraryNameError }}</p>
+          }
+        </div>
+        <div class="modal-actions">
+          <button class="btn-save-modal" [disabled]="isSavingDraft" (click)="saveItinerary()">
+            @if (isSavingDraft) { GUARDANDO... } @else { GUARDAR ITINERARIO }
+          </button>
+          <button class="btn-cancel-modal" (click)="closeModal()">CANCELAR</button>
+        </div>
+      </div>
+    </div>
+  }
 </main>
 
 <app-footer></app-footer>

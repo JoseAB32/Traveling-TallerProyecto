@@ -50,6 +50,10 @@ export class CreateItineraryComponent implements OnInit {
   hasPendingChanges = false;
   saveMessage = 'Sin cambios por guardar';
 
+  isModalOpen = false;
+  itineraryName = '';
+  itineraryNameError = '';
+
   private cityService = inject(CityService);
   private placeService = inject(PlaceService);
   private itineraryService = inject(ItineraryService);
@@ -445,5 +449,45 @@ export class CreateItineraryComponent implements OnInit {
       !Number.isNaN(Number(place.latitude)) &&
       !Number.isNaN(Number(place.longitude))
     );
+  }
+  openSaveModal(): void {
+    this.itineraryName = '';
+    this.itineraryNameError = '';
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+  saveItinerary(): void {
+    if (!this.itineraryName || this.itineraryName.trim() === '') {
+      this.itineraryNameError = 'Debes ingresar un nombre para el itinerario';
+      return;
+    }
+
+    const payload: ItineraryDraftRequest = {
+      name: this.itineraryName.trim(),
+      startDate: this.startDate || null,
+      endDate: this.endDate || null,
+      placeIds: this.generatedItinerary.map(p => p.id)
+    };
+
+    this.isSavingDraft = true;
+    this.itineraryService.saveDraft(payload).subscribe({
+      next: () => {
+        this.isSavingDraft = false;
+        this.isModalOpen = false;
+        this.saveMessage = 'Itinerario guardado correctamente';
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isSavingDraft = false;
+        if (error.status === 401 || error.status === 403) {
+          this.saveMessage = 'No autorizado. Inicia sesión nuevamente.';
+          this.isModalOpen = false;
+          return;
+        }
+        this.saveMessage = 'No se pudo guardar el itinerario';
+      }
+    });
   }
 }

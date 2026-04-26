@@ -326,6 +326,130 @@
   font-size: 1.1rem;
   font-weight: 700;
 }
+.btn-save-it:hover{
+  background-color: var(--peach-glow);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 25px;
+  padding: 45px 27px;
+  width: 700px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+.modal-field {
+  position: relative;
+  width: 100%;
+}
+
+.modal-field input {
+  width: 100%;
+  padding: 16px 14px 10px;
+  border: 2px solid var(--steel-azure);
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.modal-field input:focus {
+  border-color: var(--steel-azure);
+}
+
+.modal-field label {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: var(--steel-azure);
+  pointer-events: none;
+  background: white;
+  padding: 0 4px;
+  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+.modal-field input:focus + label,
+.modal-field input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 0.78rem;
+  color: var(--steel-azure);
+}
+
+.modal-error {
+  color: #e53e3e;
+  font-size: 0.82rem;
+  margin: 4px 0 0 4px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-save-modal {
+  width: 359px;
+  height: 55px;
+  padding: 14px;
+  background-color: #FF6B35;
+  color: white;
+  border: 15px;
+  border-radius: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: Outfit;
+  font-style: Bold;
+  font-size: 20px;
+  leading-trim: NONE;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+}
+
+.btn-save-modal:hover:not(:disabled) {
+  background-color: #cf521f;
+}
+
+.btn-save-modal:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel-modal {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+}
+
+.btn-cancel-modal:hover {
+  color: #333;
+}
 
 @media (max-width: 900px) {
   .map-and-info,
