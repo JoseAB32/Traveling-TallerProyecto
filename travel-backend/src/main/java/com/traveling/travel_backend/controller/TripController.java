@@ -123,13 +123,13 @@ public class TripController {
 
         Trip savedTrip = tripRepository.save(trip);
 
-        List<Trip> activeTrips = tripRepository.findByUserIdAndStateTrue(user.getId());
-        for (Trip activeTrip : activeTrips) {
-            if (activeTrip.getId() != savedTrip.getId()) {
-                activeTrip.setState(false);
-                tripRepository.save(activeTrip);
-            }
-        }
+        // List<Trip> activeTrips = tripRepository.findByUserIdAndStateTrue(user.getId());
+        // for (Trip activeTrip : activeTrips) {
+        //     if (activeTrip.getId() != savedTrip.getId()) {
+        //         activeTrip.setState(false);
+        //         tripRepository.save(activeTrip);
+        //     }
+        // }
 
         tripItemRepository.deleteByTripId(savedTrip.getId());
 
@@ -211,11 +211,11 @@ public class TripController {
         logger.info(AppConstants.PREFIX_USER + " [{}] Iniciando creación de itinerario para usuario: {}", AppConstants.LOG_TRIPS, user.getId());
 
         // Desactivar borradores anteriores
-        List<Trip> activeTrips = tripRepository.findByUserIdAndStateTrue(user.getId());
-        for (Trip activeTrip : activeTrips) {
-            activeTrip.setState(false);
-            tripRepository.save(activeTrip);
-        }
+        // List<Trip> activeTrips = tripRepository.findByUserIdAndStateTrue(user.getId());
+        // for (Trip activeTrip : activeTrips) {
+        //     activeTrip.setState(false);
+        //     tripRepository.save(activeTrip);
+        // }
 
         Trip trip = new Trip();
         trip.setUser(user);

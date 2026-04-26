@@ -196,8 +196,10 @@ export class CreateItineraryComponent implements OnInit {
 
   removeSelectedPlace(placeId: number): void {
     this.selectedPlaces = this.selectedPlaces.filter(p => p.id !== placeId);
-    this.markAsDirty();
+    //this.markAsDirty();
     this.generatedItinerary = [];
+    this.persistUiState();
+
   }
 
   goToPlaceDetail(placeId: number): void {
@@ -208,7 +210,9 @@ export class CreateItineraryComponent implements OnInit {
   }
 
   onDateChange(): void {
-    this.markAsDirty();
+    //this.markAsDirty();
+    this.persistUiState();
+
   }
 
   // saveSelection(): void {
@@ -244,11 +248,11 @@ export class CreateItineraryComponent implements OnInit {
   //   });
   // }
 
-  private markAsDirty(): void {
-    this.hasPendingChanges = true;
-    this.saveMessage = 'Tienes cambios sin guardar';
-    this.persistUiState();
-  }
+  // private markAsDirty(): void {
+  //   this.hasPendingChanges = true;
+  //   this.saveMessage = 'Tienes cambios sin guardar';
+  //   this.persistUiState();
+  // }
 
   private persistUiState(): void {
     const snapshot = {
