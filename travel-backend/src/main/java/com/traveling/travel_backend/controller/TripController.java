@@ -34,6 +34,8 @@ import com.traveling.travel_backend.repository.TripItemRepository;
 import com.traveling.travel_backend.repository.TripRepository;
 import com.traveling.travel_backend.repository.UserRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH)
 @CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
@@ -53,6 +55,12 @@ public class TripController {
 
     private static final Logger logger = LoggerFactory.getLogger(TripController.class);
 
+    @Operation(
+        summary = "Recover itinerary draft",
+        description = "Restores a user itinerary draft if it is authenticated",
+        tags = {"Trips"},
+        operationId = "getMyDraft"
+    )
     @GetMapping(AppConstants.TRIPS_ENDPOINT + "/draft/me")
     public ResponseEntity<TripDraftResponse> getMyDraft(Authentication authentication) {
         User user = resolveAuthenticatedUser(authentication);
@@ -90,6 +98,12 @@ public class TripController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+        summary = "Save itinerary draft",
+        description = "Saves a user itinerary draft if it is authenticated",
+        tags = {"Trips"},
+        operationId = "saveDraft"
+    )
     @PutMapping(AppConstants.TRIPS_ENDPOINT + "/draft")
     @Transactional
     public ResponseEntity<TripDraftResponse> saveDraft(@RequestBody TripDraftRequest request, Authentication authentication) {
@@ -150,6 +164,12 @@ public class TripController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+        summary = "Retrieve itinerary draft of an specfic user",
+        description = "Returns a user's itinerary draft by Id",
+        tags = {"Trips"},
+        operationId = "getDraftByUser"
+    )
     @GetMapping(AppConstants.TRIPS_ENDPOINT + "/draft/user/{userId}")
     public ResponseEntity<TripDraftResponse> getDraftByUser(@PathVariable Long userId) {
         Trip trip = tripRepository
@@ -178,6 +198,12 @@ public class TripController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+        summary = "Saves a confirmed itinerary",
+        description = "Saves a user's itinerary",
+        tags = {"Trips"},
+        operationId = "createTrip"
+    )
     @PostMapping(AppConstants.TRIPS_ENDPOINT + "/trip")
     @Transactional
     public ResponseEntity<TripDraftResponse> createTrip(@RequestBody TripDraftRequest request, Authentication authentication) {
