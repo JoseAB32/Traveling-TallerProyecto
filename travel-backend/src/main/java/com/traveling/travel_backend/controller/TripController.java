@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +51,12 @@ public class TripController {
     @Autowired
     private PlaceRepository placeRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(TripController.class);
+
     @GetMapping(AppConstants.TRIPS_ENDPOINT + "/draft/me")
     public ResponseEntity<TripDraftResponse> getMyDraft(Authentication authentication) {
         User user = resolveAuthenticatedUser(authentication);
+        logger.info(AppConstants.PREFIX_USER + " [{}] {}", AppConstants.LOG_TRIPS, AppConstants.TRIP_DRAFT_LOADED.replace("{}", String.valueOf(user.getId())));
 
         Trip trip = tripRepository
             .findFirstByUserIdAndStateTrueOrderByIdDesc(user.getId())
@@ -60,12 +66,14 @@ public class TripController {
         response.setUserId(user.getId());
 
         if (trip == null) {
+            logger.warn(AppConstants.PREFIX_ERROR + " [{}] {}", AppConstants.LOG_TRIPS, AppConstants.TRIP_DRAFT_NOT_FOUND.replace("{}", String.valueOf(user.getId())));
             response.setName("Mi itinerario");
             response.setPlaces(new ArrayList<>());
             return ResponseEntity.ok(response);
         }
 
         List<TripItem> items = tripItemRepository.findByTripIdAndStateTrueOrderByVisitOrderAsc(trip.getId());
+        logger.info(AppConstants.PREFIX_PLACE + " [{}] {}", AppConstants.LOG_TRIPS, AppConstants.TRIP_PLACES_COUNT.replace("{}", String.valueOf(items.size())));
 
         response.setTripId(trip.getId());
         response.setUserId(trip.getUser().getId());
@@ -86,6 +94,7 @@ public class TripController {
     @Transactional
     public ResponseEntity<TripDraftResponse> saveDraft(@RequestBody TripDraftRequest request, Authentication authentication) {
         User user = resolveAuthenticatedUser(authentication);
+        logger.info(AppConstants.PREFIX_USER + " [{}] {}", AppConstants.LOG_TRIPS, AppConstants.TRIP_DRAFT_SAVED.replace("{}", String.valueOf(user.getId())));
 
         Optional<Trip> existingTrip = tripRepository.findFirstByUserIdAndStateTrueOrderByIdDesc(user.getId());
         Trip trip = existingTrip.orElseGet(Trip::new);
@@ -136,6 +145,8 @@ public class TripController {
         response.setEndDate(savedTrip.getEndDate());
         response.setPlaces(selectedPlaces);
 
+        logger.info(AppConstants.PREFIX_PLACE + " [{}] Borrador id: {} con {} lugares", AppConstants.LOG_TRIPS, savedTrip.getId(), selectedPlaces.size());
+
         return ResponseEntity.ok(response);
     }
 
@@ -171,6 +182,7 @@ public class TripController {
     @Transactional
     public ResponseEntity<TripDraftResponse> createTrip(@RequestBody TripDraftRequest request, Authentication authentication) {
         User user = resolveAuthenticatedUser(authentication);
+        logger.info(AppConstants.PREFIX_USER + " [{}] Iniciando creación de itinerario para usuario: {}", AppConstants.LOG_TRIPS, user.getId());
 
         // Desactivar borradores anteriores
         List<Trip> activeTrips = tripRepository.findByUserIdAndStateTrue(user.getId());
@@ -179,7 +191,6 @@ public class TripController {
             tripRepository.save(activeTrip);
         }
 
-        // Crear siempre uno nuevo
         Trip trip = new Trip();
         trip.setUser(user);
         trip.setName((request.getName() == null || request.getName().trim().isEmpty())
@@ -215,15 +226,23 @@ public class TripController {
         response.setEndDate(savedTrip.getEndDate());
         response.setPlaces(selectedPlaces);
 
+        logger.info(AppConstants.PREFIX_PLACE + " [{}] {}", AppConstants.LOG_TRIPS, AppConstants.TRIP_CREATED
+        .replace("{}", String.valueOf(savedTrip.getId()))
+        .replaceFirst("\\{\\}", String.valueOf(user.getId())));
+
         return ResponseEntity.ok(response);
     }
 
     private User resolveAuthenticatedUser(Authentication authentication) {
         if (authentication == null || authentication.getName() == null) {
+            logger.error(AppConstants.PREFIX_ERROR + " [{}] Intento de acceso sin autenticación", AppConstants.LOG_TRIPS);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No autenticado.");
         }
 
         return userRepository.findByUserName(authentication.getName())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario autenticado no válido."));
+            .orElseThrow(() -> {
+                logger.error(AppConstants.PREFIX_ERROR + " [{}] Usuario autenticado no encontrado: {}", AppConstants.LOG_TRIPS, authentication.getName());
+                return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario autenticado no válido.");
+            });
     }
 }

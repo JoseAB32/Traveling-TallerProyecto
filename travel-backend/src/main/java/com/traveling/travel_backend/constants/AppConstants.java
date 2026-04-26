@@ -62,6 +62,16 @@ public class AppConstants {
     public static final String CITIES_FOUND = "Ciudades encontradas: {} y devueltas correctamente.";
     public static final String NUM_CITIES_FOUND = "Número de ciudades encontradas: {}";
 
+    // ==================== TRIP MESSAGES ====================
+    public static final String TRIP_NOT_FOUND = "Itinerario no encontrado";
+    public static final String TRIP_CREATED_SUCCESS = "Itinerario creado exitosamente";
+    public static final String TRIP_UPDATED_SUCCESS = "Itinerario actualizado exitosamente";
+    public static final String TRIP_DRAFT_LOADED = "Borrador de itinerario cargado para usuario: {}";
+    public static final String TRIP_DRAFT_SAVED = "Borrador guardado para usuario: {}";
+    public static final String TRIP_CREATED = "Itinerario creado con id: {} para usuario: {}";
+    public static final String TRIP_DRAFT_NOT_FOUND = "No se encontró borrador activo para usuario: {}";
+    public static final String TRIP_PLACES_COUNT = "Número de lugares en el itinerario: {}";
+
     // ==================== LOG CATEGORIES ====================
     public static final String LOG_USERS = "USERS";
     public static final String LOG_PLACES = "PLACES";
