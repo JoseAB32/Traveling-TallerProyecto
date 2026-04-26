@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy, inject } from '@angular/core';
+import { Component, Input, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy, inject, ElementRef, ViewChild } from '@angular/core';
 import * as L from 'leaflet';
 import { FeatureService } from '../../services/features/feature.service';
 //Para que arregle Leaflet
@@ -25,11 +25,15 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrl: './map.component.css'
 })
 export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
+  @ViewChild('mapContainer') mapContainer!: ElementRef<HTMLDivElement>;
   @Input() places: any[] = []; // Lista de los lugares
+  @Input() routePlaces: any[] = [];
+  @Input() showRoute = false;
   @Output() placeSelected = new EventEmitter<any>(); // Evento para enviar el lugar seleccionado al componente padre
   @Output() placeClicked = new EventEmitter<any>();
   private map: L.Map | null = null;
   private markerLayer = L.layerGroup();
+  private routeLayer = L.layerGroup();
 
   featureService = inject(FeatureService);
   features: any = {};
@@ -38,11 +42,13 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.initMap();
     this.featureService.getFeatures().subscribe((data: any) => this.features = data);
     this.renderMarkers();
+    this.renderRoute();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['places'] && this.map) {
+    if (this.map && (changes['places'] || changes['routePlaces'] || changes['showRoute'])) {
       this.renderMarkers();
+      this.renderRoute();
     }
   }
 
@@ -55,8 +61,10 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private initMap(): void {
     // Inicializa el mapa
-    this.map = L.map('map');
+    // this.map = L.map('map');
+    this.map = L.map(this.mapContainer.nativeElement);
     this.markerLayer.addTo(this.map);
+    this.routeLayer.addTo(this.map);
 
     // Añade la capa de OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -117,5 +125,35 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (bounds.length > 0) {
       this.map.fitBounds(bounds);
     }
+  }
+
+  private renderRoute(): void {
+    if (!this.map) {
+      return;
+    }
+
+    this.routeLayer.clearLayers();
+
+    if (!this.showRoute || !this.routePlaces || this.routePlaces.length < 2) {
+      return;
+    }
+
+    const coordinates: L.LatLngTuple[] = this.routePlaces
+      .filter(place => place.latitude && place.longitude)
+      .map(place => [Number(place.latitude), Number(place.longitude)]);
+
+    if (coordinates.length < 2) {
+      return;
+    }
+
+    L.polyline(coordinates, {
+      color: '#FF6B35',
+      weight: 5,
+      opacity: 0.9
+    }).addTo(this.routeLayer);
+
+    this.map.fitBounds(coordinates, {
+      padding: [40, 40]
+    });
   }
 }
