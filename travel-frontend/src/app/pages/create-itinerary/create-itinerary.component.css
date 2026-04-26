@@ -421,7 +421,6 @@
   font-family: Outfit;
   font-style: Bold;
   font-size: 20px;
-  leading-trim: NONE;
   line-height: 100%;
   letter-spacing: 0%;
   vertical-align: middle;
@@ -449,6 +448,13 @@
 
 .btn-cancel-modal:hover {
   color: #333;
+}
+
+.modal-success {
+  color: #38a169;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 @media (max-width: 900px) {

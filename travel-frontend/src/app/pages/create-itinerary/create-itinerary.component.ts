@@ -61,6 +61,13 @@ export class CreateItineraryComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
+    const justSaved = sessionStorage.getItem('justSaved');
+    if (justSaved) {
+      sessionStorage.removeItem('justSaved');
+      this.loadCities();
+      return;
+    }
+    
     const hasSessionState = this.restoreUiState();
 
     this.loadCities();
@@ -459,6 +466,7 @@ export class CreateItineraryComponent implements OnInit {
   closeModal(): void {
     this.isModalOpen = false;
   }
+
   saveItinerary(): void {
     if (!this.itineraryName || this.itineraryName.trim() === '') {
       this.itineraryNameError = 'Debes ingresar un nombre para el itinerario';
@@ -473,11 +481,23 @@ export class CreateItineraryComponent implements OnInit {
     };
 
     this.isSavingDraft = true;
-    this.itineraryService.saveDraft(payload).subscribe({
+    this.itineraryService.createItinerary(payload).subscribe({
       next: () => {
         this.isSavingDraft = false;
         this.isModalOpen = false;
         this.saveMessage = 'Itinerario guardado correctamente';
+        
+        sessionStorage.removeItem(this.sessionKey);
+        sessionStorage.setItem('justSaved', 'true');
+
+        this.selectedCityId = null;
+        this.selectedPlaces = [];
+        this.generatedItinerary = [];
+        this.startDate = '';
+        this.endDate = '';
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       },
       error: (error: HttpErrorResponse) => {
         this.isSavingDraft = false;

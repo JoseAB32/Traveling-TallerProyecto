@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -162,6 +163,57 @@ public class TripController {
             places.add(item.getPlace());
         }
         response.setPlaces(places);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(AppConstants.TRIPS_ENDPOINT + "/trip")
+    @Transactional
+    public ResponseEntity<TripDraftResponse> createTrip(@RequestBody TripDraftRequest request, Authentication authentication) {
+        User user = resolveAuthenticatedUser(authentication);
+
+        // Desactivar borradores anteriores
+        List<Trip> activeTrips = tripRepository.findByUserIdAndStateTrue(user.getId());
+        for (Trip activeTrip : activeTrips) {
+            activeTrip.setState(false);
+            tripRepository.save(activeTrip);
+        }
+
+        // Crear siempre uno nuevo
+        Trip trip = new Trip();
+        trip.setUser(user);
+        trip.setName((request.getName() == null || request.getName().trim().isEmpty())
+            ? "Mi itinerario"
+            : request.getName().trim());
+        trip.setStartDate(request.getStartDate());
+        trip.setEndDate(request.getEndDate());
+        trip.setState(true);
+
+        Trip savedTrip = tripRepository.save(trip);
+
+        List<Long> placeIds = request.getPlaceIds() == null ? new ArrayList<>() : request.getPlaceIds();
+        List<Place> selectedPlaces = new ArrayList<>();
+        int order = 1;
+        for (Long placeId : placeIds) {
+            Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lugar no encontrado: " + placeId));
+
+            TripItem item = new TripItem();
+            item.setTrip(savedTrip);
+            item.setPlace(place);
+            item.setVisitOrder(order++);
+            item.setState(true);
+            tripItemRepository.save(item);
+            selectedPlaces.add(place);
+        }
+
+        TripDraftResponse response = new TripDraftResponse();
+        response.setTripId(savedTrip.getId());
+        response.setUserId(savedTrip.getUser().getId());
+        response.setName(savedTrip.getName());
+        response.setStartDate(savedTrip.getStartDate());
+        response.setEndDate(savedTrip.getEndDate());
+        response.setPlaces(selectedPlaces);
 
         return ResponseEntity.ok(response);
     }
