@@ -1,82 +1,62 @@
-:root {
-  --main-bg-color: #0d4f7c;
-  --on-bg-color: #ffffff;
-  --success-color: #329345; /* Tono de verde ajustado a la imagen 2 */
-  --link-color: #f27252; /* Tono de naranja más suave como en la imagen 2 */
-}
-
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Outfit", sans-serif; /* Asegúrate de tener esta fuente importada */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
 }
 
 .content {
-  background-color: var(--main-bg-color);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
+    background-color: #094e80; /* Azul oscuro directo */
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    /* Cambiado a center para que la tarjeta quede en el medio como en la foto */
+    justify-content: center; 
+    align-items: center; 
+    padding: 30px 0;
 }
 
-.logo img {
-  max-width: 220px;
+.success-container {
+    background-color: #ffffff; /* Blanco directo */
+    border-radius: 16px;
+    padding: 50px 40px; /* Padding aumentado para dar aire */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Separación aumentada a 20px */
+    width: 580px; /* Ancho fijo para controlar dónde se corta el texto */
+    max-width: 90%; /* Para pantallas móviles */
 }
 
-/* Ajustes de la tarjeta */
-.success-card {
-  background-color: var(--on-bg-color);
-  padding: 50px 40px;
-  border-radius: 16px; /* Bordes un poco más redondeados */
-  text-align: center;
-  max-width: 550px; /* Tarjeta más ancha para que el título entre mejor */
-  width: 90%;
+svg {
+    width: 100px; /* Control por px en lugar de % para evitar deformaciones */
+    color: rgb(46, 138, 46); /* Verde directo */
 }
 
-/* Creación del círculo verde alrededor del check */
-.success-icon {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px; /* Ancho del círculo */
-  height: 80px; /* Alto del círculo */
-  border: 6px solid var(--success-color); /* Borde verde grueso */
-  border-radius: 50%; /* Hace que sea un círculo perfecto */
-  font-size: 50px; /* Tamaño del check ✓ */
-  color: var(--success-color);
-  font-weight: bold; /* Check más grueso */
-  margin: 0 auto 20px auto; /* Centrado */
+.success-container h2 {
+    font-size: 24px;
+    font-weight: 700; /* Más negrita */
+    color: rgb(46, 138, 46); /* Verde directo */
+    text-align: center;
 }
 
-/* Título en verde */
-.success-card h2 {
-  color: var(--success-color);
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: 700;
+.success-container p {
+    text-align: center;
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 700; /* Texto en negrita para igualar a la imagen */
+    line-height: 1.4;
+    max-width: 480px; /* Limita el texto para que baje a la siguiente línea exacto como en la foto */
 }
 
-/* Texto en negrita y negro */
-.success-card p {
-  margin-bottom: 30px;
-  font-size: 14px;
-  font-weight: 700; /* Texto en negrita como en la imagen 2 */
-  color: #1a1a1a;
-  line-height: 1.5;
-  padding: 0 20px;
+.success-container a {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f8745c; /* Naranja/Coral directo */
+    text-decoration: underline; /* Subrayado por defecto igual a la imagen */
 }
 
-/* Enlace subrayado y tono coral/naranja */
-.success-card a {
-  color: var(--link-color);
-  font-weight: 500;
-  text-decoration: underline; /* Subrayado permanente */
-  font-size: 15px;
-}
-
-.success-card a:hover {
-  color: #d65c3e; /* Oscurece un poco al pasar el mouse */
+.success-container a:hover {
+    color: #d85c46; /* Efecto oscurecido al pasar el cursor */
 }
