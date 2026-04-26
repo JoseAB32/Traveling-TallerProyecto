@@ -175,6 +175,10 @@
         "textLabelEnd": "Fecha de finalización:",
         "textButtonGenerate": "GENERAR ITINERARIO",
         "textHaventGeneratedItinerary": "Todavía no generaste el itinerario.",
-        "textButtonSave": "GUARDAR ITINERARIO"
+        "textButtonSave": "GUARDAR ITINERARIO",
+        "textButtonSaveModal": "GUARDAR",
+        "savingModalText":"Guardando...",
+        "itineraryName":"Nombre del Itinerario",
+        "modalCancelButton":"Cancelar"
     }
 }

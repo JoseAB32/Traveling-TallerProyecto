@@ -189,16 +189,16 @@
             placeholder=" "
             (input)="itineraryNameError = ''"
           />
-          <label for="itineraryName">Nombre Itinerario</label>
+          <label for="itineraryName">{{ 'createItinerary.itineraryName' | transloco }}</label>
           @if (itineraryNameError) {
             <p class="modal-error">{{ itineraryNameError }}</p>
           }
         </div>
         <div class="modal-actions">
           <button class="btn-save-modal" [disabled]="isSavingDraft" (click)="saveItinerary()">
-            @if (isSavingDraft) { GUARDANDO... } @else { GUARDAR ITINERARIO }
+            @if (isSavingDraft) { {{ 'createItinerary.savingModalText' | transloco }} } @else { {{ 'createItinerary.textButtonSaveModal' | transloco }} }
           </button>
-          <button class="btn-cancel-modal" (click)="closeModal()">CANCELAR</button>
+          <button class="btn-cancel-modal" (click)="closeModal()">{{ 'createItinerary.modalCancelButton' | transloco }}</button>
         </div>
       </div>
     </div>

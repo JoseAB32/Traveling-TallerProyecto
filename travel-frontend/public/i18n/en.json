@@ -175,6 +175,10 @@
         "textLabelEnd": "End date:",
         "textButtonGenerate": "GENERATE ITINERARY",
         "textHaventGeneratedItinerary": "You haven't generated the itinerary yet.",
-        "textButtonSave": "SAVE ITINERARY"
+        "textButtonSave": "SAVE ITINERARY",
+        "textButtonSaveModal": "SAVE",
+        "savingModalText":"Saving...",
+        "itineraryName":"Itineary's Name",
+        "modalCancelButton":"Cancel"
     }
 }
