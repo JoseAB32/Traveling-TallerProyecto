@@ -3,6 +3,7 @@ package com.traveling.travel_backend.service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,8 @@ import com.traveling.travel_backend.repository.*;
 
 @Service
 public class PasswordResetService {
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     private final UserRepository userRepository;
     private final PasswordResetTokenRepository tokenRepository;
@@ -46,7 +49,7 @@ public class PasswordResetService {
 
         tokenRepository.save(resetToken);
 
-        String link = "http://localhost:4200/reset-password?token=" + token;
+        String link = frontendUrl + "/reset-password?token=" + token;
 
         // 📧 ENVÍO REAL
         emailService.sendResetEmail(user.getCorreo(), link);
