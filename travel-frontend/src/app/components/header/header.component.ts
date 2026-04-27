@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
@@ -6,6 +6,7 @@ import { Subscription} from 'rxjs';
 import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
 import { FEATURES } from '../../features/features';
+import { FeatureService} from '../../services/features/feature.service'
 import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 @Component({
@@ -21,6 +22,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
   
   isAdmin: boolean = false;
   isLogsEnabled: boolean = FEATURES.adminLogsEnabled;
+  
+  featureService = inject(FeatureService);
 
   isLoggedIn: boolean = false;
   isMenuOpen: boolean = false; // El menú debe empezar cerrado

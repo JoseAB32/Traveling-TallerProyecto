@@ -126,6 +126,14 @@
             "autoCreateItinerary": {
                 "title": "Auto-create Itinerary (AutoCreateItinerary)",
                 "description": "Allows the system to generate automatic travel suggestions based on selected places."
+            }, 
+            "showSearchPlaces": {
+                    "title": "Search Places (ShowSearchPlaces)",
+                    "description": "Shows or hides the search bar for tourist attractions in the application."
+                },
+            "showFavorites": {
+                "title": "Favorites (ShowFavorites)",
+                "description": "Enables the section to add and view favorite places for registered users."
             }
         },
         "modal": {

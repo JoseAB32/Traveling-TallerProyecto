@@ -15,12 +15,10 @@ export class CityService {
 
   getCities(): Observable<City[]> {
 
-    console.log(CONSTANTS.LOGS.API_CALL, this.baseURL);
 
     return this.httpClient.get<City[]>(this.baseURL).pipe(
 
       tap((data) => {
-        console.log(CONSTANTS.LOGS.SUCCESS, data);
         console.log("Cantidad de ciudades:", data.length);
       }),
 

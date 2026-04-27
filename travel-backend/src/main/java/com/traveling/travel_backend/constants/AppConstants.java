@@ -72,6 +72,14 @@ public class AppConstants {
     public static final String TRIP_DRAFT_NOT_FOUND = "No se encontró borrador activo para usuario: {}";
     public static final String TRIP_PLACES_COUNT = "Número de lugares en el itinerario: {}";
 
+    // ==================== FEATURE MESSAGES ====================
+    public static final String FEATURES_FETCH_REQUEST = "Petición recibida: GET /api/features";
+    public static final String FEATURES_FETCHED_SUCCESS = "Features obtenidas correctamente. Total: {}";
+    public static final String FEATURES_FILE_NOT_FOUND = "Archivo features.json no encontrado, creando con valores por defecto.";
+    public static final String FEATURES_NEW_KEYS_ADDED = "Se agregaron nuevas keys al archivo features.json. Total keys: {}";
+    public static final String FEATURES_UPDATE_REQUEST = "Petición recibida: PUT /api/features";
+    public static final String FEATURES_UPDATED_SUCCESS = "Features actualizadas correctamente. Total keys: {}";
+
     // ==================== LOG CATEGORIES ====================
     public static final String LOG_USERS = "USERS";
     public static final String LOG_PLACES = "PLACES";
@@ -79,6 +87,7 @@ public class AppConstants {
     public static final String LOG_REVIEWS = "REVIEWS";
     public static final String LOG_FAVORITES = "FAVORITES";
     public static final String LOG_TRIPS = "TRIPS";
+    public static final String LOG_FEATURES = "FEATURES";
 
     // ==================== LOG LEVELS ====================
     public static final String LOG_INFO = "INFO";
@@ -91,6 +100,7 @@ public class AppConstants {
     public static final String PREFIX_PLACE = "📍";
     public static final String PREFIX_CITY = "🏙️";
     public static final String PREFIX_ERROR = "❌";
+    public static final String PREFIX_FEATURE = "🚩";
 
     // ==================== VALIDATION ====================
     public static final int MIN_PASSWORD_LENGTH = 8;

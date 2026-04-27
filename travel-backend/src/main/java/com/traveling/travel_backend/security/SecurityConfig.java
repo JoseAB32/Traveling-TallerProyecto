@@ -9,6 +9,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.http.HttpMethod;
+
 @Configuration
 public class SecurityConfig {
 
@@ -41,6 +43,8 @@ public class SecurityConfig {
                     "/v3/api-docs*/**",
                     "/api/routes/**"
                 ).permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/features").authenticated() 
                 .anyRequest().authenticated()
             )
 

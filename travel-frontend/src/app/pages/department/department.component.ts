@@ -43,7 +43,6 @@ export class DepartmentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.featureService.getFeatures().subscribe((data: any) => this.features = data);
     this.departmentId = Number(this.route.snapshot.paramMap.get('id'));
 
     this.cityService.getCityById(this.departmentId).subscribe({
@@ -108,8 +107,8 @@ export class DepartmentComponent implements OnInit {
 
   onMapClicked(place: any) {
     this.clickedPlaceFromMap = place;
-    if (this.features.pinRedirection) { 
-      this.router.navigate(['/place', this.clickedPlaceFromMap.id]);
+    if (this.featureService.isEnabled('pinRedirection')) {
+      this.router.navigate(['/place', place.id]);
     }
   }
 }
