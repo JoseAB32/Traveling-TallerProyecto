@@ -16,7 +16,7 @@ import {
   ItineraryDraftResponse
 } from '../../services/itinerary/itinerary.service';
 
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 import { City } from '../../models/city/city';
 import { Place } from '../../models/place/place';
@@ -64,6 +64,7 @@ export class CreateItineraryComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private routingService = inject(RoutingService);
+  private translocoService = inject(TranslocoService);
 
   ngOnInit(): void {
     const justSaved = sessionStorage.getItem('justSaved');
@@ -455,7 +456,7 @@ export class CreateItineraryComponent implements OnInit {
 
   saveItinerary(): void {
     if (!this.itineraryName || this.itineraryName.trim() === '') {
-      this.itineraryNameError = 'Debes ingresar un nombre para el itinerario';
+      this.itineraryNameError = this.translocoService.translate('createItinerary.textErrorRequiredName');
       return;
     }
 

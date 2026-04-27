@@ -182,6 +182,7 @@
         "modalCancelButton":"Cancel",
         "textUncategorized": "Uncategorized",
         "textNoSchedule": "No schedule",
-        "textCalculatingRoutes": "Calculating routes and ordering places..."
+        "textCalculatingRoutes": "Calculating routes and ordering places...",
+        "textErrorRequiredName": "You must enter a name for the itinerary"
     }
 }

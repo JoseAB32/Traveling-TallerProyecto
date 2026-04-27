@@ -51,7 +51,6 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
       this.map &&
       (
         changes['places'] ||
-        // changes['routePlaces'] ||
         changes['routeCoordinates'] ||
         changes['showRoute']
       )

@@ -170,16 +170,18 @@
           </div>
         </div>
       }
-      <div class="generated-map-box">
-        <app-map
-          [places]="generatedItinerary"
-          [routeCoordinates]="generatedRouteCoordinates"
-          [showRoute]="true">
-        </app-map>
-      </div>
-      <section class="section-button-save">
-        <button class="btn-save-it" (click)="openSaveModal()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
-      </section>
+      @if (generatedRouteCoordinates.length > 0) {
+        <div class="generated-map-box">
+          <app-map
+            [places]="generatedItinerary"
+            [routeCoordinates]="generatedRouteCoordinates"
+            [showRoute]="true">
+          </app-map>
+        </div>
+        <section class="section-button-save">
+          <button class="btn-save-it" (click)="openSaveModal()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
+        </section>
+      }
     }
   </section>
 
