@@ -1,6 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection, isDevMode, APP_INITIALIZER } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { catchError, of } from 'rxjs';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './interceptors/auth.interceptor';
@@ -9,7 +10,12 @@ import { provideTransloco } from '@jsverse/transloco';
 import { FeatureService } from '../app/services/features/feature.service';
 
 function initFeatures(featureService: FeatureService) {
-  return () => featureService.loadFeatures();
+  return () => featureService.loadFeatures().pipe(
+    catchError(() => {
+      console.warn('No se pudieron cargar los feature toggles. Usando valores por defecto.');
+      return of(null);
+    })
+  );
 }
 
 export const appConfig: ApplicationConfig = {

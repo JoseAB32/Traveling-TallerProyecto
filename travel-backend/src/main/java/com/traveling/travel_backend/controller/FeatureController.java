@@ -107,6 +107,14 @@ public class FeatureController {
     @PutMapping
     public Map<String, Boolean> updateFeatures(@RequestBody Map<String, Boolean> features) throws IOException {
 
+        Map<String, Boolean> merged = defaultFeatures();
+
+        features.forEach((key, value) -> {
+            if (merged.containsKey(key)) {
+                merged.put(key, value);
+            }
+        });
+
         logger.info(AppConstants.PREFIX_FEATURE + " [" + AppConstants.LOG_FEATURES + "] " + AppConstants.FEATURES_UPDATE_REQUEST);
         logRepository.save(new LogEntity(AppConstants.LOG_FEATURES, AppConstants.LOG_INFO, AppConstants.FEATURES_UPDATE_REQUEST, null));
 
@@ -114,12 +122,12 @@ public class FeatureController {
 
         File file = new File(filePath);
         file.getParentFile().mkdirs();
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, features);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, merged);
 
-        logger.info(AppConstants.PREFIX_FEATURE + " [" + AppConstants.LOG_FEATURES + "] " + AppConstants.FEATURES_UPDATED_SUCCESS, features.size());
+        logger.info(AppConstants.PREFIX_FEATURE + " [" + AppConstants.LOG_FEATURES + "] " + AppConstants.FEATURES_UPDATED_SUCCESS, merged.size());
         logRepository.save(new LogEntity(AppConstants.LOG_FEATURES, AppConstants.LOG_INFO,
-            "Features actualizadas correctamente. Total keys: " + features.size(), null));
+            "Features actualizadas correctamente. Total keys: " + merged.size(), null));
 
-        return features;
+        return merged;
     }
 }
