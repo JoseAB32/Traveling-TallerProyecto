@@ -200,8 +200,8 @@
 
 .section-button-generate {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btn-generar-it {
@@ -212,6 +212,20 @@
   border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+.btn-generar-it:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.loading-itinerary {
+  margin-top: 20px;
+  color: #1A659E;
+  font-weight: 700;
+  text-align: center;
 }
 
 .itinerario-container {

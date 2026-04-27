@@ -2,6 +2,7 @@ package com.traveling.travel_backend.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,6 +26,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
+                // .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // .requestMatchers(HttpMethod.GET, "/api/routes", "/api/routes/**").permitAll()
                 .requestMatchers(
                     "/api/login",
                     "/api/users",
@@ -33,7 +36,8 @@ public class SecurityConfig {
                     "/api/places/**",
                     "/api/admin/logs/filter",
                     "/swagger-ui/**",
-                    "/v3/api-docs*/**"
+                    "/v3/api-docs*/**",
+                    "/api/routes/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )

@@ -20,6 +20,8 @@ import { TranslocoModule } from '@jsverse/transloco';
 
 import { City } from '../../models/city/city';
 import { Place } from '../../models/place/place';
+import { RoutingService } from '../../services/routing/routing.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-create-itinerary',
@@ -40,6 +42,8 @@ export class CreateItineraryComponent implements OnInit {
   selectedPlace: Place | null = null;
   selectedPlaces: Place[] = [];
   generatedItinerary: Place[] = [];
+  generatedRouteCoordinates: L.LatLngTuple[] = [];
+  isGeneratingItinerary = false;
 
   startDate: string = '';
   endDate: string = '';
@@ -55,6 +59,7 @@ export class CreateItineraryComponent implements OnInit {
   private itineraryService = inject(ItineraryService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private routingService = inject(RoutingService);
 
   ngOnInit(): void {
     const hasSessionState = this.restoreUiState();
@@ -128,6 +133,7 @@ export class CreateItineraryComponent implements OnInit {
     this.selectedPlace = null;
     this.selectedPlaces = [];
     this.generatedItinerary = [];
+    this.generatedRouteCoordinates = [];
     this.persistUiState();
   }
 
@@ -180,6 +186,7 @@ export class CreateItineraryComponent implements OnInit {
     this.selectedPlaces = [...this.selectedPlaces, this.selectedPlace];
     // this.markAsDirty();
     this.generatedItinerary = [];
+    this.generatedRouteCoordinates = [];
     this.persistUiState();
   }
 
@@ -187,6 +194,7 @@ export class CreateItineraryComponent implements OnInit {
     this.selectedPlaces = this.selectedPlaces.filter(p => p.id !== placeId);
     this.markAsDirty();
     this.generatedItinerary = [];
+    this.generatedRouteCoordinates = [];
   }
 
   goToPlaceDetail(placeId: number): void {
@@ -247,7 +255,8 @@ export class CreateItineraryComponent implements OnInit {
       endDate: this.endDate,
       hasPendingChanges: this.hasPendingChanges,
       saveMessage: this.saveMessage,
-      generatedItinerary: this.generatedItinerary
+      generatedItinerary: this.generatedItinerary,
+      generatedRouteCoordinates: this.generatedRouteCoordinates
     };
 
     sessionStorage.setItem(this.sessionKey, JSON.stringify(snapshot));
@@ -268,6 +277,7 @@ export class CreateItineraryComponent implements OnInit {
       this.hasPendingChanges = snapshot.hasPendingChanges ?? false;
       this.saveMessage = snapshot.saveMessage ?? 'Borrador recuperado';
       this.generatedItinerary = snapshot.generatedItinerary ?? [];
+      this.generatedRouteCoordinates = snapshot.generatedRouteCoordinates ?? [];
 
       if (this.selectedCityId) {
         this.loadPlacesByCity();
@@ -280,7 +290,7 @@ export class CreateItineraryComponent implements OnInit {
     }
   }
 
-  generateItineraryByDistance(): void {
+  async generateItinerary(): Promise<void> {
     if (this.selectedPlaces.length < 2) {
       this.saveMessage = 'Selecciona al menos dos lugares para generar el itinerario';
       return;
@@ -296,22 +306,38 @@ export class CreateItineraryComponent implements OnInit {
       return;
     }
 
-    const validPlaces = this.selectedPlaces.filter(place =>
-      this.hasValidCoordinates(place) &&
-      this.hasValidSchedule(place)
-    );
+    try {
+      this.isGeneratingItinerary = true;
+      this.saveMessage = 'Generando itinerario con rutas reales...';
 
-    if (validPlaces.length !== this.selectedPlaces.length) {
-      this.saveMessage = 'Algunos lugares no tienen coordenadas u horarios válidos';
-      return;
+      const validPlaces = this.selectedPlaces.filter(place =>
+        this.hasValidCoordinates(place) &&
+        this.hasValidSchedule(place)
+      );
+
+      if (validPlaces.length !== this.selectedPlaces.length) {
+        this.saveMessage = 'Algunos lugares no tienen coordenadas u horarios válidos';
+        return;
+      }
+
+      const orderedItinerary = await this.orderPlacesByScheduleAndRealDistance(validPlaces);
+      const routeCoordinates = await this.buildRealRouteCoordinates(orderedItinerary);
+
+      this.generatedRouteCoordinates = routeCoordinates;
+      this.generatedItinerary = orderedItinerary;
+
+      this.saveMessage = 'Itinerario generado correctamente';
+      this.persistUiState();
+
+    } catch (error) {
+      console.error('Error generando itinerario', error);
+      this.saveMessage = 'No se pudo generar el itinerario con rutas reales';
+    } finally {
+      this.isGeneratingItinerary = false;
     }
-
-    this.generatedItinerary = this.orderPlacesByScheduleAndDistance(validPlaces);
-    this.saveMessage = 'Itinerario generado por horario y distancia';
-    this.persistUiState();
   }
 
-  private orderPlacesByScheduleAndDistance(places: Place[]): Place[] {
+  private async orderPlacesByScheduleAndRealDistance(places: Place[]): Promise<Place[]> {
     const pendingPlaces = [...places].sort((a, b) =>
       this.getMinutesFromDate(a.start_date) - this.getMinutesFromDate(b.start_date)
     );
@@ -332,14 +358,19 @@ export class CreateItineraryComponent implements OnInit {
       let bestPlaceIndex = 0;
       let bestScore = Number.MAX_VALUE;
 
-      pendingPlaces.forEach((place, index) => {
-        const distance = this.calculateDistanceInKm(currentPlace, place);
+      for (let index = 0; index < pendingPlaces.length; index++) {
+        const place = pendingPlaces[index];
+
+        const route = await firstValueFrom(
+          this.routingService.getRoute(currentPlace, place)
+        );
+
+        const distance = route.distanceKm;
 
         const currentClose = this.getMinutesFromDate(currentPlace.end_date);
         const nextOpen = this.getMinutesFromDate(place.start_date);
 
         const waitingTime = Math.max(0, nextOpen - currentClose);
-
         const schedulePenalty = waitingTime * 10;
 
         const score = distance + schedulePenalty;
@@ -348,13 +379,27 @@ export class CreateItineraryComponent implements OnInit {
           bestScore = score;
           bestPlaceIndex = index;
         }
-      });
+      }
 
       const [bestPlace] = pendingPlaces.splice(bestPlaceIndex, 1);
       orderedPlaces.push(bestPlace);
     }
 
     return orderedPlaces;
+  }
+
+  private async buildRealRouteCoordinates(places: Place[]): Promise<L.LatLngTuple[]> {
+    const fullRoute: L.LatLngTuple[] = [];
+
+    for (let i = 0; i < places.length - 1; i++) {
+      const route = await firstValueFrom(
+        this.routingService.getRoute(places[i], places[i + 1])
+      );
+
+      fullRoute.push(...route.coordinates as L.LatLngTuple[]);
+    }
+
+    return fullRoute;
   }
 
   private hasValidSchedule(place: Place): boolean {
@@ -373,67 +418,6 @@ export class CreateItineraryComponent implements OnInit {
 
     const date = new Date(dateValue);
     return date.getHours() * 60 + date.getMinutes();
-  }
-
-  private orderPlacesByNearestNeighbor(places: Place[]): Place[] {
-    const pendingPlaces = [...places];
-    const orderedPlaces: Place[] = [];
-
-    const firstPlace = pendingPlaces.shift();
-
-    if (!firstPlace) {
-      return [];
-    }
-
-    orderedPlaces.push(firstPlace);
-
-    while (pendingPlaces.length > 0) {
-      const currentPlace = orderedPlaces[orderedPlaces.length - 1];
-
-      let nearestPlaceIndex = 0;
-      let shortestDistance = Number.MAX_VALUE;
-
-      pendingPlaces.forEach((place, index) => {
-        const distance = this.calculateDistanceInKm(currentPlace, place);
-
-        if (distance < shortestDistance) {
-          shortestDistance = distance;
-          nearestPlaceIndex = index;
-        }
-      });
-
-      const [nearestPlace] = pendingPlaces.splice(nearestPlaceIndex, 1);
-      orderedPlaces.push(nearestPlace);
-    }
-
-    return orderedPlaces;
-  }
-
-  private calculateDistanceInKm(origin: Place, destination: Place): number {
-    const earthRadiusKm = 6371;
-
-    const originLat = this.toRadians(Number(origin.latitude));
-    const originLng = this.toRadians(Number(origin.longitude));
-    const destinationLat = this.toRadians(Number(destination.latitude));
-    const destinationLng = this.toRadians(Number(destination.longitude));
-
-    const latDifference = destinationLat - originLat;
-    const lngDifference = destinationLng - originLng;
-
-    const a =
-      Math.sin(latDifference / 2) * Math.sin(latDifference / 2) +
-      Math.cos(originLat) *
-        Math.cos(destinationLat) *
-        Math.sin(lngDifference / 2) *
-        Math.sin(lngDifference / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return earthRadiusKm * c;
-  }
-
-  private toRadians(value: number): number {
-    return value * Math.PI / 180;
   }
 
   private hasValidCoordinates(place: Place): boolean {

@@ -27,7 +27,8 @@ L.Marker.prototype.options.icon = iconDefault;
 export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('mapContainer') mapContainer!: ElementRef<HTMLDivElement>;
   @Input() places: any[] = []; // Lista de los lugares
-  @Input() routePlaces: any[] = [];
+  // @Input() routePlaces: any[] = [];
+  @Input() routeCoordinates: L.LatLngTuple[] = [];
   @Input() showRoute = false;
   @Output() placeSelected = new EventEmitter<any>(); // Evento para enviar el lugar seleccionado al componente padre
   @Output() placeClicked = new EventEmitter<any>();
@@ -46,7 +47,15 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.map && (changes['places'] || changes['routePlaces'] || changes['showRoute'])) {
+    if (
+      this.map &&
+      (
+        changes['places'] ||
+        // changes['routePlaces'] ||
+        changes['routeCoordinates'] ||
+        changes['showRoute']
+      )
+    ) {
       this.renderMarkers();
       this.renderRoute();
     }
@@ -134,25 +143,19 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     this.routeLayer.clearLayers();
 
-    if (!this.showRoute || !this.routePlaces || this.routePlaces.length < 2) {
+    if (!this.showRoute || !this.routeCoordinates || this.routeCoordinates.length < 2) {
       return;
     }
 
-    const coordinates: L.LatLngTuple[] = this.routePlaces
-      .filter(place => place.latitude && place.longitude)
-      .map(place => [Number(place.latitude), Number(place.longitude)]);
-
-    if (coordinates.length < 2) {
-      return;
-    }
-
-    L.polyline(coordinates, {
+    const routeLine = L.polyline(this.routeCoordinates, {
       color: '#FF6B35',
       weight: 5,
       opacity: 0.9
-    }).addTo(this.routeLayer);
+    });
 
-    this.map.fitBounds(coordinates, {
+    routeLine.addTo(this.routeLayer);
+
+    this.map.fitBounds(routeLine.getBounds(), {
       padding: [40, 40]
     });
   }

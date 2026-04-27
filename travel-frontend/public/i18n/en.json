@@ -175,6 +175,9 @@
         "textLabelEnd": "End date:",
         "textButtonGenerate": "GENERATE ITINERARY",
         "textHaventGeneratedItinerary": "You haven't generated the itinerary yet.",
-        "textButtonSave": "SAVE ITINERARY"
+        "textButtonSave": "SAVE ITINERARY",
+        "textUncategorized": "Uncategorized",
+        "textNoSchedule": "No schedule",
+        "textCalculatingRoutes": "Calculating routes and ordering places..."
     }
 }
