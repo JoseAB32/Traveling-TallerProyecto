@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // 🔥 Agregar import
+
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH)
 @CrossOrigin(origins = { AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY })
@@ -50,9 +52,11 @@ public class userController {
     private LogRepository logRepository;
 
     private final JwtService jwtService;
+    private final BCryptPasswordEncoder passwordEncoder; // 🔥 Agregar encoder
 
-    public userController(JwtService jwtService) {
+    public userController(JwtService jwtService, BCryptPasswordEncoder passwordEncoder) {
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Operation(
@@ -130,7 +134,12 @@ public class userController {
             City realCity = cityRepository.findById(user.getCity().getId()).orElse(null);
             user.setCity(realCity);
         }
-
+        
+        // 🔥 Encriptar la contraseña antes de guardar
+        if (user.getPass() != null && !user.getPass().isEmpty()) {
+            user.setPass(passwordEncoder.encode(user.getPass()));
+        }
+        
         User savedUser = userRepository.save(user);
         logger.info("👤 [USERS] Usuario '{}' creado exitosamente con el ID: {}", savedUser.getUserName(),
                 savedUser.getId());
@@ -185,22 +194,19 @@ public class userController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
         }
 
-        User user = optionalUser.get(); // Obtenemos el valor que guarda Optional.
+            User user = optionalUser.get();
+            
+            if (!user.isState()) {
+                logger.warn("❌ [USERS] Login fallido: El usuario '{}' (ID: {}) intentó acceder pero está inactivo.", user.getUserName(), user.getId());
+                logRepository.save(new LogEntity("USERS", "WARN", "Login fallido: El usuario '" + user.getUserName() + "' (ID: " + user.getId() + ") intentó acceder pero está inactivo.", user.getId()));
 
-        if (!user.isState()) {
-            logger.warn("❌ [USERS] Login fallido: El usuario '{}' (ID: {}) intentó acceder pero está inactivo.",
-                    user.getUserName(), user.getId());
-            logRepository.save(new LogEntity("USERS", "WARN", "Login fallido: El usuario '" + user.getUserName()
-                    + "' (ID: " + user.getId() + ") intentó acceder pero está inactivo.", user.getId()));
-
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario desactivado.");
-        }
-
-        if (!user.getPass().equals(pass)) {
-            logger.warn("❌ [USERS] Login fallido: Contraseña incorrecta para el usuario '{}'.", user.getUserName());
-            logRepository.save(new LogEntity("USERS", "WARN",
-                    "Login fallido: Contraseña incorrecta para el usuario '" + user.getUserName() + "'.",
-                    user.getId()));
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario desactivado.");
+            }
+            
+            // 🔥 CAMBIO IMPORTANTE: Usar BCrypt para comparar contraseñas
+            if (!passwordEncoder.matches(pass, user.getPass())) {
+                logger.warn("❌ [USERS] Login fallido: Contraseña incorrecta para el usuario '{}'.", user.getUserName());
+                logRepository.save(new LogEntity("USERS", "WARN", "Login fallido: Contraseña incorrecta para el usuario '" + user.getUserName() + "'.", user.getId()));
 
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos.");
         }

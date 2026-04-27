@@ -127,6 +127,8 @@ goToSearch() {
   clickout(event: any) {
     if (!this.el.nativeElement.contains(event.target)) {
       this.showSuggestions = false;
+      this.isListaOpen = !this.isListaOpen;
+      this.isMenuOpen = !this.isMenuOpen;
     }
   }
 
