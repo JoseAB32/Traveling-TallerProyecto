@@ -170,20 +170,44 @@
           </div>
         </div>
       }
-      @if (generatedItinerary.length > 0) {
-        <div class="generated-map-box">
-          <app-map
-            [places]="generatedItinerary"
-            [routeCoordinates]="generatedRouteCoordinates"
-            [showRoute]="true">
-          </app-map>
-        </div>
-        <section class="section-button-save">
-          <button class="btn-save-it">{{ 'createItinerary.textButtonSave' | transloco }}</button>
-        </section>
-      }
+      <div class="generated-map-box">
+        <app-map
+          [places]="generatedItinerary"
+          [routeCoordinates]="generatedRouteCoordinates"
+          [showRoute]="true">
+        </app-map>
+      </div>
+      <section class="section-button-save">
+        <button class="btn-save-it" (click)="openSaveModal()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
+      </section>
     }
   </section>
+
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-field">
+          <input
+            id="itineraryName"
+            type="text"
+            [(ngModel)]="itineraryName"
+            placeholder=" "
+            (input)="itineraryNameError = ''"
+          />
+          <label for="itineraryName">{{ 'createItinerary.itineraryName' | transloco }}</label>
+          @if (itineraryNameError) {
+            <p class="modal-error">{{ itineraryNameError }}</p>
+          }
+        </div>
+        <div class="modal-actions">
+          <button class="btn-save-modal" [disabled]="isSavingDraft" (click)="saveItinerary()">
+            @if (isSavingDraft) { {{ 'createItinerary.savingModalText' | transloco }} } @else { {{ 'createItinerary.textButtonSaveModal' | transloco }} }
+          </button>
+          <button class="btn-cancel-modal" (click)="closeModal()">{{ 'createItinerary.modalCancelButton' | transloco }}</button>
+        </div>
+      </div>
+    </div>
+  }
 </main>
 
 <app-footer></app-footer>

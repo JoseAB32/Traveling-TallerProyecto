@@ -54,6 +54,10 @@ export class CreateItineraryComponent implements OnInit {
   hasPendingChanges = false;
   saveMessage = 'Sin cambios por guardar';
 
+  isModalOpen = false;
+  itineraryName = '';
+  itineraryNameError = '';
+
   private cityService = inject(CityService);
   private placeService = inject(PlaceService);
   private itineraryService = inject(ItineraryService);
@@ -62,12 +66,19 @@ export class CreateItineraryComponent implements OnInit {
   private routingService = inject(RoutingService);
 
   ngOnInit(): void {
+    const justSaved = sessionStorage.getItem('justSaved');
+    if (justSaved) {
+      sessionStorage.removeItem('justSaved');
+      this.loadCities();
+      return;
+    }
+    
     const hasSessionState = this.restoreUiState();
 
     this.loadCities();
-    if (!hasSessionState) {
-      this.loadDraft();
-    }
+    // if (!hasSessionState) {
+    //   this.loadDraft();
+    // }
 
     this.route.queryParamMap.subscribe(params => {
       const cityIdParam = params.get('cityId');
@@ -192,7 +203,7 @@ export class CreateItineraryComponent implements OnInit {
 
   removeSelectedPlace(placeId: number): void {
     this.selectedPlaces = this.selectedPlaces.filter(p => p.id !== placeId);
-    this.markAsDirty();
+    //this.markAsDirty();
     this.generatedItinerary = [];
     this.generatedRouteCoordinates = [];
   }
@@ -205,7 +216,9 @@ export class CreateItineraryComponent implements OnInit {
   }
 
   onDateChange(): void {
-    this.markAsDirty();
+    //this.markAsDirty();
+    this.persistUiState();
+
   }
 
   // saveSelection(): void {
@@ -241,11 +254,11 @@ export class CreateItineraryComponent implements OnInit {
   //   });
   // }
 
-  private markAsDirty(): void {
-    this.hasPendingChanges = true;
-    this.saveMessage = 'Tienes cambios sin guardar';
-    this.persistUiState();
-  }
+  // private markAsDirty(): void {
+  //   this.hasPendingChanges = true;
+  //   this.saveMessage = 'Tienes cambios sin guardar';
+  //   this.persistUiState();
+  // }
 
   private persistUiState(): void {
     const snapshot = {
@@ -429,5 +442,58 @@ export class CreateItineraryComponent implements OnInit {
       !Number.isNaN(Number(place.latitude)) &&
       !Number.isNaN(Number(place.longitude))
     );
+  }
+  openSaveModal(): void {
+    this.itineraryName = '';
+    this.itineraryNameError = '';
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  saveItinerary(): void {
+    if (!this.itineraryName || this.itineraryName.trim() === '') {
+      this.itineraryNameError = 'Debes ingresar un nombre para el itinerario';
+      return;
+    }
+
+    const payload: ItineraryDraftRequest = {
+      name: this.itineraryName.trim(),
+      startDate: this.startDate || null,
+      endDate: this.endDate || null,
+      placeIds: this.generatedItinerary.map(p => p.id)
+    };
+
+    this.isSavingDraft = true;
+    this.itineraryService.createItinerary(payload).subscribe({
+      next: () => {
+        this.isSavingDraft = false;
+        this.isModalOpen = false;
+        this.saveMessage = 'Itinerario guardado correctamente';
+        
+        sessionStorage.removeItem(this.sessionKey);
+        sessionStorage.setItem('justSaved', 'true');
+
+        this.selectedCityId = null;
+        this.selectedPlaces = [];
+        this.generatedItinerary = [];
+        this.startDate = '';
+        this.endDate = '';
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isSavingDraft = false;
+        if (error.status === 401 || error.status === 403) {
+          this.saveMessage = 'No autorizado. Inicia sesión nuevamente.';
+          this.isModalOpen = false;
+          return;
+        }
+        this.saveMessage = 'No se pudo guardar el itinerario';
+      }
+    });
   }
 }

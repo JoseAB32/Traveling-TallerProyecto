@@ -176,6 +176,10 @@
         "textButtonGenerate": "GENERATE ITINERARY",
         "textHaventGeneratedItinerary": "You haven't generated the itinerary yet.",
         "textButtonSave": "SAVE ITINERARY",
+        "textButtonSaveModal": "SAVE",
+        "savingModalText":"Saving...",
+        "itineraryName":"Itineary's Name",
+        "modalCancelButton":"Cancel",
         "textUncategorized": "Uncategorized",
         "textNoSchedule": "No schedule",
         "textCalculatingRoutes": "Calculating routes and ordering places..."

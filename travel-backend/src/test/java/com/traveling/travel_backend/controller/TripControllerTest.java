@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -126,6 +127,64 @@ public class TripControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.userId").value(1))
             .andExpect(jsonPath("$.name").value("Mi itinerario"))
+            .andExpect(jsonPath("$.places.length()").value(2))
+            .andExpect(jsonPath("$.places[0].id").value(2))
+            .andExpect(jsonPath("$.places[1].id").value(3));
+    }
+
+    @Test
+    @DisplayName("POST /api/trips/trip crea un itinerario nuevo desactivando el borrador activo anterior")
+    void createTripCreatesNewAndDeactivatesPreviousActive() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        user.setUserName("alice");
+
+        Trip activeTrip = new Trip();
+        activeTrip.setId(20L);
+        activeTrip.setUser(user);
+        activeTrip.setState(true);
+
+        Trip savedTrip = new Trip();
+        savedTrip.setId(21L);
+        savedTrip.setUser(user);
+        savedTrip.setName("Prueba 3");
+        savedTrip.setState(true);
+
+        Place first = new Place();
+        first.setId(2L);
+        first.setName("Cristo");
+
+        Place second = new Place();
+        second.setId(3L);
+        second.setName("Laguna");
+
+        when(userRepository.findByUserName("alice")).thenReturn(Optional.of(user));
+        when(tripRepository.findByUserIdAndStateTrue(1L)).thenReturn(List.of(activeTrip));
+        when(tripRepository.save(any(Trip.class))).thenReturn(savedTrip);
+        when(placeRepository.findById(2L)).thenReturn(Optional.of(first));
+        when(placeRepository.findById(3L)).thenReturn(Optional.of(second));
+        when(tripItemRepository.save(any(TripItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        String payload = objectMapper.writeValueAsString(
+            java.util.Map.of(
+                "name", "Prueba 3",
+                "startDate", "2026-05-01",
+                "endDate", "2026-05-03",
+                "placeIds", List.of(2, 3)
+            )
+        );
+
+        UsernamePasswordAuthenticationToken auth =
+            new UsernamePasswordAuthenticationToken("alice", null, List.of());
+
+        mockMvc.perform(post("/api/trips/trip")
+                .principal(auth)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.tripId").value(21))
+            .andExpect(jsonPath("$.userId").value(1))
+            .andExpect(jsonPath("$.name").value("Prueba 3"))
             .andExpect(jsonPath("$.places.length()").value(2))
             .andExpect(jsonPath("$.places[0].id").value(2))
             .andExpect(jsonPath("$.places[1].id").value(3));

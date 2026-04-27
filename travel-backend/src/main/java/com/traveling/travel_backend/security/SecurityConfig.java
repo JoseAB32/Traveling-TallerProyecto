@@ -34,6 +34,8 @@ public class SecurityConfig {
                     "/api/cities",
                     "/api/favorites/**",
                     "/api/places/**",
+                    "/api/trips/**",
+                    "/api/tripitems/**",
                     "/api/admin/logs/filter",
                     "/swagger-ui/**",
                     "/v3/api-docs*/**",
