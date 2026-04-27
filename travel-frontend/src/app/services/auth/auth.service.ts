@@ -110,7 +110,7 @@ export class AuthService {
 
     console.error('❌ Error:', error);
 
-    let errorMessage = 'Ocurrió un error';
+    let errorMessage = 'Usuario o contraseña incorrectos.';
 
     if (error.status === 0) {
       errorMessage = 'No se pudo conectar al servidor';

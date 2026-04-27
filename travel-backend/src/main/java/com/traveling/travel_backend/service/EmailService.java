@@ -34,6 +34,7 @@ public class EmailService {
             mailSender.send(message);
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error al enviar correo: " + e.getMessage());
         }
     }
