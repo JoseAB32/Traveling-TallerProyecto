@@ -31,7 +31,7 @@
       } @else if (cityPlaces.length === 0) {
         <div class="loading-box no-places">{{ 'createItinerary.textThereAreNoPlaces' | transloco }}</div>
       } @else {
-        <app-map [places]="cityPlaces" (placeClicked)="onMapPlaceClick($event)"></app-map>
+        <app-map [places]="cityPlaces" (placeClicked)="onMapPlaceClick($event)" [showRoute]="false"></app-map>
       }
     </div>
 
@@ -78,16 +78,16 @@
   <section class="date-section">
     <div class="date-field">
       <label for="startDate">{{ 'createItinerary.textLabelStart' | transloco }}</label>
-      <input id="startDate" type="date" [(ngModel)]="startDate" (change)="onDateChange()" />
+      <input id="startDate" type="date" [(ngModel)]="startDate" (change)="onDateChange()" [min]="limiteInferiorFecha"/>
     </div>
 
     <div class="date-field">
       <label for="endDate">{{ 'createItinerary.textLabelEnd' | transloco }}</label>
-      <input id="endDate" type="date" [(ngModel)]="endDate" (change)="onDateChange()" />
+      <input id="endDate" type="date" [(ngModel)]="endDate" (change)="onDateChange()" [min]="limiteInferiorFecha"/>
     </div>
   </section>
 
-  <section class="save-status">
+  <!-- <section class="save-status">
     <button class="btn add" [disabled]="isSavingDraft || !hasPendingChanges" (click)="saveSelection()">
       @if (isSavingDraft) {
         Guardando...
@@ -96,7 +96,120 @@
       }
     </button>
     <span>{{ saveMessage }}</span>
+  </section> -->
+
+  <section class="section-title peach">
+    <span>{{ 'createItinerary.textFifthStep' | transloco }}</span>
   </section>
+
+  <section class="section-button-generate">
+    <button class="btn-generar-it" [disabled]="isGeneratingItinerary || selectedPlaces.length < 2 || startDate == '' || endDate == ''" (click)="generateItinerary()">{{ 'createItinerary.textButtonGenerate' | transloco }}</button>
+    @if (isGeneratingItinerary) {
+      <div class="loading-itinerary">
+        {{ 'createItinerary.textCalculatingRoutes' | transloco }}
+      </div>
+    }
+  </section>
+
+  <section class="itinerario-container">
+    @if (generatedItinerary.length === 0 && !isGeneratingItinerary) {
+      <div class="empty-state">
+        {{ 'createItinerary.textHaventGeneratedItinerary' | transloco }}
+      </div>
+    } @else {
+      @for (place of generatedItinerary; track place.id; let index = $index) {
+        <div class="lugar-container">
+          <div class="orden-container">{{ index + 1 }}</div>
+
+          <div class="info-container">
+            <h3 class="lugar-nombre">{{ place.name }}</h3>
+
+            <div class="detalle-lugar">
+              <div class="det-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                  <path fill="currentColor" d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/>
+                </svg>
+                <div class="rating-container">
+                  @for (star of [1, 2, 3, 4, 5]; track star) {
+                    
+                    @if (place.rating >= star) {
+                      <i class="bi bi-star-fill"></i>
+                    } @else if (place.rating >= star - 0.5) {
+                      <i class="bi bi-star-half"></i>
+                    } @else {
+                      <i class="bi bi-star"></i>
+                    }
+                    
+                  }
+                  <span class="rating-text">({{ place.rating }})</span>
+                </div>
+              </div>
+
+              <div class="det-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                  <path fill="currentColor" d="M528 320C528 434.9 434.9 528 320 528C205.1 528 112 434.9 112 320C112 205.1 205.1 112 320 112C434.9 112 528 205.1 528 320zM64 320C64 461.4 178.6 576 320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320zM296 184L296 320C296 328 300 335.5 306.7 340L402.7 404C413.7 411.4 428.6 408.4 436 397.3C443.4 386.2 440.4 371.4 429.3 364L344 307.2L344 184C344 170.7 333.3 160 320 160C306.7 160 296 170.7 296 184z"/>
+                </svg>
+                <p>
+                  {{ (place.start_date | date:'HH:mm') || 'createItinerary.textNoSchedule' | transloco }} -
+                  {{ (place.end_date | date:'HH:mm') || 'createItinerary.textNoSchedule' | transloco }}
+                </p>
+              </div>
+
+              <div class="det-container">
+                <svg class="svg-grande" viewBox="0 0 35.595901 35.731354" xmlns="http://www.w3.org/2000/svg">
+                  <g transform="translate(-93.191701,-85.591284)">
+                    <path fill="currentColor" stroke="currentColor" stroke-width="0.264583" d="m 95.577601,85.799472 11.462539,-0.03193 c 0.14224,-3.96e-4 0.37236,0.01209 0.51172,0.04033 0.66744,0.135219 1.17849,0.476844 1.37855,1.228991 0.0738,0.277238 0.0813,0.745795 0.0801,1.033108 l -0.0477,11.596129 c -6e-4,0.144803 -0.0252,0.377173 -0.0632,0.516893 -0.12418,0.45689 -0.32514,0.87637 -0.83911,1.14336 -0.25657,0.13328 -0.72611,0.18204 -1.01591,0.18321 l -11.77403,0.0476 c -0.165974,6.7e-4 -0.431393,-0.0312 -0.588052,-0.0859 -0.472386,-0.16492 -0.871845,-0.42572 -1.125405,-0.87836 -0.19019,-0.33951 -0.233713,-0.98142 -0.233184,-1.372258 l 0.01567,-11.57553 c 1.98e-4,-0.146434 0.01882,-0.382818 0.05841,-0.523734 0.19694,-0.701076 0.651262,-1.058012 1.245885,-1.227354 0.250315,-0.07129 0.673135,-0.09376 0.933639,-0.09448 z" transform="translate(0.00597747,19.47131)" />
+                    <path fill="currentColor" stroke="currentColor" stroke-width="0.264583" d="m 95.577601,85.799472 11.462539,-0.03193 c 0.14224,-3.96e-4 0.37236,0.01209 0.51172,0.04033 0.66744,0.135219 1.17849,0.476844 1.37855,1.228991 0.0738,0.277238 0.0813,0.745795 0.0801,1.033108 l -0.0477,11.596129 c -6e-4,0.144803 -0.0252,0.377173 -0.0632,0.516893 -0.12418,0.45689 -0.32514,0.87637 -0.83911,1.14336 -0.25657,0.13328 -0.72611,0.18204 -1.01591,0.18321 l -11.77403,0.0476 c -0.165974,6.7e-4 -0.431393,-0.0312 -0.588052,-0.0859 -0.472386,-0.16492 -0.871845,-0.42572 -1.125405,-0.87836 -0.19019,-0.33951 -0.233713,-0.98142 -0.233184,-1.372258 l 0.01567,-11.57553 c 1.98e-4,-0.146434 0.01882,-0.382818 0.05841,-0.523734 0.19694,-0.701076 0.651262,-1.058012 1.245885,-1.227354 0.250315,-0.07129 0.673135,-0.09376 0.933639,-0.09448 z" transform="translate(19.644604,-0.04395648)" />
+                    <path fill="currentColor" stroke="currentColor" stroke-width="0.264583" d="m 95.577601,85.799472 11.462539,-0.03193 c 0.14224,-3.96e-4 0.37236,0.01209 0.51172,0.04033 0.66744,0.135219 1.17849,0.476844 1.37855,1.228991 0.0738,0.277238 0.0813,0.745795 0.0801,1.033108 l -0.0477,11.596129 c -6e-4,0.144803 -0.0252,0.377173 -0.0632,0.516893 -0.12418,0.45689 -0.32514,0.87637 -0.83911,1.14336 -0.25657,0.13328 -0.72611,0.18204 -1.01591,0.18321 l -11.77403,0.0476 c -0.165974,6.7e-4 -0.431393,-0.0312 -0.588052,-0.0859 -0.472386,-0.16492 -0.871845,-0.42572 -1.125405,-0.87836 -0.19019,-0.33951 -0.233713,-0.98142 -0.233184,-1.372258 l 0.01567,-11.57553 c 1.98e-4,-0.146434 0.01882,-0.382818 0.05841,-0.523734 0.19694,-0.701076 0.651262,-1.058012 1.245885,-1.227354 0.250315,-0.07129 0.673135,-0.09376 0.933639,-0.09448 z" />
+                    <ellipse fill="currentColor" stroke="currentColor" stroke-width="0.281183" cx="120.73892" cy="113.27759" rx="7.8307109" ry="7.9044576" />
+                  </g>
+                </svg>
+                <p>{{ place.place_type || 'createItinerary.textUncategorized' | transloco }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      @if (generatedRouteCoordinates.length > 0) {
+        <div class="generated-map-box">
+          <app-map
+            [places]="generatedItinerary"
+            [routeCoordinates]="generatedRouteCoordinates"
+            [showRoute]="true">
+          </app-map>
+        </div>
+        <section class="section-button-save">
+          <button class="btn-save-it" (click)="openSaveModal()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
+        </section>
+      }
+    }
+  </section>
+
+  @if (isModalOpen) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-field">
+          <input
+            id="itineraryName"
+            type="text"
+            [(ngModel)]="itineraryName"
+            placeholder=" "
+            (input)="itineraryNameError = ''"
+          />
+          <label for="itineraryName">{{ 'createItinerary.itineraryName' | transloco }}</label>
+          @if (itineraryNameError) {
+            <p class="modal-error">{{ itineraryNameError }}</p>
+          }
+        </div>
+        <div class="modal-actions">
+          <button class="btn-save-modal" [disabled]="isSavingDraft" (click)="saveItinerary()">
+            @if (isSavingDraft) { {{ 'createItinerary.savingModalText' | transloco }} } @else { {{ 'createItinerary.textButtonSaveModal' | transloco }} }
+          </button>
+          <button class="btn-cancel-modal" (click)="closeModal()">{{ 'createItinerary.modalCancelButton' | transloco }}</button>
+        </div>
+      </div>
+    </div>
+  }
 </main>
 
 <app-footer></app-footer>

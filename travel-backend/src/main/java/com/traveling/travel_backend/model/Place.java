@@ -1,5 +1,7 @@
 package com.traveling.travel_backend.model;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -39,11 +41,11 @@ public class Place {
 
     @Column(name = "start_date")
     @JsonProperty("start_date") // 🔥 CLAVE
-    private String startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
     @JsonProperty("end_date") // 🔥 CLAVE
-    private String endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -76,9 +78,9 @@ public class Place {
 
     public boolean isEvent() { return isEvent; }
 
-    public String getStartDate() { return startDate; }
+    public LocalDateTime getStartDate() { return startDate; }
 
-    public String getEndDate() { return endDate; }
+    public LocalDateTime getEndDate() { return endDate; }
 
     public String getImageUrl() { return imageUrl; }
 
@@ -108,9 +110,9 @@ public class Place {
 
     public void setEvent(boolean event) { isEvent = event; }
 
-    public void setStartDate(String startDate) { this.startDate = startDate; }
+    public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
 
-    public void setEndDate(String endDate) { this.endDate = endDate; }
+    public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
 
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 

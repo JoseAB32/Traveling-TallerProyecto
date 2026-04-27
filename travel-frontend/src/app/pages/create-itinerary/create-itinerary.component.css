@@ -1,14 +1,15 @@
 .itinerary-page {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 24px 16px 40px;
+  padding: 15px 16px 0 16px;
 }
 
 .section-title {
   border-radius: 999px;
-  padding: 10px 18px;
-  margin: 16px 0 14px;
+  padding: 10px 20px;
+  margin: 20px 0;
   font-weight: 700;
+  font-size: 1.3rem;
 }
 
 .section-title.peach {
@@ -21,12 +22,20 @@
   color: #ffffff;
 }
 
+.city-selector {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .city-selector select {
   width: 100%;
   border: 2px solid #1f6aa2;
   border-radius: 10px;
   padding: 12px;
-  font-size: 16px;
+  font-size: 1.1rem;
+  margin: 0 50px;
 }
 
 .map-and-info {
@@ -77,10 +86,11 @@
 
 .btn {
   border: none;
-  border-radius: 20px;
-  padding: 8px 14px;
+  border-radius: 12px;
+  padding: 8px 20px;
   font-weight: 600;
   cursor: pointer;
+  font-size: 1rem;
 }
 
 .btn.add {
@@ -106,7 +116,13 @@
   background: #1f6aa2;
   color: #fff;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 10px 20px;
+  margin: 0 50px;
+}
+
+.name {
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .item-actions {
@@ -119,8 +135,12 @@
   background: transparent;
   border: none;
   color: #fff;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
+}
+
+.inline-link:hover {
+  text-decoration: underline;
 }
 
 .remove {
@@ -142,6 +162,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+  margin: 0 50px;
 }
 
 .date-field {
@@ -150,13 +171,20 @@
   gap: 6px;
 }
 
+.date-field label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--steel-azure);
+}
+
 .date-field input {
   border: 2px solid #1f6aa2;
   border-radius: 8px;
-  padding: 10px;
+  padding: 12px;
+  font-size: 1rem;
 }
 
-.save-status {
+/* .save-status {
   margin-top: 14px;
   color: #1f6aa2;
   font-weight: 600;
@@ -168,6 +196,279 @@
 .save-status .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+} */
+
+.section-button-generate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-generar-it {
+  border: none;
+  background-color: #FF6B35;
+  color: white;
+  padding: 10px 45px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.btn-generar-it:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.loading-itinerary {
+  margin-top: 20px;
+  color: #1A659E;
+  font-weight: 700;
+  text-align: center;
+}
+
+.itinerario-container {
+  width: 100%;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lugar-container {
+  width: 90%;
+  background-color: #1A659E;
+  border-radius: 8px;
+  margin: 15px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+}
+
+.orden-container {
+  background-color: #EFEFD0;
+  color: #1A659E;
+  height: 70px;
+  width: 8.5%;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.info-container {
+  width: 85%;
+}
+
+.lugar-nombre {
+  width: 100%;
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding: 0;
+  margin: 10px 0;
+  color: #EFEFD0;
+}
+
+.detalle-lugar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.det-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px; 
+}
+
+.det-container p {
+  font-size: 1.2rem;
+  color: #EFEFD0;
+  margin: 0;
+}
+
+.det-container svg {
+  width: 35px;
+  height: 35px;
+  color: #EFEFD0;
+}
+
+.rating-container i {
+  color: #EFEFD0;
+  font-size: 1.5rem;
+  margin: 0 3px;
+}
+
+.rating-text {
+  color: #EFEFD0;
+  font-size: 1.05rem;
+  margin-left: 5px;
+}
+
+.empty-state {
+  width: 100%;
+}
+
+.generated-map-box {
+  width: 90%;
+  height: 500px;
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.section-button-save {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.btn-save-it {
+  border: none;
+  background-color: #FF6B35;
+  color: white;
+  padding: 10px 45px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.btn-save-it:hover{
+  background-color: var(--peach-glow);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 25px;
+  padding: 45px 27px;
+  width: 700px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+.modal-field {
+  position: relative;
+  width: 100%;
+}
+
+.modal-field input {
+  width: 100%;
+  padding: 16px 14px 10px;
+  border: 2px solid var(--steel-azure);
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.modal-field input:focus {
+  border-color: var(--steel-azure);
+}
+
+.modal-field label {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: var(--steel-azure);
+  pointer-events: none;
+  background: white;
+  padding: 0 4px;
+  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+.modal-field input:focus + label,
+.modal-field input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 0.78rem;
+  color: var(--steel-azure);
+}
+
+.modal-error {
+  color: #e53e3e;
+  font-size: 0.82rem;
+  margin: 4px 0 0 4px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-save-modal {
+  width: 359px;
+  height: 55px;
+  padding: 14px;
+  background-color: #FF6B35;
+  color: white;
+  border: 15px;
+  border-radius: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: Outfit;
+  font-style: Bold;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+}
+
+.btn-save-modal:hover:not(:disabled) {
+  background-color: #cf521f;
+}
+
+.btn-save-modal:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel-modal {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+}
+
+.btn-cancel-modal:hover {
+  color: #333;
+}
+
+.modal-success {
+  color: #38a169;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 @media (max-width: 900px) {

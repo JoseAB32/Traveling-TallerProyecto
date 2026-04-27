@@ -169,6 +169,7 @@
         "textSecondStep": "2. Select the places you want to visit",
         "textThirdStep": "3. Check the places you selected",
         "textFourthStep": "4. Set the dates for your itinerary",
+        "textFifthStep": "5. Generate your itinerary",
         "textInputSelectCity": "Select a city",
         "textLoadingPlaces": "Loading places...",
         "textSelectCity": "Select a city to view its map.",
@@ -178,7 +179,18 @@
         "textButtonAdd": "Add",
         "textButtonSeeMore": "See more",
         "textHaventSelectPlaces": "You haven't selected any places yet.",
-        "textLabelStart": "Start date",
-        "textLabelEnd": "End date"
+        "textLabelStart": "Start date:",
+        "textLabelEnd": "End date:",
+        "textButtonGenerate": "GENERATE ITINERARY",
+        "textHaventGeneratedItinerary": "You haven't generated the itinerary yet.",
+        "textButtonSave": "SAVE ITINERARY",
+        "textButtonSaveModal": "SAVE",
+        "savingModalText":"Saving...",
+        "itineraryName":"Itineary's Name",
+        "modalCancelButton":"Cancel",
+        "textUncategorized": "Uncategorized",
+        "textNoSchedule": "No schedule",
+        "textCalculatingRoutes": "Calculating routes and ordering places...",
+        "textErrorRequiredName": "You must enter a name for the itinerary"
     }
 }
