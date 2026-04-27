@@ -1,11 +1,11 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { LoggerService } from '../../services/logger/logger.service';
-import { FeatureService } from '../../services/features/feature.service'; // Nuevo servicio
+import { FeatureService, Features } from '../../services/features/feature.service';
 import { Logger } from '../../models/logger/logger';
 import { CONSTANTS } from '../../utils/constants';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
@@ -23,14 +23,11 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   private translocoService = inject(TranslocoService);
   private logSub!: Subscription;
 
-  // Datos de Logs
   logs: Logger[] = [];
   activeTab: string = 'logs';
-  
-  // Datos de Features (JSON dinámico)
-  featuresData: { [key: string]: boolean } = {};
 
-  // UI State
+  readonly featuresData = this.featureService.features;
+
   showErrorModal: boolean = false;
   modalMessage: string = '';
 
@@ -48,30 +45,29 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     this.loadFeatures();
   }
 
-  // Carga inicial de Toggles desde el JSON del Backend
   loadFeatures(): void {
-    this.featureService.getFeatures().subscribe({
-      next: (data) => this.featuresData = data,
-      error: (err) => console.error('Error cargando features dinámicos', err)
+    // loadFeatures() actualiza el signal internamente 
+    this.featureService.loadFeatures().subscribe({
+      error: (err) => console.error('Error cargando features', err)
     });
   }
 
-  // Cambiar estado de un feature y guardar en el JSON
-  toggleFeature(featureKey: string): void {
-    this.featuresData[featureKey] = !this.featuresData[featureKey];
-    
-    this.featureService.updateFeatures(this.featuresData).subscribe({
-      next: () => console.log(`Feature ${featureKey} actualizado.`),
+  toggleFeature(featureKey: keyof Features): void {
+    // Construimos el nuevo estado a partir del signal actual
+    const updated: Features = {
+      ...this.featuresData(),        
+      [featureKey]: !this.featuresData()[featureKey]
+    };
+
+    this.featureService.updateFeatures(updated).subscribe({
       error: () => {
         this.modalMessage = this.translocoService.translate('adminConfiguration.modal.textErrorServer');
         console.log(this.modalMessage);
         this.showErrorModal = true;
-        this.featuresData[featureKey] = !this.featuresData[featureKey]; // Revertir
       }
     });
   }
 
-  // Lógica de Logs
   loadAllLogs(): void {
     this.logSub = this.loggerService.getAllLogs().subscribe({
       next: (data) => this.logs = data.slice(0, 20),
@@ -81,7 +77,8 @@ export class AdminViewComponent implements OnInit, OnDestroy {
 
   applyFilters(): void {
     if (this.filterModule && this.filterLevel && this.startDate && this.endDate) {
-      this.loggerService.getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)
+      this.loggerService
+        .getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)
         .subscribe(data => this.logs = data.slice(0, 20));
     } else {
       this.modalMessage = this.translocoService.translate('adminConfiguration.modal.textErrorFilter');
