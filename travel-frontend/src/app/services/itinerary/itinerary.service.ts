@@ -39,4 +39,8 @@ export class ItineraryService {
   saveDraft(payload: ItineraryDraftRequest): Observable<ItineraryDraftResponse> {
     return this.http.put<ItineraryDraftResponse>(`${this.apiUrl}/draft`, payload);
   }
+
+  createItinerary(payload: ItineraryDraftRequest): Observable<ItineraryDraftResponse> {
+    return this.http.post<ItineraryDraftResponse>(`${this.apiUrl}/trip`, payload);
+  }
 }

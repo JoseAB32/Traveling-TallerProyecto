@@ -62,13 +62,23 @@ public class AppConstants {
     public static final String CITIES_FOUND = "Ciudades encontradas: {} y devueltas correctamente.";
     public static final String NUM_CITIES_FOUND = "Número de ciudades encontradas: {}";
 
+    // ==================== TRIP MESSAGES ====================
+    public static final String TRIP_NOT_FOUND = "Itinerario no encontrado";
+    public static final String TRIP_CREATED_SUCCESS = "Itinerario creado exitosamente";
+    public static final String TRIP_UPDATED_SUCCESS = "Itinerario actualizado exitosamente";
+    public static final String TRIP_DRAFT_LOADED = "Borrador de itinerario cargado para usuario: {}";
+    public static final String TRIP_DRAFT_SAVED = "Borrador guardado para usuario: {}";
+    public static final String TRIP_CREATED = "Itinerario creado con id: {} para usuario: {}";
+    public static final String TRIP_DRAFT_NOT_FOUND = "No se encontró borrador activo para usuario: {}";
+    public static final String TRIP_PLACES_COUNT = "Número de lugares en el itinerario: {}";
+
     // ==================== FEATURE MESSAGES ====================
-public static final String FEATURES_FETCH_REQUEST = "Petición recibida: GET /api/features";
-public static final String FEATURES_FETCHED_SUCCESS = "Features obtenidas correctamente. Total: {}";
-public static final String FEATURES_FILE_NOT_FOUND = "Archivo features.json no encontrado, creando con valores por defecto.";
-public static final String FEATURES_NEW_KEYS_ADDED = "Se agregaron nuevas keys al archivo features.json. Total keys: {}";
-public static final String FEATURES_UPDATE_REQUEST = "Petición recibida: PUT /api/features";
-public static final String FEATURES_UPDATED_SUCCESS = "Features actualizadas correctamente. Total keys: {}";
+    public static final String FEATURES_FETCH_REQUEST = "Petición recibida: GET /api/features";
+    public static final String FEATURES_FETCHED_SUCCESS = "Features obtenidas correctamente. Total: {}";
+    public static final String FEATURES_FILE_NOT_FOUND = "Archivo features.json no encontrado, creando con valores por defecto.";
+    public static final String FEATURES_NEW_KEYS_ADDED = "Se agregaron nuevas keys al archivo features.json. Total keys: {}";
+    public static final String FEATURES_UPDATE_REQUEST = "Petición recibida: PUT /api/features";
+    public static final String FEATURES_UPDATED_SUCCESS = "Features actualizadas correctamente. Total keys: {}";
 
     // ==================== LOG CATEGORIES ====================
     public static final String LOG_USERS = "USERS";

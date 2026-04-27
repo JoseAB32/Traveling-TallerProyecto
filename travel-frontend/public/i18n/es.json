@@ -169,6 +169,7 @@
         "textSecondStep": "2. Selecciona los lugares que quieres visitar",
         "textThirdStep": "3. Verifica los lugares que seleccionaste",
         "textFourthStep": "4. Establece las fechas de tu itinerario",
+        "textFifthStep": "5. Genera tu itinerario",
         "textInputSelectCity": "Selecciona una ciudad",
         "textLoadingPlaces": "Cargando lugares...",
         "textSelectCity": "Selecciona una ciudad para ver su mapa.",
@@ -178,7 +179,18 @@
         "textButtonAdd": "Agregar",
         "textButtonSeeMore": "Ver más",
         "textHaventSelectPlaces": "Aún no seleccionaste lugares.",
-        "textLabelStart": "Fecha de inicio",
-        "textLabelEnd": "Fecha de finalización"
+        "textLabelStart": "Fecha de inicio:",
+        "textLabelEnd": "Fecha de finalización:",
+        "textButtonGenerate": "GENERAR ITINERARIO",
+        "textHaventGeneratedItinerary": "Todavía no generaste el itinerario.",
+        "textButtonSave": "GUARDAR ITINERARIO",
+        "textButtonSaveModal": "GUARDAR",
+        "savingModalText":"Guardando...",
+        "itineraryName":"Nombre del Itinerario",
+        "modalCancelButton":"Cancelar",
+        "textUncategorized": "Sin categoría",
+        "textNoSchedule": "Sin horario",
+        "textCalculatingRoutes": "Calculando rutas y ordenando los lugares...",
+        "textErrorRequiredName": "Debes ingresar un nombre para el itinerario"
     }
 }
