@@ -72,19 +72,24 @@
 
     <section class="form-container">
         <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="form-login">
+
             <div class="title-container">
                 <h1>
                     {{ 'formLoginAndSignin.login.titleForm' | transloco }}
                 </h1>
             </div>
+
+            <!-- USERNAME -->
             <div class="input-container">
-                <input type="text" placeholder=" " class="form-input" id="nombreUsuario" name="nombreUsuario" 
+                <input type="text" placeholder=" " class="form-input"
+                  id="nombreUsuario" name="nombreUsuario" 
                   [(ngModel)]="credentials.userName"
                   required
                   #userName="ngModel"
                   [class.input-error]="userName.invalid && (userName.touched || userName.dirty)"
                   [disabled]="loading" 
                   pattern="^\S+$">
+
                 <label for="nombreUsuario" class="label-form"
                 [class.label-error]="userName.invalid && (userName.touched || userName.dirty)">{{ 'formLoginAndSignin.textoInputs.nombreUsuario' | transloco }}</label>
 
@@ -94,14 +99,17 @@
                 </div>
             </div>
 
+            <!-- PASSWORD -->
             <div class="input-container">
-                <input type="password" placeholder=" " class="form-input" id="contrasena" name="contrasena"
+                <input type="password" placeholder=" " class="form-input"
+                  id="contrasena" name="contrasena"
                   [(ngModel)]="credentials.password"
                   required
                   #password="ngModel"
                   [class.input-error]="password.invalid && (password.touched || password.dirty)"
                   [disabled]="loading"
                   pattern="^\S+$">
+
                 <label for="contrasena" class="label-form"
                 [class.label-error]="password.invalid && (password.touched || password.dirty)">{{ 'formLoginAndSignin.textoInputs.contrasena' | transloco }}</label>
 
@@ -109,23 +117,34 @@
                     <p *ngIf="password.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.passwordRequired' | transloco }}</p>
                     <p *ngIf="password.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.passwordContainSpace' | transloco }}</p>
                 </div>
+
+                <div class="forgot-password">
+                    <a [routerLink]="['/forgot-password']">
+                        {{ 'formLoginAndSignin.login.textLinkForgotPassword' | transloco }}
+                    </a>
+                </div>
             </div>
 
+            <!-- ERROR GENERAL -->
             <div *ngIf="error" class="error-general">
-              <p> {{ error }} </p>
+              <p>{{ error }}</p>
             </div>
 
+            <!-- BOTÓN LOGIN -->
             <div class="button-container">
                 <button type="submit"
                   [disabled]="loading"
                   class="btn-login">{{ 'formLoginAndSignin.login.buttonIniciarSesion' | transloco }}</button>
             </div>
+
+            <!-- SIGN UP -->
             <div class="login-container">
                 <p>
                     {{ 'formLoginAndSignin.login.noTienesCuenta' | transloco }}
                 </p>
                 <a [routerLink]="['/sign-up']">{{ 'formLoginAndSignin.login.irRegistro' | transloco }}</a>
             </div>
+
         </form>
     </section>
 </main>

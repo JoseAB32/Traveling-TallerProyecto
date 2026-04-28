@@ -23,43 +23,46 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.LOGIN;
+
+  private BASE_URL = CONSTANTS.API.BASE_URL;
+
+  private LOGIN_URL = this.BASE_URL + CONSTANTS.API.LOGIN;
+  private PASSWORD_URL = this.BASE_URL + '/api/password';
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(
-    private http: HttpClient
-  ) {
+  constructor(private http: HttpClient) {
     this.loadStoredUser();
   }
 
-  private loadStoredUser() {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      try {
-        this.currentUserSubject.next(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem('currentUser');
-      }
-    }
-  }
 
   login(userName: string, pass: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}`, { userName, pass })
+    return this.http.post<LoginResponse>(this.LOGIN_URL, { userName, pass })
       .pipe(
         tap(response => {
-          console.log('✅ Login exitoso:', response);
           const user: User = {
             id: response.id,
             correo: response.correo,
             userName: response.userName
           };
+
           localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
         }),
         catchError(this.handleError)
       );
+  }
+
+  forgotPassword(correo: string): Observable<string> {
+    return this.http.post(`${this.PASSWORD_URL}/forgot`, { correo }, { responseType: 'text' })
+      .pipe(catchError(this.handleError));
+  }
+
+  resetPassword(token: string, password: string): Observable<string> {
+    return this.http.post(`${this.PASSWORD_URL}/reset`, { token, password }, { responseType: 'text' })
+      .pipe(catchError(this.handleError));
   }
 
   logout(): void {
@@ -81,42 +84,55 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-  const token = this.getToken();
-  if (!token) return false;
+    const token = this.getToken();
+    if (!token) return false;
 
-  try {
-    // Decodifica la parte media (payload) del JWT
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    
-    // Verifica el 'sub' (username) o el 'role' según cómo lo configuraste en Spring
-    return payload.sub === 'admin'; 
-  } catch (e) {
-    return false;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub === 'admin';
+    } catch {
+      return false;
+    }
   }
-}
+
+  private loadStoredUser() {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      try {
+        this.currentUserSubject.next(JSON.parse(storedUser));
+      } catch {
+        localStorage.removeItem('currentUser');
+      }
+    }
+  }
 
   private handleError(error: HttpErrorResponse) {
+
     console.error('❌ Error:', error);
-    
-    // let errorMessage = 'Error en la autenticación';
+
     let errorMessage = 'Usuario o contraseña incorrectos.';
-    
+
     if (error.status === 0) {
-      errorMessage = 'No se pudo conectar al servidor. Verifica que el backend esté corriendo.';
-    } else if (typeof error.error === 'string') {
+      errorMessage = 'No se pudo conectar al servidor';
+    } 
+    else if (error.status === 401) {
+      errorMessage = 'Credenciales incorrectas';
+    } 
+    else if (error.status === 400) {
+      errorMessage = error.error?.error || 'Solicitud inválida';
+    } 
+    else if (typeof error.error === 'string') {
       errorMessage = error.error;
-    } else if (error.error?.detail) {
-      errorMessage = error.error.detail;
-    } else if (error.error?.message) {
+    } 
+    else if (error.error?.message) {
       errorMessage = error.error.message;
-    } else if (error.error?.error) {
-      errorMessage = error.error.error;
-    } else if (error.status === 401) {
-      errorMessage = 'Usuario o contraseña incorrectos';
-    } else if (error.status === 400) {
-      errorMessage = error.error?.error || 'Error en la solicitud';
     }
-    
+
     return throwError(() => errorMessage);
+  }
+
+  validateResetToken(token: string): Observable<string> {
+  return this.http.get(`${this.PASSWORD_URL}/validate?token=${token}`, { responseType: 'text' })
+    .pipe(catchError(this.handleError));
   }
 }

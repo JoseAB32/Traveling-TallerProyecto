@@ -249,22 +249,35 @@ input:focus {
     text-decoration: underline;
 }
 
-/**/
+.forgot-password {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 5px 0 0 0;
+}
+
+.forgot-password a {
+    text-decoration: none;
+    color: var(--steel-azure);
+    font-weight: 500;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
 
 .error-general {
     width: 80%;
     padding: 10px 0 0 0;
-    /* display: none; */
 }
 
 .error-general p {
     background-color: rgba(186, 0, 0, 0.1);
-    /* background-color: blue; */
     font-size: 1rem;
     border-radius: 5px;
     padding: 5px 15px;
     border: 2px solid rgba(186, 0, 0, 0.6);
-    /* color: var(--on-bg-color); */
     color: rgb(168, 0, 0);
 }
 
