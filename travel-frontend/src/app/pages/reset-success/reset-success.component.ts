@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
-  selector: 'app-success-signup',
+  selector: 'app-reset-success',
   standalone: true,
-  imports: [RouterLink, TranslocoModule],
-  templateUrl: './success-signup.component.html',
-  styleUrl: './success-signup.component.css'
+  imports: [RouterModule, TranslocoModule],
+  templateUrl: './reset-success.component.html',
+  styleUrls: ['./reset-success.component.css']
 })
-export class SuccessSignupComponent implements OnInit {
+export class ResetSuccessComponent implements OnInit {
+
   constructor(private translocoService: TranslocoService) {}
 
   ngOnInit(): void {

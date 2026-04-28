@@ -48,6 +48,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
     this.translocoService.setActiveLang(savedLang);
     this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
     this.isAdmin = this.authService.isAdmin();
+    this.isListaOpen = false;
     //Para ver al user actual  
     this.userSub = this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user; // true si existe usuario, false si es null
@@ -127,6 +128,7 @@ goToSearch() {
   clickout(event: any) {
     if (!this.el.nativeElement.contains(event.target)) {
       this.showSuggestions = false;
+      this.isListaOpen = false;
     }
   }
 

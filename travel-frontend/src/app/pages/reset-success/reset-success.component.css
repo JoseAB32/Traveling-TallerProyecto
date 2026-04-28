@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
+}
+
+.content {
+    background-color: #094e80; /* Azul oscuro directo */
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    /* Cambiado a center para que la tarjeta quede en el medio como en la foto */
+    justify-content: center; 
+    align-items: center; 
+    padding: 30px 0;
+}
+
+.success-container {
+    background-color: #ffffff; /* Blanco directo */
+    border-radius: 16px;
+    padding: 50px 40px; /* Padding aumentado para dar aire */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Separación aumentada a 20px */
+    width: 580px; /* Ancho fijo para controlar dónde se corta el texto */
+    max-width: 90%; /* Para pantallas móviles */
+}
+
+svg {
+    width: 100px; /* Control por px en lugar de % para evitar deformaciones */
+    color: rgb(46, 138, 46); /* Verde directo */
+}
+
+.success-container h2 {
+    font-size: 24px;
+    font-weight: 700; /* Más negrita */
+    color: rgb(46, 138, 46); /* Verde directo */
+    text-align: center;
+}
+
+.success-container p {
+    text-align: center;
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 700; /* Texto en negrita para igualar a la imagen */
+    line-height: 1.4;
+    max-width: 480px; /* Limita el texto para que baje a la siguiente línea exacto como en la foto */
+}
+
+.success-container a {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f8745c; /* Naranja/Coral directo */
+    text-decoration: underline; /* Subrayado por defecto igual a la imagen */
+}
+
+.success-container a:hover {
+    color: #d85c46; /* Efecto oscurecido al pasar el cursor */
+}

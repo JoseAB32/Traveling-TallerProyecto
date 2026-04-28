@@ -38,7 +38,8 @@
             "titleForm": "LOGIN",
             "buttonIniciarSesion": "LOGIN",
             "noTienesCuenta": "Don't have an account yet?",
-            "irRegistro": "Register"
+            "irRegistro": "Register",
+            "textLinkForgotPassword": "Forgot your password?"
         },
         "textoInputs": {
             "nombreUsuario": "Username",
@@ -192,5 +193,29 @@
         "textNoSchedule": "No schedule",
         "textCalculatingRoutes": "Calculating routes and ordering places...",
         "textErrorRequiredName": "You must enter a name for the itinerary"
+    },
+    "forgotPassword": {
+        "textLinkReturnLogin": "Return to login",
+        "textTitle": "RECOVER YOUR PASSWORD",
+        "textDescription": "Enter your email address to receive a link that will allow you to recover your password.",
+        "textButtonSendLink": "Send link"
+    },
+    "resetPassword": {
+        "textValidatingToken": "Validating security link...",
+        "textExpiredLink": "Expired link",
+        "textErrorExpired": "The reset link has expired or is invalid.",
+        "textInfoExpired": "Security links expire after 15 minutes.",
+        "textButtonReturnLanding": "Return to Home",
+        "textTitle": "RESET YOUR PASSWORD",
+        "textCreateNewPassword": "It's time to refresh! Create a new secret password.",
+        "textInputNewPassword": "New password",
+        "textErrorPasswordNotMatch": "The passwords do not match.",
+        "textMessageProcessing": "Processing...",
+        "textMessageConfirm": "Confirm changes"
+    },
+    "resetSuccess": {
+        "textTittleSuccess": "Password recovery successful",
+        "textMessageSuccess": "The password change was successful. Please log in to access the platform.",
+        "textLinkLogin": "Go to Login"
     }
 }

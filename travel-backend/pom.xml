@@ -2,27 +2,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
-    
+
+    <!-- 🔹 Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.5</version>
         <relativePath/>
     </parent>
-    
+
+    <!-- 🔹 Info del proyecto -->
     <groupId>com.traveling</groupId>
     <artifactId>travel-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>travel-backend</name>
     <description>Backend para aplicación de viajes</description>
-    
+
+    <!-- 🔹 Java -->
     <properties>
         <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <!-- 🔹 Dotenv BOM -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -34,20 +37,22 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
-        <!-- Spring Boot Web -->
+
+        <!-- 🌐 Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
-        <!-- Spring Data JPA -->
+
+        <!-- 🗄️ JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        
+
+        <!-- 🐘 PostgreSQL -->
         <dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -80,6 +85,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- 🔑 JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -98,14 +104,37 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Dependencia para que Spring Boot pueda leer automáticamente .env -->
+        <!-- 📧 EMAIL (🔥 ESTA ES LA CLAVE) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- 🧪 Testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 🔄 DevTools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 🌱 .env support -->
         <dependency>
             <groupId>me.paulschwarz</groupId>
             <artifactId>springboot3-dotenv</artifactId>
             <optional>true</optional>
         </dependency>
+
     </dependencies>
-    
+
+    <!-- 🔧 Build -->
     <build>
         <plugins>
             <plugin>
@@ -114,4 +143,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

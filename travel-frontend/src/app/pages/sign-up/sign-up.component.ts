@@ -7,7 +7,7 @@ import { NgForOf, NgIf } from '@angular/common';
 import { CityService } from '../../services/city/city.service';
 import { City } from '../../models/city/city';
 import { CONSTANTS } from '../../utils/constants';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-sign-up',
@@ -31,7 +31,7 @@ export class SignUpComponent implements OnInit {
 
   constants = CONSTANTS;
 
-  constructor (private userService: UserService, private router: Router, private cityService: CityService) {
+  constructor (private userService: UserService, private router: Router, private cityService: CityService, private translocoService: TranslocoService) {
     this.cityService.getCities().subscribe(
       cities => this.ciudades = cities,
       err => console.error('Error cargando ciudades', err)
@@ -107,6 +107,7 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
   }
 }
