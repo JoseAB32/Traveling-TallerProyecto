@@ -37,6 +37,7 @@ public class SecurityConfig {
 
                 .requestMatchers(HttpMethod.POST, "/api/password/forgot").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/password/reset").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/password/validate").permitAll()
 
                 .requestMatchers(
                     "/api/login",
@@ -49,7 +50,8 @@ public class SecurityConfig {
                     "/api/admin/logs/filter",
                     "/swagger-ui/**",
                     "/v3/api-docs*/**",
-                    "/api/routes/**"
+                    "/api/routes/**",
+                    "/api/password/**"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/features").authenticated() 
