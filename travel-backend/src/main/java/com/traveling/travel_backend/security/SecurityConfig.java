@@ -33,6 +33,11 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/api/password/forgot").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/password/reset").permitAll()
+
                 .requestMatchers(
                     "/api/login",
                     "/api/users",
@@ -44,8 +49,7 @@ public class SecurityConfig {
                     "/api/admin/logs/filter",
                     "/swagger-ui/**",
                     "/v3/api-docs*/**",
-                    "/api/routes/**",
-                    "/api/password/**"
+                    "/api/routes/**"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/features").authenticated() 
