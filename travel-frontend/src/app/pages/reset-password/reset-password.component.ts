@@ -3,11 +3,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, TranslocoModule],
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
@@ -27,10 +28,14 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
+
     this.route.queryParams.subscribe(params => {
       this.token = params['token'] || '';
       

@@ -38,7 +38,8 @@
             "titleForm": "INICIAR SESIÓN",
             "buttonIniciarSesion": "INICIAR SESIÓN",
             "noTienesCuenta": "¿Aún no tienes una cuenta?",
-            "irRegistro": "Regístrate"
+            "irRegistro": "Regístrate",
+            "textLinkForgotPassword": "¿Olvidaste tu contraseña?"
         },
         "textoInputs": {
             "nombreUsuario": "Nombre de usuario",
@@ -192,5 +193,29 @@
         "textNoSchedule": "Sin horario",
         "textCalculatingRoutes": "Calculando rutas y ordenando los lugares...",
         "textErrorRequiredName": "Debes ingresar un nombre para el itinerario"
+    },
+    "forgotPassword": {
+        "textLinkReturnLogin": "Volver a inicio de sesión",
+        "textTitle": "RECUPERA TU CONTRASEÑA",
+        "textDescription": "Ingresa tu correo electrónico para enviarte un enlace con el que podrás recuperar tu contraseña.",
+        "textButtonSendLink": "Enviar enlace"
+    },
+    "resetPassword": {
+        "textValidatingToken": "Validando enlace de seguridad...",
+        "textExpiredLink": "Enlace expirado",
+        "textErrorExpired": "El enlace de restablecimiento ha expirado o es inválido.",
+        "textInfoExpired": "Los enlaces de seguridad expiran después de 15 minutos.",
+        "textButtonReturnLanding": "Volver al Inicio",
+        "textTitle": "RESTABLECE TU CONTRASEÑA",
+        "textCreateNewPassword": "¡Es hora de renovarse! Crea una nueva clave secreta.",
+        "textInputNewPassword": "Nueva contraseña",
+        "textErrorPasswordNotMatch": "Las contraseñas no coinciden",
+        "textMessageProcessing": "Procesando...",
+        "textMessageConfirm": "Confirmar cambios"
+    },
+    "resetSuccess": {
+        "textTittleSuccess": "Recuperación de contraseña exitosa",
+        "textMessageSuccess": "Se realizo el cambio de contraseña correctamente. Por favor inicie sesión para ingresar a la plataforma.",
+        "textLinkLogin": "Ir al Login"
     }
 }

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router'; // 👈 IMPORTANTE
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,12 +11,13 @@ import { AuthService } from '../../services/auth/auth.service';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule // 👈 AQUÍ ESTÁ LA CLAVE
+    RouterModule,
+    TranslocoModule
   ],
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
 
   correo: string = '';
   loading = false;
@@ -24,7 +26,8 @@ export class ForgotPasswordComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private translocoService: TranslocoService
   ) {}
 
   goToLanding() {
@@ -48,5 +51,10 @@ export class ForgotPasswordComponent {
         this.loading = false;
       }
     });
+  }
+
+  ngOnInit(): void {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
   }
 }

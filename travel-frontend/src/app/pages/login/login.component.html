@@ -67,14 +67,20 @@
                     <p *ngIf="password.errors?.['required']">{{ 'formLoginAndSignin.errorInputs.passwordRequired' | transloco }}</p>
                     <p *ngIf="password.errors?.['pattern']">{{ 'formLoginAndSignin.errorInputs.passwordContainSpace' | transloco }}</p>
                 </div>
+
+                <div class="forgot-password">
+                    <a [routerLink]="['/forgot-password']">
+                        {{ 'formLoginAndSignin.login.textLinkForgotPassword' | transloco }}
+                    </a>
+                </div>
             </div>
 
             <!--OLVIDE CONTRASEÑA -->
-            <div class="forgot-password">
+            <!-- <div class="forgot-password">
                 <a [routerLink]="['/forgot-password']">
-                    ¿Olvidaste tu contraseña?
+                    {{ 'formLoginAndSignin.login.textLinkForgotPassword' | transloco }}
                 </a>
-            </div>
+            </div> -->
 
             <!-- ERROR GENERAL -->
             <div *ngIf="error" class="error-general">

@@ -5,7 +5,7 @@ import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { CONSTANTS } from '../../utils/constants';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService, 
-    private router: Router
+    private router: Router,
+    private translocoService: TranslocoService
   ) {}
 
   onSubmit(form: NgForm): void {
@@ -64,6 +65,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
   }
 
   // ngOnDestroy(): void {

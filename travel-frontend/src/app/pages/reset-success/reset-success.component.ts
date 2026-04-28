@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-reset-success',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, TranslocoModule],
   templateUrl: './reset-success.component.html',
   styleUrls: ['./reset-success.component.css']
 })
-export class ResetSuccessComponent {
+export class ResetSuccessComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private translocoService: TranslocoService) {}
 
-  goToLanding() {
-    this.router.navigate(['/']);
+  ngOnInit(): void {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
   }
 }

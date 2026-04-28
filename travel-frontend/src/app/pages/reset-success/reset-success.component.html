@@ -6,11 +6,11 @@
         </svg>
         
         <!-- Textos idénticos a la imagen de referencia -->
-        <h2>Recuperación de contraseña exitosa</h2>
+        <h2>{{ 'resetSuccess.textTittleSuccess' | transloco }}</h2>
         <p>
-            Se realizo el cambio de contraseña de correctamente. Por favor inicie sesión para ingresar a la plataforma.
+            {{ 'resetSuccess.textMessageSuccess' | transloco }}
         </p>
         
-        <a [routerLink]="['/login']">Ir al Login</a>
+        <a [routerLink]="['/login']">{{ 'resetSuccess.textLinkLogin' | transloco }}</a>
     </section>
 </main>

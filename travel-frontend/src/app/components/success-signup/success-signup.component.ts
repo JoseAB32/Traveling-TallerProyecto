@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-success-signup',
@@ -9,6 +9,11 @@ import { TranslocoModule } from '@jsverse/transloco';
   templateUrl: './success-signup.component.html',
   styleUrl: './success-signup.component.css'
 })
-export class SuccessSignupComponent {
+export class SuccessSignupComponent implements OnInit {
+  constructor(private translocoService: TranslocoService) {}
 
+  ngOnInit(): void {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translocoService.setActiveLang(savedLang);
+  }
 }
