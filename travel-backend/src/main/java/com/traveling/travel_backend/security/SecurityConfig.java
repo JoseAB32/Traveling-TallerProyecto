@@ -76,7 +76,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
             "http://localhost:4200",
-            "https://travelingitinerary.netlify.app/"
+            "https://travelingitinerary.netlify.app"
         ));
 
         configuration.setAllowedMethods(List.of(
