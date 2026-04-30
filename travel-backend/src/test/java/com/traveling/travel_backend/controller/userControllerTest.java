@@ -2,7 +2,6 @@ package com.traveling.travel_backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.traveling.travel_backend.dto.LoginRequest;
-import com.traveling.travel_backend.dto.LoginResponse;
 import com.traveling.travel_backend.model.City;
 import com.traveling.travel_backend.model.User;
 import com.traveling.travel_backend.repository.CityRepository;
@@ -25,7 +24,6 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -66,11 +64,11 @@ public class userControllerTest {
         User user1 = new User();
         user1.setId(1L);
         user1.setUserName("Pablo");
-        
+
         User user2 = new User();
         user2.setId(2L);
         user2.setUserName("Ana");
-        
+
         when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
 
         mockMvc.perform(get("/api/users"))
@@ -91,7 +89,7 @@ public class userControllerTest {
         user.setPass("12345678");
         user.setCorreo("pablo@test.com");
         user.setState(true);
-        
+
         User savedUser = new User();
         savedUser.setId(1L);
         savedUser.setUserName("Pablo");

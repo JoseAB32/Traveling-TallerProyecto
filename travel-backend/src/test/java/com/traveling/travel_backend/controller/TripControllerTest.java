@@ -68,15 +68,14 @@ public class TripControllerTest {
         when(userRepository.findByUserName("alice")).thenReturn(Optional.of(user));
         when(tripRepository.findFirstByUserIdAndStateTrueOrderByIdDesc(10L)).thenReturn(Optional.empty());
 
-        UsernamePasswordAuthenticationToken auth =
-            new UsernamePasswordAuthenticationToken("alice", null, List.of());
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("alice", null, List.of());
 
         mockMvc.perform(get("/api/trips/draft/me").principal(auth))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.userId").value(10))
-            .andExpect(jsonPath("$.name").value("Mi itinerario"))
-            .andExpect(jsonPath("$.places").isArray())
-            .andExpect(jsonPath("$.places.length()").value(0));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(10))
+                .andExpect(jsonPath("$.name").value("Mi itinerario"))
+                .andExpect(jsonPath("$.places").isArray())
+                .andExpect(jsonPath("$.places.length()").value(0));
     }
 
     @Test
@@ -109,27 +108,24 @@ public class TripControllerTest {
         when(tripItemRepository.save(any(TripItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         String payload = objectMapper.writeValueAsString(
-            java.util.Map.of(
-                "name", "Mi itinerario",
-                "startDate", "2026-05-01",
-                "endDate", "2026-05-02",
-                "placeIds", List.of(2, 3)
-            )
-        );
+                java.util.Map.of(
+                        "name", "Mi itinerario",
+                        "startDate", "2026-05-01",
+                        "endDate", "2026-05-02",
+                        "placeIds", List.of(2, 3)));
 
-        UsernamePasswordAuthenticationToken auth =
-            new UsernamePasswordAuthenticationToken("alice", null, List.of());
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("alice", null, List.of());
 
         mockMvc.perform(put("/api/trips/draft")
                 .principal(auth)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.userId").value(1))
-            .andExpect(jsonPath("$.name").value("Mi itinerario"))
-            .andExpect(jsonPath("$.places.length()").value(2))
-            .andExpect(jsonPath("$.places[0].id").value(2))
-            .andExpect(jsonPath("$.places[1].id").value(3));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(1))
+                .andExpect(jsonPath("$.name").value("Mi itinerario"))
+                .andExpect(jsonPath("$.places.length()").value(2))
+                .andExpect(jsonPath("$.places[0].id").value(2))
+                .andExpect(jsonPath("$.places[1].id").value(3));
     }
 
     @Test
@@ -166,27 +162,24 @@ public class TripControllerTest {
         when(tripItemRepository.save(any(TripItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         String payload = objectMapper.writeValueAsString(
-            java.util.Map.of(
-                "name", "Prueba 3",
-                "startDate", "2026-05-01",
-                "endDate", "2026-05-03",
-                "placeIds", List.of(2, 3)
-            )
-        );
+                java.util.Map.of(
+                        "name", "Prueba 3",
+                        "startDate", "2026-05-01",
+                        "endDate", "2026-05-03",
+                        "placeIds", List.of(2, 3)));
 
-        UsernamePasswordAuthenticationToken auth =
-            new UsernamePasswordAuthenticationToken("alice", null, List.of());
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("alice", null, List.of());
 
         mockMvc.perform(post("/api/trips/trip")
                 .principal(auth)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.tripId").value(21))
-            .andExpect(jsonPath("$.userId").value(1))
-            .andExpect(jsonPath("$.name").value("Prueba 3"))
-            .andExpect(jsonPath("$.places.length()").value(2))
-            .andExpect(jsonPath("$.places[0].id").value(2))
-            .andExpect(jsonPath("$.places[1].id").value(3));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tripId").value(21))
+                .andExpect(jsonPath("$.userId").value(1))
+                .andExpect(jsonPath("$.name").value("Prueba 3"))
+                .andExpect(jsonPath("$.places.length()").value(2))
+                .andExpect(jsonPath("$.places[0].id").value(2))
+                .andExpect(jsonPath("$.places[1].id").value(3));
     }
 }
