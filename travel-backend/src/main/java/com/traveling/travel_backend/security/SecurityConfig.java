@@ -33,6 +33,12 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/api/password/forgot").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/password/reset").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/password/validate").permitAll()
+
                 .requestMatchers(
                     "/api/login",
                     "/api/users",
@@ -76,7 +82,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
             "http://localhost:4200",
-            "https://travelingitinerary.netlify.app/"
+            "https://travelingitinerary.netlify.app"
         ));
 
         configuration.setAllowedMethods(List.of(
