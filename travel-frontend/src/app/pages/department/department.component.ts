@@ -94,7 +94,7 @@ export class DepartmentComponent implements OnInit {
   }
 
   goToDetail(id: number) {
-    this.router.navigate(['/place', id]);
+    this.router.navigate(['/place', id], { queryParams: { returnTo: 'department', cityId: this.departmentId } });
   }
 
   goToItinerary() {
@@ -108,7 +108,7 @@ export class DepartmentComponent implements OnInit {
   onMapClicked(place: any) {
     this.clickedPlaceFromMap = place;
     if (this.featureService.isEnabled('pinRedirection')) {
-      this.router.navigate(['/place', place.id]);
+      this.router.navigate(['/place', place.id], { queryParams: { returnTo: 'department', cityId: this.departmentId } });
     }
   }
 }

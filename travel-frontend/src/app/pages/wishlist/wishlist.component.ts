@@ -7,6 +7,7 @@ import { Subscription, forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Place } from '../../models/place/place';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-wishlist',
@@ -18,21 +19,40 @@ import { Place } from '../../models/place/place';
 export class WishlistComponent implements OnInit, OnDestroy {
 
   Favoritos: Place[] = [];
+  isLoading = true;
   private placeService = inject(PlaceService);
+  private authService = inject(AuthService);
   private userSub!: Subscription;
+  private currentUserId: number | null = null;
 
   isModalOpen: boolean = false;
   placeToDeleteId: number | null = null;
 
   ngOnInit(): void {
-    this.cargarFavoritosLocal();
+    this.userSub = this.authService.currentUser$.subscribe(user => {
+      if (user?.id) {
+        this.currentUserId = user.id;
+        this.cargarFavoritosLocal(user.id);
+        return;
+      }
+
+      this.currentUserId = null;
+      this.Favoritos = [];
+      this.isLoading = false;
+    });
   }
 
-  cargarFavoritosLocal() {
-    const wishListIds: number[] = JSON.parse(localStorage.getItem('wishList') || '[]');
+  private getWishlistKey(userId: number): string {
+    return `wishList_${userId}`;
+  }
+
+  cargarFavoritosLocal(userId: number) {
+    this.isLoading = true;
+    const wishListIds: number[] = JSON.parse(localStorage.getItem(this.getWishlistKey(userId)) || '[]');
 
     if (wishListIds.length === 0) {
       this.Favoritos = [];
+      this.isLoading = false;
       return;
     }
 
@@ -50,8 +70,12 @@ export class WishlistComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: (places) => {
         this.Favoritos = places;
+        this.isLoading = false;
       },
-      error: () => console.error('Error cargando favoritos')
+      error: () => {
+        this.isLoading = false;
+        console.error('Error cargando favoritos');
+      }
     });
   }
 
@@ -73,12 +97,14 @@ export class WishlistComponent implements OnInit, OnDestroy {
   }
 
   deleteFavorite(placeId: number) {
+    if (!this.currentUserId) return;
+
     this.Favoritos = this.Favoritos.filter(lugar => lugar.id !== placeId);
 
-    let wishListIds: number[] = JSON.parse(localStorage.getItem('wishList') || '[]');
+    let wishListIds: number[] = JSON.parse(localStorage.getItem(this.getWishlistKey(this.currentUserId)) || '[]');
     wishListIds = wishListIds.filter(id => id !== placeId);
 
-    localStorage.setItem('wishList', JSON.stringify(wishListIds));
+    localStorage.setItem(this.getWishlistKey(this.currentUserId), JSON.stringify(wishListIds));
   }
 
   ngOnDestroy(): void {
