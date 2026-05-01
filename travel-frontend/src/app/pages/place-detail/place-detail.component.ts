@@ -10,6 +10,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { FeatureService } from '../../services/features/feature.service';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '../../services/auth/auth.service';
+import { FavoriteService } from '../../services/favorite/favorite.service';
 
 @Component({
   selector: 'app-place-detail',
@@ -36,13 +37,9 @@ export class PlaceDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private placeService: PlaceService,
-    private authService: AuthService
+    private authService: AuthService,
+    private favoriteService: FavoriteService
   ) {}
-
-  private getWishlistKey(): string | null {
-    const userId = this.authService.getCurrentUser()?.id;
-    return userId ? `wishList_${userId}` : null;
-  }
 
   ngOnInit(): void {
     this.showBackToItinerary = this.route.snapshot.queryParamMap.get('returnTo') === 'itinerarios';
@@ -79,34 +76,53 @@ export class PlaceDetailComponent implements OnInit {
   // 🔥 VERIFICAR SI YA ESTÁ EN WISHLIST
   checkIfFavorite() {
     if (!this.place) return;
-    const wishlistKey = this.getWishlistKey();
+    const userId = this.authService.getCurrentUser()?.id;
 
-    if (!wishlistKey) {
+    if (!userId) {
       this.isFavorite = false;
       return;
     }
 
-    const wishList: number[] = JSON.parse(localStorage.getItem(wishlistKey) || '[]');
-    this.isFavorite = wishList.includes(this.place.id);
+    this.favoriteService.getUserFavorites(userId).subscribe({
+      next: (favorites) => {
+        if (!favorites) {
+          this.isFavorite = false;
+          return;
+        }
+
+        this.isFavorite = favorites.some(favorite => favorite.place?.id === this.place?.id);
+      },
+      error: () => {
+        this.isFavorite = false;
+      }
+    });
   }
 
   // ❤️ TOGGLE FAVORITO
   toggleFavorite() {
     if (!this.place) return;
-    const wishlistKey = this.getWishlistKey();
-    if (!wishlistKey) return;
-
-    let wishList: number[] = JSON.parse(localStorage.getItem(wishlistKey) || '[]');
+    const userId = this.authService.getCurrentUser()?.id;
+    if (!userId) return;
 
     if (this.isFavorite) {
-      wishList = wishList.filter(id => id !== this.place!.id);
-      this.isFavorite = false;
+      this.favoriteService.removeFavorite(userId, this.place.id).subscribe({
+        next: () => {
+          this.isFavorite = false;
+        },
+        error: (error) => {
+          console.error('Error al quitar favorito', error);
+        }
+      });
     } else {
-      wishList.push(this.place.id);
-      this.isFavorite = true;
+      this.favoriteService.addFavorite(userId, this.place.id).subscribe({
+        next: () => {
+          this.isFavorite = true;
+        },
+        error: (error) => {
+          console.error('Error al agregar favorito', error);
+        }
+      });
     }
-
-    localStorage.setItem(wishlistKey, JSON.stringify(wishList));
   }
 
   nextImage() {

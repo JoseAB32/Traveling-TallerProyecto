@@ -125,7 +125,12 @@ export class InicioLogueadoComponent implements OnInit {
     return place.id;
   }
 
-  isPeachPlace(place: Place): boolean {
-    return place.id % 2 === 0;
+  isPeachPlace(index: number): boolean {
+    if (this.featuredPlaces.length === 0) return false;
+
+    const realIndex =
+      (index - this.cardsPerPage + this.featuredPlaces.length) % this.featuredPlaces.length;
+
+    return realIndex % 2 === 0;
   }
 }
