@@ -1,157 +1,60 @@
 package com.traveling.travel_backend.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.PlaceResponseDTO;
+import com.traveling.travel_backend.service.PlaceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.traveling.travel_backend.model.LogEntity;
-import com.traveling.travel_backend.model.Place;
-import com.traveling.travel_backend.repository.LogRepository;
-import com.traveling.travel_backend.repository.PlaceRepository;
-
-import io.swagger.v3.oas.annotations.Operation;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.traveling.travel_backend.constants.AppConstants;
+import java.util.List;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH + AppConstants.PLACES_ENDPOINT)
 @CrossOrigin(origins = AppConstants.CORS_ALL)
-public class placeController {
+@Tag(name = "Places", description = "Gestión de lugares turísticos")
+public class PlaceController {
 
-    @Autowired
-    private PlaceRepository placeRepository;
+    private final PlaceService placeService;
 
-    @Autowired
-    private LogRepository logRepository;
+    public PlaceController(PlaceService placeService) {
+        this.placeService = placeService;
+    }
 
-    private static final Logger logger = LoggerFactory.getLogger(placeController.class);
-
-    @Operation(summary = "Top 5 rated places", description = "Returns the top 5 rated places in descending order", tags = {
-            "Places" }, operationId = "getAllOrderList")
+    @Operation(summary = "Top 5 rated places", description = "Returns the top 5 rated places in descending order", operationId = "getAllOrderList")
     @GetMapping(AppConstants.TOP_RATED)
-    public List<Place> getAllOrderList() {
-        logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                + "] Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated");
-        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated", null));
-
-        List<Place> topPlaces = placeRepository.findTop5ByOrderByRatingDesc();
-
-        logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Top 5 de lugares ordenados: {}",
-                topPlaces);
-
-        return topPlaces;
+    public ResponseEntity<List<PlaceResponseDTO>> getTopRated() {
+        return ResponseEntity.ok(placeService.getTopRated());
     }
 
-    @Operation(summary = "Search a place", description = "Returns a place searched by name, address or city", tags = {
-            "Places" }, operationId = "search")
+    @Operation(summary = "Search a place", description = "Returns places matching name, address or city", operationId = "search")
     @GetMapping(AppConstants.SEARCH)
-    public List<Place> search(@RequestParam String q) {
-        logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                + "] Solicitando búsqueda de lugares con criterio: '{}' - GET /api/places/search", q);
-        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando búsqueda de lugares con criterio: '" + q + "' - GET /api/places/search", null));
-
-        List<Place> resultPlaces = placeRepository
-                .findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(q, q, q);
-
-        logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                + "] Resultados de búsqueda para criterio '{}': {}", q, resultPlaces);
-
-        return resultPlaces;
+    public ResponseEntity<List<PlaceResponseDTO>> search(@RequestParam String q) {
+        return ResponseEntity.ok(placeService.search(q));
     }
 
-    @Operation(summary = "Get all places", description = "Returns a complete list of places stored in the database", tags = {
-            "Places" }, operationId = "getAllPlaces")
+    @Operation(summary = "Get all places", description = "Returns a complete list of places stored in the database", operationId = "getAllPlaces")
     @GetMapping
-    public List<Place> getAllPlaces() {
-        logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                + "] Solicitando lista completa de lugares - GET /api/places");
-        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando lista completa de lugares - GET /api/places", null));
-
-        List<Place> allPlaces = placeRepository.findAll();
-
-        logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Lista completa de lugares: {}",
-                allPlaces);
-
-        return allPlaces;
+    public ResponseEntity<List<PlaceResponseDTO>> getAllPlaces() {
+        return ResponseEntity.ok(placeService.getAllPlaces());
     }
 
-    @Operation(summary = "Get place by Id", description = "Returns a place information requested by Id", tags = {
-            "Places" }, operationId = "getPlaceById")
+    @Operation(summary = "Get place by Id", description = "Returns a place by its ID", operationId = "getPlaceById")
     @GetMapping("/{id}")
-    public Place getPlaceById(@PathVariable Long id) {
-        logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                + "] Solicitando información del lugar con ID: {} - GET /api/places/{}", id, id);
-        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando información del lugar con ID: " + id + " - GET /api/places/" + id, null));
-
-        Optional<Place> place = placeRepository.findById(id);
-
-        if (place.isPresent()) {
-            logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                    + "] Información del lugar con ID {}: {}", id, place.get());
-        } else {
-            logger.warn(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES + "] Lugar con ID {} no encontrado",
-                    id);
-            logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_WARN,
-                    "Lugar con ID " + id + " no encontrado - GET /api/places/" + id, null));
-        }
-
-        return place.orElse(null);
+    public ResponseEntity<PlaceResponseDTO> getPlaceById(@PathVariable Long id) {
+        return ResponseEntity.ok(placeService.getPlaceById(id));
     }
 
-    @Operation(summary = "Get all places by department", description = "Returns a list of all place located in requested department", tags = {
-            "Places" }, operationId = "getPlacesByDepartment")
+    @Operation(summary = "Get all places by department", description = "Returns all active places for a given department", operationId = "getPlacesByDepartment")
     @GetMapping(AppConstants.PLACES_DEPARTMENT)
-    public List<Place> getPlacesByDepartment(@PathVariable Long cityId) {
-        logger.info(
-                AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                        + "] Solicitando lugares para el departamento (ID): {} - GET /api/places/department/{}",
-                cityId, cityId);
-        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando lugares para departamento ID: " + cityId, null));
-
-        List<Place> places = placeRepository.findByCityIdAndStateTrue(cityId);
-
-        if (places.isEmpty()) {
-            logger.warn(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                    + "] No se encontraron lugares para el departamento ID: {}", cityId);
-        } else {
-            logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                    + "] Se encontraron {} lugares para el departamento ID: {}", places.size(), cityId);
-        }
-
-        return places;
+    public ResponseEntity<List<PlaceResponseDTO>> getPlacesByDepartment(@PathVariable Long cityId) {
+        return ResponseEntity.ok(placeService.getPlacesByDepartment(cityId));
     }
 
-    @Operation(summary = "Get top rated places by department", description = "Returns a list the top 3 rated places by department", tags = {
-            "Places" }, operationId = "getPlacesTopByDepartment")
+    @Operation(summary = "Get top rated places by department", description = "Returns top 3 rated places for a given department", operationId = "getPlacesTopByDepartment")
     @GetMapping(AppConstants.PLACES_DEPARTMENT_TOP)
-    public List<Place> getPlacesTopByDepartment(@PathVariable Long cityId) {
-        logger.info(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                + "] Solicitando lugares mejor calificados para el departamento (ID): {} - GET /api/places/department/{}",
-                cityId, cityId);
-        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando lugares mejor calificados para departamento ID: " + cityId, null));
-
-        List<Place> places = placeRepository.findTop3ByCityIdAndStateTrueOrderByRatingDesc(cityId);
-
-        if (places.isEmpty()) {
-            logger.warn(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                    + "] No se encontraron lugares para el departamento ID: {}", cityId);
-        } else {
-            logger.debug(AppConstants.PREFIX_PLACE + " [" + AppConstants.LOG_PLACES
-                    + "] Se encontraron {} lugares para el departamento ID: {}", places.size(), cityId);
-        }
-
-        return places;
+    public ResponseEntity<List<PlaceResponseDTO>> getTopPlacesByDepartment(@PathVariable Long cityId) {
+        return ResponseEntity.ok(placeService.getTopPlacesByDepartment(cityId));
     }
-
 }

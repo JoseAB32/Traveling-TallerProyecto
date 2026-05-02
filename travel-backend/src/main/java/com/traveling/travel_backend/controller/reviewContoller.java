@@ -31,7 +31,7 @@ public class reviewContoller {
     @Autowired
     private LogRepository logRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(placeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PlaceController.class);
 
     @Operation(
         summary = "Get best place review",
