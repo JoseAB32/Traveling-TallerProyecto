@@ -67,19 +67,18 @@ public class UserService {
 
         // Validar userName no vacío
         if (user.getUserName() == null || user.getUserName().trim().isEmpty()) {
-            logger.warn("{} [{}] Creación rechazada: userName vacío", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS);
+            logger.warn("{} [{}] Creacion rechazada: userName vacio", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS);
             logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
-                    "Creación de usuario rechazada: El nombre de usuario está vacío o es nulo.", null));
+                    "Creacion de usuario rechazada: userName vacio.", null));
             throw new BadRequestException(AppConstants.USER_REQUIRED);
         }
 
         String trimmedUserName = user.getUserName().trim();
 
-        // Validar que no exista ya
         if (userRepository.findByUserNameAndStateTrue(trimmedUserName).isPresent()) {
-            logger.warn("{} [{}] Creación rechazada: userName '{}' ya en uso", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS, trimmedUserName);
+            logger.warn("{} [{}] Creacion rechazada: userName '{}' ya en uso", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS, trimmedUserName);
             logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
-                    "Creación de usuario rechazada: El nombre de usuario '" + trimmedUserName + "' ya se encuentra en uso.", null));
+                    "Creacion rechazada: userName '" + trimmedUserName + "' ya en uso.", null));
             throw new BadRequestException(AppConstants.USER_ALREADY_IN_USE);
         }
 
@@ -103,12 +102,12 @@ public class UserService {
 
         logger.info("{} [{}] Usuario '{}' creado con ID: {}", AppConstants.PREFIX_USER, AppConstants.LOG_USERS, saved.getUserName(), saved.getId());
         logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
-                "Usuario '" + saved.getUserName() + "' creado exitosamente con el ID: " + saved.getId(), null));
+                "Usuario '" + saved.getUserName() + "' creado con ID: " + saved.getId(), null));
 
         return UserResponseDTO.fromEntity(saved);
     }
 
-
+    @Transactional
     public LoginResponse login(LoginRequest credentials) {
         String userName = credentials.getUserName();
         String pass     = credentials.getPass();
@@ -116,62 +115,43 @@ public class UserService {
         logger.info("{} [{}] Intento de login para: {}", AppConstants.PREFIX_USER, AppConstants.LOG_USERS,
                 userName != null ? userName : "DESCONOCIDO");
         logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
-                "Intento de inicio de sesión para el usuario: " + (userName != null ? userName : "DESCONOCIDO"), null));
+                "Intento de login para: " + (userName != null ? userName : "DESCONOCIDO"), null));
 
-        // Validaciones de entrada
         if (userName == null || userName.trim().isEmpty()) {
-            logger.warn("{} [{}] Login rechazado: userName vacío", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS);
-            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
-                    "Login rechazado: El nombre de usuario es nulo o está vacío.", null));
+            logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN, "Login rechazado: userName vacio.", null));
             throw new BadRequestException("El nombre de usuario es requerido.");
         }
 
         if (pass == null || pass.trim().isEmpty()) {
-            logger.warn("{} [{}] Login rechazado: contraseña vacía para '{}'", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS, userName);
             logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
-                    "Login rechazado para el usuario '" + userName + "': La contraseña está vacía.", null));
-            throw new BadRequestException("La contraseña es requerida.");
+                    "Login rechazado para '" + userName + "': contrasena vacia.", null));
+            throw new BadRequestException("La contrasena es requerida.");
         }
-
-        // Buscar usuario
-        logger.debug("{} [{}] Buscando usuario '{}'", AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName);
-        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG,
-                "Buscando al usuario '" + userName + "' en la base de datos.", null));
 
         User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> {
-                    logger.warn("{} [{}] Login fallido: usuario '{}' no existe", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS, userName);
                     logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
-                            "Login fallido: No se encontró ningún usuario con el nombre '" + userName + "'.", null));
-                    return new UnauthorizedException("Usuario o contraseña incorrectos.");
+                            "Login fallido: usuario '" + userName + "' no encontrado.", null));
+                    return new UnauthorizedException("Usuario o contrasena incorrectos.");
                 });
 
-        // Verificar estado activo
         if (!user.isState()) {
-            logger.warn("{} [{}] Login fallido: usuario '{}' inactivo", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS, userName);
             logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
-                    "Login fallido: El usuario '" + user.getUserName() + "' está inactivo.", user.getId()));
+                    "Login fallido: usuario '" + user.getUserName() + "' inactivo.", user.getId()));
             throw new UnauthorizedException("Usuario desactivado.");
         }
 
-        // Verificar contraseña
         if (!passwordEncoder.matches(pass, user.getPass())) {
-            logger.warn("{} [{}] Login fallido: contraseña incorrecta para '{}'", AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS, userName);
             logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
-                    "Login fallido: Contraseña incorrecta para el usuario '" + user.getUserName() + "'.", user.getId()));
-            throw new UnauthorizedException("Usuario o contraseña incorrectos.");
+                    "Login fallido: contrasena incorrecta para '" + user.getUserName() + "'.", user.getId()));
+            throw new UnauthorizedException("Usuario o contrasena incorrectos.");
         }
-
-        // Generar token
-        logger.debug("{} [{}] Generando token JWT para '{}'", AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName);
-        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_DEBUG,
-                "Generando token JWT para el usuario '" + user.getUserName() + "'.", user.getId()));
 
         String token = jwtService.generateToken(user.getUserName(), user.getId());
 
         logger.info("{} [{}] Login exitoso para '{}' (ID: {})", AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName, user.getId());
         logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
-                "Inicio de sesión exitoso para el usuario '" + user.getUserName() + "' (ID: " + user.getId() + ").", user.getId()));
+                "Login exitoso para '" + user.getUserName() + "' (ID: " + user.getId() + ").", user.getId()));
 
         return new LoginResponse(token, "Bearer", user.getId(), user.getUserName(), user.getCorreo(), "Login exitoso");
     }

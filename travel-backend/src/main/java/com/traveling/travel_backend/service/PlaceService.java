@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
 public class PlaceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PlaceService.class);
@@ -29,44 +28,45 @@ public class PlaceService {
         this.logRepository = logRepository;
     }
 
+    @Transactional
     public List<PlaceResponseDTO> getTopRated() {
         logger.info("{} [{}] Solicitando top 5 de lugares por rating", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES);
         logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
                 "Solicitando top 5 de lugares ordenados por rating - GET /api/places/top-rated", null));
 
         List<Place> places = placeRepository.findTop5ByOrderByRatingDesc();
-
-        logger.debug("{} [{}] Top 5 lugares: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, places);
+        logger.debug("{} [{}] Top 5 lugares encontrados: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, places.size());
         return toDTO(places);
     }
 
+    @Transactional
     public List<PlaceResponseDTO> search(String q) {
-        logger.info("{} [{}] Búsqueda de lugares con criterio: '{}'", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, q);
+        logger.info("{} [{}] Busqueda de lugares con criterio: '{}'", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, q);
         logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando búsqueda de lugares con criterio: '" + q + "' - GET /api/places/search", null));
+                "Solicitando busqueda de lugares con criterio: '" + q + "' - GET /api/places/search", null));
 
         List<Place> places = placeRepository
                 .findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(q, q, q);
-
-        logger.debug("{} [{}] Resultados para '{}': {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, q, places);
+        logger.debug("{} [{}] Resultados para '{}': {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, q, places.size());
         return toDTO(places);
     }
 
+    @Transactional
     public List<PlaceResponseDTO> getAllPlaces() {
         logger.info("{} [{}] Solicitando lista completa de lugares", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES);
         logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
                 "Solicitando lista completa de lugares - GET /api/places", null));
 
         List<Place> places = placeRepository.findAll();
-
         logger.debug("{} [{}] Total de lugares: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, places.size());
         return toDTO(places);
     }
 
+    @Transactional
     public PlaceResponseDTO getPlaceById(Long id) {
         logger.info("{} [{}] Solicitando lugar con ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, id);
         logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Solicitando información del lugar con ID: " + id + " - GET /api/places/" + id, null));
+                "Solicitando informacion del lugar con ID: " + id + " - GET /api/places/" + id, null));
 
         Place place = placeRepository.findById(id)
                 .orElseThrow(() -> {
@@ -76,10 +76,11 @@ public class PlaceService {
                     return new ResourceNotFoundException("Lugar no encontrado con ID: " + id);
                 });
 
-        logger.debug("{} [{}] Lugar encontrado: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, place);
+        logger.debug("{} [{}] Lugar encontrado: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, place.getName());
         return PlaceResponseDTO.fromEntity(place);
     }
 
+    @Transactional
     public List<PlaceResponseDTO> getPlacesByDepartment(Long cityId) {
         logger.info("{} [{}] Solicitando lugares para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, cityId);
         logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
@@ -90,11 +91,12 @@ public class PlaceService {
         if (places.isEmpty()) {
             logger.warn("{} [{}] No se encontraron lugares para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, cityId);
         } else {
-            logger.debug("{} [{}] {} lugares encontrados para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, places.size(), cityId);
+            logger.debug("{} [{}] {} lugares para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, places.size(), cityId);
         }
         return toDTO(places);
     }
 
+    @Transactional
     public List<PlaceResponseDTO> getTopPlacesByDepartment(Long cityId) {
         logger.info("{} [{}] Solicitando top 3 lugares para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, cityId);
         logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
@@ -105,11 +107,10 @@ public class PlaceService {
         if (places.isEmpty()) {
             logger.warn("{} [{}] No se encontraron lugares para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, cityId);
         } else {
-            logger.debug("{} [{}] {} lugares encontrados para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, places.size(), cityId);
+            logger.debug("{} [{}] {} lugares para departamento ID: {}", AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, places.size(), cityId);
         }
         return toDTO(places);
     }
-
 
     private List<PlaceResponseDTO> toDTO(List<Place> places) {
         return places.stream()
