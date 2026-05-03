@@ -1,4 +1,4 @@
-package com.traveling.travel_backend.services;
+package com.traveling.travel_backend.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
