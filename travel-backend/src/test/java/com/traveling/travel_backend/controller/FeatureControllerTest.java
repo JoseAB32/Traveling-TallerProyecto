@@ -1,149 +1,120 @@
 package com.traveling.travel_backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.traveling.travel_backend.repository.LogRepository;
-
-import org.junit.jupiter.api.BeforeEach;
+import com.traveling.travel_backend.service.FeatureService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.http.ResponseEntity;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class FeatureControllerTest {
 
     @Mock
-    private LogRepository logRepository;
+    private FeatureService featureService;
 
     @InjectMocks
     private FeatureController featureController;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @TempDir
-    Path tempDir;
-
-    @BeforeEach
-    void setUp() {
-        String path = tempDir.resolve("features.json").toString();
-        ReflectionTestUtils.setField(featureController, "filePath", path);
-    }
 
     @Test
-    @DisplayName("GET - Debe crear features.json con defaults si no existe")
-    void getFeatures_CreatesFileWithDefaultsWhenNotExists() throws IOException {
-        Map<String, Boolean> result = featureController.getFeatures();
-
-        assertThat(result).containsEntry("pinRedirection", false);
-        assertThat(result).containsEntry("autoCreateItinerary", true);
-        assertThat(result).containsEntry("showSearchPlaces", true);
-        assertThat(result).containsEntry("showFavorites", true);
-
-        File file = tempDir.resolve("features.json").toFile();
-        assertThat(file).exists();
-    }
-
-    @Test
-    @DisplayName("GET - Debe retornar valores guardados si el archivo existe")
-    void getFeatures_ReturnsStoredValuesWhenFileExists() throws IOException {
-        File file = tempDir.resolve("features.json").toFile();
-        objectMapper.writeValue(file, Map.of(
-            "pinRedirection", true,
-            "autoCreateItinerary", false,
-            "showSearchPlaces", true,
-            "showFavorites", false
-        ));
-
-        Map<String, Boolean> result = featureController.getFeatures();
-
-        assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("autoCreateItinerary", false);
-        assertThat(result).containsEntry("showFavorites", false);
-    }
-
-    @Test
-    @DisplayName("GET - Debe agregar keys faltantes al archivo existente")
-    void getFeatures_MergesNewKeysIntoExistingFile() throws IOException {
-        File file = tempDir.resolve("features.json").toFile();
-        objectMapper.writeValue(file, Map.of(
-            "pinRedirection", true,
-            "autoCreateItinerary", false
-        ));
-
-        Map<String, Boolean> result = featureController.getFeatures();
-
-        assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("autoCreateItinerary", false);
-        assertThat(result).containsEntry("showSearchPlaces", true);
-        assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(4);
-    }
-
-    @Test
-    @DisplayName("PUT - Debe actualizar y retornar los nuevos valores")
-    void updateFeatures_SavesAndReturnsUpdatedValues() throws IOException {
-        Map<String, Boolean> updated = Map.of(
-            "pinRedirection", true,
-            "autoCreateItinerary", false,
-            "showSearchPlaces", false,
-            "showFavorites", true
+    @DisplayName("GET - Debe retornar HTTP 200 con el mapa de features")
+    void getFeatures_Returns200WithFeatureMap() throws IOException {
+        Map<String, Boolean> mockFeatures = Map.of(
+                "pinRedirection", false,
+                "autoCreateItinerary", true,
+                "showSearchPlaces", true,
+                "showFavorites", true
         );
+        when(featureService.getFeatures()).thenReturn(mockFeatures);
 
-        Map<String, Boolean> result = featureController.updateFeatures(updated);
+        ResponseEntity<Map<String, Boolean>> response = featureController.getFeatures();
 
-        assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("autoCreateItinerary", false);
-        assertThat(result).containsEntry("showSearchPlaces", false);
-        assertThat(result).containsEntry("showFavorites", true);
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).isEqualTo(mockFeatures);
+        verify(featureService, times(1)).getFeatures();
     }
 
     @Test
-    @DisplayName("PUT - Debe persistir los valores en el archivo JSON")
-    void updateFeatures_PersistsValuesToFile() throws IOException {
-        Map<String, Boolean> updated = Map.of(
-            "pinRedirection", true,
-            "autoCreateItinerary", true,
-            "showSearchPlaces", false,
-            "showFavorites", false
+    @DisplayName("GET - Debe delegar la llamada al servicio exactamente una vez")
+    void getFeatures_DelegatesToServiceOnce() throws IOException {
+        when(featureService.getFeatures()).thenReturn(Map.of());
+
+        featureController.getFeatures();
+
+        verify(featureService, times(1)).getFeatures();
+        verifyNoMoreInteractions(featureService);
+    }
+
+    @Test
+    @DisplayName("GET - Debe retornar el mapa exacto que devuelve el servicio")
+    void getFeatures_ReturnsExactlyWhatServiceReturns() throws IOException {
+        Map<String, Boolean> mockFeatures = new HashMap<>();
+        mockFeatures.put("pinRedirection", true);
+        mockFeatures.put("autoCreateItinerary", false);
+        when(featureService.getFeatures()).thenReturn(mockFeatures);
+
+        ResponseEntity<Map<String, Boolean>> response = featureController.getFeatures();
+
+        assertThat(response.getBody()).containsEntry("pinRedirection", true);
+        assertThat(response.getBody()).containsEntry("autoCreateItinerary", false);
+    }
+
+    @Test
+    @DisplayName("PUT - Debe retornar HTTP 200 con el mapa actualizado")
+    void updateFeatures_Returns200WithUpdatedMap() throws IOException {
+        Map<String, Boolean> incoming = Map.of(
+                "pinRedirection", true,
+                "autoCreateItinerary", false,
+                "showSearchPlaces", false,
+                "showFavorites", true
         );
+        Map<String, Boolean> serviceResponse = Map.of(
+                "pinRedirection", true,
+                "autoCreateItinerary", false,
+                "showSearchPlaces", false,
+                "showFavorites", true
+        );
+        when(featureService.updateFeatures(incoming)).thenReturn(serviceResponse);
 
-        featureController.updateFeatures(updated);
+        ResponseEntity<Map<String, Boolean>> response = featureController.updateFeatures(incoming);
 
-        File file = tempDir.resolve("features.json").toFile();
-        assertThat(file).exists();
-
-        Map<?, ?> savedOnDisk = objectMapper.readValue(file, Map.class);
-        assertThat(savedOnDisk.get("pinRedirection")).isEqualTo(true);
-        assertThat(savedOnDisk.get("showSearchPlaces")).isEqualTo(false);
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).isEqualTo(serviceResponse);
+        verify(featureService, times(1)).updateFeatures(incoming);
     }
 
     @Test
-    @DisplayName("PUT - Debe ignorar keys desconocidas y no persistirlas")
-    void updateFeatures_IgnoresUnknownKeys() throws IOException {
-        Map<String, Boolean> withUnknownKeys = new HashMap<>();
-        withUnknownKeys.put("pinRedirection", true);
-        withUnknownKeys.put("autoCreateItinerary", false);
-        withUnknownKeys.put("showSearchPlaces", true);
-        withUnknownKeys.put("showFavorites", false);
-        withUnknownKeys.put("keyInventada", true); // key desconocida
+    @DisplayName("PUT - Debe pasar el body recibido al servicio sin modificarlo")
+    void updateFeatures_PassesBodyToServiceUnmodified() throws IOException {
+        Map<String, Boolean> incoming = new HashMap<>();
+        incoming.put("pinRedirection", true);
+        incoming.put("keyInventada", true);
+        when(featureService.updateFeatures(incoming)).thenReturn(Map.of("pinRedirection", true));
 
-        Map<String, Boolean> result = featureController.updateFeatures(withUnknownKeys);
+        featureController.updateFeatures(incoming);
 
-        assertThat(result).doesNotContainKey("keyInventada");
-        assertThat(result).hasSize(4);
-        assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("showFavorites", false);
+        verify(featureService, times(1)).updateFeatures(incoming);
+    }
+
+    @Test
+    @DisplayName("PUT - Debe delegar al servicio exactamente una vez")
+    void updateFeatures_DelegatesToServiceOnce() throws IOException {
+        Map<String, Boolean> incoming = Map.of("pinRedirection", false);
+        when(featureService.updateFeatures(incoming)).thenReturn(incoming);
+
+        featureController.updateFeatures(incoming);
+
+        verify(featureService, times(1)).updateFeatures(incoming);
+        verifyNoMoreInteractions(featureService);
     }
 }
