@@ -18,6 +18,10 @@ export class FavoriteService {
     return this.httpClient.get<any[]>(`${this.apiUrl}/user/${userId}`);
   }
 
+  addFavorite(userId: number, placeId: number): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/user/${userId}/place/${placeId}`, {});
+  }
+
   removeFavorite(userId: number, placeId: number): Observable<any> {
     return this.httpClient.delete(`${this.apiUrl}/user/${userId}/place/${placeId}`);
   }

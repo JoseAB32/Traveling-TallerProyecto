@@ -4,12 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 import com.traveling.travel_backend.model.Favorite;
 
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Long>{
     List<Favorite> findByUserIdAndStateTrue(Long userId);
+    Optional<Favorite> findByUserIdAndPlaceId(Long userId, Long placeId);
     @Transactional
     void deleteByUserIdAndPlaceId(Long userId, Long placeId);
 }
