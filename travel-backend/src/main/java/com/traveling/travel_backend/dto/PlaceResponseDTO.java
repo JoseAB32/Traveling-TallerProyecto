@@ -2,7 +2,6 @@ package com.traveling.travel_backend.dto;
 
 import com.traveling.travel_backend.model.Place;
 
-import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlaceResponseDTO {

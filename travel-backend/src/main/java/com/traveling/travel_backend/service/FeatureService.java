@@ -24,20 +24,11 @@ public class FeatureService {
     private final LogRepository logRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${app.features.file-path:./config/features.json}")
+    @Value("${app.features.file-path:config/features.json}")
     private String filePath;
 
     public FeatureService(LogRepository logRepository) {
         this.logRepository = logRepository;
-    }
-
-    private Map<String, Boolean> defaultFeatures() {
-        Map<String, Boolean> defaults = new LinkedHashMap<>();
-        defaults.put("pinRedirection", false);
-        defaults.put("autoCreateItinerary", true);
-        defaults.put("showSearchPlaces", true);
-        defaults.put("showFavorites", true);
-        return defaults;
     }
 
     @Transactional
@@ -45,7 +36,7 @@ public class FeatureService {
         logger.info("{} [{}] {}", AppConstants.PREFIX_FEATURE, AppConstants.LOG_FEATURES, AppConstants.FEATURES_FETCH_REQUEST);
         logRepository.save(new LogEntity(AppConstants.LOG_FEATURES, AppConstants.LOG_INFO, AppConstants.FEATURES_FETCH_REQUEST, null));
 
-        File file = new File(filePath);
+        File file = resolveFile();
         logger.debug("{} [{}] Buscando features.json en: {}", AppConstants.PREFIX_FEATURE, AppConstants.LOG_FEATURES, file.getAbsolutePath());
 
         ensureParentDirExists(file);
@@ -92,7 +83,7 @@ public class FeatureService {
             }
         });
 
-        File file = new File(filePath);
+        File file = resolveFile();
         ensureParentDirExists(file);
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, merged);
 
@@ -101,6 +92,23 @@ public class FeatureService {
                 "Features actualizadas correctamente. Total keys: " + merged.size(), null));
 
         return merged;
+    }
+
+    private Map<String, Boolean> defaultFeatures() {
+        Map<String, Boolean> defaults = new LinkedHashMap<>();
+        defaults.put("pinRedirection", false);
+        defaults.put("autoCreateItinerary", true);
+        defaults.put("showSearchPlaces", true);
+        defaults.put("showFavorites", true);
+        return defaults;
+    }
+
+    private File resolveFile() {
+        File file = new File(filePath);
+        if (!file.isAbsolute()) {
+            file = new File(System.getProperty("user.dir"), filePath);
+        }
+        return file;
     }
 
     private void ensureParentDirExists(File file) {
