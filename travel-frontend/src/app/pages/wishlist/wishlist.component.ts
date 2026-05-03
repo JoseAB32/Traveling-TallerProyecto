@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { HeaderComponent } from "../../components/header/header.component";
 import { FooterComponent } from "../../components/footer/footer.component";
 import { PlaceCardComponent } from '../../components/place-card/place-card.component';
-import { PlaceService } from '../../services/place/place.service';
-import { Subscription, forkJoin, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { FavoriteService } from '../../services/favorite/favorite.service';
+import { Subscription } from 'rxjs';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Place } from '../../models/place/place';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-wishlist',
@@ -18,40 +18,45 @@ import { Place } from '../../models/place/place';
 export class WishlistComponent implements OnInit, OnDestroy {
 
   Favoritos: Place[] = [];
-  private placeService = inject(PlaceService);
+  isLoading = true;
+  private favoriteService = inject(FavoriteService);
+  private authService = inject(AuthService);
   private userSub!: Subscription;
+  private currentUserId: number | null = null;
 
   isModalOpen: boolean = false;
   placeToDeleteId: number | null = null;
 
   ngOnInit(): void {
-    this.cargarFavoritosLocal();
+    this.userSub = this.authService.currentUser$.subscribe(user => {
+      if (user?.id) {
+        this.currentUserId = user.id;
+        this.cargarFavoritos(user.id);
+        return;
+      }
+
+      this.currentUserId = null;
+      this.Favoritos = [];
+      this.isLoading = false;
+    });
   }
 
-  cargarFavoritosLocal() {
-    const wishListIds: number[] = JSON.parse(localStorage.getItem('wishList') || '[]');
-
-    if (wishListIds.length === 0) {
-      this.Favoritos = [];
-      return;
-    }
-
-    const requests = wishListIds.map(id =>
-      this.placeService.getPlaceById(id).pipe(
-        catchError(error => {
-          console.error(`Error cargando lugar con ID ${id}`, error);
-          return of(null);
-        })
-      )
-    );
-
-    forkJoin(requests).pipe(
-      map(places => places.filter((place): place is Place => place !== null))
-    ).subscribe({
-      next: (places) => {
-        this.Favoritos = places;
+  cargarFavoritos(userId: number) {
+    this.isLoading = true;
+    this.favoriteService.getUserFavorites(userId).subscribe({
+      next: (data) => {
+        if (data) {
+          this.Favoritos = data.map(favorito => favorito.place);
+        } else {
+          this.Favoritos = [];
+        }
+        this.isLoading = false;
       },
-      error: () => console.error('Error cargando favoritos')
+      error: (error) => {
+        this.Favoritos = [];
+        this.isLoading = false;
+        console.error('Error al obtener los favoritos', error);
+      }
     });
   }
 
@@ -73,12 +78,20 @@ export class WishlistComponent implements OnInit, OnDestroy {
   }
 
   deleteFavorite(placeId: number) {
-    this.Favoritos = this.Favoritos.filter(lugar => lugar.id !== placeId);
+    if (!this.currentUserId) {
+      console.warn('No hay usuario logueado.');
+      return;
+    }
 
-    let wishListIds: number[] = JSON.parse(localStorage.getItem('wishList') || '[]');
-    wishListIds = wishListIds.filter(id => id !== placeId);
-
-    localStorage.setItem('wishList', JSON.stringify(wishListIds));
+    this.favoriteService.removeFavorite(this.currentUserId, placeId).subscribe({
+      next: () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        this.Favoritos = this.Favoritos.filter(lugar => lugar.id !== placeId);
+      },
+      error: (err) => {
+        console.error('Ocurrio un error al quitar el favorito', err);
+      }
+    });
   }
 
   ngOnDestroy(): void {

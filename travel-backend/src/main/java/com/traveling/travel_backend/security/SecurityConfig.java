@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -29,44 +28,41 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .cors(Customizer.withDefaults())
-            .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
 
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                .requestMatchers(HttpMethod.POST, "/api/password/forgot").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/password/reset").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/password/validate").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/password/forgot").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/password/reset").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/password/validate").permitAll()
 
-                .requestMatchers(
-                    "/api/login",
-                    "/api/users",
-                    "/api/cities",
-                    "/api/favorites/**",
-                    "/api/places/**",
-                    "/api/trips/**",
-                    "/api/tripitems/**",
-                    "/api/admin/logs/filter",
-                    "/swagger-ui/**",
-                    "/v3/api-docs*/**",
-                    "/api/routes/**",
-                    "/api/password/**"
-                ).permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/features").authenticated() 
+                        .requestMatchers(
+                                "/api/login",
+                                "/api/users",
+                                "/api/cities",
+                                "/api/favorites/**",
+                                "/api/places/**",
+                                "/api/trips/**",
+                                "/api/tripitems/**",
+                                "/api/admin/logs/filter",
+                                "/swagger-ui/**",
+                                "/v3/api-docs*/**",
+                                "/api/routes/**",
+                                "/api/password/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/features").authenticated()
 
-                .anyRequest().authenticated()
-            )
+                        .anyRequest().authenticated())
 
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            .addFilterBefore(
-                jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class
-            );
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -81,17 +77,14 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-            "http://localhost:4200",
-            "https://travelingitinerary.netlify.app"
-        ));
+                "http://localhost:4200",
+                "https://travelingitinerary.netlify.app"));
 
         configuration.setAllowedMethods(List.of(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        ));
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         configuration.setAllowedHeaders(List.of(
-            "Authorization", "Content-Type", "Accept"
-        ));
+                "Authorization", "Content-Type", "Accept"));
 
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(false);

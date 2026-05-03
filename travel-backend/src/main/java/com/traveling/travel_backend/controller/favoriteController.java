@@ -8,8 +8,14 @@ import java.util.List;
 import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.model.Favorite;
 import com.traveling.travel_backend.model.LogEntity;
+import com.traveling.travel_backend.model.Place;
+import com.traveling.travel_backend.model.User;
 import com.traveling.travel_backend.repository.FavoriteRepository;
 import com.traveling.travel_backend.repository.LogRepository;
+import com.traveling.travel_backend.repository.PlaceRepository;
+import com.traveling.travel_backend.repository.UserRepository;
+
+import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -28,6 +34,46 @@ public class favoriteController {
 
     @Autowired
     private LogRepository logRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PlaceRepository placeRepository;
+
+    @Operation(
+        summary = "Add a place to user's favorite list",
+        description = "Creates or reactivates a favorite entry for a specific user and place",
+        tags = {"Favorite"},
+        operationId = "addFavorite"
+    )
+    @PostMapping("/user/{userId}/place/{placeId}")
+    public ResponseEntity<Favorite> addFavorite(@PathVariable Long userId, @PathVariable Long placeId) {
+        log.info("➕ [FAVORITOS] Solicitud de agregado -> Usuario: {}, Lugar: {}", userId, placeId);
+        logRepository.save(new LogEntity("FAVORITOS", "INFO", "Solicitud de agregado -> Usuario: " + userId + ", Lugar: " + placeId + " - POST /api/favorites/user/" + userId + "/place/" + placeId, userId));
+
+        Optional<User> userOpt = userRepository.findById(userId);
+        Optional<Place> placeOpt = placeRepository.findById(placeId);
+
+        if (userOpt.isEmpty() || placeOpt.isEmpty()) {
+            log.warn("⚠️ [FAVORITOS] Usuario o lugar no encontrado. Usuario: {}, Lugar: {}", userId, placeId);
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Favorite> existingFavorite = favoriteRepository.findByUserIdAndPlaceId(userId, placeId);
+
+        if (existingFavorite.isPresent()) {
+            Favorite favorite = existingFavorite.get();
+            favorite.setState(true);
+            Favorite savedFavorite = favoriteRepository.save(favorite);
+            return ResponseEntity.ok(savedFavorite);
+        }
+
+        Favorite favorite = new Favorite(userOpt.get(), placeOpt.get());
+        favorite.setState(true);
+        Favorite savedFavorite = favoriteRepository.save(favorite);
+        return ResponseEntity.ok(savedFavorite);
+    }
 
     @Operation(
         summary = "Get a user's favorite list",

@@ -5,7 +5,14 @@
 
   <div class="list">
 
-    @if (Favoritos != null && Favoritos.length != 0) {
+    @if (isLoading) {
+
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando lugares...</p>
+      </div>
+
+    } @else if (Favoritos != null && Favoritos.length != 0) {
 
       @for (lugar of Favoritos; track lugar.id; let i = $index) {
         <app-place-card 
