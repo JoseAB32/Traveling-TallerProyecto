@@ -101,7 +101,8 @@ public class AppConstants {
     public static final String PREFIX_CITY = "🏙️";
     public static final String PREFIX_ERROR = "❌";
     public static final String PREFIX_FEATURE = "🚩";
-
+    public static final String PREFIX_ADMIN = "🖥️";
+    
     // ==================== VALIDATION ====================
     public static final int MIN_PASSWORD_LENGTH = 8;
     public static final int MIN_USERNAME_LENGTH = 3;
