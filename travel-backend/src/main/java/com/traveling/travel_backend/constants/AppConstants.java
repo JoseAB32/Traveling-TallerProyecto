@@ -101,6 +101,7 @@ public class AppConstants {
     public static final String PREFIX_CITY = "🏙️";
     public static final String PREFIX_ERROR = "❌";
     public static final String PREFIX_FEATURE = "🚩";
+    public static final String PREFIX_FAVORITE = "📂";
     public static final String PREFIX_ADMIN = "🖥️";
     
     // ==================== VALIDATION ====================

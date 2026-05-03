@@ -1,126 +1,47 @@
 package com.traveling.travel_backend.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.FavoriteResponseDTO;
+import com.traveling.travel_backend.service.FavoriteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-
-import com.traveling.travel_backend.constants.AppConstants;
-import com.traveling.travel_backend.model.Favorite;
-import com.traveling.travel_backend.model.LogEntity;
-import com.traveling.travel_backend.model.Place;
-import com.traveling.travel_backend.model.User;
-import com.traveling.travel_backend.repository.FavoriteRepository;
-import com.traveling.travel_backend.repository.LogRepository;
-import com.traveling.travel_backend.repository.PlaceRepository;
-import com.traveling.travel_backend.repository.UserRepository;
-
-import java.util.Optional;
-
-import io.swagger.v3.oas.annotations.Operation;
-
-import org.slf4j.Logger;           
-import org.slf4j.LoggerFactory;    
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH + AppConstants.FAVORITES_ENDPOINT)
 @CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
-public class favoriteController {
+@Tag(name = "Favorite", description = "Gestion de favoritos por usuario")
+public class FavoriteController {
 
-    public static final Logger log = LoggerFactory.getLogger(favoriteController.class);
+    private final FavoriteService favoriteService;
 
-    @Autowired
-    private FavoriteRepository favoriteRepository;
+    public FavoriteController(FavoriteService favoriteService) {
+        this.favoriteService = favoriteService;
+    }
 
-    @Autowired
-    private LogRepository logRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PlaceRepository placeRepository;
-
-    @Operation(
-        summary = "Add a place to user's favorite list",
-        description = "Creates or reactivates a favorite entry for a specific user and place",
-        tags = {"Favorite"},
-        operationId = "addFavorite"
-    )
+    @Operation(summary = "Add a place to user's favorite list", description = "Creates or reactivates a favorite entry for a specific user and place", operationId = "addFavorite")
     @PostMapping("/user/{userId}/place/{placeId}")
-    public ResponseEntity<Favorite> addFavorite(@PathVariable Long userId, @PathVariable Long placeId) {
-        log.info("➕ [FAVORITOS] Solicitud de agregado -> Usuario: {}, Lugar: {}", userId, placeId);
-        logRepository.save(new LogEntity("FAVORITOS", "INFO", "Solicitud de agregado -> Usuario: " + userId + ", Lugar: " + placeId + " - POST /api/favorites/user/" + userId + "/place/" + placeId, userId));
-
-        Optional<User> userOpt = userRepository.findById(userId);
-        Optional<Place> placeOpt = placeRepository.findById(placeId);
-
-        if (userOpt.isEmpty() || placeOpt.isEmpty()) {
-            log.warn("⚠️ [FAVORITOS] Usuario o lugar no encontrado. Usuario: {}, Lugar: {}", userId, placeId);
-            return ResponseEntity.notFound().build();
-        }
-
-        Optional<Favorite> existingFavorite = favoriteRepository.findByUserIdAndPlaceId(userId, placeId);
-
-        if (existingFavorite.isPresent()) {
-            Favorite favorite = existingFavorite.get();
-            favorite.setState(true);
-            Favorite savedFavorite = favoriteRepository.save(favorite);
-            return ResponseEntity.ok(savedFavorite);
-        }
-
-        Favorite favorite = new Favorite(userOpt.get(), placeOpt.get());
-        favorite.setState(true);
-        Favorite savedFavorite = favoriteRepository.save(favorite);
-        return ResponseEntity.ok(savedFavorite);
+    public ResponseEntity<FavoriteResponseDTO> addFavorite(@PathVariable Long userId, @PathVariable Long placeId) {
+        return ResponseEntity.ok(favoriteService.addFavorite(userId, placeId));
     }
 
-    @Operation(
-        summary = "Get a user's favorite list",
-        description = "Returns a list of all favorite places from a specific user",
-        tags = {"Favorite"},
-        operationId = "getUserFavorites"
-    )
+    @Operation(summary = "Get a user's favorite list", description = "Returns all active favorite places for a specific user", operationId = "getUserFavorites")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Favorite>> getUserFavorites(@PathVariable Long userId) {
-        
-        log.info("📂 [FAVORITOS] Consultando lista del usuario ID: {}", userId);
-        logRepository.save(new LogEntity("FAVORITOS", "INFO", "Consultando lista del usuario ID: " + userId + " - GET /api/favorites/user/" + userId, userId));
-
-        List<Favorite> favorites = favoriteRepository.findByUserIdAndStateTrue(userId);
-        
-        if(favorites.isEmpty()) {
-            log.info("📂 [FAVORITOS] El usuario ID: {} no tiene favoritos", userId);
-            logRepository.save(new LogEntity("FAVORITOS", "INFO", "El usuario ID: " + userId + " no tiene favoritos - GET /api/favorites/user/" + userId, userId));
-            return ResponseEntity.noContent().build(); // Devuelve 204 si no tiene favoritos
+    public ResponseEntity<List<FavoriteResponseDTO>> getUserFavorites(@PathVariable Long userId) {
+        List<FavoriteResponseDTO> favorites = favoriteService.getUserFavorites(userId);
+        if (favorites.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
-        
-        log.info("📂 [FAVORITOS] Devolviendo lista de favoritos para el usuario ID: {}", userId);
-        logRepository.save(new LogEntity("FAVORITOS", "INFO", "Devolviendo lista de favoritos para el usuario ID: " + userId + " - GET /api/favorites/user/" + userId, userId));
-        return ResponseEntity.ok(favorites); // Devuelve 200 y la lista en JSON
+        return ResponseEntity.ok(favorites);
     }
 
-    @Operation(
-        summary = "Delete a place user's favorite list",
-        description = "Delete a place favorites table for a specific user",
-        tags = {"Favorite"},
-        operationId = "removeFavorite"
-    )
+    @Operation(summary = "Delete a place from user's favorite list", description = "Deletes a favorite entry for a specific user and place", operationId = "removeFavorite")
     @DeleteMapping("/user/{userId}/place/{placeId}")
     public ResponseEntity<Void> removeFavorite(@PathVariable Long userId, @PathVariable Long placeId) {
-        log.info("🗑️ [FAVORITOS] Solicitud de eliminación -> Usuario: {}, Lugar: {}", userId, placeId);
-        logRepository.save(new LogEntity("FAVORITOS", "INFO", "Solicitud de eliminación -> Usuario: " + userId + ", Lugar: " + placeId + " - DELETE /api/favorites/user/" + userId + "/place/" + placeId, userId));
-
-        try {
-            favoriteRepository.deleteByUserIdAndPlaceId(userId, placeId);
-            log.info("🆗 [FAVORITOS] Eliminado correctamente.");
-            logRepository.save(new LogEntity("FAVORITOS", "INFO", "Eliminado correctamente -> Usuario: " + userId + ", Lugar: " + placeId + " - DELETE /api/favorites/user/" + userId + "/place/" + placeId, userId));
-            return ResponseEntity.ok().build(); 
-        } catch (Exception e) {
-            // Es vital registrar el error completo si algo falla en el borrado
-            log.error("❌ [FAVORITOS] Falló la eliminación: {}", e.getMessage());
-            logRepository.save(new LogEntity("FAVORITOS", "ERROR", "Falló la eliminación -> Usuario: " + userId + ", Lugar: " + placeId + " - DELETE /api/favorites/user/" + userId + "/place/" + placeId, userId));
-            return ResponseEntity.internalServerError().build();
-        }
-    }    
+        favoriteService.removeFavorite(userId, placeId);
+        return ResponseEntity.ok().build();
+    }
 }
