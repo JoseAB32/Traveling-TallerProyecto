@@ -3,6 +3,7 @@ package com.traveling.travel_backend.dto;
 import com.traveling.travel_backend.model.Place;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlaceResponseDTO {
 
@@ -14,12 +15,24 @@ public class PlaceResponseDTO {
     private double price;
     private double latitude;
     private double longitude;
+
+    @JsonProperty("place_type")
     private String placeType;
+
     private CityResponseDTO city;
+
+    @JsonProperty("is_event")
     private boolean isEvent;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+
+    @JsonProperty("start_date")  
+    private String startDate;
+
+    @JsonProperty("end_date")
+    private String endDate;
+
+    @JsonProperty("image_url")
     private String imageUrl;
+
     private boolean state;
 
     public PlaceResponseDTO() {}
@@ -37,15 +50,18 @@ public class PlaceResponseDTO {
         dto.placeType   = place.getPlaceType();
         dto.city        = place.getCity() != null ? CityResponseDTO.fromEntity(place.getCity()) : null;
         dto.isEvent     = place.isEvent();
-        dto.startDate   = place.getStartDate();
-        dto.endDate     = place.getEndDate();
+        dto.startDate = place.getStartDate() != null
+                ? place.getStartDate().toLocalTime().toString()
+                : null;
+        dto.endDate   = place.getEndDate() != null
+                ? place.getEndDate().toLocalTime().toString()
+                : null;
         dto.imageUrl    = place.getImageUrl();
         dto.state       = place.isState();
         return dto;
     }
 
-    // ---------- Getters & Setters ----------
-
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -79,11 +95,11 @@ public class PlaceResponseDTO {
     public boolean isEvent() { return isEvent; }
     public void setEvent(boolean event) { isEvent = event; }
 
-    public LocalDateTime getStartDate() { return startDate; }
-    public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
+    public String getStartDate() { return startDate; }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
 
-    public LocalDateTime getEndDate() { return endDate; }
-    public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
+    public String getEndDate() { return endDate; }
+    public void setEndDate(String endDate) { this.endDate = endDate; }
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
