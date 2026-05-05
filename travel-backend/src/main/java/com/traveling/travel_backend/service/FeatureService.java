@@ -54,7 +54,6 @@ public class FeatureService {
         Map<String, Boolean> merged = defaultFeatures();
         merged.putAll(stored);
 
-        // Persistir si se agregaron nuevas keys
         if (merged.size() != stored.size()) {
             logger.warn("{} [{}] {}", AppConstants.PREFIX_FEATURE, AppConstants.LOG_FEATURES, AppConstants.FEATURES_NEW_KEYS_ADDED);
             logRepository.save(new LogEntity(AppConstants.LOG_FEATURES, AppConstants.LOG_WARN,
@@ -76,22 +75,28 @@ public class FeatureService {
 
         logger.debug("{} [{}] Features recibidas para actualizar: {}", AppConstants.PREFIX_FEATURE, AppConstants.LOG_FEATURES, incoming);
 
-        Map<String, Boolean> merged = defaultFeatures();
+        File file = resolveFile();
+        ensureParentDirExists(file);
+
+        Map<String, Boolean> current = defaultFeatures();
+        if (file.exists()) {
+            Map<String, Boolean> stored = objectMapper.readValue(file, new TypeReference<Map<String, Boolean>>() {});
+            current.putAll(stored);
+        }
+
         incoming.forEach((key, value) -> {
-            if (merged.containsKey(key)) {
-                merged.put(key, value);
+            if (current.containsKey(key)) {
+                current.put(key, value);
             }
         });
 
-        File file = resolveFile();
-        ensureParentDirExists(file);
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, merged);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, current);
 
-        logger.info("{} [{}] {} {}", AppConstants.PREFIX_FEATURE, AppConstants.LOG_FEATURES, AppConstants.FEATURES_UPDATED_SUCCESS, merged.size());
+        logger.info("{} [{}] {} {}", AppConstants.PREFIX_FEATURE, AppConstants.LOG_FEATURES, AppConstants.FEATURES_UPDATED_SUCCESS, current.size());
         logRepository.save(new LogEntity(AppConstants.LOG_FEATURES, AppConstants.LOG_INFO,
-                "Features actualizadas correctamente. Total keys: " + merged.size(), null));
+                "Features actualizadas correctamente. Total keys: " + current.size(), null));
 
-        return merged;
+        return current;
     }
 
     private Map<String, Boolean> defaultFeatures() {

@@ -70,17 +70,6 @@ public class TripService {
 
 
     @Transactional
-    public Optional<TripDraftResponse> getDraftByUser(Long userId) {
-        return tripRepository.findFirstByUserIdAndStateTrueOrderByIdDesc(userId)
-                .map(trip -> {
-                    List<TripItem> items = tripItemRepository
-                            .findByTripIdAndStateTrueOrderByVisitOrderAsc(trip.getId());
-                    return buildResponse(trip, items);
-                });
-    }
-
-
-    @Transactional
     public TripDraftResponse saveDraft(TripDraftRequest request, Authentication authentication) {
         User user = resolveAuthenticatedUser(authentication);
         logger.info("{} [{}] Guardando borrador para usuario ID: {}",

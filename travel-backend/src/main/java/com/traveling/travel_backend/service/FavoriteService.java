@@ -3,6 +3,7 @@ package com.traveling.travel_backend.service;
 import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.dto.FavoriteResponseDTO;
 import com.traveling.travel_backend.exception.ResourceNotFoundException;
+import com.traveling.travel_backend.exception.UnauthorizedException;
 import com.traveling.travel_backend.model.Favorite;
 import com.traveling.travel_backend.model.LogEntity;
 import com.traveling.travel_backend.model.Place;
@@ -13,6 +14,7 @@ import com.traveling.travel_backend.repository.PlaceRepository;
 import com.traveling.travel_backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,6 @@ import java.util.stream.Collectors;
 public class FavoriteService {
 
     private static final Logger logger = LoggerFactory.getLogger(FavoriteService.class);
-
     private static final String LOG_MODULE = "FAVORITOS";
 
     private final FavoriteRepository favoriteRepository;
@@ -40,9 +41,10 @@ public class FavoriteService {
         this.logRepository      = logRepository;
     }
 
-
     @Transactional
-    public FavoriteResponseDTO addFavorite(Long userId, Long placeId) {
+    public FavoriteResponseDTO addFavorite(Authentication authentication, Long placeId) {
+        Long userId = resolveUserId(authentication);
+
         logger.info("{} [{}] Solicitud de agregado -> Usuario: {}, Lugar: {}",
                 AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId, placeId);
         logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
@@ -87,7 +89,9 @@ public class FavoriteService {
     }
 
     @Transactional
-    public List<FavoriteResponseDTO> getUserFavorites(Long userId) {
+    public List<FavoriteResponseDTO> getUserFavorites(Authentication authentication) {
+        Long userId = resolveUserId(authentication);
+
         logger.info("{} [{}] Consultando favoritos del usuario ID: {}",
                 AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId);
         logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
@@ -114,7 +118,9 @@ public class FavoriteService {
     }
 
     @Transactional
-    public void removeFavorite(Long userId, Long placeId) {
+    public void removeFavorite(Authentication authentication, Long placeId) {
+        Long userId = resolveUserId(authentication);
+
         Favorite favorite = favoriteRepository.findByUserIdAndPlaceId(userId, placeId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Favorito no encontrado para usuario: " + userId + " y lugar: " + placeId));
@@ -126,5 +132,14 @@ public class FavoriteService {
                 AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId, placeId);
         logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
                 "Favorito desactivado (soft delete) -> Usuario: " + userId + ", Lugar: " + placeId, userId));
+    }
+
+    private Long resolveUserId(Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            throw new UnauthorizedException("No autenticado.");
+        }
+        return userRepository.findByUserName(authentication.getName())
+                .orElseThrow(() -> new UnauthorizedException("Usuario no válido."))
+                .getId();
     }
 }

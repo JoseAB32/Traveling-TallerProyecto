@@ -28,14 +28,6 @@ public class TripController {
         return ResponseEntity.ok(tripService.getMyDraft(authentication));
     }
 
-    @Operation(summary = "Retrieve itinerary draft of a specific user", description = "Returns a user's itinerary draft by user ID", operationId = "getDraftByUser")
-    @GetMapping(AppConstants.TRIPS_ENDPOINT + "/draft/user/{userId}")
-    public ResponseEntity<TripDraftResponse> getDraftByUser(@PathVariable Long userId) {
-        return tripService.getDraftByUser(userId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
-    }
-
     @Operation(summary = "Save itinerary draft", description = "Saves the authenticated user's itinerary draft", operationId = "saveDraft")
     @PutMapping(AppConstants.TRIPS_ENDPOINT + "/draft")
     public ResponseEntity<TripDraftResponse> saveDraft(@RequestBody TripDraftRequest request,
