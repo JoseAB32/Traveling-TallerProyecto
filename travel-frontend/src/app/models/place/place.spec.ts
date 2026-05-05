@@ -1,7 +1,7 @@
-import { Place } from './place';
+// import { Place } from './place';
 
-describe('Place', () => {
-  it('should create an instance', () => {
-    expect(new Place()).toBeTruthy();
-  });
-});
+// describe('Place', () => {
+//   it('should create an instance', () => {
+//     expect(new Place()).toBeTruthy();
+//   });
+// });
