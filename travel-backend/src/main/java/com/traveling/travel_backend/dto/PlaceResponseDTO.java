@@ -29,7 +29,7 @@ public class PlaceResponseDTO {
     @JsonProperty("end_date")
     private String endDate;
 
-    @JsonProperty("image_url")
+    @JsonProperty("imageUrl")
     private String imageUrl;
 
     private boolean state;
