@@ -30,7 +30,6 @@ export class PlaceDetailComponent implements OnInit {
   images: string[] = [];
   currentImageIndex = 0;
 
-  // ❤️ FAVORITOS
   isFavorite: boolean = false;
 
   constructor(
@@ -62,8 +61,6 @@ export class PlaceDetailComponent implements OnInit {
           ];
 
           this.loading = false;
-
-          // 🔥 verificar si ya es favorito
           this.checkIfFavorite();
         },
         error: () => {
@@ -73,24 +70,18 @@ export class PlaceDetailComponent implements OnInit {
     }
   }
 
-  // 🔥 VERIFICAR SI YA ESTÁ EN WISHLIST
-  checkIfFavorite() {
-    if (!this.place) return;
-    const userId = this.authService.getCurrentUser()?.id;
-
-    if (!userId) {
+  checkIfFavorite(): void {
+    if (!this.place || !this.authService.getCurrentUser()) {
       this.isFavorite = false;
       return;
     }
 
-    this.favoriteService.getUserFavorites(userId).subscribe({
+    // El token ya identifica al usuario — no se necesita userId
+    this.favoriteService.getUserFavorites().subscribe({
       next: (favorites) => {
-        if (!favorites) {
-          this.isFavorite = false;
-          return;
-        }
-
-        this.isFavorite = favorites.some(favorite => favorite.place?.id === this.place?.id);
+        this.isFavorite = favorites
+          ? favorites.some(f => f.place?.id === this.place?.id)
+          : false;
       },
       error: () => {
         this.isFavorite = false;
@@ -98,41 +89,28 @@ export class PlaceDetailComponent implements OnInit {
     });
   }
 
-  // ❤️ TOGGLE FAVORITO
-  toggleFavorite() {
-    if (!this.place) return;
-    const userId = this.authService.getCurrentUser()?.id;
-    if (!userId) return;
+  toggleFavorite(): void {
+    if (!this.place || !this.authService.getCurrentUser()) return;
 
     if (this.isFavorite) {
-      this.favoriteService.removeFavorite(userId, this.place.id).subscribe({
-        next: () => {
-          this.isFavorite = false;
-        },
-        error: (error) => {
-          console.error('Error al quitar favorito', error);
-        }
+      this.favoriteService.removeFavorite(this.place.id).subscribe({
+        next: () => { this.isFavorite = false; },
+        error: (error) => { console.error('Error al quitar favorito', error); }
       });
     } else {
-      this.favoriteService.addFavorite(userId, this.place.id).subscribe({
-        next: () => {
-          this.isFavorite = true;
-        },
-        error: (error) => {
-          console.error('Error al agregar favorito', error);
-        }
+      this.favoriteService.addFavorite(this.place.id).subscribe({
+        next: () => { this.isFavorite = true; },
+        error: (error) => { console.error('Error al agregar favorito', error); }
       });
     }
   }
 
-  nextImage() {
-    this.currentImageIndex =
-      (this.currentImageIndex + 1) % this.images.length;
+  nextImage(): void {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
   }
 
-  prevImage() {
-    this.currentImageIndex =
-      (this.currentImageIndex - 1 + this.images.length) % this.images.length;
+  prevImage(): void {
+    this.currentImageIndex = (this.currentImageIndex - 1 + this.images.length) % this.images.length;
   }
 
   getStars(rating: number): string {

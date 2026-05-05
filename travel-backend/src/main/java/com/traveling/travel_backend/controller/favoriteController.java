@@ -24,14 +24,14 @@ public class FavoriteController {
     }
 
     @Operation(summary = "Add a place to user's favorite list", description = "Creates or reactivates a favorite entry for a specific user and place", operationId = "addFavorite")
-    @PostMapping("/user/{userId}/place/{placeId}")
-    public ResponseEntity<FavoriteResponseDTO> addFavorite(@PathVariable Long userId, @PathVariable Long placeId, Authentication authentication) {
+    @PostMapping("/user/place/{placeId}")
+    public ResponseEntity<FavoriteResponseDTO> addFavorite(@PathVariable Long placeId, Authentication authentication) {
         return ResponseEntity.ok(favoriteService.addFavorite(authentication, placeId));
     }
 
     @Operation(summary = "Get a user's favorite list", description = "Returns all active favorite places for a specific user", operationId = "getUserFavorites")
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<FavoriteResponseDTO>> getUserFavorites(@PathVariable Long userId, Authentication authentication) {
+    @GetMapping("/user")
+    public ResponseEntity<List<FavoriteResponseDTO>> getUserFavorites(Authentication authentication) {
         List<FavoriteResponseDTO> favorites = favoriteService.getUserFavorites(authentication);
         if (favorites.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -40,8 +40,8 @@ public class FavoriteController {
     }
 
     @Operation(summary = "Delete a place from user's favorite list", description = "Deletes a favorite entry for a specific user and place", operationId = "removeFavorite")
-    @DeleteMapping("/user/{userId}/place/{placeId}")
-    public ResponseEntity<Void> removeFavorite(@PathVariable Long userId, @PathVariable Long placeId, Authentication authentication) {
+    @DeleteMapping("/user/place/{placeId}")
+    public ResponseEntity<Void> removeFavorite(@PathVariable Long placeId, Authentication authentication) {
         favoriteService.removeFavorite(authentication, placeId);
         return ResponseEntity.ok().build();
     }
