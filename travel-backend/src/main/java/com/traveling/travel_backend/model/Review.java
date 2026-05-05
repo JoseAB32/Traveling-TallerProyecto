@@ -78,4 +78,10 @@ public class Review {
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }
+
+    public Review getParent() { return parent; }
+    public void setParent(Review parent) { this.parent = parent; }
+
+    public List<Review> getReplies() { return replies; }
+    public void setReplies(List<Review> replies) { this.replies = replies; }
 }
