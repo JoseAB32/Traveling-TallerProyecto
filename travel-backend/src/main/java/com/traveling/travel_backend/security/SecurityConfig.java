@@ -34,29 +34,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/password/forgot").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/password/reset").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/password/validate").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
 
-                        .requestMatchers(
-                                "/api/login",
-                                "/api/users",
-                                "/api/cities",
-                                "/api/favorites/**",
-                                "/api/places/**",
-                                "/api/trips/**",
-                                "/api/tripitems/**",
-                                "/api/admin/logs/filter",
-                                "/swagger-ui/**",
-                                "/v3/api-docs*/**",
-                                "/api/routes/**",
-                                "/api/password/**")
-                        .permitAll()
+                        .requestMatchers("/api/password/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/cities/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/places/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/features").authenticated()
 
-                        .anyRequest().authenticated())
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**").permitAll()
 
+                        .anyRequest().authenticated()
+                        )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
