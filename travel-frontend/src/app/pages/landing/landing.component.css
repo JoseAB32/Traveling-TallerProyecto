@@ -148,7 +148,6 @@
   }
 
   .content-wrapper {
-    background-color: aqua;
     flex-direction: column;
     align-items: center;
     max-width: 100%;
@@ -171,7 +170,6 @@
   }
 
   .text-block p {
-    background-color: tomato;
     text-align: center;
     margin: 0;
   }
@@ -189,7 +187,7 @@
 
   .cta-buttons {
     justify-content: space-between;
-    grid-area: 15px;
+    gap: 15px;
   }
 
   .image-collage {
@@ -199,7 +197,6 @@
     min-height: 330px;
     position: relative;
     overflow: visible;
-    background: yellow;
   }
 
   .image-collage img {
@@ -219,23 +216,20 @@
   .img-mid { transform: rotate(12deg); z-index: 2; top: 130px; right: 40px; }
   .img-bottom-2 { transform: rotate(-5deg); z-index: 3; bottom: 42px; left: 30px; }
 
-  /* .center-content {
-    flex-direction: column;
-    align-items: center;
+  .cta-card {
+    max-width: 450px;
   }
 
-  .cta-card {
-    max-width: 480px;
-    text-align: center;
+  .cta-card h3 {
+    font-size: 1.2rem;
   }
 
   .full-img {
-    width: 100%;
-    margin-bottom: 20px;
-  } */
+    width: 80%;
+  } 
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
   .cta-buttons {
     flex-direction: column;
     justify-content: center;
@@ -244,16 +238,40 @@
   }
 
   .image-collage {
-    flex: none;
-    width: 80%; /**/
-    height: 330px;
-    min-height: 330px;
-    position: relative;
-    overflow: visible;
-    background: yellow;
+    width: 70%;
   }
 
   .btn {
     width: 100%;
   }
+
+  .btn02 {
+    width: 50%;
+  }
+}
+
+@media (max-width: 450px) {
+  .image-collage {
+    height: 300px;
+    min-height: 300px;
+  }
+
+  .image-collage img {
+    max-width: 140px; 
+  }
+
+  .img-top { transform: rotate(17deg); z-index: 1; top: 23px; left: 130px;}
+  .img-left { transform: rotate(-20deg); z-index: 2; top: 50px; left: 0px; }
+  .img-bottom { transform: rotate(7deg); z-index: 3; top: 100px; left: 90px; }
+
+  .img-large { z-index: 0; top: 10px; left: 140px;}
+  .img-small { z-index: 1; bottom: 15px; left: 30px; }
+
+  .img-top2 { transform: rotate(-21deg); z-index: 1; top: 60px; left: 20px;}
+  .img-mid { transform: rotate(12deg); z-index: 2; top: 110px; right: 30px; }
+  .img-bottom-2 { transform: rotate(-10deg); z-index: 3; bottom: 60px; left: 25px; }
+
+  .full-img {
+    width: 60%;
+  } 
 }

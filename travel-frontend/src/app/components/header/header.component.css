@@ -10,9 +10,13 @@
   z-index: 10;
 }
 
-svg {
+.logo-gran {
   width: 40%;
   color: white;
+}
+
+.logo-simp {
+  display: none;
 }
 
 .search-bar {
@@ -245,8 +249,13 @@ svg {
     padding: 0px 20px;
   }
 
-  svg {
-    width: 20%;
+  .logo-gran {
+    display: none;
+  }
+
+  .logo-simp {
+    display: block;
+    width: 40%;
   }
 
   .idioma-container {
