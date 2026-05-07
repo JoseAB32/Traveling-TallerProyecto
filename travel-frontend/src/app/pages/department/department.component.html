@@ -12,7 +12,7 @@
   }
 
   @if (!loading) {
-    <div class="row align-items-center mb-5 pb-4">
+    <div class="map-container row align-items-center mb-5 pb-4">
   
       <!-- Izquierda: El Mapa -->
       <div class="col-lg-6 mb-4 mb-lg-0">
@@ -54,7 +54,6 @@
 
     <h4 class="fw-bold text-traveling-orange mb-5 text-uppercase">{{ 'department.titleBestPlaces' | transloco }}</h4>
 
-    
     <!-- Iteramos sobre tu nueva variable placesTop -->
     @for (place of placesTop; track place.id; let i = $index) {
       <!-- SI ES PAR: Tarjeta Azul Oscuro (Imagen Izquierda) -->

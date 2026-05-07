@@ -353,7 +353,9 @@
              (transitionend)="onTrackTransitionEnd()">
 
           <div *ngFor="let place of carouselPlaces; let i = index; trackBy: trackByPlaceId"
-               class="tarjeta">
+            class="tarjeta"
+            [style.flex]="cardFlex"
+            [style.max-width]="cardWidth">
 
             <div
               class="card-background" 
@@ -411,4 +413,5 @@
     </div>
   </section>
 </main>
+
 <app-footer></app-footer>

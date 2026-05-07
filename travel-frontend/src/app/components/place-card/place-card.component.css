@@ -5,7 +5,7 @@
   margin-bottom: 30px;
   gap: 30px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  align-items: flex-start;
+  align-items: center;
 }
 
 .theme-blue {
@@ -80,3 +80,34 @@
 .theme-blue .btn-ver-mas:hover { background: var(--white); color: var(--baltic-blue); }
 .theme-orange .btn-ver-mas { background: var(--steel-azure); color: var(--white); }
 .theme-orange .btn-ver-mas:hover { background: var(--baltic-blue); color:var(--beige);}
+
+@media (max-width: 450px) {
+  .card-container {
+    padding: 20px; 
+    margin-bottom: 20px; 
+    gap: 20px; 
+    flex-direction: column;
+  }
+
+  .image-section { 
+    width: 100%;
+  }
+
+  .white-frame {
+    padding: 6px;
+  }
+
+  .info-section {
+    gap: 6px;
+  }
+
+  .card-header h3 { font-size: 1.35rem; }
+
+  .heart-icon { font-size: 1.5rem; }
+
+  .btn-ver-mas {
+    padding: 6px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+}

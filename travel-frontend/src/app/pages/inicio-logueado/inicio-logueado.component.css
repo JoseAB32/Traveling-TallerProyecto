@@ -74,18 +74,18 @@
 }
 
 .tooltip {
-  position: fixed;
-  background: var(--atomic-tangerine);
-  color: white;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 1rem;
-  z-index: 999999;
-  pointer-events: none;
-  display: block;
-  opacity: 1;
-  visibility: visible;
-  font-weight: 700;
+    position: fixed;
+    background: var(--atomic-tangerine);
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    z-index: 999999;
+    pointer-events: none;
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    font-weight: 700;
 }
 
 .texto-container {
@@ -125,10 +125,11 @@
 }
 
 .tarjeta {
-    flex: 0 0 calc(100% / 3);
-    max-width: calc(100% / 3);
+    /* flex: 0 0 calc(100% / 3);
+    max-width: calc(100% / 3); */
     padding: 0 10px;
     will-change: transform, opacity;
+    box-sizing: border-box;
 }
 
 .bg-blue-dark {
@@ -286,4 +287,187 @@
     gap: 12px;
     margin-top: 18px;
     padding-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .carousel-wrapper {
+        padding: 0 12px 28px;
+    }
+
+    .tarjeta {
+        padding: 0 8px;
+    }
+}
+
+@media (max-width: 450px) {
+    .main-content {
+        padding: 0 20px; 
+    }
+
+    .mapa-section {
+        width: 100%; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        padding: 5px 0; 
+        gap: 20px;
+    }
+
+    .mapa-container {
+        width: 100%; 
+        height: 460px;
+    }
+
+    .pando {
+        left: 15px;
+        top: -20px;
+        width: 130px;
+    }
+
+    .pando path {
+        fill: #fce1c5 !important;
+    }
+
+    .beni {
+        left: 74px;
+        top: -47px;
+        width: 185px;
+    }
+
+    .beni path {
+        fill: #F7C59F !important;
+    }
+
+    .lapaz {
+        left: 17.2px;
+        top: -2px;
+        width: 86px;
+    }
+
+    .lapaz path {
+        fill: #f3ac75 !important;
+    }
+
+    .oruro {
+        left: 31px;
+        top: 223.5px;
+        width: 95px;
+    }
+
+    .oruro path {
+        fill: #F7C59F !important;
+    }
+
+    .potosi {
+        left: 44px;
+        top: 197.5px;
+        width: 118px;
+    }
+
+    .potosi path {
+        fill: #f3ac75 !important;
+    }
+
+    .cochabamba {
+        left: 94px;
+        top: 165px;
+        width: 85px;
+    }
+
+    .cochabamba path {
+        fill: #fce1c5 !important;
+    }
+
+    .chuquisaca {
+        left: 131.5px;
+        top: 241.5px;
+        width: 105px;
+    }
+
+    .chuquisaca path {
+        fill: #F7C59F !important;
+    }
+
+    .tarija {
+        left: 144.3px;
+        top: 339px;
+        width: 91px;
+    }
+
+    .tarija path {
+        fill: #fce1c5 !important;
+    }
+
+    .santacruz {
+        left: 158px;
+        top: 31px;
+        width: 220px;
+    }
+
+    .santacruz path {
+        fill: #f3ac75 !important;
+    }
+
+    .tooltip {
+        display: none;
+    }
+
+    .texto-container {
+        width: 100%;
+    }
+
+    .mapa-texto {
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .text-orange {
+        padding: 15px 0 20px 0;
+        font-size: 1.3rem;
+    }
+
+    .carousel-wrapper {
+        padding: 0 0 5px 0;
+    }
+
+    .tarjeta {
+        padding: 0 6px;
+    }
+
+    .card-background {
+        height: 450px;
+        margin: 0 25px;
+    }
+
+    .btn-indicador {
+        width: 8px;
+        height: 8px;
+    }
+
+    .stars svg {
+        width: 8%;
+    }
+
+    .nombre-container {
+        font-size: 1.3rem;
+    }
+
+    .indicadores-container {
+        padding-bottom: 0px;
+    }
+
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 2rem;
+    }
+
+    .carousel-btn-prev {
+        left: -10px;
+    }
+
+    .carousel-btn-next {
+        right: -10px;
+    }
+
 }

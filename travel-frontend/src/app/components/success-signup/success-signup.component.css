@@ -28,7 +28,6 @@
 }
 
 svg {
-    /* font-size: 3rem; */
     width: 18%;
     color: rgb(46, 138, 46);
 }
@@ -50,4 +49,16 @@ svg {
 
 .success-container a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .success-container {
+        width: 70%;
+    }
+}
+
+@media (max-width: 450px) {
+    .success-container {
+        width: 80%;
+    }
 }

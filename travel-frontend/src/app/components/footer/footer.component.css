@@ -53,6 +53,10 @@ a {
   .divider {
     display: none;
   }
+
+  h4 {
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 550px) {
@@ -71,7 +75,6 @@ a {
 
   h4 {
     text-align: center;
-    font-size: 1.2rem;
   }
 
   a {
