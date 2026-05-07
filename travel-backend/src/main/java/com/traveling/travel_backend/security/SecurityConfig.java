@@ -1,5 +1,6 @@
 package com.traveling.travel_backend.security;
 
+import java.util.Arrays; 
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -14,14 +15,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.core.env.Environment;
 
 @Configuration
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    private final Environment env;
+    
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, Environment env) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.env = env;
     }
 
     @Bean
@@ -30,10 +34,8 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
+                .authorizeHttpRequests(auth -> {
+                        auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
 
@@ -45,18 +47,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/features").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/features").authenticated();
 
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**").permitAll()
+                        if (Arrays.asList(env.getActiveProfiles()).contains("dev")) {
+                                auth.requestMatchers("/swagger-ui/**", "/v3/api-docs*/**").permitAll();
+                        }
 
-                        .anyRequest().authenticated()
-                        )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                        auth.anyRequest().authenticated();
+                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
