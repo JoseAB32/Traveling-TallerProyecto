@@ -1,6 +1,7 @@
 package com.traveling.travel_backend.controller;
 
 import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.ReviewPageResponseDTO;
 import com.traveling.travel_backend.dto.ReviewResponseDTO;
 import com.traveling.travel_backend.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,5 +27,14 @@ public class ReviewController {
         return reviewService.getBestReview(placeId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
+    }
+
+    @Operation(summary = "Get paginated reviews by place", description = "Returns active root reviews ordered by latest created date", operationId = "getPlaceReviews")
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity<ReviewPageResponseDTO> getPlaceReviews(
+            @PathVariable Long placeId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(reviewService.getPlaceReviews(placeId, page, size));
     }
 }
