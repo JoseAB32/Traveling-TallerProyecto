@@ -36,13 +36,14 @@
                </div>
 
                <div class="ms-3 flex-shrink-0">
-                 <button
-                   type="button"
-                   class="btn btn-sm btn-outline-primary"
-                   (click)="goToPlaceDetail(place.id)">
-                   Ver detalle
-                 </button>
-               </div>
+                  <button
+                    type="button"
+                    class="detail-btn"
+                    [ngClass]="i % 2 === 0 ? 'detail-btn-orange' : 'detail-btn-blue'"
+                    (click)="goToPlaceDetail(place.id)">
+                    Ver detalle
+                  </button>
+                </div>
               
           </div>
         </div>
