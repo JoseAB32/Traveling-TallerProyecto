@@ -63,6 +63,7 @@
               [value]="searchTerm"
               (input)="onSearch($event)"
               (focus)="showSuggestions = suggestions.length > 0"
+              (keydown.enter)="goToSearch()"
             >
             <button class="search-btn" (click)="goToSearch()">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">

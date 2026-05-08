@@ -112,7 +112,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
 selectSuggestion(place: Place) {
     this.searchTerm = place.name;
     this.showSuggestions = false;
-    // this.router.navigate(['/lugar', place.id]);  PARA NAVEGAR DIRECTO AL LUGAR SLEECCIONADO AL DAR CLICK REVISAR
+    this.router.navigate(['/place', place.id], { queryParams: { returnTo: 'search' } });
 }
 
 goToSearch() {
