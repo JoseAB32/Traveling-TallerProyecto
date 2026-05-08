@@ -71,8 +71,8 @@ public class Review {
     public String getComment() { return comment; }
     public void setComment(String comment) { this.comment = comment; }
 
-    public int getScore() { return score; }
-    public void setScore(int score) { this.score = score; }
+    public Integer getScore() { return score; }
+    public void setScore(Integer score) { this.score = score; }
 
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }

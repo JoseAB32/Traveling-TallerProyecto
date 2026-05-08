@@ -53,7 +53,7 @@ public class ReviewService {
         logRepository.save(new LogEntity(AppConstants.LOG_REVIEWS, AppConstants.LOG_INFO, logMessage, null));
 
         Optional<ReviewResponseDTO> result = reviewRepository
-                .findFirstByPlaceIdAndStateTrueOrderByScoreDesc(placeId)
+                .findFirstByPlaceIdAndStateTrueAndParentIsNullOrderByScoreDesc(placeId)
                 .map(ReviewResponseDTO::fromEntity);
 
         logger.debug("[{}] Mejor resena para lugar ID {}: {}", AppConstants.LOG_REVIEWS, placeId, result.isPresent() ? "encontrada" : "no encontrada");
@@ -61,7 +61,7 @@ public class ReviewService {
         return result;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public ReviewPageResponseDTO getPlaceReviews(Long placeId, int page, int size) {
         int safePage = Math.max(0, page);
         int safeSize = size <= 0 ? 10 : size;
