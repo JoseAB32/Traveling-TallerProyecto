@@ -1,11 +1,13 @@
 package com.traveling.travel_backend.controller;
 
 import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.CreateReviewRequestDTO;
 import com.traveling.travel_backend.dto.ReviewPageResponseDTO;
 import com.traveling.travel_backend.dto.ReviewResponseDTO;
 import com.traveling.travel_backend.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +38,12 @@ public class ReviewController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(reviewService.getPlaceReviews(placeId, page, size));
+    }
+
+    @Operation(summary = "Create place review", description = "Creates a new review for a place", operationId = "createReview")
+    @PostMapping
+    public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody CreateReviewRequestDTO request) {
+        ReviewResponseDTO createdReview = reviewService.createReview(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
     }
 }

@@ -1,11 +1,19 @@
 package com.traveling.travel_backend.service;
 
 import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.CreateReviewRequestDTO;
 import com.traveling.travel_backend.dto.ReviewPageResponseDTO;
 import com.traveling.travel_backend.dto.ReviewResponseDTO;
+import com.traveling.travel_backend.exception.BadRequestException;
+import com.traveling.travel_backend.exception.ResourceNotFoundException;
 import com.traveling.travel_backend.model.LogEntity;
+import com.traveling.travel_backend.model.Place;
+import com.traveling.travel_backend.model.Review;
+import com.traveling.travel_backend.model.User;
 import com.traveling.travel_backend.repository.LogRepository;
+import com.traveling.travel_backend.repository.PlaceRepository;
 import com.traveling.travel_backend.repository.ReviewRepository;
+import com.traveling.travel_backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -22,11 +30,19 @@ public class ReviewService {
     private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+    private final PlaceRepository placeRepository;
     private final LogRepository logRepository;
 
-    public ReviewService(ReviewRepository reviewRepository, LogRepository logRepository) {
+    public ReviewService(
+            ReviewRepository reviewRepository,
+            UserRepository userRepository,
+            PlaceRepository placeRepository,
+            LogRepository logRepository) {
         this.reviewRepository = reviewRepository;
-        this.logRepository    = logRepository;
+        this.userRepository = userRepository;
+        this.placeRepository = placeRepository;
+        this.logRepository = logRepository;
     }
 
     @Transactional
@@ -76,5 +92,66 @@ public class ReviewService {
                 reviewsPage.getNumber());
 
         return response;
+    }
+
+    @Transactional
+    public ReviewResponseDTO createReview(CreateReviewRequestDTO request) {
+        validateCreateReviewRequest(request);
+
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        Place place = placeRepository.findById(request.getPlaceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Lugar no encontrado"));
+
+        Review review = new Review();
+        review.setUser(user);
+        review.setPlace(place);
+        review.setComment(request.getComment().trim());
+        review.setScore(request.getScore());
+        review.setState(true);
+
+        if (request.getParentId() != null) {
+            Review parentReview = reviewRepository.findById(request.getParentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Reseña padre no encontrada"));
+
+            if (parentReview.getPlace() == null || parentReview.getPlace().getId() != place.getId()) {
+                throw new BadRequestException("La reseña padre no pertenece al lugar indicado");
+            }
+
+            review.setParent(parentReview);
+        }
+
+        Review savedReview = reviewRepository.save(review);
+
+        String logMessage = "Reseña creada para lugar (ID): " + place.getId() + " por usuario (ID): " + user.getId()
+                + " - POST /api/reviews";
+
+        logger.info("[{}] {}", AppConstants.LOG_REVIEWS, logMessage);
+        logRepository.save(new LogEntity(AppConstants.LOG_REVIEWS, AppConstants.LOG_INFO, logMessage, user.getId()));
+
+        return ReviewResponseDTO.fromEntity(savedReview);
+    }
+
+    private void validateCreateReviewRequest(CreateReviewRequestDTO request) {
+        if (request == null) {
+            throw new BadRequestException("La solicitud de reseña es obligatoria");
+        }
+
+        if (request.getUserId() == null) {
+            throw new BadRequestException("El userId es obligatorio");
+        }
+
+        if (request.getPlaceId() == null) {
+            throw new BadRequestException("El placeId es obligatorio");
+        }
+
+        if (request.getComment() == null || request.getComment().trim().isEmpty()) {
+            throw new BadRequestException("El comentario es obligatorio");
+        }
+
+        if (request.getScore() == null || request.getScore() < 1 || request.getScore() > 5) {
+            throw new BadRequestException("El puntaje debe estar entre 1 y 5");
+        }
     }
 }
