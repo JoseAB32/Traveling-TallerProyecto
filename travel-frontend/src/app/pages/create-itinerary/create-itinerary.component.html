@@ -31,7 +31,7 @@
       } @else if (cityPlaces.length === 0) {
         <div class="loading-box no-places">{{ 'createItinerary.textThereAreNoPlaces' | transloco }}</div>
       } @else {
-        <app-map [places]="cityPlaces" (placeClicked)="onMapPlaceClick($event)" [showRoute]="false"></app-map>
+        <app-map [places]="cityPlaces" (placeClicked)="onMapPlaceClick($event)" [showRoute]="false" [forcePlaceClick]="true"></app-map>
       }
     </div>
 
