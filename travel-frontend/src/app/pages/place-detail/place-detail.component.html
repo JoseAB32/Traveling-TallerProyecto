@@ -170,6 +170,65 @@
         </div>
       </div>
     </div>
+
+    <section class="reviews-section">
+      <h2 class="reviews-title">Reseñas del Lugar</h2>
+
+      <div class="review-create-card">
+        <div class="review-author">Por {{ currentUserName }}</div>
+        <textarea
+          [(ngModel)]="reviewComment"
+          class="review-textarea"
+          placeholder="Calificar y escribir reseña..."
+          rows="3"
+          [disabled]="!isAuthenticated || publishingReview">
+        </textarea>
+
+        <div class="review-create-footer">
+          <div class="review-stars-input" role="radiogroup" aria-label="Calificación de reseña">
+            <button
+              *ngFor="let star of stars"
+              type="button"
+              class="star-btn"
+              [class.selected]="star <= reviewScore"
+              (click)="selectReviewScore(star)"
+              [disabled]="!isAuthenticated || publishingReview"
+              [attr.aria-label]="'Puntuar con ' + star + ' estrellas'">
+              ★
+            </button>
+          </div>
+
+          <button
+            type="button"
+            class="publish-btn"
+            [disabled]="!canPublishReview"
+            (click)="publishReview()">
+            {{ publishingReview ? 'Publicando...' : 'Publicar' }}
+          </button>
+        </div>
+
+        <p class="review-help" *ngIf="!isAuthenticated">Inicia sesión para publicar una reseña.</p>
+        <p class="review-error" *ngIf="reviewError">{{ reviewError }}</p>
+      </div>
+
+      <div class="review-item-card" *ngFor="let review of reviews">
+        <div class="review-author">Por {{ review.user.userName }}</div>
+        <p class="review-comment">{{ review.comment }}</p>
+        <div class="review-score">{{ getReviewStars(review.score) }}</div>
+        <div class="review-meta">
+          <span>{{ formatReviewDate(review.createdAt) }}</span>
+          <button type="button" class="reply-btn" disabled>Responder</button>
+        </div>
+      </div>
+
+      <p class="reviews-empty" *ngIf="!reviewsLoading && reviews.length === 0">Aún no hay reseñas para este lugar.</p>
+
+      <div class="reviews-actions" *ngIf="reviewsHasNext">
+        <button type="button" class="load-more-btn" (click)="loadPlaceReviews(false)" [disabled]="reviewsLoading">
+          {{ reviewsLoading ? 'Cargando...' : 'Cargar más reseñas' }}
+        </button>
+      </div>
+    </section>
   </div>
 </div>
 

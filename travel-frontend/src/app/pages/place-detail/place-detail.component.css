@@ -282,3 +282,143 @@ body {
   width: 26px;   /* 🔥 antes 20px */
   height: 26px;  /* 🔥 antes 20px */
 }
+
+.reviews-section {
+  margin-top: 44px;
+}
+
+.reviews-title {
+  font-size: 1.7rem;
+  color: #ff6d3a;
+  border-bottom: 3px solid #ff6d3a;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.review-create-card,
+.review-item-card {
+  border: 2px solid #2f7ac4;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: #f7f7f7;
+}
+
+.review-author {
+  color: #8a8a8a;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.review-textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  resize: vertical;
+  font-family: inherit;
+  color: #333;
+  outline: none;
+}
+
+.review-create-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.review-stars-input {
+  display: flex;
+  gap: 4px;
+}
+
+.star-btn {
+  border: none;
+  background: transparent;
+  color: #7f7f7f;
+  cursor: pointer;
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.star-btn.selected {
+  color: #111;
+}
+
+.star-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.publish-btn {
+  border: none;
+  border-radius: 10px;
+  background: #ff7c48;
+  color: #fff;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.publish-btn:disabled {
+  background: #ffc7ae;
+  cursor: not-allowed;
+}
+
+.review-help,
+.review-error,
+.reviews-empty {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+}
+
+.review-error {
+  color: #b21b1b;
+}
+
+.review-comment {
+  margin: 0 0 8px;
+  color: #1f1f1f;
+}
+
+.review-score {
+  margin-bottom: 8px;
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+}
+
+.review-meta {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: #8a8a8a;
+}
+
+.reply-btn {
+  border: none;
+  background: transparent;
+  color: #808080;
+  font-weight: 600;
+  padding: 0;
+}
+
+.reviews-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.load-more-btn {
+  border: 1px solid #2f4f7f;
+  background: #fff;
+  color: #2f4f7f;
+  border-radius: 18px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.load-more-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
