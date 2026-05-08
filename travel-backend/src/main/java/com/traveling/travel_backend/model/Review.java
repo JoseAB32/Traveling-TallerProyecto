@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "reviews")
@@ -31,7 +32,8 @@ public class Review {
     @Column(name = "score", nullable = true) 
     private Integer score;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
     @Column(name = "state", nullable = false)
