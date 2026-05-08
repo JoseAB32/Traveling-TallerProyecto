@@ -35,8 +35,10 @@ export class PlaceDetailComponent implements OnInit {
   reviews: Review[] = [];
   reviewsLoading = false;
   reviewsPage = 0;
+  currentReviewsPage = 0;
   reviewsSize = 10;
   reviewsHasNext = false;
+  reviewsTotalPages = 0;
   reviewsTotal = 0;
   publishingReview = false;
   reviewComment = '';
@@ -127,9 +129,10 @@ export class PlaceDetailComponent implements OnInit {
     }
 
     if (reset) {
-      this.reviews = [];
       this.reviewsPage = 0;
+      this.currentReviewsPage = 0;
       this.reviewsHasNext = false;
+      this.reviewsTotalPages = 0;
       this.reviewsTotal = 0;
     }
 
@@ -137,10 +140,11 @@ export class PlaceDetailComponent implements OnInit {
 
     this.reviewService.getPlaceReviews(this.place.id, this.reviewsPage, this.reviewsSize).subscribe({
       next: (response) => {
-        this.reviews = [...this.reviews, ...response.content];
+        this.reviews = response.content;
         this.reviewsHasNext = response.hasNext;
+        this.reviewsTotalPages = response.totalPages;
         this.reviewsTotal = response.totalElements;
-        this.reviewsPage = response.page + 1;
+        this.currentReviewsPage = response.page;
         this.reviewsLoading = false;
       },
       error: () => {
@@ -177,8 +181,10 @@ export class PlaceDetailComponent implements OnInit {
 
     this.reviewService.createReview(payload).subscribe({
       next: (createdReview) => {
-        this.reviews = [createdReview, ...this.reviews];
         this.reviewsTotal += 1;
+        if (this.currentReviewsPage === 0) {
+          this.reviews = [createdReview, ...this.reviews].slice(0, this.reviewsSize);
+        }
         this.reviewComment = '';
         this.reviewScore = 0;
         this.publishingReview = false;
@@ -190,6 +196,27 @@ export class PlaceDetailComponent implements OnInit {
         this.publishingReview = false;
       }
     });
+  }
+
+  goToReviewsPage(page: number): void {
+    if (page < 0 || page === this.currentReviewsPage || this.reviewsLoading || !this.place) {
+      return;
+    }
+
+    if (this.reviewsTotalPages > 0 && page >= this.reviewsTotalPages) {
+      return;
+    }
+
+    this.reviewsPage = page;
+    this.loadPlaceReviews(false);
+  }
+
+  get reviewsPageNumbers(): number[] {
+    if (this.reviewsTotalPages <= 1) {
+      return [];
+    }
+
+    return Array.from({ length: this.reviewsTotalPages }, (_, index) => index);
   }
 
   formatReviewDate(createdAt?: string): string {

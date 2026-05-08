@@ -223,9 +223,31 @@
 
       <p class="reviews-empty" *ngIf="!reviewsLoading && reviews.length === 0">Aún no hay reseñas para este lugar.</p>
 
-      <div class="reviews-actions" *ngIf="reviewsHasNext">
-        <button type="button" class="load-more-btn" (click)="loadPlaceReviews(false)" [disabled]="reviewsLoading">
-          {{ reviewsLoading ? 'Cargando...' : 'Cargar más reseñas' }}
+      <div class="reviews-actions" *ngIf="reviewsPageNumbers.length > 0">
+        <button
+          type="button"
+          class="page-nav-btn"
+          (click)="goToReviewsPage(currentReviewsPage - 1)"
+          [disabled]="currentReviewsPage === 0 || reviewsLoading">
+          Anterior
+        </button>
+
+        <button
+          *ngFor="let page of reviewsPageNumbers"
+          type="button"
+          class="page-number-btn"
+          [class.active]="page === currentReviewsPage"
+          (click)="goToReviewsPage(page)"
+          [disabled]="reviewsLoading">
+          {{ page + 1 }}
+        </button>
+
+        <button
+          type="button"
+          class="page-nav-btn"
+          (click)="goToReviewsPage(currentReviewsPage + 1)"
+          [disabled]="!reviewsHasNext || reviewsLoading">
+          Siguiente
         </button>
       </div>
     </section>
