@@ -80,4 +80,34 @@ describe('ReviewService', () => {
       place: { id: 3 }
     });
   });
+
+  it('should call review replies endpoint with default size', () => {
+    service.getReviewReplies(12, 0).subscribe(response => {
+      expect(response.page).toBe(0);
+      expect(response.size).toBe(2);
+      expect(response.content.length).toBe(1);
+    });
+
+    const req = httpMock.expectOne(r =>
+      r.method === 'GET' &&
+      r.url.includes('/api/reviews/12/replies') &&
+      r.urlWithParams.includes('page=0') &&
+      r.urlWithParams.includes('size=2')
+    );
+
+    req.flush({
+      content: [{
+        id: 22,
+        comment: 'Respuesta',
+        state: true,
+        user: { id: 2, userName: 'ana', correo: '', pass: '', birthday: '', city_id: null, state: true },
+        place: { id: 3 }
+      }],
+      page: 0,
+      size: 2,
+      totalElements: 3,
+      totalPages: 2,
+      hasNext: true
+    });
+  });
 });

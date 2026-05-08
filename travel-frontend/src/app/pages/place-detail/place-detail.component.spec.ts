@@ -38,6 +38,7 @@ describe('PlaceDetailComponent', () => {
 
   const reviewServiceMock = {
     getPlaceReviews: jasmine.createSpy('getPlaceReviews'),
+    getReviewReplies: jasmine.createSpy('getReviewReplies'),
     createReview: jasmine.createSpy('createReview')
   };
 
@@ -111,6 +112,14 @@ describe('PlaceDetailComponent', () => {
       totalPages: 1,
       hasNext: false
     }));
+    reviewServiceMock.getReviewReplies.and.returnValue(of({
+      content: [],
+      page: 0,
+      size: 2,
+      totalElements: 0,
+      totalPages: 0,
+      hasNext: false
+    }));
 
     await TestBed.configureTestingModule({
       imports: [
@@ -157,7 +166,53 @@ describe('PlaceDetailComponent', () => {
 
   it('should load reviews when place detail loads', () => {
     expect(reviewServiceMock.getPlaceReviews).toHaveBeenCalledWith(5, 0, 10);
+    expect(reviewServiceMock.getReviewReplies).toHaveBeenCalledWith(10, 0, 2);
     expect(component.reviews.length).toBe(1);
+  });
+
+  it('should open composer and publish reply', () => {
+    component.toggleReplyComposer(10);
+    component.getRepliesState(10).replyComment = 'Respuesta directa';
+
+    reviewServiceMock.createReview.and.returnValue(of({
+      id: 200,
+      comment: 'Respuesta directa',
+      createdAt: '2026-05-10T08:00:00Z',
+      state: true,
+      user: {
+        id: 1,
+        userName: 'peter',
+        correo: 'p@t.com',
+        pass: '',
+        birthday: '',
+        city_id: null,
+        state: true
+      },
+      place: {
+        id: 5,
+        name: '',
+        description: '',
+        address: '',
+        rating: 0,
+        price: 0,
+        latitude: 0,
+        longitude: 0,
+        place_type: '',
+        city: null,
+        city_id: 0,
+        is_event: false,
+        start_date: null,
+        end_date: null,
+        imageUrl: '',
+        state: true
+      }
+    }));
+
+    component.publishReply(component.reviews[0]);
+
+    expect(reviewServiceMock.createReview).toHaveBeenCalled();
+    expect(component.visibleReplies(10)[0].id).toBe(200);
+    expect(component.getRepliesState(10).composerOpen).toBeFalse();
   });
 
   it('should disable publishing when comment or score are missing', () => {
