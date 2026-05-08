@@ -217,7 +217,55 @@
         <div class="review-score">{{ getReviewStars(review.score) }}</div>
         <div class="review-meta">
           <span>{{ formatReviewDate(review.createdAt) }}</span>
-          <button type="button" class="reply-btn" disabled>Responder</button>
+          <button type="button" class="reply-btn" (click)="toggleReplyComposer(review.id)">Responder</button>
+        </div>
+
+        <div class="reply-composer" *ngIf="getRepliesState(review.id).composerOpen">
+          <textarea
+            [(ngModel)]="getRepliesState(review.id).replyComment"
+            class="reply-textarea"
+            rows="2"
+            placeholder="Escribe una respuesta..."
+            [disabled]="getRepliesState(review.id).publishing || !isAuthenticated">
+          </textarea>
+          <div class="reply-actions">
+            <button
+              type="button"
+              class="reply-publish-btn"
+              (click)="publishReply(review)"
+              [disabled]="!isAuthenticated || getRepliesState(review.id).publishing || getRepliesState(review.id).replyComment.trim().length === 0">
+              {{ getRepliesState(review.id).publishing ? 'Publicando...' : 'Publicar respuesta' }}
+            </button>
+          </div>
+          <p class="review-help" *ngIf="!isAuthenticated">Inicia sesión para responder.</p>
+          <p class="review-error" *ngIf="getRepliesState(review.id).error">{{ getRepliesState(review.id).error }}</p>
+        </div>
+
+        <div class="reply-list" *ngIf="visibleReplies(review.id).length > 0">
+          <div class="reply-divider"></div>
+          <div class="reply-item" *ngFor="let reply of visibleReplies(review.id)">
+            <div class="review-author">Por {{ reply.user.userName }}</div>
+            <p class="review-comment">{{ reply.comment }}</p>
+            <div class="reply-meta">{{ formatReviewDate(reply.createdAt) }}</div>
+          </div>
+
+          <div class="reply-toggle-row" *ngIf="hasHiddenReplies(review.id) || getRepliesState(review.id).expanded">
+            <button
+              type="button"
+              class="reply-toggle-btn"
+              *ngIf="hasHiddenReplies(review.id)"
+              (click)="viewMoreReplies(review.id)">
+              Ver {{ hiddenRepliesCount(review.id) }} más
+            </button>
+
+            <button
+              type="button"
+              class="reply-toggle-btn"
+              *ngIf="getRepliesState(review.id).expanded"
+              (click)="collapseReplies(review.id)">
+              Ocultar
+            </button>
+          </div>
         </div>
       </div>
 

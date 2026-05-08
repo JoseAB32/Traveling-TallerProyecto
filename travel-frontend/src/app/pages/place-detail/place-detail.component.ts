@@ -15,6 +15,20 @@ import { FavoriteService } from '../../services/favorite/favorite.service';
 import { ReviewService } from '../../services/review/review.service';
 import { CreateReviewRequest, Review } from '../../models/review/review';
 
+interface ReviewRepliesState {
+  replies: Review[];
+  page: number;
+  hasNext: boolean;
+  totalElements: number;
+  totalPages: number;
+  loading: boolean;
+  expanded: boolean;
+  composerOpen: boolean;
+  replyComment: string;
+  publishing: boolean;
+  error: string;
+}
+
 @Component({
   selector: 'app-place-detail',
   standalone: true,
@@ -45,6 +59,8 @@ export class PlaceDetailComponent implements OnInit {
   reviewScore = 0;
   reviewError = '';
   readonly stars = [1, 2, 3, 4, 5];
+  readonly repliesPreviewSize = 2;
+  repliesStateMap: Record<number, ReviewRepliesState> = {};
 
   isFavorite: boolean = false;
 
@@ -138,13 +154,14 @@ export class PlaceDetailComponent implements OnInit {
 
     this.reviewsLoading = true;
 
-    this.reviewService.getPlaceReviews(this.place.id, this.reviewsPage, this.reviewsSize).subscribe({
+        this.reviewService.getPlaceReviews(this.place.id, this.reviewsPage, this.reviewsSize).subscribe({
       next: (response) => {
         this.reviews = response.content;
         this.reviewsHasNext = response.hasNext;
         this.reviewsTotalPages = response.totalPages;
         this.reviewsTotal = response.totalElements;
         this.currentReviewsPage = response.page;
+        this.initializeRepliesState(this.reviews);
         this.reviewsLoading = false;
       },
       error: () => {
@@ -196,6 +213,158 @@ export class PlaceDetailComponent implements OnInit {
         this.publishingReview = false;
       }
     });
+  }
+
+  initializeRepliesState(reviews: Review[]): void {
+    const nextState: Record<number, ReviewRepliesState> = {};
+
+    reviews.forEach((review) => {
+      const previous = this.repliesStateMap[review.id];
+      nextState[review.id] = previous ?? this.createInitialRepliesState();
+    });
+
+    this.repliesStateMap = nextState;
+    reviews.forEach((review) => this.loadReplies(review.id, true));
+  }
+
+  createInitialRepliesState(): ReviewRepliesState {
+    return {
+      replies: [],
+      page: 0,
+      hasNext: false,
+      totalElements: 0,
+      totalPages: 0,
+      loading: false,
+      expanded: false,
+      composerOpen: false,
+      replyComment: '',
+      publishing: false,
+      error: ''
+    };
+  }
+
+  getRepliesState(reviewId: number): ReviewRepliesState {
+    if (!this.repliesStateMap[reviewId]) {
+      this.repliesStateMap[reviewId] = this.createInitialRepliesState();
+    }
+
+    return this.repliesStateMap[reviewId];
+  }
+
+  loadReplies(reviewId: number, reset: boolean): void {
+    const state = this.getRepliesState(reviewId);
+    if (state.loading) {
+      return;
+    }
+
+    if (reset) {
+      state.replies = [];
+      state.page = 0;
+      state.hasNext = false;
+      state.totalElements = 0;
+      state.totalPages = 0;
+    }
+
+    state.loading = true;
+
+    this.reviewService.getReviewReplies(reviewId, state.page, this.repliesPreviewSize).subscribe({
+      next: (response) => {
+        state.replies = reset ? response.content : [...state.replies, ...response.content];
+        state.page = response.page + 1;
+        state.hasNext = response.hasNext;
+        state.totalElements = response.totalElements;
+        state.totalPages = response.totalPages;
+        state.loading = false;
+      },
+      error: () => {
+        state.loading = false;
+      }
+    });
+  }
+
+  toggleReplyComposer(reviewId: number): void {
+    const state = this.getRepliesState(reviewId);
+    state.composerOpen = !state.composerOpen;
+    state.error = '';
+  }
+
+  publishReply(review: Review): void {
+    if (!this.place) {
+      return;
+    }
+
+    const user = this.authService.getCurrentUser();
+    const state = this.getRepliesState(review.id);
+    if (!user?.id) {
+      state.error = 'Debes iniciar sesión para responder.';
+      return;
+    }
+
+    const comment = state.replyComment.trim();
+    if (!comment || state.publishing) {
+      return;
+    }
+
+    state.publishing = true;
+    state.error = '';
+
+    const payload: CreateReviewRequest = {
+      userId: user.id,
+      placeId: this.place.id,
+      parentId: review.id,
+      comment,
+      score: null
+    };
+
+    this.reviewService.createReview(payload).subscribe({
+      next: (createdReply) => {
+        state.replyComment = '';
+        state.composerOpen = false;
+        state.publishing = false;
+        state.totalElements += 1;
+
+        if (state.expanded) {
+          state.replies = [createdReply, ...state.replies];
+        } else {
+          state.replies = [createdReply, ...state.replies].slice(0, this.repliesPreviewSize);
+        }
+      },
+      error: (error) => {
+        state.error = typeof error?.error?.message === 'string'
+          ? error.error.message
+          : 'No se pudo publicar la respuesta. Intenta de nuevo.';
+        state.publishing = false;
+      }
+    });
+  }
+
+  viewMoreReplies(reviewId: number): void {
+    const state = this.getRepliesState(reviewId);
+    state.expanded = true;
+    if (state.hasNext) {
+      this.loadReplies(reviewId, false);
+    }
+  }
+
+  collapseReplies(reviewId: number): void {
+    const state = this.getRepliesState(reviewId);
+    state.expanded = false;
+    this.loadReplies(reviewId, true);
+  }
+
+  visibleReplies(reviewId: number): Review[] {
+    const state = this.getRepliesState(reviewId);
+    return state.expanded ? state.replies : state.replies.slice(0, this.repliesPreviewSize);
+  }
+
+  hasHiddenReplies(reviewId: number): boolean {
+    const state = this.getRepliesState(reviewId);
+    return state.totalElements > this.visibleReplies(reviewId).length;
+  }
+
+  hiddenRepliesCount(reviewId: number): number {
+    const state = this.getRepliesState(reviewId);
+    return Math.max(0, state.totalElements - this.visibleReplies(reviewId).length);
   }
 
   goToReviewsPage(page: number): void {
