@@ -72,6 +72,33 @@ class ReviewControllerTest {
     }
 
     @Test
+    @DisplayName("GET /api/reviews/{reviewId}/replies retorna respuestas paginadas")
+    void getReviewRepliesReturnsPagedData() throws Exception {
+        ReviewResponseDTO reply = new ReviewResponseDTO();
+        reply.setId(15L);
+        reply.setComment("Respuesta");
+        reply.setCreatedAt(OffsetDateTime.now());
+        reply.setState(true);
+
+        ReviewPageResponseDTO pageResponse = new ReviewPageResponseDTO();
+        pageResponse.setContent(List.of(reply));
+        pageResponse.setPage(0);
+        pageResponse.setSize(2);
+        pageResponse.setTotalElements(3);
+        pageResponse.setTotalPages(2);
+        pageResponse.setHasNext(true);
+
+        when(reviewService.getReviewReplies(10L, 0, 2)).thenReturn(pageResponse);
+
+        mockMvc.perform(get("/api/reviews/10/replies?page=0&size=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.size").value(2))
+                .andExpect(jsonPath("$.totalElements").value(3))
+                .andExpect(jsonPath("$.hasNext").value(true));
+    }
+
+    @Test
     @DisplayName("POST /api/reviews crea reseña y retorna 201")
     void createReviewReturnsCreated() throws Exception {
         CreateReviewRequestDTO request = new CreateReviewRequestDTO();

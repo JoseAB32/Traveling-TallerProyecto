@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -90,6 +91,42 @@ class ReviewServiceTest {
     }
 
     @Test
+    @DisplayName("Debe devolver respuestas paginadas por reseña padre")
+    void getReviewRepliesReturnsPagedResponse() {
+        Review reply = new Review();
+        reply.setId(30L);
+        reply.setComment("Respuesta");
+        reply.setScore(null);
+        reply.setState(true);
+        reply.setCreatedAt(OffsetDateTime.now());
+
+        User user = new User();
+        user.setId(9L);
+        user.setUserName("ana");
+        reply.setUser(user);
+
+        Place place = new Place();
+        place.setId(2L);
+        reply.setPlace(place);
+
+        Page<Review> page = new PageImpl<>(List.of(reply), PageRequest.of(0, 2), 3);
+
+        when(reviewRepository.existsById(10L)).thenReturn(true);
+        when(reviewRepository.findByParentIdAndStateTrueOrderByCreatedAtDesc(10L, PageRequest.of(0, 2)))
+                .thenReturn(page);
+        when(logRepository.save(any(LogEntity.class))).thenReturn(null);
+
+        ReviewPageResponseDTO response = reviewService.getReviewReplies(10L, 0, 2);
+
+        assertEquals(1, response.getContent().size());
+        assertEquals(0, response.getPage());
+        assertEquals(2, response.getSize());
+        assertEquals(3, response.getTotalElements());
+        assertEquals(2, response.getTotalPages());
+        assertTrue(response.isHasNext());
+    }
+
+    @Test
     @DisplayName("Debe lanzar bad request cuando comentario está vacío")
     void createReviewThrowsBadRequestWhenCommentIsEmpty() {
         CreateReviewRequestDTO request = new CreateReviewRequestDTO();
@@ -143,5 +180,53 @@ class ReviewServiceTest {
         ArgumentCaptor<Review> captor = ArgumentCaptor.forClass(Review.class);
         verify(reviewRepository, times(1)).save(captor.capture());
         assertTrue(captor.getValue().getParent() == null);
+    }
+
+    @Test
+    @DisplayName("Debe crear respuesta sin puntaje cuando parentId es válido")
+    void createReplyWithoutScoreSuccessfully() {
+        CreateReviewRequestDTO request = new CreateReviewRequestDTO();
+        request.setUserId(1L);
+        request.setPlaceId(2L);
+        request.setParentId(10L);
+        request.setComment("Totalmente de acuerdo");
+        request.setScore(null);
+
+        User user = new User();
+        user.setId(1L);
+
+        Place place = new Place();
+        place.setId(2L);
+
+        Review parent = new Review();
+        parent.setId(10L);
+        parent.setPlace(place);
+
+        Review saved = new Review();
+        saved.setId(21L);
+        saved.setUser(user);
+        saved.setPlace(place);
+        saved.setParent(parent);
+        saved.setComment("Totalmente de acuerdo");
+        saved.setScore(null);
+        saved.setState(true);
+        saved.setCreatedAt(OffsetDateTime.now());
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(placeRepository.findById(2L)).thenReturn(Optional.of(place));
+        when(reviewRepository.findById(10L)).thenReturn(Optional.of(parent));
+        when(reviewRepository.save(any(Review.class))).thenReturn(saved);
+        when(logRepository.save(any(LogEntity.class))).thenReturn(null);
+
+        ReviewResponseDTO response = reviewService.createReview(request);
+
+        assertEquals(21L, response.getId());
+        assertEquals("Totalmente de acuerdo", response.getComment());
+        assertNull(response.getScore());
+
+        ArgumentCaptor<Review> captor = ArgumentCaptor.forClass(Review.class);
+        verify(reviewRepository, times(1)).save(captor.capture());
+        assertEquals(10L, captor.getValue().getParent().getId());
+        assertNull(captor.getValue().getScore());
     }
 }
