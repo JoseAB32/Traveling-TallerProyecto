@@ -1,6 +1,7 @@
 package com.traveling.travel_backend.model;
 
 import java.util.List;
+import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,7 +32,7 @@ public class Review {
     private Integer score;
 
     @Column(name = "created_at", insertable = false, updatable = false)
-    private String createdAt; // MySQL se encarga del CURRENT_TIMESTAMP
+    private OffsetDateTime createdAt;
 
     @Column(name = "state", nullable = false)
     private boolean state = true;
@@ -73,8 +74,8 @@ public class Review {
     public int getScore() { return score; }
     public void setScore(int score) { this.score = score; }
 
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+    public OffsetDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }

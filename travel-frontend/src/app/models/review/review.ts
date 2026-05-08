@@ -14,3 +14,20 @@ export interface Review {
   state: boolean;
   replies?: Review[]; 
 }
+
+export interface CreateReviewRequest {
+  userId: number;
+  placeId: number;
+  parentId?: number | null;
+  comment: string;
+  score: number;
+}
+
+export interface ReviewPageResponse {
+  content: Review[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
+}
