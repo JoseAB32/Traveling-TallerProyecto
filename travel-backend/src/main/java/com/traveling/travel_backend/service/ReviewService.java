@@ -95,6 +95,37 @@ public class ReviewService {
     }
 
     @Transactional
+    public ReviewPageResponseDTO getReviewReplies(Long reviewId, int page, int size) {
+        int safePage = Math.max(0, page);
+        int safeSize = size <= 0 ? 2 : size;
+
+        String logMessage = "Solicitando respuestas paginadas para reseña (ID): " + reviewId
+                + " - GET /api/reviews/" + reviewId + "/replies?page=" + safePage + "&size=" + safeSize;
+
+        logger.info("[{}] {}", AppConstants.LOG_REVIEWS, logMessage);
+        logRepository.save(new LogEntity(AppConstants.LOG_REVIEWS, AppConstants.LOG_INFO, logMessage, null));
+
+        if (!reviewRepository.existsById(reviewId)) {
+            throw new ResourceNotFoundException("Reseña no encontrada");
+        }
+
+        Pageable pageable = PageRequest.of(safePage, safeSize);
+        Page<ReviewResponseDTO> repliesPage = reviewRepository
+                .findByParentIdAndStateTrueOrderByCreatedAtDesc(reviewId, pageable)
+                .map(ReviewResponseDTO::fromEntity);
+
+        ReviewPageResponseDTO response = new ReviewPageResponseDTO();
+        response.setContent(repliesPage.getContent());
+        response.setPage(repliesPage.getNumber());
+        response.setSize(repliesPage.getSize());
+        response.setTotalElements(repliesPage.getTotalElements());
+        response.setTotalPages(repliesPage.getTotalPages());
+        response.setHasNext(repliesPage.hasNext());
+
+        return response;
+    }
+
+    @Transactional
     public ReviewResponseDTO createReview(CreateReviewRequestDTO request) {
         validateCreateReviewRequest(request);
 
@@ -108,7 +139,6 @@ public class ReviewService {
         review.setUser(user);
         review.setPlace(place);
         review.setComment(request.getComment().trim());
-        review.setScore(request.getScore());
         review.setState(true);
 
         if (request.getParentId() != null) {
@@ -120,6 +150,9 @@ public class ReviewService {
             }
 
             review.setParent(parentReview);
+            review.setScore(null);
+        } else {
+            review.setScore(request.getScore());
         }
 
         Review savedReview = reviewRepository.save(review);
@@ -150,8 +183,12 @@ public class ReviewService {
             throw new BadRequestException("El comentario es obligatorio");
         }
 
-        if (request.getScore() == null || request.getScore() < 1 || request.getScore() > 5) {
+        if (request.getParentId() == null && (request.getScore() == null || request.getScore() < 1 || request.getScore() > 5)) {
             throw new BadRequestException("El puntaje debe estar entre 1 y 5");
+        }
+
+        if (request.getParentId() != null && request.getScore() != null && (request.getScore() < 1 || request.getScore() > 5)) {
+            throw new BadRequestException("Si se envía puntaje en respuesta, debe estar entre 1 y 5");
         }
     }
 }

@@ -13,4 +13,5 @@ import com.traveling.travel_backend.model.Review;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findFirstByPlaceIdAndStateTrueAndParentIsNullOrderByScoreDesc(Long placeId);
     Page<Review> findByPlaceIdAndStateTrueAndParentIsNullOrderByCreatedAtDesc(Long placeId, Pageable pageable);
+    Page<Review> findByParentIdAndStateTrueOrderByCreatedAtDesc(Long parentId, Pageable pageable);
 }
