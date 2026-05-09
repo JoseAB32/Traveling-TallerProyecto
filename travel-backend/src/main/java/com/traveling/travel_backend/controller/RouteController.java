@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.traveling.travel_backend.dto.RouteResponse;
-import com.traveling.travel_backend.services.RouteService;
+import com.traveling.travel_backend.service.RouteService;
 
 @RestController
 @RequestMapping("/api/routes")
