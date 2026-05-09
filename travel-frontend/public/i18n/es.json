@@ -3,6 +3,7 @@
         "searchPlaceholder": "Buscar departamento o lugar",
         "profile": "Perfil",
         "itineraries": "Itinerarios",
+        "myItineraries": "Mis itinerarios",
         "wishlist": "Deseados",
         "logout": "Cerrar Sesión",
         "adminConfig": "Configuración"
@@ -217,5 +218,14 @@
         "textTittleSuccess": "Recuperación de contraseña exitosa",
         "textMessageSuccess": "Se realizo el cambio de contraseña correctamente. Por favor inicie sesión para ingresar a la plataforma.",
         "textLinkLogin": "Ir al Login"
-    }
+    },
+    "myItineraries": {
+    "title": "MIS ITINERARIOS",
+    "loading": "Cargando itinerarios...",
+    "empty": "No tienes itinerarios guardados.",
+    "noStartDate": "Sin fecha inicio",
+    "noEndDate": "Sin fecha fin",
+    "places": "lugares",
+    "viewMore": "Ver más"
+  }
 }
