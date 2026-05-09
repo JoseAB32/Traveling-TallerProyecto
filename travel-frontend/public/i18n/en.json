@@ -148,6 +148,7 @@
         "textResultsFor": "Results for:",
         "textSearchInBolivia": "Searching in Bolivia...",
         "textLocated": "Located in",
+        "textViewDetail": "View detail",
         "textNoMatchesFound": "Oops! No matches found.",
         "textTryAnother": "Try another department, place name, or address.",
         "textBack": "Back to top"
@@ -156,7 +157,20 @@
         "textLoading": "Loading place...",
         "textPlaceNotFound": "Place not found",
         "textGeneralInfo": "General Information",
-        "textInfoPlace": "Location Information"
+        "textInfoPlace": "Location Information",
+        "textBack": "Back",
+        "textBackToItinerary": "Back to itinerary",
+        "textReviewsTitle": "Place Reviews",
+        "textBy": "By",
+        "textReviewPlaceholder": "Rate and write a review...",
+        "textPublish": "Publish",
+        "textPublishing": "Publishing...",
+        "textLoginToReview": "Sign in to publish a review.",
+        "textPublishReviewError": "Could not publish the review. Please try again.",
+        "textReply": "Reply",
+        "textNoReviews": "There are no reviews for this place yet.",
+        "textPrevious": "Previous",
+        "textNext": "Next"
     },
     "components": {
         "cardTextGeneralInfo": "GENERAL INFORMATION:",

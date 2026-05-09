@@ -10,6 +10,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { FeatureService } from '../../services/features/feature.service';
 import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../services/auth/auth.service';
 import { FavoriteService } from '../../services/favorite/favorite.service';
 import { ReviewService } from '../../services/review/review.service';
@@ -54,7 +55,8 @@ export class PlaceDetailComponent implements OnInit {
     private placeService: PlaceService,
     private authService: AuthService,
     private favoriteService: FavoriteService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -164,7 +166,7 @@ export class PlaceDetailComponent implements OnInit {
 
     const user = this.authService.getCurrentUser();
     if (!user?.id) {
-      this.reviewError = 'Debes iniciar sesión para publicar una reseña.';
+      this.reviewError = this.translocoService.translate('placeDetail.textLoginToReview');
       return;
     }
 
@@ -192,7 +194,7 @@ export class PlaceDetailComponent implements OnInit {
       error: (error) => {
         this.reviewError = typeof error?.error?.message === 'string'
           ? error.error.message
-          : 'No se pudo publicar la reseña. Intenta de nuevo.';
+          : this.translocoService.translate('placeDetail.textPublishReviewError');
         this.publishingReview = false;
       }
     });
