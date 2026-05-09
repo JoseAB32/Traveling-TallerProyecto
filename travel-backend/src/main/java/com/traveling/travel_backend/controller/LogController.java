@@ -1,78 +1,44 @@
 package com.traveling.travel_backend.controller;
 
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.model.LogEntity;
-import com.traveling.travel_backend.repository.LogRepository;
-
+import com.traveling.travel_backend.service.LogService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(AppConstants.API_BASE_PATH + "/admin/logs")
 @CrossOrigin(origins = { AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY })
+@Tag(name = "Log", description = "Administracion de logs del sistema")
 public class LogController {
 
-    public static final Logger log = LoggerFactory.getLogger(LogController.class);
+    private final LogService logService;
 
     @Value("${app.features.admin-logs-enabled}")
     private boolean isAdminLogsEnabled;
 
-    @Autowired
-    private LogRepository logRepository;
-
-    
-    @Operation(
-        summary = "Get all logs",
-        description = "Returns a list of all logs",
-        tags = {"Log"},
-        operationId = "getAllLogs"
-    )
-    @GetMapping
-    public List<LogEntity> getAll() {
-        if (!isAdminLogsEnabled) {
-            log.warn("🖥️ [ADMIN] Acceso denegado a logs generales");
-            return List.of();
-        }
-        log.info("🖥️ [ADMIN] Solicitud de visualización de logs generales");
-        return logRepository.findAll(Sort.by(Sort.Direction.DESC, "timestamp"));
+    public LogController(LogService logService) {
+        this.logService = logService;
     }
 
-    @Operation(
-        summary = "Get filtered logs",
-        description = "Returns a list of logs filterded by: module, leve, start & end date",
-        tags = {"Log"},
-        operationId = "filterLogs"
-    )
+    @Operation(summary = "Get all logs", description = "Returns a list of all logs", operationId = "getAllLogs")
+    @GetMapping
+    public ResponseEntity<List<LogEntity>> getAll() {
+        return ResponseEntity.ok(logService.getAllLogs(isAdminLogsEnabled));
+    }
+
+    @Operation(summary = "Get filtered logs", description = "Returns logs filtered by module, level, start and end date", operationId = "filterLogs")
     @GetMapping("/filter")
-    public List<LogEntity> filterLogs(
+    public ResponseEntity<List<LogEntity>> filterLogs(
             @RequestParam String module,
             @RequestParam String level,
             @RequestParam String startDate,
             @RequestParam String endDate) {
-        if (!isAdminLogsEnabled) {
-            log.warn("🖥️ [ADMIN] Acceso denegado a filtrado de logs");
-            return List.of();
-        }
-        log.info("🖥️ [ADMIN] Solicitud de filtrado de logs - Módulo: {}, Nivel: {}, Fecha inicio: {}, Fecha fin: {}",
-                module, level, startDate, endDate);
-        return logRepository.findByModuleAndLevelAndTimestampBetweenOrderByTimestampDesc(
-                module,
-                level,
-                java.time.LocalDateTime.parse(startDate),
-                java.time.LocalDateTime.parse(endDate));
+        return ResponseEntity.ok(logService.filterLogs(isAdminLogsEnabled, module, level, startDate, endDate));
     }
-
 }
