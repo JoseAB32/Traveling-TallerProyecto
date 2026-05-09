@@ -377,6 +377,25 @@ body {
   color: #b21b1b;
 }
 
+.reviews-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #5f6f85;
+  font-weight: 600;
+  margin: 14px 0 18px;
+}
+
+.reviews-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #c8d7e8;
+  border-top-color: #2f7ac4;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
 .review-comment {
   margin: 0 0 8px;
   color: #1f1f1f;
@@ -470,6 +489,43 @@ body {
   color: #7d7d7d;
   font-weight: 700;
   cursor: pointer;
+}
+
+.reply-skeleton {
+  margin-top: 8px;
+  padding-left: 20px;
+}
+
+.reply-skeleton-line {
+  height: 9px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 37%, #e5e5e5 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  margin-bottom: 7px;
+}
+
+.reply-skeleton-line.short {
+  width: 28%;
+}
+
+.reply-skeleton-line.medium {
+  width: 62%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 
 .reviews-actions {

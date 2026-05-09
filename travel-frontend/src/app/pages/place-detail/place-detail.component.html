@@ -211,6 +211,11 @@
         <p class="review-error" *ngIf="reviewError">{{ reviewError }}</p>
       </div>
 
+      <div class="reviews-loading" *ngIf="reviewsLoading && reviews.length === 0">
+        <div class="reviews-spinner" aria-hidden="true"></div>
+        <span>{{ 'placeDetail.textLoadingReviews' | transloco }}</span>
+      </div>
+
       <div class="review-item-card" *ngFor="let review of reviews">
         <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ review.user.userName }}</div>
         <p class="review-comment">{{ review.comment }}</p>
@@ -244,7 +249,7 @@
         <div class="reply-list" *ngIf="visibleReplies(review.id).length > 0">
           <div class="reply-divider"></div>
           <div class="reply-item" *ngFor="let reply of visibleReplies(review.id)">
-            <div class="review-author">Por {{ reply.user.userName }}</div>
+            <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ reply.user.userName }}</div>
             <p class="review-comment">{{ reply.comment }}</p>
             <div class="reply-meta">{{ formatReviewDate(reply.createdAt) }}</div>
           </div>
@@ -266,6 +271,12 @@
               {{ 'placeDetail.textHide' | transloco }}
             </button>
           </div>
+        </div>
+
+        <div class="reply-skeleton" *ngIf="getRepliesState(review.id).loading">
+          <div class="reply-skeleton-line short"></div>
+          <div class="reply-skeleton-line medium"></div>
+          <div class="reply-skeleton-line short"></div>
         </div>
       </div>
 

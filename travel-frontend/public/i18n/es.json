@@ -175,6 +175,7 @@
         "textViewMore": "Ver {{count}} más",
         "textHide": "Ocultar",
         "textNoReviews": "Aún no hay reseñas para este lugar.",
+        "textLoadingReviews": "Cargando reseñas...",
         "textPrevious": "Anterior",
         "textNext": "Siguiente"
     },
