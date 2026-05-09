@@ -351,7 +351,6 @@ export class PlaceDetailComponent implements OnInit {
   collapseReplies(reviewId: number): void {
     const state = this.getRepliesState(reviewId);
     state.expanded = false;
-    this.loadReplies(reviewId, true);
   }
 
   visibleReplies(reviewId: number): Review[] {
