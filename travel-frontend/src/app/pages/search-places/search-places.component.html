@@ -41,7 +41,7 @@
                     class="detail-btn"
                     [ngClass]="i % 2 === 0 ? 'detail-btn-orange' : 'detail-btn-blue'"
                     (click)="goToPlaceDetail(place.id)">
-                    Ver detalle
+                    {{ 'searchPlaces.textViewDetail' | transloco }}
                   </button>
                 </div>
               

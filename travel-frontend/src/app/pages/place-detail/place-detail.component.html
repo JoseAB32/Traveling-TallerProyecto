@@ -3,11 +3,11 @@
 <div class="place-detail-container">
 
   <div class="back-row" *ngIf="showBackToItinerary">
-    <button class="back-btn" (click)="backToItinerary()">Volver a itinerario</button>
+    <button class="back-btn" (click)="backToItinerary()">{{ 'placeDetail.textBackToItinerary' | transloco }}</button>
   </div>
 
   <div class="back-row" *ngIf="showBackToDepartment && backDepartmentId">
-    <button class="back-btn" (click)="backToDepartment()">Volver</button>
+    <button class="back-btn" (click)="backToDepartment()">{{ 'placeDetail.textBack' | transloco }}</button>
   </div>
 
   <!-- LOADING -->
@@ -172,14 +172,14 @@
     </div>
 
     <section class="reviews-section">
-      <h2 class="reviews-title">Reseñas del Lugar</h2>
+      <h2 class="reviews-title">{{ 'placeDetail.textReviewsTitle' | transloco }}</h2>
 
       <div class="review-create-card">
-        <div class="review-author">Por {{ currentUserName }}</div>
+        <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ currentUserName }}</div>
         <textarea
           [(ngModel)]="reviewComment"
           class="review-textarea"
-          placeholder="Calificar y escribir reseña..."
+          [placeholder]="'placeDetail.textReviewPlaceholder' | transloco"
           rows="3"
           [disabled]="!isAuthenticated || publishingReview">
         </textarea>
@@ -203,21 +203,21 @@
             class="publish-btn"
             [disabled]="!canPublishReview"
             (click)="publishReview()">
-            {{ publishingReview ? 'Publicando...' : 'Publicar' }}
+            {{ publishingReview ? ('placeDetail.textPublishing' | transloco) : ('placeDetail.textPublish' | transloco) }}
           </button>
         </div>
 
-        <p class="review-help" *ngIf="!isAuthenticated">Inicia sesión para publicar una reseña.</p>
+        <p class="review-help" *ngIf="!isAuthenticated">{{ 'placeDetail.textLoginToReview' | transloco }}</p>
         <p class="review-error" *ngIf="reviewError">{{ reviewError }}</p>
       </div>
 
       <div class="review-item-card" *ngFor="let review of reviews">
-        <div class="review-author">Por {{ review.user.userName }}</div>
+        <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ review.user.userName }}</div>
         <p class="review-comment">{{ review.comment }}</p>
         <div class="review-score">{{ getReviewStars(review.score) }}</div>
         <div class="review-meta">
           <span>{{ formatReviewDate(review.createdAt) }}</span>
-          <button type="button" class="reply-btn" (click)="toggleReplyComposer(review.id)">Responder</button>
+          <button type="button" class="reply-btn" (click)="toggleReplyComposer(review.id)">{{ 'placeDetail.textReply' | transloco }}</button>
         </div>
 
         <div class="reply-composer" *ngIf="getRepliesState(review.id).composerOpen">
@@ -225,7 +225,7 @@
             [(ngModel)]="getRepliesState(review.id).replyComment"
             class="reply-textarea"
             rows="2"
-            placeholder="Escribe una respuesta..."
+            [placeholder]="'placeDetail.textReplyPlaceholder' | transloco"
             [disabled]="getRepliesState(review.id).publishing || !isAuthenticated">
           </textarea>
           <div class="reply-actions">
@@ -234,10 +234,10 @@
               class="reply-publish-btn"
               (click)="publishReply(review)"
               [disabled]="!isAuthenticated || getRepliesState(review.id).publishing || getRepliesState(review.id).replyComment.trim().length === 0">
-              {{ getRepliesState(review.id).publishing ? 'Publicando...' : 'Publicar respuesta' }}
+              {{ getRepliesState(review.id).publishing ? ('placeDetail.textPublishing' | transloco) : ('placeDetail.textPublishReply' | transloco) }}
             </button>
           </div>
-          <p class="review-help" *ngIf="!isAuthenticated">Inicia sesión para responder.</p>
+          <p class="review-help" *ngIf="!isAuthenticated">{{ 'placeDetail.textLoginToReply' | transloco }}</p>
           <p class="review-error" *ngIf="getRepliesState(review.id).error">{{ getRepliesState(review.id).error }}</p>
         </div>
 
@@ -255,7 +255,7 @@
               class="reply-toggle-btn"
               *ngIf="hasHiddenReplies(review.id)"
               (click)="viewMoreReplies(review.id)">
-              Ver {{ hiddenRepliesCount(review.id) }} más
+              {{ 'placeDetail.textViewMore' | transloco:{ count: hiddenRepliesCount(review.id) } }}
             </button>
 
             <button
@@ -263,13 +263,13 @@
               class="reply-toggle-btn"
               *ngIf="getRepliesState(review.id).expanded"
               (click)="collapseReplies(review.id)">
-              Ocultar
+              {{ 'placeDetail.textHide' | transloco }}
             </button>
           </div>
         </div>
       </div>
 
-      <p class="reviews-empty" *ngIf="!reviewsLoading && reviews.length === 0">Aún no hay reseñas para este lugar.</p>
+      <p class="reviews-empty" *ngIf="!reviewsLoading && reviews.length === 0">{{ 'placeDetail.textNoReviews' | transloco }}</p>
 
       <div class="reviews-actions" *ngIf="reviewsPageNumbers.length > 0">
         <button
@@ -277,7 +277,7 @@
           class="page-nav-btn"
           (click)="goToReviewsPage(currentReviewsPage - 1)"
           [disabled]="currentReviewsPage === 0 || reviewsLoading">
-          Anterior
+          {{ 'placeDetail.textPrevious' | transloco }}
         </button>
 
         <button
@@ -295,7 +295,7 @@
           class="page-nav-btn"
           (click)="goToReviewsPage(currentReviewsPage + 1)"
           [disabled]="!reviewsHasNext || reviewsLoading">
-          Siguiente
+          {{ 'placeDetail.textNext' | transloco }}
         </button>
       </div>
     </section>
