@@ -15,6 +15,7 @@ import { featureGuard } from './guards/feature.guard';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ResetSuccessComponent } from './pages/reset-success/reset-success.component';
+import { ModifyItineraryComponent } from './pages/modify-itinerary/modify-itinerary.component';
 export const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   {
@@ -25,7 +26,7 @@ export const routes: Routes = [
   { path: 'success-signup', component: SuccessSignupComponent },
   { path: '', component: LandingComponent },
   { path: 'wishlist', canActivate: [authGuard, featureGuard('showFavorites')], component: WishlistComponent },
-  { path: 'itinerarios', canActivate: [authGuard], component: CreateItineraryComponent },
+  { path: 'modify-itinerario', canActivate: [authGuard], component: ModifyItineraryComponent },
   { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
@@ -40,5 +41,6 @@ export const routes: Routes = [
     path: 'department/:id', 
     component: DepartmentComponent,canActivate: [authGuard]
   },
+  { path: 'itinerarios', canActivate: [authGuard], component: CreateItineraryComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

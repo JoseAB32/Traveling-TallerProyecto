@@ -41,4 +41,17 @@ public class TripController {
                                                          Authentication authentication) {
         return ResponseEntity.ok(tripService.createTrip(request, authentication));
     }
+
+    @Operation(
+        summary = "Get itinerary by id",
+        description = "Returns an active itinerary by id for the authenticated user",
+        operationId = "getTripById"
+    )
+    @GetMapping(AppConstants.TRIPS_ENDPOINT + "/trip/{id}")
+    public ResponseEntity<TripDraftResponse> getTripById(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(tripService.getTripById(id, authentication));
+    }
 }

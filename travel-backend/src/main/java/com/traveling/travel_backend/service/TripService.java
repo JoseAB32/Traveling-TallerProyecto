@@ -169,4 +169,26 @@ public class TripService {
         response.setPlaces(places);
         return response;
     }
+
+    @Transactional(readOnly = true)
+    public TripDraftResponse getTripById(Long tripId, Authentication authentication) {
+        User user = resolveAuthenticatedUser(authentication);
+
+        logger.info("{} [{}] Buscando itinerario ID: {} para usuario ID: {}",
+                AppConstants.PREFIX_USER, AppConstants.LOG_TRIPS, tripId, user.getId());
+
+        Trip trip = tripRepository.findByIdAndUserIdAndStateTrue(tripId, user.getId())
+                .orElseThrow(() -> {
+                    logger.warn("{} [{}] Itinerario ID: {} no encontrado o inactivo para usuario ID: {}",
+                            AppConstants.PREFIX_ERROR, AppConstants.LOG_TRIPS, tripId, user.getId());
+                    return new ResourceNotFoundException("Itinerario no encontrado con ID: " + tripId);
+                });
+
+        List<TripItem> items = tripItemRepository.findByTripIdAndStateTrueOrderByVisitOrderAsc(trip.getId());
+
+        logger.info("{} [{}] Itinerario ID: {} encontrado con {} lugares",
+                AppConstants.PREFIX_PLACE, AppConstants.LOG_TRIPS, trip.getId(), items.size());
+
+        return buildResponse(trip, items);
+    }
 }
