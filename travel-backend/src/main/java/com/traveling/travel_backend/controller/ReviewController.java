@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,8 +43,8 @@ public class ReviewController {
 
     @Operation(summary = "Create place review", description = "Creates a new review for a place", operationId = "createReview")
     @PostMapping
-    public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody CreateReviewRequestDTO request) {
-        ReviewResponseDTO createdReview = reviewService.createReview(request);
+    public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody CreateReviewRequestDTO request, Authentication authentication) {
+        ReviewResponseDTO createdReview = reviewService.createReview(request, authentication);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
     }
 }

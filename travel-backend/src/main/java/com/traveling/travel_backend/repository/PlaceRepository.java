@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.traveling.travel_backend.model.Place;
 
+import java.util.Optional;
+
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long>{
     List<Place> findTop5ByOrderByRatingDesc();
@@ -15,4 +17,5 @@ public interface PlaceRepository extends JpaRepository<Place, Long>{
     );
     List<Place> findByCityIdAndStateTrue(Long cityId);
     List<Place> findTop3ByCityIdAndStateTrueOrderByRatingDesc(Long cityId);
+    Optional<Place> findByIdAndStateTrue(Long id);
 }

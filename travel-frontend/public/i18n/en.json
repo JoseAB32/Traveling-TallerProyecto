@@ -170,7 +170,8 @@
         "textReply": "Reply",
         "textNoReviews": "There are no reviews for this place yet.",
         "textPrevious": "Previous",
-        "textNext": "Next"
+        "textNext": "Next",
+        "textRateWithStars": "Rate with {{count}} stars"
     },
     "components": {
         "cardTextGeneralInfo": "GENERAL INFORMATION:",

@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -53,6 +54,9 @@ class ReviewServiceTest {
 
     @InjectMocks
     private ReviewService reviewService;
+
+    @Mock
+    private Authentication authentication;
 
     @Test
     @DisplayName("Debe devolver reseñas paginadas con metadatos correctos")
@@ -90,22 +94,33 @@ class ReviewServiceTest {
     }
 
     @Test
+    @DisplayName("Debe limitar tamaño máximo de página a 50")
+    void getPlaceReviewsCapsPageSizeTo50() {
+        Page<Review> page = new PageImpl<>(List.of(), PageRequest.of(0, 50), 0);
+        when(reviewRepository.findByPlaceIdAndStateTrueAndParentIsNullOrderByCreatedAtDesc(2L, PageRequest.of(0, 50)))
+                .thenReturn(page);
+        when(logRepository.save(any(LogEntity.class))).thenReturn(null);
+
+        ReviewPageResponseDTO response = reviewService.getPlaceReviews(2L, 0, 200);
+
+        assertEquals(50, response.getSize());
+    }
+
+    @Test
     @DisplayName("Debe lanzar bad request cuando comentario está vacío")
     void createReviewThrowsBadRequestWhenCommentIsEmpty() {
         CreateReviewRequestDTO request = new CreateReviewRequestDTO();
-        request.setUserId(1L);
         request.setPlaceId(2L);
         request.setScore(4);
         request.setComment("   ");
 
-        assertThrows(BadRequestException.class, () -> reviewService.createReview(request));
+        assertThrows(BadRequestException.class, () -> reviewService.createReview(request, authentication));
     }
 
     @Test
     @DisplayName("Debe crear reseña raíz cuando los datos son válidos")
     void createReviewCreatesRootReviewSuccessfully() {
         CreateReviewRequestDTO request = new CreateReviewRequestDTO();
-        request.setUserId(1L);
         request.setPlaceId(2L);
         request.setParentId(null);
         request.setComment("Muy buen lugar");
@@ -128,12 +143,13 @@ class ReviewServiceTest {
         saved.setState(true);
         saved.setCreatedAt(OffsetDateTime.now());
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(placeRepository.findById(2L)).thenReturn(Optional.of(place));
+        when(authentication.getName()).thenReturn("erika");
+        when(userRepository.findByUserNameAndStateTrue("erika")).thenReturn(Optional.of(user));
+        when(placeRepository.findByIdAndStateTrue(2L)).thenReturn(Optional.of(place));
         when(reviewRepository.save(any(Review.class))).thenReturn(saved);
         when(logRepository.save(any(LogEntity.class))).thenReturn(null);
 
-        ReviewResponseDTO response = reviewService.createReview(request);
+        ReviewResponseDTO response = reviewService.createReview(request, authentication);
 
         assertEquals(20L, response.getId());
         assertEquals("Muy buen lugar", response.getComment());

@@ -57,7 +57,6 @@ describe('ReviewService', () => {
 
   it('should post create review payload', () => {
     const payload: CreateReviewRequest = {
-      userId: 1,
       placeId: 3,
       parentId: null,
       comment: 'Muy bueno',

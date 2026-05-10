@@ -75,7 +75,6 @@ class ReviewControllerTest {
     @DisplayName("POST /api/reviews crea reseña y retorna 201")
     void createReviewReturnsCreated() throws Exception {
         CreateReviewRequestDTO request = new CreateReviewRequestDTO();
-        request.setUserId(2L);
         request.setPlaceId(3L);
         request.setComment("Muy lindo");
         request.setScore(4);
@@ -87,7 +86,7 @@ class ReviewControllerTest {
         response.setCreatedAt(OffsetDateTime.now());
         response.setState(true);
 
-        when(reviewService.createReview(any(CreateReviewRequestDTO.class))).thenReturn(response);
+        when(reviewService.createReview(any(CreateReviewRequestDTO.class), any())).thenReturn(response);
 
         mockMvc.perform(post("/api/reviews")
                 .contentType(MediaType.APPLICATION_JSON)

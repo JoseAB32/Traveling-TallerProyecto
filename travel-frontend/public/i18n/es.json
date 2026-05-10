@@ -170,7 +170,8 @@
         "textReply": "Responder",
         "textNoReviews": "Aún no hay reseñas para este lugar.",
         "textPrevious": "Anterior",
-        "textNext": "Siguiente"
+        "textNext": "Siguiente",
+        "textRateWithStars": "Puntuar con {{count}} estrellas"
     },
     "components": {
         "cardTextGeneralInfo": "INFORMACIÓN GENERAL:",

@@ -6,6 +6,7 @@ import com.traveling.travel_backend.dto.ReviewPageResponseDTO;
 import com.traveling.travel_backend.dto.ReviewResponseDTO;
 import com.traveling.travel_backend.exception.BadRequestException;
 import com.traveling.travel_backend.exception.ResourceNotFoundException;
+import com.traveling.travel_backend.exception.UnauthorizedException;
 import com.traveling.travel_backend.model.LogEntity;
 import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.model.Review;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,7 +66,7 @@ public class ReviewService {
     @Transactional
     public ReviewPageResponseDTO getPlaceReviews(Long placeId, int page, int size) {
         int safePage = Math.max(0, page);
-        int safeSize = size <= 0 ? 10 : size;
+        int safeSize = size <= 0 ? 10 : Math.min(size, 50);
 
         String logMessage = "Solicitando reseñas paginadas para lugar (ID): " + placeId
                 + " - GET /api/reviews/place/" + placeId + "?page=" + safePage + "&size=" + safeSize;
@@ -95,14 +97,13 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewResponseDTO createReview(CreateReviewRequestDTO request) {
+    public ReviewResponseDTO createReview(CreateReviewRequestDTO request, Authentication authentication) {
         validateCreateReviewRequest(request);
 
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        User user = resolveAuthenticatedUser(authentication);
 
-        Place place = placeRepository.findById(request.getPlaceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Lugar no encontrado"));
+        Place place = placeRepository.findByIdAndStateTrue(request.getPlaceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Lugar no encontrado o inactivo"));
 
         Review review = new Review();
         review.setUser(user);
@@ -138,10 +139,6 @@ public class ReviewService {
             throw new BadRequestException("La solicitud de reseña es obligatoria");
         }
 
-        if (request.getUserId() == null) {
-            throw new BadRequestException("El userId es obligatorio");
-        }
-
         if (request.getPlaceId() == null) {
             throw new BadRequestException("El placeId es obligatorio");
         }
@@ -153,5 +150,14 @@ public class ReviewService {
         if (request.getScore() == null || request.getScore() < 1 || request.getScore() > 5) {
             throw new BadRequestException("El puntaje debe estar entre 1 y 5");
         }
+    }
+
+    private User resolveAuthenticatedUser(Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+            throw new UnauthorizedException("No autenticado.");
+        }
+
+        return userRepository.findByUserNameAndStateTrue(authentication.getName())
+                .orElseThrow(() -> new UnauthorizedException("Usuario autenticado no válido."));
     }
 }

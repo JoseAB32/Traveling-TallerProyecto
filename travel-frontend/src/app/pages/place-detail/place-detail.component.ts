@@ -164,8 +164,7 @@ export class PlaceDetailComponent implements OnInit {
       return;
     }
 
-    const user = this.authService.getCurrentUser();
-    if (!user?.id) {
+    if (!this.authService.getCurrentUser()?.id) {
       this.reviewError = this.translocoService.translate('placeDetail.textLoginToReview');
       return;
     }
@@ -174,7 +173,6 @@ export class PlaceDetailComponent implements OnInit {
     this.reviewError = '';
 
     const payload: CreateReviewRequest = {
-      userId: user.id,
       placeId: this.place.id,
       parentId: null,
       comment: this.reviewComment.trim(),
@@ -218,7 +216,16 @@ export class PlaceDetailComponent implements OnInit {
       return [];
     }
 
-    return Array.from({ length: this.reviewsTotalPages }, (_, index) => index);
+    const windowSize = 5;
+    const halfWindow = Math.floor(windowSize / 2);
+    let start = Math.max(0, this.currentReviewsPage - halfWindow);
+    let end = Math.min(this.reviewsTotalPages, start + windowSize);
+
+    if (end - start < windowSize) {
+      start = Math.max(0, end - windowSize);
+    }
+
+    return Array.from({ length: end - start }, (_, index) => start + index);
   }
 
   formatReviewDate(createdAt?: string): string {

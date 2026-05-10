@@ -193,7 +193,7 @@
               [class.selected]="star <= reviewScore"
               (click)="selectReviewScore(star)"
               [disabled]="!isAuthenticated || publishingReview"
-              [attr.aria-label]="'Puntuar con ' + star + ' estrellas'">
+              [attr.aria-label]="('placeDetail.textRateWithStars' | transloco:{ count: star })">
               ★
             </button>
           </div>
