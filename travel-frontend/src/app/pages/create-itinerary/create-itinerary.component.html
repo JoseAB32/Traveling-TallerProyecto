@@ -141,7 +141,7 @@
                     }
                     
                   }
-                  <span class="rating-text">({{ place.rating }})</span>
+                  <span class="rating-text">({{ place.rating | number:'1.1-1' }})</span>
                 </div>
               </div>
 
@@ -197,10 +197,13 @@
             (input)="itineraryNameError = ''"
           />
           <label for="itineraryName">{{ 'createItinerary.itineraryName' | transloco }}</label>
-          @if (itineraryNameError) {
+          <!-- @if (itineraryNameError) {
             <p class="modal-error">{{ itineraryNameError }}</p>
-          }
+          } -->
         </div>
+        @if (itineraryNameError) {
+          <p class="modal-error">{{ itineraryNameError }}</p>
+        }
         <div class="modal-actions">
           <button class="btn-save-modal" [disabled]="isSavingDraft" (click)="saveItinerary()">
             @if (isSavingDraft) { {{ 'createItinerary.savingModalText' | transloco }} } @else { {{ 'createItinerary.textButtonSaveModal' | transloco }} }

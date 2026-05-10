@@ -29,50 +29,6 @@
     color: var(--peach-glow);
 }
 
-.pando {
-    left: 0;
-}
-
-.beni {
-    left: 129px;
-    top: 46px;
-}
-
-.lapaz {
-    left: 7px;
-    top: 141px;
-}
-
-.oruro {
-    left: 39.5px;
-    top: 481.5px;
-}
-
-.potosi {
-    left: 66.5px;
-    top: 508.4px;
-}
-
-.cochabamba {
-    left: 165px;
-    top: 376px;
-}
-
-.chuquisaca {
-    left: 244.7px;
-    top: 540.3px;
-}
-
-.tarija {
-    left: 271px;
-    top: 696.5px;
-}
-
-.santacruz {
-    left: 295.5px;
-    top: 234.5px;
-}
-
 .tooltip {
     position: fixed;
     background: var(--atomic-tangerine);
@@ -318,93 +274,45 @@
         height: 460px;
     }
 
-    .pando {
-        left: 15px;
-        top: -20px;
-        width: 130px;
+    .mapaCompleto {
+        width: 100%;
+        margin: 0;
+        top: -170px;
     }
 
-    .pando path {
+    .pando {
         fill: #fce1c5 !important;
     }
 
     .beni {
-        left: 74px;
-        top: -47px;
-        width: 185px;
-    }
-
-    .beni path {
         fill: #F7C59F !important;
     }
 
     .lapaz {
-        left: 17.2px;
-        top: -2px;
-        width: 86px;
-    }
-
-    .lapaz path {
         fill: #f3ac75 !important;
     }
 
     .oruro {
-        left: 31px;
-        top: 223.5px;
-        width: 95px;
-    }
-
-    .oruro path {
         fill: #F7C59F !important;
     }
 
     .potosi {
-        left: 44px;
-        top: 197.5px;
-        width: 118px;
-    }
-
-    .potosi path {
         fill: #f3ac75 !important;
     }
 
     .cochabamba {
-        left: 94px;
-        top: 165px;
-        width: 85px;
-    }
-
-    .cochabamba path {
         fill: #fce1c5 !important;
     }
 
     .chuquisaca {
-        left: 131.5px;
-        top: 241.5px;
-        width: 105px;
-    }
-
-    .chuquisaca path {
         fill: #F7C59F !important;
     }
 
     .tarija {
-        left: 144.3px;
-        top: 339px;
-        width: 91px;
-    }
-
-    .tarija path {
         fill: #fce1c5 !important;
     }
 
     .santacruz {
-        left: 158px;
-        top: 31px;
-        width: 220px;
-    }
-
-    .santacruz path {
         fill: #f3ac75 !important;
     }
 
