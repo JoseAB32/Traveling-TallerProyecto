@@ -168,10 +168,16 @@
         "textLoginToReview": "Sign in to publish a review.",
         "textPublishReviewError": "Could not publish the review. Please try again.",
         "textReply": "Reply",
+        "textReplyPlaceholder": "Write a reply...",
+        "textPublishReply": "Publish reply",
+        "textLoginToReply": "Sign in to reply.",
+        "textPublishReplyError": "Could not publish the reply. Please try again.",
+        "textViewMore": "View {{count}} more",
+        "textHide": "Hide",
         "textNoReviews": "There are no reviews for this place yet.",
+        "textLoadingReviews": "Loading reviews...",
         "textPrevious": "Previous",
-        "textNext": "Next",
-        "textRateWithStars": "Rate with {{count}} stars"
+        "textNext": "Next"
     },
     "components": {
         "cardTextGeneralInfo": "GENERAL INFORMATION:",

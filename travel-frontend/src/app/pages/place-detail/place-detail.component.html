@@ -211,13 +211,72 @@
         <p class="review-error" *ngIf="reviewError">{{ reviewError }}</p>
       </div>
 
+      <div class="reviews-loading" *ngIf="reviewsLoading && reviews.length === 0">
+        <div class="reviews-spinner" aria-hidden="true"></div>
+        <span>{{ 'placeDetail.textLoadingReviews' | transloco }}</span>
+      </div>
+
       <div class="review-item-card" *ngFor="let review of reviews">
         <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ review.user.userName }}</div>
         <p class="review-comment">{{ review.comment }}</p>
         <div class="review-score">{{ getReviewStars(review.score) }}</div>
         <div class="review-meta">
           <span>{{ formatReviewDate(review.createdAt) }}</span>
-          <button type="button" class="reply-btn" disabled>{{ 'placeDetail.textReply' | transloco }}</button>
+          <button type="button" class="reply-btn" (click)="toggleReplyComposer(review.id)">{{ 'placeDetail.textReply' | transloco }}</button>
+        </div>
+
+        <div class="reply-composer" *ngIf="getRepliesState(review.id).composerOpen">
+          <textarea
+            [(ngModel)]="getRepliesState(review.id).replyComment"
+            class="reply-textarea"
+            rows="2"
+            [placeholder]="'placeDetail.textReplyPlaceholder' | transloco"
+            [disabled]="getRepliesState(review.id).publishing || !isAuthenticated">
+          </textarea>
+          <div class="reply-actions">
+            <button
+              type="button"
+              class="reply-publish-btn"
+              (click)="publishReply(review)"
+              [disabled]="!isAuthenticated || getRepliesState(review.id).publishing || getRepliesState(review.id).replyComment.trim().length === 0">
+              {{ getRepliesState(review.id).publishing ? ('placeDetail.textPublishing' | transloco) : ('placeDetail.textPublishReply' | transloco) }}
+            </button>
+          </div>
+          <p class="review-help" *ngIf="!isAuthenticated">{{ 'placeDetail.textLoginToReply' | transloco }}</p>
+          <p class="review-error" *ngIf="getRepliesState(review.id).error">{{ getRepliesState(review.id).error }}</p>
+        </div>
+
+        <div class="reply-list" *ngIf="visibleReplies(review.id).length > 0">
+          <div class="reply-divider"></div>
+          <div class="reply-item" *ngFor="let reply of visibleReplies(review.id)">
+            <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ reply.user.userName }}</div>
+            <p class="review-comment">{{ reply.comment }}</p>
+            <div class="reply-meta">{{ formatReviewDate(reply.createdAt) }}</div>
+          </div>
+
+          <div class="reply-toggle-row" *ngIf="hasHiddenReplies(review.id) || getRepliesState(review.id).expanded">
+            <button
+              type="button"
+              class="reply-toggle-btn"
+              *ngIf="hasHiddenReplies(review.id)"
+              (click)="viewMoreReplies(review.id)">
+              {{ 'placeDetail.textViewMore' | transloco:{ count: hiddenRepliesCount(review.id) } }}
+            </button>
+
+            <button
+              type="button"
+              class="reply-toggle-btn"
+              *ngIf="getRepliesState(review.id).expanded"
+              (click)="collapseReplies(review.id)">
+              {{ 'placeDetail.textHide' | transloco }}
+            </button>
+          </div>
+        </div>
+
+        <div class="reply-skeleton" *ngIf="getRepliesState(review.id).loading">
+          <div class="reply-skeleton-line short"></div>
+          <div class="reply-skeleton-line medium"></div>
+          <div class="reply-skeleton-line short"></div>
         </div>
       </div>
 
