@@ -25,6 +25,7 @@ export class PlaceDetailComponent implements OnInit {
   loading = true;
   showBackToItinerary = false;
   showBackToDepartment = false;
+  showBackToModifyItinerary = false;
   backDepartmentId: number | null = null;
   featureService = inject(FeatureService);
   images: string[] = [];
@@ -43,6 +44,7 @@ export class PlaceDetailComponent implements OnInit {
   ngOnInit(): void {
     this.showBackToItinerary = this.route.snapshot.queryParamMap.get('returnTo') === 'itinerarios';
     this.showBackToDepartment = this.route.snapshot.queryParamMap.get('returnTo') === 'department';
+    this.showBackToModifyItinerary = this.route.snapshot.queryParamMap.get('returnTo') === 'modify-itinerario';
 
     const cityIdParam = this.route.snapshot.queryParamMap.get('cityId');
     this.backDepartmentId = cityIdParam ? Number(cityIdParam) : null;
@@ -125,5 +127,9 @@ export class PlaceDetailComponent implements OnInit {
   backToDepartment(): void {
     if (!this.backDepartmentId) return;
     this.router.navigate(['/department', this.backDepartmentId]);
+  }
+
+  backToModifyItinerary(): void {
+    this.router.navigate(['/modify-itinerario']);
   }
 }

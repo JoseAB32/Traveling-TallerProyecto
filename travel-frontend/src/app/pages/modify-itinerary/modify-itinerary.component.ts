@@ -29,26 +29,31 @@ export class ModifyItineraryComponent implements OnInit {
     limiteInferiorFecha = new Date().toISOString().split('T')[0];
 
     selectedCityId: number | null = null;
-  
-    cityPlaces: Place[] = [];
+
     selectedPlace: Place | null = null;
-    selectedPlaces: Place[] = [];
-    generatedItinerary: Place[] = [];
+    
     generatedRouteCoordinates: L.LatLngTuple[] = [];
     isGeneratingItinerary = false;
-  
-    startDate: string = '';
-    endDate: string = '';
   
     isLoadingCities = true;
     isLoadingPlaces = false;
     isSavingDraft = false;
     hasPendingChanges = false;
     saveMessage = 'Sin cambios por guardar';
-  
-    isModalOpen = false;
-    itineraryName = '';
+
     itineraryNameError = '';
+
+    tripId: number = 25;
+    itinerary: ItineraryDraftResponse | null = null;
+    isLoading = false;
+    errorMessage = '';
+    cityId: number | null = null;
+    cityPlaces: Place[] = [];
+    startDate: string = '';
+    endDate: string = '';
+    selectedPlaces: Place[] = [];
+    generatedItinerary: Place[] = [];
+    nameItinerary: string = "";
   
     private cityService = inject(CityService);
     private placeService = inject(PlaceService);
@@ -59,17 +64,66 @@ export class ModifyItineraryComponent implements OnInit {
     private translocoService = inject(TranslocoService);
   
     ngOnInit(): void {  
-      this.route.queryParamMap.subscribe(params => {
-        const cityIdParam = params.get('cityId');
-        if (!cityIdParam) {
-          return;
-        }
-  
-        const cityId = Number(cityIdParam);
-        if (!Number.isNaN(cityId) && cityId > 0) {
-          this.selectedCityId = cityId;
-          this.loadPlacesByCity();
-          this.persistUiState();
+      // this.loadItineraryById();
+
+      const wasRestored = this.restoreUiState();
+
+      if (!wasRestored) {
+        this.loadItineraryById();
+      }
+    }
+
+    private loadItineraryById(): void {
+      // const tripId = Number(this.route.snapshot.paramMap.get('id'));
+      const tripId = 25;
+      this.tripId = tripId;
+
+      if (Number.isNaN(tripId) || tripId <= 0) {
+        this.errorMessage = 'ID de itinerario inválido';
+        return;
+      }
+
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      this.itineraryService.getItineraryById(tripId).subscribe({
+        next: async (response: ItineraryDraftResponse) => {
+          this.itinerary = response;
+          this.nameItinerary = response.name;
+          this.selectedPlaces = response.places || [];
+          this.startDate = response.startDate || '';
+          this.endDate = response.endDate || '';
+          this.generatedItinerary = response.places || [];
+          const cityId = response.places?.[0]?.city?.id;
+
+          if (cityId !== undefined && cityId !== null) {
+            this.cityId = cityId;
+            this.loadPlacesByCity();
+          }
+
+          if (this.generatedItinerary.length >= 2) {
+            this.generatedRouteCoordinates = await this.buildRealRouteCoordinates(this.generatedItinerary);
+          }
+
+          this.isLoading = false;
+
+          // console.log('Itinerario recuperado:', response);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isLoading = false;
+
+          if (error.status === 401 || error.status === 403) {
+            this.errorMessage = 'No autorizado. Inicia sesión nuevamente.';
+            return;
+          }
+
+          if (error.status === 404) {
+            this.errorMessage = 'No se encontró el itinerario solicitado.';
+            return;
+          }
+
+          this.errorMessage = 'No se pudo recuperar el itinerario.';
+          console.error('Error al recuperar itinerario:', error);
         }
       });
     }
@@ -107,13 +161,14 @@ export class ModifyItineraryComponent implements OnInit {
     }
   
     loadPlacesByCity(): void {
-      if (!this.selectedCityId) {
-        this.cityPlaces = [];
+      if (this.cityId === null) {
+        console.warn('No se puede cargar lugares porque cityId es null');
         return;
       }
-  
+
       this.isLoadingPlaces = true;
-      this.placeService.getPlacesByDepartment(this.selectedCityId).subscribe({
+      // console.log(this.cityId);
+      this.placeService.getPlacesByDepartment(this.cityId).subscribe({
         next: (places) => {
           this.cityPlaces = places;
           if (!this.selectedPlace || !this.cityPlaces.some(p => p.id === this.selectedPlace?.id)) {
@@ -164,12 +219,13 @@ export class ModifyItineraryComponent implements OnInit {
       //this.markAsDirty();
       this.generatedItinerary = [];
       this.generatedRouteCoordinates = [];
+      this.persistUiState();
     }
   
     goToPlaceDetail(placeId: number): void {
       this.persistUiState();
       this.router.navigate(['/place', placeId], {
-        queryParams: { returnTo: 'itinerarios' }
+        queryParams: { returnTo: 'modify-itinerario' }
       });
     }
   
@@ -177,10 +233,15 @@ export class ModifyItineraryComponent implements OnInit {
       this.persistUiState();
   
     }
+
+    onNameChange(): void {
+      this.persistUiState();
+    }
   
     private persistUiState(): void {
       const snapshot = {
-        selectedCityId: this.selectedCityId,
+        name: this.nameItinerary,
+        cityId: this.cityId,
         selectedPlaces: this.selectedPlaces,
         startDate: this.startDate,
         endDate: this.endDate,
@@ -201,7 +262,8 @@ export class ModifyItineraryComponent implements OnInit {
   
       try {
         const snapshot = JSON.parse(raw);
-        this.selectedCityId = snapshot.selectedCityId ?? null;
+        this.nameItinerary = snapshot.name ?? '';
+        this.cityId = snapshot.cityId ?? null;
         this.selectedPlaces = snapshot.selectedPlaces ?? [];
         this.startDate = snapshot.startDate ?? '';
         this.endDate = snapshot.endDate ?? '';
@@ -210,7 +272,7 @@ export class ModifyItineraryComponent implements OnInit {
         this.generatedItinerary = snapshot.generatedItinerary ?? [];
         this.generatedRouteCoordinates = snapshot.generatedRouteCoordinates ?? [];
   
-        if (this.selectedCityId) {
+        if (this.cityId) {
           this.loadPlacesByCity();
         }
   
@@ -361,57 +423,87 @@ export class ModifyItineraryComponent implements OnInit {
         !Number.isNaN(Number(place.longitude))
       );
     }
-    openSaveModal(): void {
-      this.itineraryName = '';
-      this.itineraryNameError = '';
-      this.isModalOpen = true;
-    }
-  
-    closeModal(): void {
-      this.isModalOpen = false;
-    }
+
   
     saveItinerary(): void {
-      if (!this.itineraryName || this.itineraryName.trim() === '') {
+      if (Number.isNaN(this.tripId) || this.tripId <= 0) {
+        this.saveMessage = 'ID de itinerario inválido';
+        return; 
+      }
+
+      if (!this.nameItinerary || this.nameItinerary.trim() === '') {
         this.itineraryNameError = this.translocoService.translate('createItinerary.textErrorRequiredName');
         return;
       }
-  
+
+      const placesToSave = this.generatedItinerary.length > 0
+        ? this.generatedItinerary
+        : this.selectedPlaces;
+
+      if (placesToSave.length === 0) {
+        this.saveMessage = 'Debes seleccionar al menos un lugar';
+        return;
+      }
+
       const payload: ItineraryDraftRequest = {
-        name: this.itineraryName.trim(),
+        name: this.nameItinerary.trim(),
         startDate: this.startDate || null,
         endDate: this.endDate || null,
-        placeIds: this.generatedItinerary.map(p => p.id)
+        placeIds: placesToSave.map(place => place.id)
       };
-  
+
       this.isSavingDraft = true;
-      this.itineraryService.createItinerary(payload).subscribe({
+
+      this.itineraryService.updateItinerary(this.tripId, payload).subscribe({
         next: () => {
           this.isSavingDraft = false;
-          this.isModalOpen = false;
-          this.saveMessage = 'Itinerario guardado correctamente';
-          
+
           sessionStorage.removeItem(this.sessionKey);
           sessionStorage.setItem('justSaved', 'true');
-  
-          this.selectedCityId = null;
-          this.selectedPlaces = [];
-          this.generatedItinerary = [];
-          this.startDate = '';
-          this.endDate = '';
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+
+          this.clearScreenAfterSave();
         },
         error: (error: HttpErrorResponse) => {
           this.isSavingDraft = false;
+
           if (error.status === 401 || error.status === 403) {
             this.saveMessage = 'No autorizado. Inicia sesión nuevamente.';
-            this.isModalOpen = false;
             return;
           }
-          this.saveMessage = 'No se pudo guardar el itinerario';
+
+          if (error.status === 404) {
+            this.saveMessage = 'No se encontró el itinerario a modificar.';
+            return;
+          }
+
+          this.saveMessage = 'No se pudo actualizar el itinerario';
+          console.error('Error al actualizar itinerario:', error);
         }
       });
+    }
+
+    private clearScreenAfterSave(): void {
+      this.itinerary = null;
+      this.nameItinerary = '';
+      this.itineraryNameError = '';
+
+      this.cityId = null;
+      this.selectedCityId = null;
+      this.cityPlaces = [];
+
+      this.selectedPlace = null;
+      this.selectedPlaces = [];
+
+      this.generatedItinerary = [];
+      this.generatedRouteCoordinates = [];
+
+      this.startDate = '';
+      this.endDate = '';
+
+      this.hasPendingChanges = false;
+      this.isGeneratingItinerary = false;
+      this.isLoadingPlaces = false;
+
+      this.saveMessage = 'Itinerario actualizado correctamente';
     }
 }

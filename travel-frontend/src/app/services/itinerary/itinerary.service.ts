@@ -47,4 +47,8 @@ export class ItineraryService {
   getItineraryById(id: number): Observable<ItineraryDraftResponse> {
     return this.http.get<ItineraryDraftResponse>(`${this.apiUrl}/trip/${id}`);
   }
+
+  updateItinerary(tripId: number, payload: ItineraryDraftRequest): Observable<ItineraryDraftResponse> {
+    return this.http.put<ItineraryDraftResponse>(`${this.apiUrl}/trip/${tripId}`, payload);
+  }
 }

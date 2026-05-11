@@ -7,21 +7,11 @@
   </section>
 
   <section class="name-section">
-    <input type="text" placeholder="nombre itinerario">
+    <input type="text" [(ngModel)]="nameItinerary" (ngModelChange)="onNameChange()">
+    @if (itineraryNameError) {
+      <p class="modal-error">{{ itineraryNameError }}</p>
+    }
   </section>
-
-  <!-- <section class="city-selector">
-    <select
-      [disabled]="isLoadingCities || cities.length === 0"
-      [(ngModel)]="selectedCityId"
-      (ngModelChange)="onCityChange()"
-    >
-      <option [ngValue]="null" disabled>{{ 'createItinerary.textInputSelectCity' | transloco }}</option>
-      @for (city of cities; track city.id) {
-        <option [ngValue]="city.id">{{ city.name }}</option>
-      }
-    </select>
-  </section> -->
 
   <section class="section-title blue">
     <span>{{ 'createItinerary.textSecondStep' | transloco }}</span>
@@ -31,9 +21,9 @@
     <div class="map-box">
       @if (isLoadingPlaces) {
         <div class="loading-box">{{ 'createItinerary.textLoadingPlaces' | transloco }}</div>
-      } @else if (!selectedCityId) {
+      } <!--@else if (!selectedCityId) {
         <div class="loading-box">{{ 'createItinerary.textSelectCity' | transloco }}</div>
-      } @else if (cityPlaces.length === 0) {
+    }--> @else if (cityPlaces.length === 0) {
         <div class="loading-box no-places">{{ 'createItinerary.textThereAreNoPlaces' | transloco }}</div>
       } @else {
         <app-map [places]="cityPlaces" (placeClicked)="onMapPlaceClick($event)" [showRoute]="false"></app-map>
@@ -135,7 +125,7 @@
                     }
                     
                   }
-                  <span class="rating-text">({{ place.rating }})</span>
+                  <span class="rating-text">({{ place.rating | number:'1.1-1' }})</span>
                 </div>
               </div>
 
@@ -173,13 +163,13 @@
           </app-map>
         </div>
         <section class="section-button-save">
-          <button class="btn-save-it" (click)="openSaveModal()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
+          <button class="btn-save-it" [disabled]="isSavingDraft" (click)="saveItinerary()">{{ 'createItinerary.textButtonSave' | transloco }}</button>
         </section>
       }
     }
   </section>
 
-  @if (isModalOpen) {
+  <!-- @if (isModalOpen) {
     <div class="modal-overlay" (click)="closeModal()">
       <div class="modal-box" (click)="$event.stopPropagation()">
         <div class="modal-field">
@@ -203,7 +193,7 @@
         </div>
       </div>
     </div>
-  }
+  } -->
 </main>
 
 <app-footer></app-footer>
