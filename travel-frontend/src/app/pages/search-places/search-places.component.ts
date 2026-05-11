@@ -4,7 +4,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { TranslocoModule } from '@jsverse/transloco';
 
@@ -20,7 +20,11 @@ export class SearchPlacesComponent {
   isLoading = true;
   searchTerm: string = '';
 
-  constructor(private placeService: PlaceService, private route: ActivatedRoute) {}
+  constructor(
+    private placeService: PlaceService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
   // Escuchamos los cambios en los parámetros de la URL
@@ -51,5 +55,9 @@ export class SearchPlacesComponent {
   getStars(rating: number): string {
     const filledStars = Math.max(0, Math.min(Math.floor(rating), 5));
     return '★'.repeat(filledStars) + '☆'.repeat(5 - filledStars);
+  }
+
+  goToPlaceDetail(placeId: number): void {
+    this.router.navigate(['/place', placeId], { queryParams: { returnTo: 'search' } });
   }
 }

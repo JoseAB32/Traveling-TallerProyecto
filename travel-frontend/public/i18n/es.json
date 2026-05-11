@@ -148,6 +148,7 @@
         "textResultsFor": "Resultados para:",
         "textSearchInBolivia": "Buscando en Bolivia...",
         "textLocated": "Ubicado en",
+        "textViewDetail": "Ver detalle",
         "textNoMatchesFound": "¡Ups! No se encontraron coincidencias.",
         "textTryAnother": "Intenta con otro departamento, nombre de lugar o dirección.",
         "textBack": "Volver al inicio"
@@ -156,7 +157,21 @@
         "textLoading": "Cargando lugar...",
         "textPlaceNotFound": "Lugar no encontrado",
         "textGeneralInfo": "Información General",
-        "textInfoPlace": "Información del Lugar"
+        "textInfoPlace": "Información del Lugar",
+        "textBack": "Volver",
+        "textBackToItinerary": "Volver a itinerario",
+        "textReviewsTitle": "Reseñas del Lugar",
+        "textBy": "Por",
+        "textReviewPlaceholder": "Calificar y escribir reseña...",
+        "textPublish": "Publicar",
+        "textPublishing": "Publicando...",
+        "textLoginToReview": "Inicia sesión para publicar una reseña.",
+        "textPublishReviewError": "No se pudo publicar la reseña. Intenta de nuevo.",
+        "textReply": "Responder",
+        "textNoReviews": "Aún no hay reseñas para este lugar.",
+        "textPrevious": "Anterior",
+        "textNext": "Siguiente",
+        "textRateWithStars": "Puntuar con {{count}} estrellas"
     },
     "components": {
         "cardTextGeneralInfo": "INFORMACIÓN GENERAL:",

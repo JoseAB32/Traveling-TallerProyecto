@@ -3,11 +3,11 @@
 <div class="place-detail-container">
 
   <div class="back-row" *ngIf="showBackToItinerary">
-    <button class="back-btn" (click)="backToItinerary()">Volver a itinerario</button>
+    <button class="back-btn" (click)="backToItinerary()">{{ 'placeDetail.textBackToItinerary' | transloco }}</button>
   </div>
 
   <div class="back-row" *ngIf="showBackToDepartment && backDepartmentId">
-    <button class="back-btn" (click)="backToDepartment()">Volver</button>
+    <button class="back-btn" (click)="backToDepartment()">{{ 'placeDetail.textBack' | transloco }}</button>
   </div>
 
   <!-- LOADING -->
@@ -170,6 +170,87 @@
         </div>
       </div>
     </div>
+
+    <section class="reviews-section">
+      <h2 class="reviews-title">{{ 'placeDetail.textReviewsTitle' | transloco }}</h2>
+
+      <div class="review-create-card">
+        <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ currentUserName }}</div>
+        <textarea
+          [(ngModel)]="reviewComment"
+          class="review-textarea"
+          [placeholder]="'placeDetail.textReviewPlaceholder' | transloco"
+          rows="3"
+          [disabled]="!isAuthenticated || publishingReview">
+        </textarea>
+
+        <div class="review-create-footer">
+          <div class="review-stars-input" role="radiogroup" aria-label="Calificación de reseña">
+            <button
+              *ngFor="let star of stars"
+              type="button"
+              class="star-btn"
+              [class.selected]="star <= reviewScore"
+              (click)="selectReviewScore(star)"
+              [disabled]="!isAuthenticated || publishingReview"
+              [attr.aria-label]="('placeDetail.textRateWithStars' | transloco:{ count: star })">
+              ★
+            </button>
+          </div>
+
+          <button
+            type="button"
+            class="publish-btn"
+            [disabled]="!canPublishReview"
+            (click)="publishReview()">
+            {{ publishingReview ? ('placeDetail.textPublishing' | transloco) : ('placeDetail.textPublish' | transloco) }}
+          </button>
+        </div>
+
+        <p class="review-help" *ngIf="!isAuthenticated">{{ 'placeDetail.textLoginToReview' | transloco }}</p>
+        <p class="review-error" *ngIf="reviewError">{{ reviewError }}</p>
+      </div>
+
+      <div class="review-item-card" *ngFor="let review of reviews">
+        <div class="review-author">{{ 'placeDetail.textBy' | transloco }} {{ review.user.userName }}</div>
+        <p class="review-comment">{{ review.comment }}</p>
+        <div class="review-score">{{ getReviewStars(review.score) }}</div>
+        <div class="review-meta">
+          <span>{{ formatReviewDate(review.createdAt) }}</span>
+          <button type="button" class="reply-btn" disabled>{{ 'placeDetail.textReply' | transloco }}</button>
+        </div>
+      </div>
+
+      <p class="reviews-empty" *ngIf="!reviewsLoading && reviews.length === 0">{{ 'placeDetail.textNoReviews' | transloco }}</p>
+
+      <div class="reviews-actions" *ngIf="reviewsPageNumbers.length > 0">
+        <button
+          type="button"
+          class="page-nav-btn"
+          (click)="goToReviewsPage(currentReviewsPage - 1)"
+          [disabled]="currentReviewsPage === 0 || reviewsLoading">
+          {{ 'placeDetail.textPrevious' | transloco }}
+        </button>
+
+        <button
+          *ngFor="let page of reviewsPageNumbers"
+          type="button"
+          class="page-number-btn"
+          [class.active]="page === currentReviewsPage"
+          (click)="goToReviewsPage(page)"
+          [disabled]="reviewsLoading">
+          {{ page + 1 }}
+        </button>
+
+        <button
+          type="button"
+          class="page-nav-btn"
+          (click)="goToReviewsPage(currentReviewsPage + 1)"
+          [disabled]="!reviewsHasNext || reviewsLoading">
+          {{ 'placeDetail.textNext' | transloco }}
+        </button>
+      </div>
+    </section>
   </div>
 </div>
 
