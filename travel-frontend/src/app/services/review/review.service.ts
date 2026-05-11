@@ -22,6 +22,10 @@ export class ReviewService {
     return this.http.get<ReviewPageResponse>(`${this.baseUrl}/place/${placeId}?page=${page}&size=${size}`);
   }
 
+  getReviewReplies(reviewId: number, page: number, size: number = 2): Observable<ReviewPageResponse> {
+    return this.http.get<ReviewPageResponse>(`${this.baseUrl}/${reviewId}/replies?page=${page}&size=${size}`);
+  }
+
   createReview(payload: CreateReviewRequest): Observable<Review> {
     return this.http.post<Review>(this.baseUrl, payload);
   }

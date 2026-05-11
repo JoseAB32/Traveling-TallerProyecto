@@ -19,7 +19,7 @@ export interface CreateReviewRequest {
   placeId: number;
   parentId?: number | null;
   comment: string;
-  score: number;
+  score?: number | null;
 }
 
 export interface ReviewPageResponse {
