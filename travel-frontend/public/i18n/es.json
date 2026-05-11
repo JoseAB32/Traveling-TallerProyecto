@@ -3,6 +3,7 @@
         "searchPlaceholder": "Buscar departamento o lugar",
         "profile": "Perfil",
         "itineraries": "Itinerarios",
+        "myItineraries": "Mis itinerarios",
         "wishlist": "Deseados",
         "logout": "Cerrar Sesión",
         "adminConfig": "Configuración"
@@ -148,6 +149,7 @@
         "textResultsFor": "Resultados para:",
         "textSearchInBolivia": "Buscando en Bolivia...",
         "textLocated": "Ubicado en",
+        "textViewDetail": "Ver detalle",
         "textNoMatchesFound": "¡Ups! No se encontraron coincidencias.",
         "textTryAnother": "Intenta con otro departamento, nombre de lugar o dirección.",
         "textBack": "Volver al inicio"
@@ -156,7 +158,27 @@
         "textLoading": "Cargando lugar...",
         "textPlaceNotFound": "Lugar no encontrado",
         "textGeneralInfo": "Información General",
-        "textInfoPlace": "Información del Lugar"
+        "textInfoPlace": "Información del Lugar",
+        "textBack": "Volver",
+        "textBackToItinerary": "Volver a itinerario",
+        "textReviewsTitle": "Reseñas del Lugar",
+        "textBy": "Por",
+        "textReviewPlaceholder": "Calificar y escribir reseña...",
+        "textPublish": "Publicar",
+        "textPublishing": "Publicando...",
+        "textLoginToReview": "Inicia sesión para publicar una reseña.",
+        "textPublishReviewError": "No se pudo publicar la reseña. Intenta de nuevo.",
+        "textReply": "Responder",
+        "textReplyPlaceholder": "Escribe una respuesta...",
+        "textPublishReply": "Publicar respuesta",
+        "textLoginToReply": "Inicia sesión para responder.",
+        "textPublishReplyError": "No se pudo publicar la respuesta. Intenta de nuevo.",
+        "textViewMore": "Ver {{count}} más",
+        "textHide": "Ocultar",
+        "textNoReviews": "Aún no hay reseñas para este lugar.",
+        "textLoadingReviews": "Cargando reseñas...",
+        "textPrevious": "Anterior",
+        "textNext": "Siguiente"
     },
     "components": {
         "cardTextGeneralInfo": "INFORMACIÓN GENERAL:",
@@ -217,5 +239,14 @@
         "textTittleSuccess": "Recuperación de contraseña exitosa",
         "textMessageSuccess": "Se realizo el cambio de contraseña correctamente. Por favor inicie sesión para ingresar a la plataforma.",
         "textLinkLogin": "Ir al Login"
-    }
+    },
+    "myItineraries": {
+        "title": "MIS ITINERARIOS",
+        "loading": "Cargando itinerarios...",
+        "empty": "No tienes itinerarios guardados.",
+        "noStartDate": "Sin fecha inicio",
+        "noEndDate": "Sin fecha fin",
+        "places": "lugares",
+        "viewMore": "Ver más"
+  }
 }

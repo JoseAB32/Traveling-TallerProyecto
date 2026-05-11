@@ -16,10 +16,14 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ResetSuccessComponent } from './pages/reset-success/reset-success.component';
 import { ModifyItineraryComponent } from './pages/modify-itinerary/modify-itinerary.component';
+import { MyItinerariesComponent } from './pages/my-itineraries/my-itineraries.component';
 export const routes: Routes = [
+
   { path: 'sign-up', component: SignUpComponent },
+
   {
-    path: 'SearchPlace', component: SearchPlacesComponent
+    path: 'SearchPlace',
+    component: SearchPlacesComponent
   },
   { path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent },
   { path: 'login', component: LoginComponent },
@@ -27,19 +31,27 @@ export const routes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'wishlist', canActivate: [authGuard, featureGuard('showFavorites')], component: WishlistComponent },
   { path: 'modify-itinerario', canActivate: [authGuard], component: ModifyItineraryComponent },
+  {
+    path: 'my-itineraries',
+    canActivate: [authGuard],
+    component: MyItinerariesComponent
+  },
   { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'reset-success', component: ResetSuccessComponent },
   {
     path: 'place/:id',
-    loadComponent: () => import('./pages/place-detail/place-detail.component')
-      .then(m => m.PlaceDetailComponent),
+    loadComponent: () =>
+      import('./pages/place-detail/place-detail.component')
+        .then(m => m.PlaceDetailComponent),
     canActivate: [authGuard]
   },
-  { 
-    path: 'department/:id', 
-    component: DepartmentComponent,canActivate: [authGuard]
+
+  {
+    path: 'department/:id',
+    component: DepartmentComponent,
+    canActivate: [authGuard]
   },
   { path: 'itinerarios', canActivate: [authGuard], component: CreateItineraryComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }

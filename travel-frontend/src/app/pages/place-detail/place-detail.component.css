@@ -282,3 +282,280 @@ body {
   width: 26px;   /* 🔥 antes 20px */
   height: 26px;  /* 🔥 antes 20px */
 }
+
+.reviews-section {
+  margin-top: 44px;
+}
+
+.reviews-title {
+  font-size: 1.7rem;
+  color: #ff6d3a;
+  border-bottom: 3px solid #ff6d3a;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.review-create-card,
+.review-item-card {
+  border: 2px solid #2f7ac4;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: #f7f7f7;
+}
+
+.review-author {
+  color: #8a8a8a;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.review-textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  resize: vertical;
+  font-family: inherit;
+  color: #333;
+  outline: none;
+}
+
+.review-create-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.review-stars-input {
+  display: flex;
+  gap: 4px;
+}
+
+.star-btn {
+  border: none;
+  background: transparent;
+  color: #7f7f7f;
+  cursor: pointer;
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.star-btn.selected {
+  color: #111;
+}
+
+.star-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.publish-btn {
+  border: none;
+  border-radius: 10px;
+  background: #ff7c48;
+  color: #fff;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.publish-btn:disabled {
+  background: #ffc7ae;
+  cursor: not-allowed;
+}
+
+.review-help,
+.review-error,
+.reviews-empty {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+}
+
+.review-error {
+  color: #b21b1b;
+}
+
+.reviews-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #5f6f85;
+  font-weight: 600;
+  margin: 14px 0 18px;
+}
+
+.reviews-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #c8d7e8;
+  border-top-color: #2f7ac4;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.review-comment {
+  margin: 0 0 8px;
+  color: #1f1f1f;
+}
+
+.review-score {
+  margin-bottom: 8px;
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+}
+
+.review-meta {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: #8a8a8a;
+}
+
+.reply-btn {
+  border: none;
+  background: transparent;
+  color: #808080;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+}
+
+.reply-composer {
+  margin-top: 10px;
+}
+
+.reply-textarea {
+  width: 100%;
+  border: 1px solid #c9d9eb;
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+  font-family: inherit;
+  background: #fff;
+}
+
+.reply-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reply-publish-btn {
+  border: none;
+  border-radius: 8px;
+  background: #2f7ac4;
+  color: #fff;
+  font-weight: 700;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.reply-publish-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.reply-list {
+  margin-top: 10px;
+}
+
+.reply-divider {
+  border-top: 1px solid #b6b6b6;
+  margin: 8px 0 12px;
+}
+
+.reply-item {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.reply-meta {
+  color: #8a8a8a;
+  font-size: 0.92rem;
+}
+
+.reply-toggle-row {
+  display: flex;
+  gap: 14px;
+  padding-left: 20px;
+}
+
+.reply-toggle-btn {
+  border: none;
+  background: transparent;
+  color: #7d7d7d;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reply-skeleton {
+  margin-top: 8px;
+  padding-left: 20px;
+}
+
+.reply-skeleton-line {
+  height: 9px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #e5e5e5 25%, #f0f0f0 37%, #e5e5e5 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  margin-bottom: 7px;
+}
+
+.reply-skeleton-line.short {
+  width: 28%;
+}
+
+.reply-skeleton-line.medium {
+  width: 62%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.reviews-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.page-nav-btn,
+.page-number-btn {
+  border: 1px solid #2f4f7f;
+  background: #fff;
+  color: #2f4f7f;
+  border-radius: 10px;
+  min-width: 38px;
+  height: 36px;
+  padding: 0 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.page-number-btn.active {
+  background: #2f4f7f;
+  color: #fff;
+}
+
+.page-nav-btn:disabled,
+.page-number-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

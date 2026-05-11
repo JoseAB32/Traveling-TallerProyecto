@@ -3,6 +3,7 @@
         "searchPlaceholder": "Search department or place",
         "profile": "Profile",
         "itineraries": "Itineraries",
+        "myItineraries": "My itineraries",
         "wishlist": "Wishlist",
         "logout": "Log Out",
         "adminConfig": "Configuration"
@@ -148,6 +149,7 @@
         "textResultsFor": "Results for:",
         "textSearchInBolivia": "Searching in Bolivia...",
         "textLocated": "Located in",
+        "textViewDetail": "View detail",
         "textNoMatchesFound": "Oops! No matches found.",
         "textTryAnother": "Try another department, place name, or address.",
         "textBack": "Back to top"
@@ -156,7 +158,27 @@
         "textLoading": "Loading place...",
         "textPlaceNotFound": "Place not found",
         "textGeneralInfo": "General Information",
-        "textInfoPlace": "Location Information"
+        "textInfoPlace": "Location Information",
+        "textBack": "Back",
+        "textBackToItinerary": "Back to itinerary",
+        "textReviewsTitle": "Place Reviews",
+        "textBy": "By",
+        "textReviewPlaceholder": "Rate and write a review...",
+        "textPublish": "Publish",
+        "textPublishing": "Publishing...",
+        "textLoginToReview": "Sign in to publish a review.",
+        "textPublishReviewError": "Could not publish the review. Please try again.",
+        "textReply": "Reply",
+        "textReplyPlaceholder": "Write a reply...",
+        "textPublishReply": "Publish reply",
+        "textLoginToReply": "Sign in to reply.",
+        "textPublishReplyError": "Could not publish the reply. Please try again.",
+        "textViewMore": "View {{count}} more",
+        "textHide": "Hide",
+        "textNoReviews": "There are no reviews for this place yet.",
+        "textLoadingReviews": "Loading reviews...",
+        "textPrevious": "Previous",
+        "textNext": "Next"
     },
     "components": {
         "cardTextGeneralInfo": "GENERAL INFORMATION:",
@@ -217,5 +239,14 @@
         "textTittleSuccess": "Password recovery successful",
         "textMessageSuccess": "The password change was successful. Please log in to access the platform.",
         "textLinkLogin": "Go to Login"
-    }
+    },
+    "myItineraries": {
+        "title": "MY ITINERARIES",
+        "loading": "Loading itineraries...",
+        "empty": "You don't have saved itineraries.",
+        "noStartDate": "No start date",
+        "noEndDate": "No end date",
+        "places": "places",
+        "viewMore": "View more"
+  }
 }
