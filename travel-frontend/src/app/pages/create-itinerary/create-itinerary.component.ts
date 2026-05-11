@@ -434,6 +434,27 @@ export class CreateItineraryComponent implements OnInit {
     return date.getHours() * 60 + date.getMinutes();
   }
 
+  formatScheduleTime(dateValue: string | Date | null): string {
+    if (!dateValue) {
+      return this.translocoService.translate('createItinerary.textNoSchedule');
+    }
+
+    if (typeof dateValue === 'string') {
+      if (/^\d{2}:\d{2}/.test(dateValue)) {
+        return dateValue.substring(0, 5);
+      }
+
+      const parsed = new Date(dateValue);
+      if (!Number.isNaN(parsed.getTime())) {
+        return `${String(parsed.getHours()).padStart(2, '0')}:${String(parsed.getMinutes()).padStart(2, '0')}`;
+      }
+
+      return this.translocoService.translate('createItinerary.textNoSchedule');
+    }
+
+    return `${String(dateValue.getHours()).padStart(2, '0')}:${String(dateValue.getMinutes()).padStart(2, '0')}`;
+  }
+
   private hasValidCoordinates(place: Place): boolean {
     return (
       place.latitude !== null &&
