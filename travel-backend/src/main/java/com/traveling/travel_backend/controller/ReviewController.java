@@ -41,6 +41,15 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getPlaceReviews(placeId, page, size));
     }
 
+    @Operation(summary = "Get paginated replies by review", description = "Returns active replies for a review ordered by latest created date", operationId = "getReviewReplies")
+    @GetMapping("/{reviewId}/replies")
+    public ResponseEntity<ReviewPageResponseDTO> getReviewReplies(
+            @PathVariable Long reviewId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size) {
+        return ResponseEntity.ok(reviewService.getReviewReplies(reviewId, page, size));
+    }
+
     @Operation(summary = "Create place review", description = "Creates a new review for a place", operationId = "createReview")
     @PostMapping
     public ResponseEntity<ReviewResponseDTO> createReview(@RequestBody CreateReviewRequestDTO request, Authentication authentication) {
