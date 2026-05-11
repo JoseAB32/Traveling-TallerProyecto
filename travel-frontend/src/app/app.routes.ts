@@ -30,7 +30,7 @@ export const routes: Routes = [
   { path: 'success-signup', component: SuccessSignupComponent },
   { path: '', component: LandingComponent },
   { path: 'wishlist', canActivate: [authGuard, featureGuard('showFavorites')], component: WishlistComponent },
-  { path: 'modify-itinerario', canActivate: [authGuard], component: ModifyItineraryComponent },
+  { path: 'modify-itinerario/:id', canActivate: [authGuard], component: ModifyItineraryComponent },
   {
     path: 'my-itineraries',
     canActivate: [authGuard],

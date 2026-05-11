@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
+import { Router } from '@angular/router';
 
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -43,6 +44,10 @@ export class MyItinerariesComponent implements OnInit {
   private itineraryService = inject(ItineraryService);
 
   private routingService = inject(RoutingService);
+
+  constructor(private router: Router) {
+
+  }
 
   ngOnInit(): void {
     this.loadItineraries();
@@ -161,6 +166,11 @@ export class MyItinerariesComponent implements OnInit {
 
   isExpanded(index: number): boolean {
     return this.expandedCards.includes(index);
+  }
+
+  goToModifyItinerary(id: number) {
+    this.router.navigate(['/modify-itinerario', id]);
+    // console.log(id);
   }
 
 }

@@ -1,13 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { MapComponent } from '../../components/map/map.component';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 
 import { City } from '../../models/city/city';
 import { Place } from '../../models/place/place';
@@ -23,8 +23,9 @@ import { RoutingService } from '../../services/routing/routing.service';
   templateUrl: './modify-itinerary.component.html',
   styleUrl: './modify-itinerary.component.css'
 })
-export class ModifyItineraryComponent implements OnInit {
+export class ModifyItineraryComponent implements OnInit, OnDestroy {
   private readonly sessionKey = 'UpdateitineraryDraftUiState';
+  private routerSubscription?: Subscription;
   
     limiteInferiorFecha = new Date().toISOString().split('T')[0];
 
@@ -43,7 +44,7 @@ export class ModifyItineraryComponent implements OnInit {
 
     itineraryNameError = '';
 
-    tripId: number = 25;
+    tripId: number = 0;
     itinerary: ItineraryDraftResponse | null = null;
     isLoading = false;
     errorMessage = '';
@@ -64,7 +65,16 @@ export class ModifyItineraryComponent implements OnInit {
     private translocoService = inject(TranslocoService);
   
     ngOnInit(): void {  
-      // this.loadItineraryById();
+      const idParam = this.route.snapshot.paramMap.get('id');
+
+      if (!idParam) {
+        console.error('No se encontró el id en la URL');
+        return;
+      }
+
+      this.tripId = Number(idParam);
+      
+      this.listenRouteChanges();
 
       const wasRestored = this.restoreUiState();
 
@@ -73,12 +83,12 @@ export class ModifyItineraryComponent implements OnInit {
       }
     }
 
-    private loadItineraryById(): void {
-      // const tripId = Number(this.route.snapshot.paramMap.get('id'));
-      const tripId = 25;
-      this.tripId = tripId;
+    ngOnDestroy(): void {
+      this.routerSubscription?.unsubscribe();
+    }
 
-      if (Number.isNaN(tripId) || tripId <= 0) {
+    private loadItineraryById(): void {
+      if (Number.isNaN(this.tripId) || this.tripId <= 0) {
         this.errorMessage = 'ID de itinerario inválido';
         return;
       }
@@ -86,7 +96,7 @@ export class ModifyItineraryComponent implements OnInit {
       this.isLoading = true;
       this.errorMessage = '';
 
-      this.itineraryService.getItineraryById(tripId).subscribe({
+      this.itineraryService.getItineraryById(this.tripId).subscribe({
         next: async (response: ItineraryDraftResponse) => {
           this.itinerary = response;
           this.nameItinerary = response.name;
@@ -225,7 +235,10 @@ export class ModifyItineraryComponent implements OnInit {
     goToPlaceDetail(placeId: number): void {
       this.persistUiState();
       this.router.navigate(['/place', placeId], {
-        queryParams: { returnTo: 'modify-itinerario' }
+        queryParams: {
+          returnTo: 'modify-itinerary',
+          itineraryId: this.tripId
+        }
       });
     }
   
@@ -462,6 +475,7 @@ export class ModifyItineraryComponent implements OnInit {
           sessionStorage.setItem('justSaved', 'true');
 
           this.clearScreenAfterSave();
+          this.router.navigate(['/my-itineraries'])
         },
         error: (error: HttpErrorResponse) => {
           this.isSavingDraft = false;
@@ -505,5 +519,22 @@ export class ModifyItineraryComponent implements OnInit {
       this.isLoadingPlaces = false;
 
       this.saveMessage = 'Itinerario actualizado correctamente';
+    }
+
+    private listenRouteChanges(): void {
+      this.routerSubscription = this.router.events.subscribe((event) => {
+        if (!(event instanceof NavigationStart)) {
+          return;
+        }
+
+        const isGoingToPlaceDetailFromModifyItinerary =
+          event.url.startsWith('/place/') &&
+          event.url.includes('returnTo=modify-itinerary') &&
+          event.url.includes(`itineraryId=${this.tripId}`);
+
+        if (!isGoingToPlaceDetailFromModifyItinerary) {
+          sessionStorage.removeItem(this.sessionKey);
+        }
+      });
     }
 }
