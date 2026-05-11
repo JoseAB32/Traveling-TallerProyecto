@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 import { CONSTANTS } from '../../utils/constants';
 import { Place } from '../../models/place/place';
 
+export interface RouteCoordinate {
+  lat: number;
+  lng: number;
+}
+
 export interface ItineraryDraftRequest {
   name?: string;
   startDate?: string | null;
@@ -18,29 +23,40 @@ export interface ItineraryDraftResponse {
   startDate: string | null;
   endDate: string | null;
   places: Place[];
+  routeCoordinates?: L.LatLngTuple[];
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItineraryService {
+
   private apiUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.TRIPS;
 
   constructor(private http: HttpClient) {}
 
   getMyDraft(): Observable<ItineraryDraftResponse> {
-    return this.http.get<ItineraryDraftResponse>(`${this.apiUrl}/draft/me`);
+    return this.http.get<ItineraryDraftResponse>(`${this.apiUrl}/draft/me`
+    );
   }
 
   getDraftByUser(userId: number): Observable<ItineraryDraftResponse> {
-    return this.http.get<ItineraryDraftResponse>(`${this.apiUrl}/draft/user/${userId}`);
+    return this.http.get<ItineraryDraftResponse>(`${this.apiUrl}/draft/user/${userId}`
+    );
   }
 
   saveDraft(payload: ItineraryDraftRequest): Observable<ItineraryDraftResponse> {
-    return this.http.put<ItineraryDraftResponse>(`${this.apiUrl}/draft`, payload);
+    return this.http.put<ItineraryDraftResponse>(`${this.apiUrl}/draft`, payload
+    );
   }
 
   createItinerary(payload: ItineraryDraftRequest): Observable<ItineraryDraftResponse> {
-    return this.http.post<ItineraryDraftResponse>(`${this.apiUrl}/trip`, payload);
+    return this.http.post<ItineraryDraftResponse>(`${this.apiUrl}/trip`, payload
+    );
+  }
+
+  getMyItineraries(): Observable<ItineraryDraftResponse[]> {
+    return this.http.get<ItineraryDraftResponse[]>(`${this.apiUrl}/me`
+    );
   }
 }

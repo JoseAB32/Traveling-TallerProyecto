@@ -3,6 +3,7 @@
         "searchPlaceholder": "Search department or place",
         "profile": "Profile",
         "itineraries": "Itineraries",
+        "myItineraries": "My itineraries",
         "wishlist": "Wishlist",
         "logout": "Log Out",
         "adminConfig": "Configuration"
@@ -238,5 +239,14 @@
         "textTittleSuccess": "Password recovery successful",
         "textMessageSuccess": "The password change was successful. Please log in to access the platform.",
         "textLinkLogin": "Go to Login"
-    }
+    },
+    "myItineraries": {
+        "title": "MY ITINERARIES",
+        "loading": "Loading itineraries...",
+        "empty": "You don't have saved itineraries.",
+        "noStartDate": "No start date",
+        "noEndDate": "No end date",
+        "places": "places",
+        "viewMore": "View more"
+  }
 }
