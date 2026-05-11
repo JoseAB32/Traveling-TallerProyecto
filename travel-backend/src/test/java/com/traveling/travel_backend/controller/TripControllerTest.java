@@ -182,4 +182,54 @@ public class TripControllerTest {
                 .andExpect(jsonPath("$.places[0].id").value(2))
                 .andExpect(jsonPath("$.places[1].id").value(3));
     }
+
+    @Test
+    @DisplayName("GET /api/trips/me retorna todos los itinerarios del usuario")
+    void getMyTripsReturnsAllTrips() throws Exception {
+
+    User user = new User();
+    user.setId(1L);
+    user.setUserName("alice");
+
+    Trip trip = new Trip();
+    trip.setId(100L);
+    trip.setUser(user);
+    trip.setName("Viaje La Paz");
+    trip.setStartDate("2026-05-01");
+    trip.setEndDate("2026-05-03");
+    trip.setState(true);
+
+    Place place = new Place();
+    place.setId(1L);
+    place.setName("Cristo");
+
+    TripItem item = new TripItem();
+    item.setPlace(place);
+
+    when(userRepository.findByUserName("alice"))
+            .thenReturn(Optional.of(user));
+
+    when(tripRepository
+            .findByUserIdAndStateTrueOrderByStartDateAsc(1L))
+            .thenReturn(List.of(trip));
+
+    when(tripItemRepository
+            .findByTripIdAndStateTrueOrderByVisitOrderAsc(100L))
+            .thenReturn(List.of(item));
+
+    UsernamePasswordAuthenticationToken auth =
+            new UsernamePasswordAuthenticationToken(
+                    "alice",
+                    null,
+                    List.of());
+
+    mockMvc.perform(get("/api/trips/me")
+            .principal(auth))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(1))
+            .andExpect(jsonPath("$[0].tripId").value(100))
+            .andExpect(jsonPath("$[0].name").value("Viaje La Paz"))
+            .andExpect(jsonPath("$[0].places.length()").value(1))
+            .andExpect(jsonPath("$[0].places[0].id").value(1));
+        }
 }

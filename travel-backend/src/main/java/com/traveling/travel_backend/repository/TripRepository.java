@@ -10,6 +10,10 @@ import com.traveling.travel_backend.model.Trip;
 
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Long> {
+
     Optional<Trip> findFirstByUserIdAndStateTrueOrderByIdDesc(Long userId);
+
     List<Trip> findByUserIdAndStateTrue(Long userId);
+
+    List<Trip> findByUserIdAndStateTrueOrderByStartDateAsc(Long userId);
 }
