@@ -168,7 +168,7 @@ class ReviewServiceTest {
         saved.setCreatedAt(OffsetDateTime.now());
 
         when(authentication.getName()).thenReturn("erika");
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByUserNameAndStateTrue("erika")).thenReturn(Optional.of(user));
         when(placeRepository.findById(2L)).thenReturn(Optional.of(place));
         when(reviewRepository.save(any(Review.class))).thenReturn(saved);
         when(logRepository.save(any(LogEntity.class))).thenReturn(null);
@@ -217,7 +217,7 @@ class ReviewServiceTest {
         saved.setCreatedAt(OffsetDateTime.now());
 
         when(authentication.getName()).thenReturn("erika");
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userRepository.findByUserNameAndStateTrue("erika")).thenReturn(Optional.of(user));
         when(placeRepository.findById(2L)).thenReturn(Optional.of(place));
         when(reviewRepository.findById(10L)).thenReturn(Optional.of(parent));
         when(reviewRepository.save(any(Review.class))).thenReturn(saved);
