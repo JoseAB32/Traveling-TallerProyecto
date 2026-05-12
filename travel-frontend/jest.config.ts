@@ -5,6 +5,29 @@ const config: Config = {
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   testEnvironment: 'jsdom',
   testMatch: ['**/*.spec.ts'],
+
+  transform: {
+    '^.+\\.(ts|js|mjs|html)$': [
+      'jest-preset-angular',
+      {
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+        stringifyContentPathRegex: '\\.html$'
+      }
+    ]
+  },
+
+  transformIgnorePatterns: [
+    'node_modules/(?!(@angular|@jsverse|rxjs|tslib|zone.js)/)'
+  ],
+
+  moduleFileExtensions: [
+    'ts',
+    'html',
+    'js',
+    'json',
+    'mjs'
+  ],
+
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/app/**/*.ts',

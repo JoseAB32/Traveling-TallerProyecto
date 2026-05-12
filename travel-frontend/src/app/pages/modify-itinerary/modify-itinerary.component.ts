@@ -9,10 +9,8 @@ import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom, Subscription } from 'rxjs';
 
-import { City } from '../../models/city/city';
 import { Place } from '../../models/place/place';
 import { ItineraryService, ItineraryDraftRequest, ItineraryDraftResponse } from '../../services/itinerary/itinerary.service';
-import { CityService } from '../../services/city/city.service';
 import { PlaceService } from '../../services/place/place.service';
 import { RoutingService } from '../../services/routing/routing.service';
 
@@ -56,7 +54,6 @@ export class ModifyItineraryComponent implements OnInit, OnDestroy {
     generatedItinerary: Place[] = [];
     nameItinerary: string = "";
   
-    private cityService = inject(CityService);
     private placeService = inject(PlaceService);
     private itineraryService = inject(ItineraryService);
     private route = inject(ActivatedRoute);
@@ -116,8 +113,6 @@ export class ModifyItineraryComponent implements OnInit, OnDestroy {
           }
 
           this.isLoading = false;
-
-          // console.log('Itinerario recuperado:', response);
         },
         error: (error: HttpErrorResponse) => {
           this.isLoading = false;
@@ -177,7 +172,6 @@ export class ModifyItineraryComponent implements OnInit, OnDestroy {
       }
 
       this.isLoadingPlaces = true;
-      // console.log(this.cityId);
       this.placeService.getPlacesByDepartment(this.cityId).subscribe({
         next: (places) => {
           this.cityPlaces = places;
@@ -218,7 +212,6 @@ export class ModifyItineraryComponent implements OnInit, OnDestroy {
       }
   
       this.selectedPlaces = [...this.selectedPlaces, this.selectedPlace];
-      // this.markAsDirty();
       this.generatedItinerary = [];
       this.generatedRouteCoordinates = [];
       this.persistUiState();
@@ -226,7 +219,6 @@ export class ModifyItineraryComponent implements OnInit, OnDestroy {
   
     removeSelectedPlace(placeId: number): void {
       this.selectedPlaces = this.selectedPlaces.filter(p => p.id !== placeId);
-      //this.markAsDirty();
       this.generatedItinerary = [];
       this.generatedRouteCoordinates = [];
       this.persistUiState();
