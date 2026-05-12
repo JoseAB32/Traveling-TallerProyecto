@@ -10,6 +10,10 @@
     <button class="back-btn" (click)="backToDepartment()">{{ 'placeDetail.textBack' | transloco }}</button>
   </div>
 
+  <div class="back-row" *ngIf="showBackToModifyItinerary">
+    <button class="back-btn" (click)="backToModifyItinerary()">Volver</button>
+  </div>
+
   <!-- LOADING -->
   <div *ngIf="loading" class="loading-container">
     <div class="spinner"></div>

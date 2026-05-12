@@ -1,113 +1,177 @@
-// import { TestBed } from '@angular/core/testing';
-// import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+/// <reference types="jest" />
 
-// import { ReviewService } from './review.service';
-// import { CreateReviewRequest } from '../../models/review/review';
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClientTesting,
+  HttpTestingController
+} from '@angular/common/http/testing';
 
-// describe('ReviewService', () => {
-//   let service: ReviewService;
-//   let httpMock: HttpTestingController;
+import { ReviewService } from './review.service';
+import { CONSTANTS } from '../../utils/constants';
+import {
+  CreateReviewRequest,
+  Review,
+  ReviewPageResponse
+} from '../../models/review/review';
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       imports: [HttpClientTestingModule]
-//     });
-//     service = TestBed.inject(ReviewService);
-//     httpMock = TestBed.inject(HttpTestingController);
-//   });
+describe('ReviewService', () => {
+  let service: ReviewService;
+  let httpMock: HttpTestingController;
 
-//   afterEach(() => {
-//     httpMock.verify();
-//   });
+  const baseUrl = CONSTANTS.API.BASE_URL + '/api/reviews';
 
-//   it('should be created', () => {
-//     expect(service).toBeTruthy();
-//   });
+  const mockReview = {
+    id: 1,
+    comment: 'Muy buen lugar',
+    rating: 5,
+    placeId: 10
+  } as unknown as Review;
 
-//   it('should call paginated place reviews endpoint', () => {
-//     service.getPlaceReviews(3, 0, 10).subscribe(response => {
-//       expect(response.page).toBe(0);
-//       expect(response.size).toBe(10);
-//       expect(response.content.length).toBe(1);
-//     });
+  const mockReviewPageResponse = {
+    content: [
+      {
+        id: 1,
+        comment: 'Muy buen lugar',
+        rating: 5,
+        placeId: 10
+      },
+      {
+        id: 2,
+        comment: 'Bonito lugar turístico',
+        rating: 4,
+        placeId: 10
+      }
+    ],
+    totalElements: 2,
+    totalPages: 1,
+    size: 10,
+    number: 0
+  } as unknown as ReviewPageResponse;
 
-//     const req = httpMock.expectOne(r =>
-//       r.method === 'GET' &&
-//       r.url.includes('/api/reviews/place/3') &&
-//       r.urlWithParams.includes('page=0') &&
-//       r.urlWithParams.includes('size=10')
-//     );
+  const mockCreateReviewPayload = {
+    placeId: 10,
+    rating: 5,
+    comment: 'Muy buen lugar'
+  } as unknown as CreateReviewRequest;
 
-//     req.flush({
-//       content: [{
-//         id: 1,
-//         comment: 'Excelente',
-//         score: 5,
-//         state: true,
-//         user: { id: 1, userName: 'peter', correo: '', pass: '', birthday: '', city_id: null, state: true },
-//         place: { id: 3 }
-//       }],
-//       page: 0,
-//       size: 10,
-//       totalElements: 1,
-//       totalPages: 1,
-//       hasNext: false
-//     });
-//   });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        ReviewService,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+    });
 
-//   it('should post create review payload', () => {
-//     const payload: CreateReviewRequest = {
-//       userId: 1,
-//       placeId: 3,
-//       parentId: null,
-//       comment: 'Muy bueno',
-//       score: 4
-//     };
+    service = TestBed.inject(ReviewService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
 
-//     service.createReview(payload).subscribe(response => {
-//       expect(response.comment).toBe('Muy bueno');
-//       expect(response.score).toBe(4);
-//     });
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-//     const req = httpMock.expectOne(r => r.method === 'POST' && r.url.includes('/api/reviews'));
-//     expect(req.request.body).toEqual(payload);
-//     req.flush({
-//       id: 11,
-//       comment: 'Muy bueno',
-//       score: 4,
-//       state: true,
-//       user: { id: 1, userName: 'erika', correo: '', pass: '', birthday: '', city_id: null, state: true },
-//       place: { id: 3 }
-//     });
-//   });
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
-//   it('should call review replies endpoint with default size', () => {
-//     service.getReviewReplies(12, 0).subscribe(response => {
-//       expect(response.page).toBe(0);
-//       expect(response.size).toBe(2);
-//       expect(response.content.length).toBe(1);
-//     });
+  it('should get top review by place id', () => {
+    const placeId = 10;
 
-//     const req = httpMock.expectOne(r =>
-//       r.method === 'GET' &&
-//       r.url.includes('/api/reviews/12/replies') &&
-//       r.urlWithParams.includes('page=0') &&
-//       r.urlWithParams.includes('size=2')
-//     );
+    service.getTopReviewByPlaceId(placeId).subscribe((review) => {
+      expect(review).toEqual(mockReview);
+    });
 
-//     req.flush({
-//       content: [{
-//         id: 22,
-//         comment: 'Respuesta',
-//         state: true,
-//         user: { id: 2, userName: 'ana', correo: '', pass: '', birthday: '', city_id: null, state: true },
-//         place: { id: 3 }
-//       }],
-//       page: 0,
-//       size: 2,
-//       totalElements: 3,
-//       totalPages: 2,
-//       hasNext: true
-//     });
-//   });
-// });
+    const req = httpMock.expectOne(
+      `${baseUrl}/mejor-resenia?placeId=${placeId}`
+    );
+
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockReview);
+  });
+
+  it('should get place reviews using default size', () => {
+    const placeId = 10;
+    const page = 0;
+
+    service.getPlaceReviews(placeId, page).subscribe((response) => {
+      expect(response).toEqual(mockReviewPageResponse);
+    });
+
+    const req = httpMock.expectOne(
+      `${baseUrl}/place/${placeId}?page=${page}&size=10`
+    );
+
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockReviewPageResponse);
+  });
+
+  it('should get place reviews using custom size', () => {
+    const placeId = 10;
+    const page = 1;
+    const size = 5;
+
+    service.getPlaceReviews(placeId, page, size).subscribe((response) => {
+      expect(response).toEqual(mockReviewPageResponse);
+    });
+
+    const req = httpMock.expectOne(
+      `${baseUrl}/place/${placeId}?page=${page}&size=${size}`
+    );
+
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockReviewPageResponse);
+  });
+
+  it('should get review replies using default size', () => {
+    const reviewId = 1;
+    const page = 0;
+
+    service.getReviewReplies(reviewId, page).subscribe((response) => {
+      expect(response).toEqual(mockReviewPageResponse);
+    });
+
+    const req = httpMock.expectOne(
+      `${baseUrl}/${reviewId}/replies?page=${page}&size=2`
+    );
+
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockReviewPageResponse);
+  });
+
+  it('should get review replies using custom size', () => {
+    const reviewId = 1;
+    const page = 1;
+    const size = 4;
+
+    service.getReviewReplies(reviewId, page, size).subscribe((response) => {
+      expect(response).toEqual(mockReviewPageResponse);
+    });
+
+    const req = httpMock.expectOne(
+      `${baseUrl}/${reviewId}/replies?page=${page}&size=${size}`
+    );
+
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockReviewPageResponse);
+  });
+
+  it('should create a review', () => {
+    service.createReview(mockCreateReviewPayload).subscribe((review) => {
+      expect(review).toEqual(mockReview);
+    });
+
+    const req = httpMock.expectOne(baseUrl);
+
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(mockCreateReviewPayload);
+
+    req.flush(mockReview);
+  });
+});
