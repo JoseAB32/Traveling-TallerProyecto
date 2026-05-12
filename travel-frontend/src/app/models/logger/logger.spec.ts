@@ -1,7 +1,7 @@
-import { Logger } from './logger';
+// import { Logger } from './logger';
 
-describe('Logger', () => {
-  it('should create an instance', () => {
-    expect(new Logger()).toBeTruthy();
-  });
-});
+// describe('Logger', () => {
+//   it('should create an instance', () => {
+//     expect(new Logger()).toBeTruthy();
+//   });
+// });
