@@ -19,11 +19,12 @@ import { ModifyItineraryComponent } from './pages/modify-itinerary/modify-itiner
 import { MyItinerariesComponent } from './pages/my-itineraries/my-itineraries.component';
 export const routes: Routes = [
 
+
   { path: 'sign-up', component: SignUpComponent },
 
   {
     path: 'SearchPlace',
-    component: SearchPlacesComponent
+    component: SearchPlacesComponent,
   },
   { path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent },
   { path: 'login', component: LoginComponent },
