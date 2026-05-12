@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @ExtendWith(MockitoExtension.class)
 class FeatureServiceTest {
@@ -51,12 +52,26 @@ class FeatureServiceTest {
     void getFeatures_CreatesFileWithDefaultsWhenNotExists() throws IOException {
         Map<String, Boolean> result = featureService.getFeatures();
 
-        assertThat(result).containsEntry("pinRedirection", false);
+        assertThat(result).containsEntry("pinRedirection", true);
         assertThat(result).containsEntry("autoCreateItinerary", true);
         assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
+        assertThat(result).hasSize(4);
 
-        assertThat(tempDir.resolve("features.json").toFile()).exists();
+        File file = tempDir.resolve("features.json").toFile();
+
+        assertThat(file).exists();
+
+        Map<String, Boolean> savedOnDisk = objectMapper.readValue(
+                file,
+                new TypeReference<Map<String, Boolean>>() {}
+        );
+
+        assertThat(savedOnDisk).containsEntry("pinRedirection", true);
+        assertThat(savedOnDisk).containsEntry("autoCreateItinerary", true);
+        assertThat(savedOnDisk).containsEntry("showSearchPlaces", true);
+        assertThat(savedOnDisk).containsEntry("showFavorites", true);
+
         verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
     }
 
