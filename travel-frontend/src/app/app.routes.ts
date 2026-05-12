@@ -15,77 +15,32 @@ import { featureGuard } from './guards/feature.guard';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ResetSuccessComponent } from './pages/reset-success/reset-success.component';
+import { ModifyItineraryComponent } from './pages/modify-itinerary/modify-itinerary.component';
 import { MyItinerariesComponent } from './pages/my-itineraries/my-itineraries.component';
-
 export const routes: Routes = [
+
 
   { path: 'sign-up', component: SignUpComponent },
 
   {
     path: 'SearchPlace',
-    component: SearchPlacesComponent
+    component: SearchPlacesComponent,
   },
-
-  {
-    path: 'InicioLogueado',
-    canActivate: [authGuard],
-    component: InicioLogueadoComponent
-  },
-
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-
-  {
-    path: 'success-signup',
-    component: SuccessSignupComponent
-  },
-
-  {
-    path: '',
-    component: LandingComponent
-  },
-
-  {
-    path: 'wishlist',
-    canActivate: [authGuard, featureGuard('showFavorites')],
-    component: WishlistComponent
-  },
-
-  {
-    path: 'itinerarios',
-    canActivate: [authGuard],
-    component: CreateItineraryComponent
-  },
-
+  { path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'success-signup', component: SuccessSignupComponent },
+  { path: '', component: LandingComponent },
+  { path: 'wishlist', canActivate: [authGuard, featureGuard('showFavorites')], component: WishlistComponent },
+  { path: 'modify-itinerario/:id', canActivate: [authGuard], component: ModifyItineraryComponent },
   {
     path: 'my-itineraries',
     canActivate: [authGuard],
     component: MyItinerariesComponent
   },
-
-  {
-    path: 'admin-view',
-    canActivate: [adminGuard],
-    component: AdminViewComponent
-  },
-
-  {
-    path: 'forgot-password',
-    component: ForgotPasswordComponent
-  },
-
-  {
-    path: 'reset-password',
-    component: ResetPasswordComponent
-  },
-
-  {
-    path: 'reset-success',
-    component: ResetSuccessComponent
-  },
-
+  { path: 'admin-view', canActivate: [adminGuard], component: AdminViewComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'reset-success', component: ResetSuccessComponent },
   {
     path: 'place/:id',
     loadComponent: () =>
@@ -99,10 +54,6 @@ export const routes: Routes = [
     component: DepartmentComponent,
     canActivate: [authGuard]
   },
-
-  {
-    path: '**',
-    redirectTo: '',
-    pathMatch: 'full'
-  }
+  { path: 'itinerarios', canActivate: [authGuard], component: CreateItineraryComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

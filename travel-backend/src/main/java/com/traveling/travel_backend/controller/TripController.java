@@ -86,4 +86,31 @@ public class TripController {
                         request,
                         authentication));
     }
-}
+
+    @Operation(
+        summary = "Get itinerary by id",
+        description = "Returns an active itinerary by id for the authenticated user",
+        operationId = "getTripById"
+    )
+    @GetMapping(AppConstants.TRIPS_ENDPOINT + "/trip/{id}")
+    public ResponseEntity<TripDraftResponse> getTripById(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(tripService.getTripById(id, authentication));
+    }
+
+    @Operation(
+        summary = "Update itinerary by id",
+        description = "Updates an active itinerary by id for the authenticated user",
+        operationId = "updateTripById"
+    )
+    @PutMapping(AppConstants.TRIPS_ENDPOINT + "/trip/{id}")
+    public ResponseEntity<TripDraftResponse> updateTripById(
+            @PathVariable Long id,
+            @RequestBody TripDraftRequest request,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(tripService.updateTripById(id, request, authentication));
+    }
+}   
