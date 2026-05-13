@@ -101,7 +101,7 @@ public class FeatureService {
 
     private Map<String, Boolean> defaultFeatures() {
         Map<String, Boolean> defaults = new LinkedHashMap<>();
-        defaults.put("pinRedirection", false);
+        defaults.put("pinRedirection", true);
         defaults.put("autoCreateItinerary", true);
         defaults.put("showSearchPlaces", true);
         defaults.put("showFavorites", true);
