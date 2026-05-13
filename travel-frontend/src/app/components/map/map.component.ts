@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy, inject, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, AfterViewInit, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy, ElementRef, ViewChild, inject } from '@angular/core';
 import * as L from 'leaflet';
 import { FeatureService } from '../../services/features/feature.service';
 
@@ -28,13 +28,13 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   // @Input() routePlaces: any[] = [];
   @Input() routeCoordinates: L.LatLngTuple[] = [];
   @Input() showRoute = false;
+  @Input() forcePlaceClick = false;
   @Output() placeSelected = new EventEmitter<any>(); // Evento para enviar el lugar seleccionado al componente padre
   @Output() placeClicked = new EventEmitter<any>();
 
   private map: L.Map | null = null;
   private markerLayer = L.layerGroup();
   private routeLayer = L.layerGroup();
-
   private featureService = inject(FeatureService);
 
   ngAfterViewInit(): void {
@@ -113,7 +113,7 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
       });
 
       marker.on('click', () => {
-        if (this.featureService.isEnabled('pinRedirection')) {
+        if (this.forcePlaceClick || this.featureService.isEnabled('pinRedirection')) {
           this.placeClicked.emit(place);
         }
       });

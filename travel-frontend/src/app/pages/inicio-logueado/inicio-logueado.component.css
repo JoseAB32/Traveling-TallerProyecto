@@ -63,12 +63,13 @@
 .text-orange {
     color: #ff6b35;
     font-weight: 700;
-    padding: 20px 0 50px 0;
+    padding: 20px 0 40px 0;
 }
 
 .carousel-viewport {
     width: 100%;
     overflow: hidden;
+    padding: 10px 0 0 0;
 }
 
 .carousel-container {

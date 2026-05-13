@@ -140,8 +140,10 @@
         </div>
       }
     } @empty {
-      <div class="alert alert-info text-center mt-4">
-        {{ 'department.textThereAreNoPlaces' | transloco }}
+      <!-- MENSAJE ÚNICO EN GRANDE - SOLO MODIFIQUE ESTO -->
+      <div class="text-center py-5 my-5">
+        <i class="bi bi-star display-1 text-muted mb-4 d-block"></i>
+        <h2 class="fw-bold text-muted">{{ 'department.textThereAreNoPlaces' | transloco }}</h2>
       </div>
     }
     <!-- @if (places.length === 0) {

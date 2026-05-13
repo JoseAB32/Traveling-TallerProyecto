@@ -1,0 +1,174 @@
+<app-header></app-header>
+
+<main class="travels-container">
+
+  <h1 class="main-title">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+      <path fill="currentColor" d="M576 48c0-11.1-5.7-21.4-15.2-27.2s-21.2-6.4-31.1-1.4L413.5 77.5 234.1 17.6c-8.1-2.7-16.8-2.1-24.4 1.7l-128 64C70.8 88.8 64 99.9 64 112l0 352c0 11.1 5.7 21.4 15.2 27.2s21.2 6.4 31.1 1.4l116.1-58.1 173.3 57.8c-4.3-6.4-8.5-13.1-12.6-19.9-11-18.3-21.9-39.3-30-61.8l-101.2-33.7 0-284.5 128 42.7 0 99.3c31-35.8 77-58.4 128-58.4 22.6 0 44.2 4.4 64 12.5L576 48zM512 224c-66.3 0-120 52.8-120 117.9 0 68.9 64.1 150.4 98.6 189.3 11.6 13 31.3 13 42.9 0 34.5-38.9 98.6-120.4 98.6-189.3 0-65.1-53.7-117.9-120-117.9zM472 344a40 40 0 1 1 80 0 40 40 0 1 1 -80 0z"/>
+    </svg>
+
+    {{ 'myItineraries.title' | transloco }}
+
+  </h1>
+
+  @if (loading) {
+
+    <div class="message-box">
+      {{ 'myItineraries.loading' | transloco }}
+    </div>
+
+  }
+
+  @if (!loading && itineraries.length === 0) {
+
+    <div class="message-box">
+      {{ 'myItineraries.empty' | transloco }}
+    </div>
+
+  }
+
+  @for (itinerary of itineraries; track itinerary.tripId; let i = $index) {
+
+    <div
+      class="itinerary-card"
+      [class.open]="isExpanded(i)"
+    >
+
+      <div
+        class="itinerary-card-header"
+        (click)="toggleCard(i)"
+      >
+
+        <div class="itinerary-info">
+
+          <h2>
+            {{ itinerary.name }}
+          </h2>
+
+          <div class="info-row city-text">
+
+            <!-- ICONO MAPA -->
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+              <path fill="currentColor" d="M576 112C576 100.9 570.3 90.6 560.8 84.8C551.3 79 539.6 78.4 529.7 83.4L413.5 141.5L234.1 81.6C226 78.9 217.3 79.5 209.7 83.3L81.7 147.3C70.8 152.8 64 163.9 64 176L64 528C64 539.1 69.7 549.4 79.2 555.2C88.7 561 100.4 561.6 110.3 556.6L226.4 498.5L399.7 556.3C395.4 549.9 391.2 543.2 387.1 536.4C376.1 518.1 365.2 497.1 357.1 474.6L255.9 440.9L255.9 156.4L383.9 199.1L383.9 298.4C414.9 262.6 460.9 240 511.9 240C534.5 240 556.1 244.4 575.9 252.5L576 112zM392 405.9C392 474.8 456.1 556.3 490.6 595.2C502.2 608.2 521.9 608.2 533.5 595.2C568 556.3 632.1 474.8 632.1 405.9C632.1 340.8 578.4 288 512.1 288C445.8 288 392 340.8 392 405.9z"/>
+            </svg>
+
+            <span>
+              Visitaré {{ getCityName(itinerary) }}
+            </span>
+
+          </div>
+
+          <div class="info-row date-text">
+
+            <!-- ICONO CALENDARIO -->
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+              <path fill="currentColor" d="M224 64C241.7 64 256 78.3 256 96L256 128L384 128L384 96C384 78.3 398.3 64 416 64C433.7 64 448 78.3 448 96L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 96C192 78.3 206.3 64 224 64zM160 304L160 336C160 344.8 167.2 352 176 352L208 352C216.8 352 224 344.8 224 336L224 304C224 295.2 216.8 288 208 288L176 288C167.2 288 160 295.2 160 304zM288 304L288 336C288 344.8 295.2 352 304 352L336 352C344.8 352 352 344.8 352 336L352 304C352 295.2 344.8 288 336 288L304 288C295.2 288 288 295.2 288 304zM432 288C423.2 288 416 295.2 416 304L416 336C416 344.8 423.2 352 432 352L464 352C472.8 352 480 344.8 480 336L480 304C480 295.2 472.8 288 464 288L432 288zM160 432L160 464C160 472.8 167.2 480 176 480L208 480C216.8 480 224 472.8 224 464L224 432C224 423.2 216.8 416 208 416L176 416C167.2 416 160 423.2 160 432zM304 416C295.2 416 288 423.2 288 432L288 464C288 472.8 295.2 480 304 480L336 480C344.8 480 352 472.8 352 464L352 432C352 423.2 344.8 416 336 416L304 416zM416 432L416 464C416 472.8 423.2 480 432 480L464 480C472.8 480 480 472.8 480 464L480 432C480 423.2 472.8 416 464 416L432 416C423.2 416 416 423.2 416 432z"/>
+            </svg>
+
+            <span>
+              Mi próxima aventura será entre
+              {{ formatDate(itinerary.startDate) }}
+              –
+              {{ formatDate(itinerary.endDate) }}
+            </span>
+
+          </div>
+
+          <div class="itinerary-meta">
+
+            <div class="meta-item">
+
+              <!-- ICONO LUGAR -->
+
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                <path fill="currentColor" d="M352 348.4C416.1 333.9 464 276.5 464 208C464 128.5 399.5 64 320 64C240.5 64 176 128.5 176 208C176 276.5 223.9 333.9 288 348.4L288 544C288 561.7 302.3 576 320 576C337.7 576 352 561.7 352 544L352 348.4zM328 160C297.1 160 272 185.1 272 216C272 229.3 261.3 240 248 240C234.7 240 224 229.3 224 216C224 158.6 270.6 112 328 112C341.3 112 352 122.7 352 136C352 149.3 341.3 160 328 160z"/>
+              </svg>
+
+              <span>
+                {{ itinerary.places.length }}
+                {{ 'myItineraries.places' | transloco }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="expand-icon">
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path fill="currentColor" d="M297 441C309.5 453.5 329.8 453.5 342.3 441L534.3 249C546.8 236.5 546.8 216.2 534.3 203.7C521.8 191.2 501.5 191.2 489 203.7L320 372.7L151 203.7C138.5 191.2 118.2 191.2 105.7 203.7C93.2 216.2 93.2 236.5 105.7 249L297.7 441z"/>
+          </svg>
+
+        </div>
+
+      </div>
+
+      @if (isExpanded(i)) {
+
+        <div class="itinerary-details">
+
+          <div class="stops-list">
+
+            @for (place of itinerary.places; track place.id; let index = $index) {
+
+              <div class="stop-item">
+
+                <div class="stop-content">
+
+                  <div class="stop-number">
+                    {{ index + 1 }}
+                  </div>
+
+                  <div class="stop-name">
+                    {{ place.name }}
+                  </div>
+
+                </div>
+
+                <a
+                  class="ver-mas-link"
+                  [routerLink]="['/place', place.id]"
+                >
+                  {{ 'myItineraries.viewMore' | transloco }}
+                </a>
+
+              </div>
+
+            }
+
+          </div>
+
+          @if (itinerary.routeCoordinates && itinerary.routeCoordinates.length > 0) {
+
+            <div class="generated-map-box">
+
+              <app-map
+                [places]="itinerary.places"
+                [routeCoordinates]="itinerary.routeCoordinates"
+                [showRoute]="true">
+              </app-map>
+
+            </div>
+
+          }
+
+        </div>
+
+        <div class="button-container">
+          <button class="btn-modify" (click)="goToModifyItinerary(itinerary.tripId)">Modificar Itinerario</button> 
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</main>
+
+<app-footer></app-footer>

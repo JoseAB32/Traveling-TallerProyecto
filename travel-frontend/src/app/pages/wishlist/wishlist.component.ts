@@ -22,7 +22,6 @@ export class WishlistComponent implements OnInit, OnDestroy {
   private favoriteService = inject(FavoriteService);
   private authService = inject(AuthService);
   private userSub!: Subscription;
-  private currentUserId: number | null = null;
 
   isModalOpen: boolean = false;
   placeToDeleteId: number | null = null;
@@ -30,26 +29,20 @@ export class WishlistComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userSub = this.authService.currentUser$.subscribe(user => {
       if (user?.id) {
-        this.currentUserId = user.id;
-        this.cargarFavoritos(user.id);
+        this.cargarFavoritos();
         return;
       }
 
-      this.currentUserId = null;
       this.Favoritos = [];
       this.isLoading = false;
     });
   }
 
-  cargarFavoritos(userId: number) {
+  cargarFavoritos() {
     this.isLoading = true;
-    this.favoriteService.getUserFavorites(userId).subscribe({
+    this.favoriteService.getUserFavorites().subscribe({
       next: (data) => {
-        if (data) {
-          this.Favoritos = data.map(favorito => favorito.place);
-        } else {
-          this.Favoritos = [];
-        }
+        this.Favoritos = data ? data.map(favorito => favorito.place) : [];
         this.isLoading = false;
       },
       error: (error) => {
@@ -60,7 +53,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
     });
   }
 
-  openConfirmModal(placeId: number) {
+  openConfirmModal(placeId: number){
     this.placeToDeleteId = placeId;
     this.isModalOpen = true;
   }
@@ -78,12 +71,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
   }
 
   deleteFavorite(placeId: number) {
-    if (!this.currentUserId) {
-      console.warn('No hay usuario logueado.');
-      return;
-    }
-
-    this.favoriteService.removeFavorite(this.currentUserId, placeId).subscribe({
+    this.favoriteService.removeFavorite(placeId).subscribe({
       next: () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         this.Favoritos = this.Favoritos.filter(lugar => lugar.id !== placeId);
