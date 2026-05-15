@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -42,5 +43,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest credentials) {
         return ResponseEntity.ok(userService.login(credentials));
+    }
+
+    @Operation(summary = "Get my profile", description = "Returns the authenticated user's profile", operationId = "getProfile")
+    @GetMapping("/profile")
+    public ResponseEntity<UserResponseDTO> getProfile(Authentication authentication) {
+        return ResponseEntity.ok(userService.getProfile(authentication));
     }
 }
