@@ -248,5 +248,19 @@
         "noEndDate": "Sin fecha fin",
         "places": "lugares",
         "viewMore": "Ver más"
-  }
+    },
+    "profile": {
+        "loading": "Cargando perfil...",
+        "errorLoading": "No se pudo cargar el perfil.",
+        "retry": "Reintentar",
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "email": "Correo",
+        "birthday": "Fecha de nacimiento",
+        "city": "Ciudad",
+        "country": "País",
+        "edit": "Editar perfil",
+        "changePhoto": "Cambiar foto",
+        "avatar_alt": "Foto de perfil"
+    }
 }
