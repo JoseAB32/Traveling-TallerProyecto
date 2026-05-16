@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @Operation(summary = "Get my profile", description = "Returns the authenticated user's profile", operationId = "getProfile")
-    @GetMapping("/profile")
+    @GetMapping(AppConstants.USERS_ENDPOINT + "/profile")
     public ResponseEntity<UserResponseDTO> getProfile(Authentication authentication) {
         return ResponseEntity.ok(userService.getProfile(authentication));
     }
