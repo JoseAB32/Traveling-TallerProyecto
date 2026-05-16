@@ -3,7 +3,7 @@
 <div class="search-page-wrapper py-5">
   <div class="container">
     
-    <div class="mb-4" *ngIf="searchTerm">
+    <div class="title-cont mb-4" *ngIf="searchTerm">
       <h3>{{ 'searchPlaces.textResultsFor' | transloco}} <span class="text-orange-travel">"{{ searchTerm }}"</span></h3>
     </div>
 
@@ -30,6 +30,7 @@
                 </p>
               </div>
               
+              <div class="card-actions">
                <div class="stars h5 flex-shrink-0"
                    [ngClass]="i % 2 === 0 ? 'stars-orange' : 'stars-blue'">
                  {{ getStars(place.rating) }}
@@ -44,6 +45,7 @@
                     {{ 'searchPlaces.textViewDetail' | transloco }}
                   </button>
                 </div>
+              </div>
               
           </div>
         </div>
