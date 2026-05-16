@@ -252,6 +252,7 @@
     "profile": {
         "loading": "Loading profile...",
         "errorLoading": "Could not load profile.",
+        "myData": "Personal Information ",
         "retry": "Retry",
         "active": "Active",
         "inactive": "Inactive",
