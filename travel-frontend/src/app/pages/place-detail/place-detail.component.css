@@ -258,7 +258,17 @@ body {
 @media (max-width: 768px) {
 
   .place-detail-container {
-    padding: 20px;
+    padding: 10px;
+    /* background: violet; */
+    margin: 15px 0 0 0;
+  }
+
+  .title-bar {
+    margin-bottom: 20px;
+  }
+
+  .carousel-container {
+    margin: 0 auto 5px auto;
   }
 
   .carousel-image {
@@ -267,6 +277,8 @@ body {
 
   .info-section {
     flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
   }
 
   .arrow.left {

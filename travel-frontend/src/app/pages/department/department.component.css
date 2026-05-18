@@ -137,6 +137,10 @@ main.container {
   transform: translateX(30px); /* La tarjeta azul espera oculta un poco a la derecha */
 }
 
+.btn-mas {
+  display: none;
+}
+
 /* --- ESTADO ACTIVO (Cuando pasas el ratón por un pin) --- */
 /* El texto por defecto se desvanece y flota hacia arriba */
 .content-switcher.show-card .default-content {
@@ -155,14 +159,118 @@ main.container {
 /* --- RESPONSIVIDAD (Móviles) --- */
 @media (max-width: 768px) {
   .tilted-img-left, .tilted-img-right {
-    transform: rotate(0) translateX(0); /* Quitamos rotación en celulares */
+    transform: rotate(0) translateX(0); 
     width: 100%; 
     max-height: 220px;
-    margin-top: -3rem; /* Sube la foto un poco sobre la tarjeta */
-    margin-bottom: 1rem;
+    margin-top: -3rem;
   }
   
   .custom-card-blue, .custom-card-peach {
     margin-top: 4rem;
+  }
+}
+
+@media (max-width: 450px) {
+main.container {
+  padding-bottom: 5px !important;
+}
+
+  main.container,
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .container {
+    padding-bottom: 0 !important; 
+    margin-top: 25px !important;
+    margin-bottom: 0 !important; 
+  }
+
+  .content-switcher {
+    padding: 0 !important;
+  }
+
+  .default-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px !important;
+    margin-top: 0 !important;
+  }
+
+  .default-content .btn {
+    font-size: 1rem;
+    padding: 10px 20px !important; 
+  }
+
+  .map-container {
+    margin-bottom: 15px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .container h4 {
+    font-size: 1.3rem;
+    margin-bottom: 0 !important;
+  }
+
+  .info-card-blue {
+    margin-bottom: 5px;
+  }
+
+  .btn-mas {
+    display: block;
+    border: none;
+    padding: 5px 15px;
+    background-color: white;
+    color: var(--baltic-blue);
+    font-weight: 600;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+
+  .card {
+    padding: 20px 20px 0 20px;
+    margin: 25px 0 0 0 !important;
+  }
+
+  .tilted-img-left, .tilted-img-right {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .card-cont {
+    padding-bottom: 0 !important;
+  }
+   
+  .review-bubble {
+    margin-bottom: 0 !important;
+  }
+
+  .custom-card-blue,
+  .custom-card-peach {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .card-cont {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    --bs-gutter-x: 0 !important;
+  }
+
+  .card-cont > div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
