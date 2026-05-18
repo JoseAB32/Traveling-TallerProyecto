@@ -7,7 +7,7 @@
   </section>
 
   <section class="name-section">
-    <input type="text" [(ngModel)]="nameItinerary" (ngModelChange)="onNameChange()">
+    <input class="name-input" type="text" [(ngModel)]="nameItinerary" (ngModelChange)="onNameChange()">
     @if (itineraryNameError) {
       <p class="modal-error">{{ itineraryNameError }}</p>
     }

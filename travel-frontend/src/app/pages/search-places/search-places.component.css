@@ -25,7 +25,17 @@
 }
 
 .border-blue-travel { 
-  border-color: #667eea !important; 
+  border-color: #004E89 !important; 
+}
+
+.card-actions {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-self: stretch;
+  flex-shrink: 0;
 }
 
 .stars {
@@ -44,7 +54,7 @@
 }
 
 .stars-blue { 
-  color: #667eea !important; 
+  color: #004E89 !important; 
 }
 
 /* Tipografía y Textos */
@@ -109,4 +119,54 @@
   background-color: #2a5fa8;
   color: #fff;
   box-shadow: 0 6px 14px rgba(42, 95, 168, 0.3);
+}
+
+@media (max-width: 450px) {
+  .search-page-wrapper {
+    padding: 20px 20px 0 20px!important;
+  }
+
+  .container {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .title-cont {
+    margin-bottom: 15px !important;
+  }
+
+  .title-cont h3 {
+    font-size: 1.1rem;
+  }
+
+  .search-card {
+    border-width: 2.5px;
+    padding: 15px;
+  }
+
+  .place-title {
+    font-weight: 800; 
+    font-size: 1.1rem;
+  }
+
+  .place-location {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    font-weight: 600; 
+  }
+
+  .stars {
+    font-size: 1.4rem !important; 
+  }
+
+  .place-description {
+    font-size: 0.8rem;
+    color: #5a6167;
+    font-weight: 500;
+  }
+
+  .detail-btn {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
 }

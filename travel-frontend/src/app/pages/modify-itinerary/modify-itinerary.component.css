@@ -479,3 +479,173 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .itinerary-page {
+    /* background: turquoise; */
+    margin: 0;
+    padding: 10px 20px 0 20px;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
+  }
+
+  .name-section input {
+    padding: 10px;
+    font-size: 1rem;
+    margin: 0 10px;
+  }
+
+  .empty-state {
+    font-size: 1rem;
+  }
+
+  .selected-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* background: violet; */
+  }
+
+  .selected-item {
+    padding: 5px 10px;
+    margin: 0 10px;
+  }
+
+  .name {
+    font-size: 0.9rem;
+  }
+
+  .item-actions {
+    gap: 3px;
+  }
+
+  .inline-link {
+    font-size: 0.9rem;
+    text-decoration: underline;
+  }
+
+  .remove {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .date-section {
+    gap: 10px;
+    margin: 0 10px;
+    /* background: teal; */
+  }
+
+  .date-field {
+    gap: 4px;
+  }
+
+  .date-field label {
+    font-size: 1rem;
+  }
+
+  .date-field input {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+
+  .btn-generar-it {
+    padding: 10px 30px;
+    font-size: 1rem;
+  }
+
+  /* .itinerario-container {
+    width: 100%;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: tomato;
+  } */
+
+  .lugar-container {
+    width: 95%; 
+    margin: 10px 0; 
+    padding: 10px 15px 20px 15px; 
+  }
+
+  .orden-container {
+    width: 20%; 
+  }
+
+  .info-container {
+    width: 75%; 
+  }
+
+  .lugar-nombre {
+    font-size: 1.3rem;
+  }
+
+  .detalle-lugar {
+    flex-direction: column; 
+    gap: 10px; 
+  }
+
+  .det-container {
+    gap: 10px;
+  }
+
+  .det-container p {
+    font-size: 1rem;
+  }
+
+  .det-container svg {
+    width: 25px;
+    height: 25px; 
+  }
+
+  .rating-container i {
+    font-size: 1.1rem; 
+  }
+
+  .rating-text {
+    font-size: 0.8rem;
+    margin-left: 3px;
+  }
+
+  .generated-map-box {
+    width: 95%;
+  }
+
+  .section-button-save {
+    padding: 20px 0 0 0;
+  }
+
+  .btn-save-it {
+    padding: 10px 30px;
+    font-size: 0.9rem;
+  }
+
+  .modal-box {
+    padding: 25px;
+    gap: 10px;
+  }
+
+  .modal-field input {
+    padding: 10px 12px;
+  }
+
+  .modal-field label {
+    left: 12px;
+  }
+
+  .modal-error {
+    margin: 0 0 0 4px;
+  }
+
+  .modal-actions {
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .btn-save-modal {
+    height: 45px;
+    font-size: 1rem;
+  }
+}

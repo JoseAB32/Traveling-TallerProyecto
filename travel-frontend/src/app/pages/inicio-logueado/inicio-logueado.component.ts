@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
@@ -18,13 +18,15 @@ import { TranslocoModule } from '@jsverse/transloco';
 export class InicioLogueadoComponent implements OnInit {
   featuredPlaces: Place[] = [];
   isLoading = true;
-  readonly cardsPerPage = 3;
-  currentTrackIndex = this.cardsPerPage;
+  cardsPerPage = 3;
+  currentTrackIndex = 3;
   isTransitionEnabled = true;
 
   constructor(private placeService: PlaceService, private router: Router) {}
 
   ngOnInit(): void {
+    this.setItemsPerPage();
+
     this.placeService.getPlacesOrdenado().subscribe({
       next: (data) => {
         this.featuredPlaces = data || [];
@@ -36,6 +38,31 @@ export class InicioLogueadoComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.setItemsPerPage();
+    console.log('width:', window.innerWidth, 'cardsPerPage:', this.cardsPerPage);
+  }
+
+  private setItemsPerPage(): void {
+    const width = window.innerWidth;
+
+    const previousCardsPerPage = this.cardsPerPage;
+
+    if (width <= 450) {
+      this.cardsPerPage = 1;
+    } else if (width <= 768) {
+      this.cardsPerPage = 2;
+    } else {
+      this.cardsPerPage = 3;
+    }
+
+    if (previousCardsPerPage !== this.cardsPerPage) {
+      this.isTransitionEnabled = false;
+      this.currentTrackIndex = this.cardsPerPage;
+    }
   }
 
   hoverDepto: string = '';
@@ -61,6 +88,14 @@ export class InicioLogueadoComponent implements OnInit {
     const len = this.featuredPlaces.length;
     if (len === 0) return 0;
     return (this.currentTrackIndex - this.cardsPerPage + len) % len;
+  }
+
+  get cardWidth(): string {
+    return `${100 / this.cardsPerPage}%`;
+  }
+
+  get cardFlex(): string {
+    return `0 0 ${100 / this.cardsPerPage}%`;
   }
 
   get trackTransform(): string {
