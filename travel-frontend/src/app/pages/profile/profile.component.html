@@ -1,0 +1,82 @@
+<app-header></app-header>
+
+<main class="profile-page">
+
+  <div class="profile-loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>{{ 'profile.loading' | transloco }}</p>
+  </div>
+
+  <div class="profile-error" *ngIf="!isLoading && error">
+    <p>{{ error | transloco }}</p>
+    <button class="btn-retry" (click)="loadProfile()">
+      {{ 'profile.retry' | transloco }}
+    </button>
+  </div>
+
+  <div class="profile-container" *ngIf="!isLoading && !error && profile">
+    <div class="id-card">
+
+      <div class="id-left">
+        <div class="id-avatar-wrap">
+          <div class="id-avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="avatar-icon">
+              <path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/>
+            </svg>
+          </div>
+          <!-- Botón cámara — pendiente de implementación -->
+          <button class="btn-camera" (click)="onChangePhoto()" [title]="'profile.changePhoto' | transloco" aria-label="Cambiar foto de perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon-camera">
+              <path d="M213.1 128.8L202.7 160L128 160C92.7 160 64 188.7 64 224L64 480C64 515.3 92.7 544 128 544L512 544C547.3 544 576 515.3 576 480L576 224C576 188.7 547.3 160 512 160L437.3 160L426.9 128.8C420.4 109.2 402.1 96 381.4 96L258.6 96C237.9 96 219.6 109.2 213.1 128.8zM320 256C373 256 416 299 416 352C416 405 373 448 320 448C267 448 224 405 224 352C224 299 267 256 320 256z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="id-name-block">
+          <p class="id-username">{{ profile.userName }}</p>
+          <!-- Esto por si en el futuro se añade country para mayor alcance del proyecto -->
+          <!-- <span class="id-badge" *ngIf="profile.city">{{ profile.city.name }}</span>
+          <span class="id-badge id-badge--empty" *ngIf="!profile.city">{{ 'profile.noCity' | transloco }}</span> -->
+        </div>
+      </div>
+
+      <div class="id-divider"></div>
+
+      <div class="id-right">
+
+        <div class="id-header-row">
+          <h2 class="id-section-title">{{ 'profile.myData' | transloco }}</h2>
+          <!-- Botón editar — pendiente de implementación -->
+          <button class="btn-edit" (click)="onEditProfile()" [title]="'profile.edit' | transloco" aria-label="Editar perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon-gear">
+              <path d="M259.1 73.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z"/>
+            </svg>
+          </button>
+        </div>
+
+        <dl class="id-fields">
+
+          <div class="id-field">
+            <dt class="field-label">{{ 'profile.email' | transloco }}</dt>
+            <dd class="field-value">{{ profile.correo }}</dd>
+          </div>
+
+          <div class="id-field">
+            <dt class="field-label">{{ 'profile.birthday' | transloco }}</dt>
+            <dd class="field-value">{{ formatBirthday(profile.birthday) }}</dd>
+          </div>
+
+          <div class="id-field">
+            <dt class="field-label">{{ 'profile.city' | transloco }}</dt>
+            <dd class="field-value">{{ profile.city?.name || ('profile.noCity' | transloco) }}</dd>
+          </div>
+
+        </dl>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<app-footer></app-footer>

@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -155,4 +156,34 @@ public class UserService {
 
         return new LoginResponse(token, "Bearer", user.getId(), user.getUserName(), user.getCorreo(), "Login exitoso");
     }
+    @Transactional
+    public UserResponseDTO getProfile(Authentication authentication) {
+        if (authentication == null || authentication.getName() == null) {
+                logger.warn("{} [{}] Acceso a perfil rechazado: no autenticado",AppConstants.PREFIX_USER, AppConstants.LOG_USERS);
+                logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
+                        "Acceso a perfil rechazado: no autenticado.", null));
+                throw new UnauthorizedException("No autenticado.");
+        }
+
+        String userName = authentication.getName();
+
+        logger.info("{} [{}] Solicitando perfil del usuario: {}",
+                AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName);
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
+                "Solicitando perfil del usuario: " + userName + " - GET /api/profile", null));
+
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> {
+                        logger.warn("{} [{}] Perfil no encontrado para usuario: {}",
+                                AppConstants.PREFIX_ERROR, AppConstants.LOG_USERS, userName);
+                        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_WARN,
+                                "Perfil no encontrado para usuario: " + userName, null));
+                        return new ResourceNotFoundException("Usuario no encontrado: " + userName);
+                });
+
+        logger.debug("{} [{}] Perfil encontrado para usuario: {} (ID: {})",
+                AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName, user.getId());
+
+        return UserResponseDTO.fromEntity(user);
+        }
 }
