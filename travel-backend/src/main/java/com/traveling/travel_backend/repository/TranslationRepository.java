@@ -6,15 +6,15 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.traveling.travel_backend.model.Tranlations;
+import com.traveling.travel_backend.model.Translations;
 
 @Repository
-public interface TranslationRepository extends JpaRepository<Tranlations, Long> {
+public interface TranslationRepository extends JpaRepository<Translations, Long> {
 
-    Optional<Tranlations> findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+    Optional<Translations> findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
             String entityType, Long entityId, String fieldName, String language);
 
-    List<Tranlations> findByEntityTypeAndLanguage(String entityType, String language);
+    List<Translations> findByEntityTypeAndLanguage(String entityType, String language);
     
-    List<Tranlations> findByEntityTypeAndEntityId(String entityType, Long entityId);
+    List<Translations> findByEntityTypeAndEntityId(String entityType, Long entityId);
 }

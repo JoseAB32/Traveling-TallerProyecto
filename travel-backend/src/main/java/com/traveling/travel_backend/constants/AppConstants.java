@@ -88,6 +88,7 @@ public class AppConstants {
     public static final String LOG_FAVORITES = "FAVORITES";
     public static final String LOG_TRIPS = "TRIPS";
     public static final String LOG_FEATURES = "FEATURES";
+    public static final String LOG_TRANSLATIONS = "TRANSLATIONS";
 
     // ==================== LOG LEVELS ====================
     public static final String LOG_INFO = "INFO";
@@ -103,6 +104,7 @@ public class AppConstants {
     public static final String PREFIX_FEATURE = "🚩";
     public static final String PREFIX_FAVORITE = "📂";
     public static final String PREFIX_ADMIN = "🖥️";
+    public static final String PREFIX_TRANSLATION = "🔤";
     
     // ==================== VALIDATION ====================
     public static final int MIN_PASSWORD_LENGTH = 8;

@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
         @Index(name = "idx_translation_lookup", columnList = "entity_type, entity_id, field_name, language")
     }
 )
-public class Tranlations {
+public class Translations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +36,8 @@ public class Tranlations {
     private String translatedText;
 
 
+    public Translations() {
+    }
 
     //getters y setters
 
