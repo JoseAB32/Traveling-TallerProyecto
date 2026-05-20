@@ -17,6 +17,7 @@ describe('UserService', () => {
 
   const baseURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS;
   const profileURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS + '/profile';
+  const passwordURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS + '/profile/password';
 
   const mockUsers = [
     { id: 1, userName: 'Ana Rojas',     correo: 'ana@example.com'    },
@@ -124,6 +125,45 @@ describe('UserService', () => {
       const req = httpMock.expectOne(profileURL);
       expect(req.request.method).toBe('GET');
       req.flush(mockProfile);
+    });
+  });
+
+  describe('changePassword', () => {
+
+    it('should PATCH /api/profile/password with credentials', () => {
+      service.changePassword('oldPass123', 'newPass456').subscribe(res => {
+        expect(res).toBeTruthy();
+      });
+
+      const req = httpMock.expectOne(passwordURL);
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({
+        currentPassword: 'oldPass123',
+        newPassword: 'newPass456'
+      });
+      req.flush({ message: 'Contraseña actualizada' });
+    });
+
+    it('should send currentPassword and newPassword in the body', () => {
+      service.changePassword('actual123', 'nueva456').subscribe();
+
+      const req = httpMock.expectOne(passwordURL);
+      expect(req.request.body.currentPassword).toBe('actual123');
+      expect(req.request.body.newPassword).toBe('nueva456');
+      req.flush({});
+    });
+
+    it('should propagate 400 error when current password is wrong', () => {
+      let errorStatus = 0;
+
+      service.changePassword('incorrecta', 'nueva456').subscribe({
+        error: (err) => { errorStatus = err.status; }
+      });
+
+      const req = httpMock.expectOne(passwordURL);
+      req.flush({ message: 'Contraseña incorrecta' }, { status: 400, statusText: 'Bad Request' });
+
+      expect(errorStatus).toBe(400);
     });
   });
 });
