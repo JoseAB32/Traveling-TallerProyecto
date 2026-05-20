@@ -185,5 +185,29 @@ public class UserService {
                 AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName, user.getId());
 
         return UserResponseDTO.fromEntity(user);
+   }
+
+   @Transactional
+   public void changePassword(Authentication authentication, String currentPassword, String newPassword) {
+        if (authentication == null || authentication.getName() == null) {
+                throw new UnauthorizedException("No autenticado.");
         }
+
+        User user = userRepository.findByUserName(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado."));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPass())) {
+                throw new BadRequestException("La contraseña actual es incorrecta.");
+        }
+
+        if (newPassword == null || newPassword.trim().length() < 8) {
+                throw new BadRequestException("La nueva contraseña debe tener mínimo 8 caracteres.");
+        }
+
+        user.setPass(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        logger.info("{} [{}] Contraseña actualizada para usuario: {}", AppConstants.PREFIX_USER, AppConstants.LOG_USERS, user.getUserName());
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,"Contraseña actualizada para usuario: " + user.getUserName(), user.getId()));
+   }
 }
