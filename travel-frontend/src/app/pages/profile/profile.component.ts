@@ -96,7 +96,7 @@ export class ProfileComponent implements OnInit {
       this.passwordError = 'profile.passwordAllRequired';
       return;
     }
-    if (newPassword !== newPassword.trim() || currentPassword !== currentPassword.trim()) {
+    if (newPassword.includes(' ') || currentPassword.includes(' ')) {
       this.passwordError = 'profile.passwordNoSpaces';
       return;
     }

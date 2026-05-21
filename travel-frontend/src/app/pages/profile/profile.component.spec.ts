@@ -205,4 +205,120 @@ describe('ProfileComponent', () => {
       expect(() => component.onChangePhoto()).not.toThrow();
     });
   });
+
+  describe('submitChangePassword — validaciones', () => {
+    beforeEach(() => {
+      userServiceMock.getProfile.mockReturnValue(of(mockProfile));
+      createComponent();
+      fixture.detectChanges();
+    });
+
+    it('debe mostrar error si algún campo está vacío', () => {
+      component.passwordForm = { currentPassword: '', newPassword: '', confirmPassword: '' };
+      component.submitChangePassword();
+      expect(component.passwordError).toBe('profile.passwordAllRequired');
+    });
+
+    it('debe mostrar error si la nueva contraseña tiene espacios', () => {
+      component.passwordForm = {
+        currentPassword: 'actual123',
+        newPassword: 'nu eva1',
+        confirmPassword: 'nu eva1'
+      };
+      component.submitChangePassword();
+      expect(component.passwordError).toBe('profile.passwordNoSpaces');
+    });
+
+    it('debe mostrar error si la contraseña actual tiene espacios', () => {
+      component.passwordForm = {
+        currentPassword: 'act ual',
+        newPassword: 'nueva12345',
+        confirmPassword: 'nueva12345'
+      };
+      component.submitChangePassword();
+      expect(component.passwordError).toBe('profile.passwordNoSpaces');
+    });
+
+    it('debe mostrar error si la contraseña tiene menos de 8 caracteres', () => {
+      component.passwordForm = {
+        currentPassword: 'actual123',
+        newPassword: 'corta',
+        confirmPassword: 'corta'
+      };
+      component.submitChangePassword();
+      expect(component.passwordError).toBe('profile.passwordTooShort');
+    });
+
+    it('debe mostrar error si las contraseñas no coinciden', () => {
+      component.passwordForm = {
+        currentPassword: 'actual123',
+        newPassword: 'nueva12345',
+        confirmPassword: 'nueva99999'
+      };
+      component.submitChangePassword();
+      expect(component.passwordError).toBe('profile.passwordMismatch');
+    });
+
+    it('debe llamar a changePassword si todo es válido', () => {
+      const changePwdMock = jest.fn().mockReturnValue(of({}));
+      (userServiceMock as any).changePassword = changePwdMock;
+
+      component.passwordForm = {
+        currentPassword: 'actual123',
+        newPassword: 'nueva12345',
+        confirmPassword: 'nueva12345'
+      };
+      component.submitChangePassword();
+
+      expect(changePwdMock).toHaveBeenCalledWith('actual123', 'nueva12345');
+    });
+
+    it('debe mostrar éxito y limpiar el form tras cambio correcto', () => {
+      const changePwdMock = jest.fn().mockReturnValue(of({}));
+      (userServiceMock as any).changePassword = changePwdMock;
+
+      component.passwordForm = {
+        currentPassword: 'actual123',
+        newPassword: 'nueva12345',
+        confirmPassword: 'nueva12345'
+      };
+      component.submitChangePassword();
+
+      expect(component.passwordSuccess).toBe(true);
+      expect(component.passwordForm.currentPassword).toBe('');
+      expect(component.passwordForm.newPassword).toBe('');
+    });
+
+    it('debe mostrar error 400 si la contraseña actual es incorrecta', () => {
+      const changePwdMock = jest.fn().mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 400 }))
+      );
+      (userServiceMock as any).changePassword = changePwdMock;
+
+      component.passwordForm = {
+        currentPassword: 'incorrecta',
+        newPassword: 'nueva12345',
+        confirmPassword: 'nueva12345'
+      };
+      component.submitChangePassword();
+
+      expect(component.passwordError).toBe('profile.passwordWrong');
+    });
+
+    it('debe mostrar error genérico si falla con 500', () => {
+      const changePwdMock = jest.fn().mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 500 }))
+      );
+      (userServiceMock as any).changePassword = changePwdMock;
+
+      component.passwordForm = {
+        currentPassword: 'actual123',
+        newPassword: 'nueva12345',
+        confirmPassword: 'nueva12345'
+      };
+      component.submitChangePassword();
+
+      expect(component.passwordError).toBe('profile.passwordError');
+    });
+  });
 });
