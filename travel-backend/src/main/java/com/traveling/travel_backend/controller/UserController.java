@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @Operation(summary = "Change password", description = "Changes password for the authenticated user")
-    @PatchMapping("/profile/password")
+    @PatchMapping(AppConstants.USERS_ENDPOINT + "/profile/password")
     public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequestDTO request, Authentication authentication) {
         userService.changePassword(authentication, request.getCurrentPassword(), request.getNewPassword());
         return ResponseEntity.ok().build();
