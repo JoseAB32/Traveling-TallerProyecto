@@ -29,6 +29,14 @@ export class ProfileComponent implements OnInit {
   passwordError: string | null = null;
   passwordSuccess = false;
 
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
+
+  toggleCurrentPassword(): void { this.showCurrentPassword = !this.showCurrentPassword; }
+  toggleNewPassword(): void { this.showNewPassword = !this.showNewPassword; }
+  toggleConfirmPassword(): void { this.showConfirmPassword = !this.showConfirmPassword; }
+  
   passwordForm = {
     currentPassword: '',
     newPassword: '',
@@ -77,6 +85,9 @@ export class ProfileComponent implements OnInit {
 
   openChangePassword(): void {
     this.menuOpen = false;
+    this.showCurrentPassword = false;
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
     this.passwordForm = { currentPassword: '', newPassword: '', confirmPassword: '' };
     this.passwordError = null;
     this.passwordSuccess = false;
