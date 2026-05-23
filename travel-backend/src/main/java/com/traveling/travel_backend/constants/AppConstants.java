@@ -141,4 +141,20 @@ public class AppConstants {
     public static final String ERROR_CODE_UNAUTHORIZED = "ERR_UNAUTHORIZED";
     public static final String ERROR_CODE_CONFLICT = "ERR_CONFLICT";
 
+
+    // Languages
+    public static final String DEFAULT_LANGUAGE = "es";
+    public static final String HEADER_LANGUAGE = "X-Language";
+
+    // Translation entity types
+    public static final String ENTITY_TYPE_REVIEW = "REVIEW";
+    public static final String ENTITY_TYPE_CITY = "CITY";
+    public static final String ENTITY_TYPE_PLACE = "PLACE";
+
+    // Translation field names
+    public static final String FIELD_COMMENT = "comment";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_DESCRIPTION = "description";
+    public static final String FIELD_ADDRESS = "address";
+    public static final String FIELD_PLACE_TYPE = "placeType";
 }

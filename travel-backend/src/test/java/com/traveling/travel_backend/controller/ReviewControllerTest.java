@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.traveling.travel_backend.dto.CreateReviewRequestDTO;
 import com.traveling.travel_backend.dto.ReviewPageResponseDTO;
 import com.traveling.travel_backend.dto.ReviewResponseDTO;
-import com.traveling.travel_backend.service.ReviewService;
 import com.traveling.travel_backend.security.JwtService;
+import com.traveling.travel_backend.service.ReviewService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +60,42 @@ class ReviewControllerTest {
         pageResponse.setTotalPages(1);
         pageResponse.setHasNext(false);
 
-        when(reviewService.getPlaceReviews(3L, 0, 10)).thenReturn(pageResponse);
+        when(reviewService.getPlaceReviews(3L, 0, 10, "es")).thenReturn(pageResponse);
 
         mockMvc.perform(get("/api/reviews/place/3?page=0&size=10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.page").value(0))
+                .andExpect(jsonPath("$.size").value(10))
+                .andExpect(jsonPath("$.totalElements").value(1))
+                .andExpect(jsonPath("$.hasNext").value(false));
+    }
+
+    @Test
+    @DisplayName("GET /api/reviews/place/{placeId} retorna reseñas paginadas usando X-Language")
+    void getPlaceReviewsReturnsPagedDataWithLanguageHeader() throws Exception {
+        ReviewResponseDTO review = new ReviewResponseDTO();
+        review.setId(1L);
+        review.setComment("Excellent");
+        review.setScore(5);
+        review.setCreatedAt(OffsetDateTime.now());
+        review.setState(true);
+
+        ReviewPageResponseDTO pageResponse = new ReviewPageResponseDTO();
+        pageResponse.setContent(List.of(review));
+        pageResponse.setPage(0);
+        pageResponse.setSize(10);
+        pageResponse.setTotalElements(1);
+        pageResponse.setTotalPages(1);
+        pageResponse.setHasNext(false);
+
+        when(reviewService.getPlaceReviews(3L, 0, 10, "en")).thenReturn(pageResponse);
+
+        mockMvc.perform(get("/api/reviews/place/3?page=0&size=10")
+                        .header("X-Language", "en"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].comment").value("Excellent"))
                 .andExpect(jsonPath("$.page").value(0))
                 .andExpect(jsonPath("$.size").value(10))
                 .andExpect(jsonPath("$.totalElements").value(1))
@@ -88,7 +119,7 @@ class ReviewControllerTest {
         pageResponse.setTotalPages(2);
         pageResponse.setHasNext(true);
 
-        when(reviewService.getReviewReplies(10L, 0, 2)).thenReturn(pageResponse);
+        when(reviewService.getReviewReplies(10L, 0, 2, "es")).thenReturn(pageResponse);
 
         mockMvc.perform(get("/api/reviews/10/replies?page=0&size=2"))
                 .andExpect(status().isOk())
@@ -116,8 +147,8 @@ class ReviewControllerTest {
         when(reviewService.createReview(any(CreateReviewRequestDTO.class), any())).thenReturn(response);
 
         mockMvc.perform(post("/api/reviews")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(12))
                 .andExpect(jsonPath("$.comment").value("Muy lindo"))
@@ -127,9 +158,19 @@ class ReviewControllerTest {
     @Test
     @DisplayName("GET /api/reviews/mejor-resenia retorna 204 si no existe reseña")
     void getBestReviewReturnsNoContentWhenEmpty() throws Exception {
-        when(reviewService.getBestReview(99L)).thenReturn(Optional.empty());
+        when(reviewService.getBestReview(99L, "es")).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/reviews/mejor-resenia?placeId=99"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("GET /api/reviews/mejor-resenia retorna 204 usando X-Language si no existe reseña")
+    void getBestReviewReturnsNoContentWithLanguageHeaderWhenEmpty() throws Exception {
+        when(reviewService.getBestReview(99L, "en")).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/reviews/mejor-resenia?placeId=99")
+                        .header("X-Language", "en"))
                 .andExpect(status().isNoContent());
     }
 }

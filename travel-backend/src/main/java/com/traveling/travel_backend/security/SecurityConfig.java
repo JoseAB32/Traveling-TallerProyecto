@@ -78,7 +78,7 @@ public class SecurityConfig {
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         configuration.setAllowedHeaders(List.of(
-                "Authorization", "Content-Type", "Accept"));
+                "Authorization", "Content-Type", "Accept", "X-Language"));
 
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(false);

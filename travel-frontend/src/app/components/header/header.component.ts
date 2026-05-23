@@ -62,9 +62,17 @@ export class HeaderComponent implements OnInit, OnDestroy{
   }
 
   changeLang(lang: string) {
+    const currentLang = localStorage.getItem('lang') || 'es';
+
+    if (currentLang === lang) {
+      return;
+    }
+
     this.translocoService.setActiveLang(lang);
     localStorage.setItem('lang', lang);
     this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
+
+    window.location.reload();
   }
 
   toggleLista() {
