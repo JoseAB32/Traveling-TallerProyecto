@@ -1,6 +1,8 @@
 package com.traveling.travel_backend.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -34,6 +36,9 @@ public class Place {
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PlaceImage> images = new ArrayList<>();
 
     @Column(name = "is_event")
     @JsonProperty("is_event") // 🔥 CLAVE
@@ -76,6 +81,8 @@ public class Place {
 
     public City getCity() { return city; }
 
+    public List<PlaceImage> getImages() { return images; }
+
     public boolean isEvent() { return isEvent; }
 
     public LocalDateTime getStartDate() { return startDate; }
@@ -107,6 +114,8 @@ public class Place {
     public void setPlaceType(String placeType) { this.placeType = placeType; }
 
     public void setCity(City city) { this.city = city; }
+
+    public void setImages(List<PlaceImage> images) { this.images = images; }
 
     public void setEvent(boolean event) { isEvent = event; }
 

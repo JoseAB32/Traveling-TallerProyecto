@@ -1,5 +1,14 @@
 import { City } from '../city/city';
 
+export interface PlaceImage {
+  id: number;
+  image_url: string;
+  public_id?: string;
+  alt_text?: string;
+  display_order?: number;
+  is_main?: boolean;
+}
+
 export class Place {
     id: number = 0; 
     name: string = "";
@@ -22,6 +31,7 @@ export class Place {
     end_date: string | null = null;
     
     imageUrl: string = "";
+    images: PlaceImage[] = [];
     state: boolean = true;
 
     // bestReview: Review;

@@ -1,6 +1,10 @@
 package com.traveling.travel_backend.dto;
 
 import com.traveling.travel_backend.model.Place;
+import com.traveling.travel_backend.model.PlaceImage;
+
+import java.util.Comparator;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,6 +38,8 @@ public class PlaceResponseDTO {
 
     private boolean state;
 
+    private List<PlaceImageResponseDTO> images;
+
     public PlaceResponseDTO() {}
 
     public static PlaceResponseDTO fromEntity(Place place) {
@@ -56,7 +62,19 @@ public class PlaceResponseDTO {
                 ? place.getEndDate().toLocalTime().toString()
                 : null;
         dto.imageUrl    = place.getImageUrl();
+
+        dto.images = place.getImages()
+            .stream()
+            .filter(PlaceImage::isState)
+            .sorted(Comparator.comparing(
+                    PlaceImage::getDisplayOrder,
+                    Comparator.nullsLast(Integer::compareTo)
+            ))
+            .map(PlaceImageResponseDTO::fromEntity)
+            .toList();
+
         dto.state       = place.isState();
+
         return dto;
     }
 
@@ -102,6 +120,9 @@ public class PlaceResponseDTO {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public List<PlaceImageResponseDTO> getImages() { return images; }
+    public void setImages(List<PlaceImageResponseDTO> images) { this.images = images; }
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }
