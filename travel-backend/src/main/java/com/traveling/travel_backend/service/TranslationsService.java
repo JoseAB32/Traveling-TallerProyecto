@@ -13,19 +13,15 @@ import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.dto.TranslationPageResponseDTO;
 import com.traveling.travel_backend.dto.TranslationResponseDTO;
 import com.traveling.travel_backend.dto.TranslationResultDTO;
+import com.traveling.travel_backend.dto.UpdateTranslationRequestDTO;
+import com.traveling.travel_backend.exception.BadRequestException;
+import com.traveling.travel_backend.exception.ResourceNotFoundException;
 import com.traveling.travel_backend.model.LogEntity;
 import com.traveling.travel_backend.model.Translations;
 import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.TranslationRepository;
 
-import com.traveling.travel_backend.dto.TranslationPageResponseDTO;
-import com.traveling.travel_backend.dto.TranslationResponseDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
 
 import jakarta.transaction.Transactional;
 
@@ -160,5 +156,43 @@ public class TranslationsService {
 
                 return predicate;
         };
+    }
+
+    @Transactional
+    public TranslationResponseDTO updateTranslation(Long id, UpdateTranslationRequestDTO request) {
+        if (request == null) {
+                throw new BadRequestException("La solicitud de actualización de traducción es obligatoria");
+        }
+
+        if (request.getTranslatedText() == null || request.getTranslatedText().trim().isEmpty()) {
+                throw new BadRequestException("El texto traducido es obligatorio");
+        }
+
+        logger.info("{} [{}] Actualizando traducción con ID: {}",
+                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, id);
+
+        logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_INFO,
+                "Actualizando traducción con ID: " + id, null));
+
+        Translations translation = translationRepository.findById(id)
+                .orElseThrow(() -> {
+                        logger.warn("{} [{}] Traducción con ID {} no encontrada",
+                                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, id);
+                        logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_WARN,
+                                "Traducción con ID " + id + " no encontrada", null));
+                        return new ResourceNotFoundException("Traducción no encontrada con ID: " + id);
+                });
+
+        translation.setTranslatedText(request.getTranslatedText().trim());
+
+        Translations updatedTranslation = translationRepository.save(translation);
+
+        logger.debug("{} [{}] Traducción con ID {} actualizada correctamente",
+                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, id);
+
+        logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_INFO,
+                "Traducción con ID " + id + " actualizada correctamente", null));
+
+        return TranslationResponseDTO.fromEntity(updatedTranslation);
     }
 }
