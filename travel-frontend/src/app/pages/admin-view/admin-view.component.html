@@ -131,6 +131,37 @@
         </tbody>
       </table>
     </div>
+    @if (logsTotalPages > 1) {
+      <nav class="mt-4" aria-label="Logs pagination">
+        <div class="pagination-wrapper">
+          <p class="text-muted small mb-0">
+            {{ 'adminConfiguration.translations.pagination.page' | transloco }}
+            <strong>{{ logsPage + 1 }}</strong>
+            {{ 'adminConfiguration.translations.pagination.of' | transloco }}
+            <strong>{{ logsTotalPages }}</strong>
+            · {{ logsTotalElements }} logs
+          </p>
+
+          <ul class="pagination mb-0">
+            <li class="page-item" [class.disabled]="logsPage === 0">
+              <button class="page-link" (click)="goToLogsPage(logsPage - 1)">
+                {{ 'adminConfiguration.translations.pagination.previous' | transloco }}
+              </button>
+            </li>
+
+            <li class="page-item active">
+              <span class="page-link page-number">{{ logsPage + 1 }}</span>
+            </li>
+
+            <li class="page-item" [class.disabled]="!logsHasNext">
+              <button class="page-link" (click)="goToLogsPage(logsPage + 1)">
+                {{ 'adminConfiguration.translations.pagination.next' | transloco }}
+              </button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    }
   }
 
   @if (activeTab === 'toggles') {

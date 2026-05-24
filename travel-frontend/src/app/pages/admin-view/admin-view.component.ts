@@ -28,8 +28,15 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   private translationSub?: Subscription;
   private updateTranslationSub?: Subscription;
 
+  allLogs: Logger[] = [];
   logs: Logger[] = [];
   activeTab: string = 'logs';
+
+  logsPage: number = 0;
+  logsSize: number = 10;
+  logsTotalPages: number = 0;
+  logsTotalElements: number = 0;
+  logsHasNext: boolean = false;
 
   readonly featuresData = this.featureService.features;
 
@@ -100,7 +107,11 @@ export class AdminViewComponent implements OnInit, OnDestroy {
 
   loadAllLogs(): void {
     this.logSub = this.loggerService.getAllLogs().subscribe({
-      next: (data) => this.logs = data.slice(0, 20),
+      next: (data) => {
+        this.allLogs = data;
+        this.logsPage = 0;
+        this.updateVisibleLogs();
+      },
       error: (err) => console.error('Error cargando logs', err)
     });
   }
@@ -109,11 +120,37 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     if (this.filterModule && this.filterLevel && this.startDate && this.endDate) {
       this.loggerService
         .getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)
-        .subscribe(data => this.logs = data.slice(0, 20));
+        .subscribe({
+          next: (data) => {
+            this.allLogs = data;
+            this.logsPage = 0;
+            this.updateVisibleLogs();
+          },
+          error: (err) => console.error('Error filtrando logs', err)
+        });
     } else {
       this.modalMessage = this.translocoService.translate('adminConfiguration.modal.textErrorFilter');
       this.showErrorModal = true;
     }
+  }
+
+  updateVisibleLogs(): void {
+    const start = this.logsPage * this.logsSize;
+    const end = start + this.logsSize;
+
+    this.logs = this.allLogs.slice(start, end);
+    this.logsTotalElements = this.allLogs.length;
+    this.logsTotalPages = Math.ceil(this.logsTotalElements / this.logsSize);
+    this.logsHasNext = this.logsPage + 1 < this.logsTotalPages;
+  }
+
+  goToLogsPage(page: number): void {
+    if (page < 0 || page >= this.logsTotalPages) {
+      return;
+    }
+
+    this.logsPage = page;
+    this.updateVisibleLogs();
   }
 
   loadTranslations(page: number = this.translationPage): void {
