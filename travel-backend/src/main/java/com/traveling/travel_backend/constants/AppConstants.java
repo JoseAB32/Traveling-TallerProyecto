@@ -157,4 +157,9 @@ public class AppConstants {
     public static final String FIELD_DESCRIPTION = "description";
     public static final String FIELD_ADDRESS = "address";
     public static final String FIELD_PLACE_TYPE = "placeType";
+
+    // Translation providers
+    public static final String PROVIDER_AZURE = "AZURE";
+    public static final String PROVIDER_GOOGLE = "GOOGLE";
+    public static final String PROVIDER_ORIGINAL = "ORIGINAL";
 }

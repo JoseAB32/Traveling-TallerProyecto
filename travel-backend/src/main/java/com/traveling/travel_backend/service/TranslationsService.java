@@ -19,20 +19,18 @@ import jakarta.transaction.Transactional;
 public class TranslationsService {
 
     private static final Logger logger = LoggerFactory.getLogger(TranslationsService.class);
-    private static final String SOURCE_LANGUAGE = "es";
 
     private final TranslationRepository translationRepository;
     private final LogRepository logRepository;
-    private final AzureTranslatorService azureTranslatorService;
+    private final TranslationProviderService translationProviderService;
 
     public TranslationsService(
             TranslationRepository translationRepository,
             LogRepository logRepository,
-            AzureTranslatorService azureTranslatorService
-    ) {
+            TranslationProviderService translationProviderService) {
         this.translationRepository = translationRepository;
         this.logRepository = logRepository;
-        this.azureTranslatorService = azureTranslatorService;
+        this.translationProviderService = translationProviderService;
     }
 
     @Transactional
@@ -41,53 +39,25 @@ public class TranslationsService {
             Long entityId,
             String fieldName,
             String targetLang,
-            String originalText
-    ) {
-        logger.info(
-                "{} [{}] Buscando traducción para {} con ID {} en campo '{}' y lenguaje '{}'",
-                AppConstants.PREFIX_TRANSLATION,
-                AppConstants.LOG_TRANSLATIONS,
-                entityType,
-                entityId,
-                fieldName,
-                targetLang
-        );
+            String originalText) {
+        logger.info("{} [{}] Buscando traducción para {} con ID {} en campo '{}' y lenguaje '{}'",
+                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, entityId, fieldName, targetLang);
 
-        logRepository.save(new LogEntity(
-                AppConstants.LOG_TRANSLATIONS,
-                AppConstants.LOG_INFO,
-                "Buscando traducción para " + entityType
-                        + " con ID " + entityId
-                        + " en campo '" + fieldName
-                        + "' y lenguaje '" + targetLang + "'",
-                null
-        ));
+        logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_INFO,
+                "Buscando traducción para " + entityType + " con ID " + entityId
+                        + " en campo '" + fieldName + "' y lenguaje '" + targetLang + "'", null));
 
-        Optional<Translations> existing =
-                translationRepository.findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
-                        entityType,
-                        entityId,
-                        fieldName,
-                        targetLang
-                );
+        Optional<Translations> existing = translationRepository.findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+                entityType, entityId, fieldName, targetLang);
 
         if (existing.isPresent()) {
-            logger.debug(
-                    "{} [{}] Traducción encontrada para {} ID: {}",
-                    AppConstants.PREFIX_TRANSLATION,
-                    AppConstants.LOG_TRANSLATIONS,
-                    entityType,
-                    entityId
-            );
-
+            logger.debug("{} [{}] Traducción encontrada para {} ID: {}",
+                    AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, entityId);
             return existing.get().getTranslatedText();
         }
 
-        TranslationResultDTO translationResult = azureTranslatorService.translate(
-                originalText,
-                SOURCE_LANGUAGE,
-                targetLang
-        );
+        TranslationResultDTO translationResult = translationProviderService.translate(
+                originalText, AppConstants.DEFAULT_LANGUAGE, targetLang);
 
         String translatedText = translationResult.getTranslatedText();
 
@@ -100,25 +70,13 @@ public class TranslationsService {
 
         translationRepository.save(newTranslation);
 
-        logger.debug(
-                "{} [{}] Traducción guardada para {} ID: {} usando proveedor {}",
-                AppConstants.PREFIX_TRANSLATION,
-                AppConstants.LOG_TRANSLATIONS,
-                entityType,
-                entityId,
-                translationResult.getProvider()
-        );
+        logger.debug("{} [{}] Traducción guardada para {} ID: {} usando proveedor {}",
+                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS,
+                entityType, entityId, translationResult.getProvider());
 
-        logRepository.save(new LogEntity(
-                AppConstants.LOG_TRANSLATIONS,
-                AppConstants.LOG_INFO,
-                "Traducción guardada para " + entityType
-                        + " con ID " + entityId
-                        + " en campo '" + fieldName
-                        + "' usando proveedor "
-                        + translationResult.getProvider(),
-                null
-        ));
+        logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_INFO,
+                "Traducción guardada para " + entityType + " con ID " + entityId
+                        + " en campo '" + fieldName + "' usando proveedor " + translationResult.getProvider(), null));
 
         return translatedText;
     }
