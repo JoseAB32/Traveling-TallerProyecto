@@ -1,6 +1,6 @@
 <nav class="header">
     <div class="logo" routerLink="/InicioLogueado">
-      <svg
+      <svg class="logo-gran"
         width="6.7685189in"
         height="0.99836618in"
         viewBox="0 0 171.92038 25.358501"
@@ -52,6 +52,23 @@
             d="m 129.30165,40.177291 -9.54152,-0.02339 c -0.52691,-0.121698 -0.96727,-0.373208 -1.12253,-1.052373 l 0.0445,-9.40602 c 0.001,-0.268572 0.0101,-0.713814 0.12947,-0.952576 0.0753,-0.150571 0.18361,-0.286731 0.32747,-0.403648 0.27758,-0.225614 0.86595,-0.299373 1.22565,-0.299373 h 8.48572 c 0.32673,0 0.81618,0.153079 1.01335,0.412434 0.36814,0.484251 0.34875,1.020174 -0.11767,1.6157 -0.1763,0.225092 -0.58291,0.378047 -0.86913,0.374857 l -7.72358,-0.08606 a 0.15350145,0.15350145 135.58461 0 0 -0.1552,0.152069 l -0.0205,2.214067 a 0.15639992,0.15639992 45.265408 0 0 0.1564,0.157849 h 6.19431 c 0.23737,0 0.57775,0.126096 0.72344,0.313135 0.42861,0.550259 0.38375,1.082307 -0.0142,1.600777 -0.1509,0.196627 -0.50407,0.330451 -0.75222,0.329586 l -6.08712,-0.02121 a 0.17615617,0.17615617 135.32915 0 0 -0.17676,0.174745 l -0.0204,2.550242 a 0.19664108,0.19664108 45.30954 0 0 0.19609,0.198215 l 7.82278,0.02191 c 0.18136,5.08e-4 0.45195,0.08453 0.57257,0.219466 0.60298,0.674553 0.4451,1.758081 -0.29089,1.909604 z"
             id="path20" /></g>
       </svg>
+      <svg class="logo-simp"
+        width="128"
+        height="128"
+        viewBox="0 0 33.866666 33.866666"
+        version="1.1"
+        id="svg1"
+        xml:space="preserve"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:svg="http://www.w3.org/2000/svg"><defs
+          id="defs1" /><g
+          id="layer1"
+          transform="translate(-15.812591,-21.179984)"><path
+            style="fill:currentColor;fill-opacity:1;stroke-width:1.00012"
+            d="m 15.812591,21.271914 6.640109,-0.09193 c -0.0488,3.871055 1.93043,6.158176 6.267545,6.603736 l 0.04803,6.291558 c -2.90766,-0.07563 -4.869374,-0.718834 -6.339585,-1.656937 -0.243885,2.802903 0.229973,4.477922 1.104625,5.523124 0.981574,0.983488 2.232912,2.134067 4.214383,2.353331 1.906444,-0.01855 3.972092,0.02339 5.439077,-1.752991 1.051264,-1.073404 1.842118,-2.396865 2.017141,-4.49054 l 6.219518,-0.02402 c 0.021,2.669974 -0.558709,5.109888 -2.041155,7.204074 -1.10007,1.388292 -2.430279,2.565623 -3.914214,3.602038 -1.5684,0.915716 -3.049818,1.331287 -4.49054,1.512856 -1.814701,0.295733 -3.346101,0.213733 -4.778703,0 C 24.700742,46.135334 23.326821,45.531287 22.020459,44.7133 20.727008,43.757479 19.551817,42.683398 18.514476,41.471466 17.457087,40.264557 16.708934,38.685865 16.19211,36.790348 16.006898,36.11106 15.892184,34.97962 15.888096,34.275435 Z"
+            id="path1"
+            transform="translate(4.209495,4.3030393)" /></g>
+      </svg>
     </div>
     @if (isLoggedIn) {
       @if (featureService.isEnabled('showSearchPlaces')) {
@@ -86,7 +103,8 @@
           }
         </div>
       }
-}
+    } 
+  <div class="cont-id-prof">
     <div class="idioma-container" (click)="toggleLista()">
       <p class="id-seleccionado">{{ idiomaDef }}</p>
       @if (isListaOpen) {
@@ -114,7 +132,7 @@
 
       @if (isMenuOpen) {
         <div class="dropdown-menu">
-          <div class="menu-item">
+          <div class="menu-item" [routerLink]="['/profile']">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
               <path fill="currentColor" d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/>
             </svg>
@@ -153,4 +171,40 @@
       }
     </div>
   }
+  </div>
 </nav>
+<div class="search-main-container2">
+  @if (isLoggedIn) {
+      @if (featureService.isEnabled('showSearchPlaces')) {
+        <div class="search-container2">
+          <div class="search-bar" [ngClass]="{'active': showSuggestions && suggestions.length > 0}">
+            <input 
+              type="text" 
+              [placeholder]="'header.searchPlaceholder' | transloco"
+              [value]="searchTerm"
+              (input)="onSearch($event)"
+              (focus)="showSuggestions = suggestions.length > 0"
+            >
+            <button class="search-btn" (click)="goToSearch()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                <path fill="currentColor" d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z"/>
+              </svg>
+            </button>
+          </div>  
+
+          @if (showSuggestions && suggestions.length > 0) {
+            <div class="suggestions-dropdown">
+              @for (s of suggestions; track s.id) {
+                <div class="suggestion-item" (click)="selectSuggestion(s)">
+                  <div class="suggestion-info">
+                    <span class="suggestion-name">{{ s.name }}</span>
+                    <small class="suggestion-detail">{{ s.city?.name }} - {{ s.address }}</small>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+  }
+</div>

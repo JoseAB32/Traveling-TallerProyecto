@@ -24,6 +24,8 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Optional;
@@ -311,6 +313,48 @@ class UserServiceTest {
             assertThatThrownBy(() -> userService.login(request))
                     .isInstanceOf(BadRequestException.class)
                     .hasMessage("La contrasena es requerida.");
+        }
+    }
+
+    @Nested
+    @DisplayName("getProfile")
+    class GetProfileTests {
+
+        private Authentication authentication;
+
+        @BeforeEach
+        void setUpAuth() {
+            authentication = new UsernamePasswordAuthenticationToken("carlos_viajero", null, List.of());
+        }
+
+        @Test
+        @DisplayName("Debe retornar el perfil del usuario autenticado")
+        void shouldReturnProfileForAuthenticatedUser() {
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+
+            UserResponseDTO result = userService.getProfile(authentication);
+
+            assertThat(result.getUserName()).isEqualTo("carlos_viajero");
+            assertThat(result.getCorreo()).isEqualTo("carlos@mail.com");
+            verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
+        }
+
+        @Test
+        @DisplayName("Debe lanzar UnauthorizedException si la autenticación es nula")
+        void shouldThrowWhenAuthIsNull() {
+            assertThatThrownBy(() -> userService.getProfile(null))
+                    .isInstanceOf(UnauthorizedException.class)
+                    .hasMessage("No autenticado.");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar ResourceNotFoundException si el usuario no existe en BD")
+        void shouldThrowWhenUserNotFound() {
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> userService.getProfile(authentication))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessageContaining("carlos_viajero");
         }
     }
 }

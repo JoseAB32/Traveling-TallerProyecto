@@ -35,6 +35,7 @@ export class DepartmentComponent implements OnInit {
   featureService = inject(FeatureService);
   features: any = {};
   city: City | null = null;
+  placeId: number = 0;
 
 
   constructor(
@@ -107,8 +108,25 @@ export class DepartmentComponent implements OnInit {
 
   onMapClicked(place: any) {
     this.clickedPlaceFromMap = place;
+
     if (this.featureService.isEnabled('pinRedirection')) {
-      this.router.navigate(['/place', place.id], { queryParams: { returnTo: 'department', cityId: this.departmentId } });
+
+      if (this.isMobileView()) {
+        this.selectedPlaceFromMap = place;
+        this.placeId = place.id;
+        return;
+      }
+
+      this.router.navigate(['/place', place.id], {
+        queryParams: {
+          returnTo: 'department',
+          cityId: this.departmentId
+        }
+      });
     }
+  }
+
+  private isMobileView(): boolean {
+    return window.innerWidth <= 768;
   }
 }

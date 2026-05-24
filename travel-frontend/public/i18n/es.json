@@ -26,7 +26,7 @@
         "text2": "Sumérgete en la riqueza histórica de nuestras ciudades coloniales, tradiciones milenarias y la calidez de nuestra gente en cada departamento.",
         "ctaRouteTitle": "Planifica rutas para visitar los lugares que quieras",
         "ctaRouteText": "Construye tu ruta de viaje en base a los lugares que desees visitar, arma un eficiente itinerario y solo disfruta del viaje.",
-        "freeTrialButton": "PROBAR 1 SEMANA GRATIS"
+        "freeTrialButton": "PRUÉBALO AQUÍ"
     },
     "formLoginAndSignin": {
         "signIn": {
@@ -286,5 +286,20 @@
         "noEndDate": "Sin fecha fin",
         "places": "lugares",
         "viewMore": "Ver más"
-  }
+    },
+    "profile": {
+        "loading": "Cargando perfil...",
+        "errorLoading": "No se pudo cargar el perfil.",
+        "myData": "Información Personal",
+        "retry": "Reintentar",
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "email": "Correo",
+        "birthday": "Fecha de nacimiento",
+        "city": "Ciudad",
+        "country": "País",
+        "edit": "Editar perfil",
+        "changePhoto": "Cambiar foto",
+        "avatar_alt": "Foto de perfil"
+    }
 }

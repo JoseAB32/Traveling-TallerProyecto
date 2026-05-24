@@ -26,7 +26,7 @@
         "text2": "Immerse yourself in the historical richness of our colonial cities, ancient traditions, and the warmth of our people in every region.",
         "ctaRouteTitle": "Plan routes to visit the places you want",
         "ctaRouteText": "Build your travel route based on the places you wish to visit, set up an efficient itinerary, and just enjoy the journey.",
-        "freeTrialButton": "TRY 1 WEEK FREE"
+        "freeTrialButton": "TRY IT HERE"
     },
     "formLoginAndSignin": {
         "signIn": {
@@ -286,5 +286,20 @@
         "noEndDate": "No end date",
         "places": "places",
         "viewMore": "View more"
-  }
+    },
+    "profile": {
+        "loading": "Loading profile...",
+        "errorLoading": "Could not load profile.",
+        "myData": "Personal Information ",
+        "retry": "Retry",
+        "active": "Active",
+        "inactive": "Inactive",
+        "email": "Email",
+        "birthday": "Birthday",
+        "city": "City",
+        "country": "Country",
+        "edit": "Edit profile",
+        "changePhoto": "Change photo",
+        "avatar_alt": "Profile picture"
+    }
 }
