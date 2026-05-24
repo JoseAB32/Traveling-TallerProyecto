@@ -95,12 +95,6 @@ export class PlaceDetailComponent implements OnInit {
         next: (data) => {
           this.place = data;
 
-          // this.images = [
-          //   data.imageUrl,
-          //   data.imageUrl,
-          //   data.imageUrl
-          // ];
-
           this.images = this.buildCarouselImages(data);
           this.currentImageIndex = 0;
 
@@ -122,10 +116,6 @@ export class PlaceDetailComponent implements OnInit {
 
     if (placeImages.length > 0) {
       return placeImages;
-    }
-
-    if (place.imageUrl && place.imageUrl.trim().length > 0) {
-      return [place.imageUrl];
     }
 
     return ['assets/images/default-place.jpg'];

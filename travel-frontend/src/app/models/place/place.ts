@@ -29,8 +29,7 @@ export class Place {
     
     start_date: string | null = null;
     end_date: string | null = null;
-    
-    imageUrl: string = "";
+
     images: PlaceImage[] = [];
     state: boolean = true;
 

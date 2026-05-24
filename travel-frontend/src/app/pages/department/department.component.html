@@ -65,7 +65,7 @@
           <div class="card-cont row gx-5 align-items-center">
             <div class="col-md-6 position-relative z-1 text-center">
               <!-- Asume que tu Place tiene una propiedad imageUrl -->
-              <img [src]="place.imageUrl" 
+              <img [src]="place.images[0].image_url" 
                   class="img-fluid tilted-img-left shadow-lg" 
                   [alt]="place.name">
             </div>
@@ -106,7 +106,7 @@
         <div class="card border-0 custom-card-peach shadow mb-5" (click)="goToDetail(place.id)" style="cursor: pointer;">
           <div class="card-cont row gx-5 align-items-center flex-md-row-reverse">
             <div class="col-md-6 position-relative z-1 text-center">
-              <img [src]="place.imageUrl" 
+              <img [src]="place.images[0].image_url" 
                   class="img-fluid tilted-img-right shadow-lg" 
                   [alt]="place.name">
             </div>

@@ -52,9 +52,6 @@ public class Place {
     @JsonProperty("end_date") // 🔥 CLAVE
     private LocalDateTime endDate;
 
-    @Column(name = "image_url")
-    private String imageUrl;
-
     private boolean state = true;
 
     public Place() {}
@@ -89,8 +86,6 @@ public class Place {
 
     public LocalDateTime getEndDate() { return endDate; }
 
-    public String getImageUrl() { return imageUrl; }
-
     public boolean isState() { return state; }
 
     // SETTERS
@@ -122,8 +117,6 @@ public class Place {
     public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
 
     public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
-
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public void setState(boolean state) { this.state = state; }
 }

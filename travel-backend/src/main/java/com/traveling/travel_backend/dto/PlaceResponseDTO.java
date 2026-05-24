@@ -33,9 +33,6 @@ public class PlaceResponseDTO {
     @JsonProperty("end_date")
     private String endDate;
 
-    @JsonProperty("imageUrl")
-    private String imageUrl;
-
     private boolean state;
 
     private List<PlaceImageResponseDTO> images;
@@ -61,7 +58,6 @@ public class PlaceResponseDTO {
         dto.endDate   = place.getEndDate() != null
                 ? place.getEndDate().toLocalTime().toString()
                 : null;
-        dto.imageUrl    = place.getImageUrl();
 
         dto.images = place.getImages()
             .stream()
@@ -117,9 +113,6 @@ public class PlaceResponseDTO {
 
     public String getEndDate() { return endDate; }
     public void setEndDate(String endDate) { this.endDate = endDate; }
-
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public List<PlaceImageResponseDTO> getImages() { return images; }
     public void setImages(List<PlaceImageResponseDTO> images) { this.images = images; }
