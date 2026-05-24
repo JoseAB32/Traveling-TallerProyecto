@@ -20,4 +20,13 @@ export class UserService {
   createUser(user: User): Observable<Object> {
     return this.httpClient.post(`${this.baseURL}`, user);
   }
+
+  getProfile(): Observable<User> {
+    return this.httpClient.get<User>(`${this.baseURL}/profile`);
+  }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+    return this.httpClient.patch(`${this.baseURL}/profile/password`, { currentPassword, newPassword }
+    );
+  }
 }
