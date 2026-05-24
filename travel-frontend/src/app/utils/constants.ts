@@ -11,6 +11,7 @@ interface ApiConstants {
   FAVORITES: string;
   FEATURES: string;
   TRIPS: string;
+  TRANSLATIONS: string;
 }
 
 interface LandingConstants {
