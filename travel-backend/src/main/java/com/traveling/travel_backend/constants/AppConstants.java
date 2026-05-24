@@ -26,6 +26,7 @@ public class AppConstants {
     public static final String TOP_RATED = "/top-rated";
     public static final String SEARCH = "/search";
     public static final String LOGIN = "/login";
+    public static final String TRANSLATIONS_ENDPOINT = "/translations";
 
     // ==================== CORS ====================
     public static final String CORS_LOCALHOST = "http://localhost:4200";
