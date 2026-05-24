@@ -10,12 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.dto.TranslationResultDTO;
 
 @Service
 public class AzureTranslatorService {
 
-    private static final String PROVIDER_NAME = "AZURE";
+    private static final String PROVIDER_NAME = AppConstants.PROVIDER_AZURE;
 
     private final RestTemplate restTemplate;
     private final String key;

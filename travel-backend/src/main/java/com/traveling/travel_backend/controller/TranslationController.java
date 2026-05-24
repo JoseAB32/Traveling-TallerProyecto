@@ -11,7 +11,7 @@ import com.traveling.travel_backend.dto.UpdateTranslationRequestDTO;
 import com.traveling.travel_backend.service.TranslationsService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(AppConstants.API_BASE_PATH)
 @CrossOrigin(origins = {AppConstants.CORS_LOCALHOST, AppConstants.CORS_NETLIFY})
 @Tag(name = "Traducciones", description = "Manejo de Admin para revisar traducciones")
-public class TranlationController {
+public class TranslationController {
     private final TranslationsService translationService;
 
-    public TranlationController(TranslationsService translationService) {
+    public TranslationController(TranslationsService translationService) {
         this.translationService = translationService;
     }
 

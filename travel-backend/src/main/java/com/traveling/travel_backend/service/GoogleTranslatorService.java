@@ -1,5 +1,6 @@
 package com.traveling.travel_backend.service;
 
+import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.dto.TranslationResultDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -14,7 +15,7 @@ import java.util.Map;
 @Service
 public class GoogleTranslatorService {
 
-    private static final String PROVIDER_NAME = "GOOGLE";
+    private static final String PROVIDER_NAME = AppConstants.PROVIDER_GOOGLE;
 
     private final RestTemplate restTemplate;
     private final String apiKey;

@@ -127,10 +127,10 @@ public class TranslationsService {
     }
 
     private Specification<Translations> buildTranslationSpecification(
-                String entityType,
-                String language,
-                String fieldName,
-                Long entityId) {
+    String entityType,
+    String language,
+    String fieldName,
+    Long entityId) {
         return (root, query, criteriaBuilder) -> {
                 var predicate = criteriaBuilder.conjunction();
 
