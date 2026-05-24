@@ -32,7 +32,7 @@
   padding: 5px 10px;
   width: 400px;
   position: relative;
-  z-index: 1001; 
+  z-index: 50; 
   transition: border-radius 0.1s; 
 }
 
@@ -170,7 +170,7 @@
   border: 2px solid #ff7841;
   border-radius: 15px;
   width: 220px;
-  z-index: 100;
+  z-index: 98;
   overflow: hidden;
   display: block;
   padding: 10px 0;
@@ -220,7 +220,7 @@
   border-top: none; /* Quitamos el borde superior para que se una */
   border-radius: 0 0 25px 25px; /* Solo redondeamos abajo */
   box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-  z-index: 1000;
+  z-index: 50;
   overflow: hidden;
   margin-top: -2px; /* Ajuste mínimo para que los bordes laterales coincidan perfecto */
 }
@@ -302,7 +302,7 @@
 
 @media (max-width: 450px) {
   .header {
-    z-index: 5000;
+    z-index: 50;
   }
 
   .logo-simp {
@@ -350,7 +350,7 @@
     padding: 20px 0 0 0;
     margin: 0;
     position: relative;
-    z-index: 100;
+    z-index: 99;
   }
 
   .search-container2 {
@@ -359,7 +359,7 @@
     justify-content: center;
     margin: 0;
     position: relative;
-    z-index: 100;
+    z-index: 98;
     width: 80%;
   }
 
@@ -367,7 +367,7 @@
     border: 1.5px solid #ff7841;
     padding: 4px 8px; 
     width: 100%;
-    z-index: 101;
+    z-index: 99;
   }
 
   .search-container2 .search-bar.active {
@@ -399,7 +399,7 @@
     border-top: none;
     border-radius: 0 0 25px 25px;
     box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-    z-index: 100;
+    z-index: 98;
     overflow: hidden;
     margin-top: -2px;
   }

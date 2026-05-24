@@ -17,6 +17,8 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { ResetSuccessComponent } from './pages/reset-success/reset-success.component';
 import { ModifyItineraryComponent } from './pages/modify-itinerary/modify-itinerary.component';
 import { MyItinerariesComponent } from './pages/my-itineraries/my-itineraries.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+
 export const routes: Routes = [
 
 
@@ -55,5 +57,6 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   { path: 'itinerarios', canActivate: [authGuard], component: CreateItineraryComponent },
+  { path: 'profile', canActivate: [authGuard], component: ProfileComponent},
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
