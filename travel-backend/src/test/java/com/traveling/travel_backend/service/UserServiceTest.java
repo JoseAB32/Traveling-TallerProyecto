@@ -357,4 +357,94 @@ class UserServiceTest {
                     .hasMessageContaining("carlos_viajero");
         }
     }
+    @Nested
+    @DisplayName("changePassword")
+    class ChangePasswordTests {
+
+        private Authentication authentication;
+
+        @BeforeEach
+        void setUpAuth() {
+            authentication = new UsernamePasswordAuthenticationToken("carlos_viajero", null, List.of());
+        }
+
+        @Test
+        @DisplayName("Debe cambiar la contraseña correctamente")
+        void shouldChangePasswordSuccessfully() {
+            String newPassword = "nuevaPassword123";
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+
+            userService.changePassword(authentication, rawPassword, newPassword);
+
+            verify(userRepository).save(any(User.class));
+            assertThat(passwordEncoder.matches(newPassword, sampleUser.getPass())).isTrue();
+            verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
+        }
+
+        @Test
+        @DisplayName("Debe lanzar UnauthorizedException si la autenticación es nula")
+        void shouldThrowWhenAuthIsNull() {
+            assertThatThrownBy(() -> userService.changePassword(null, rawPassword, "nuevaPassword123"))
+                    .isInstanceOf(UnauthorizedException.class)
+                    .hasMessage("No autenticado.");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar ResourceNotFoundException si el usuario no existe en BD")
+        void shouldThrowWhenUserNotFound() {
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> userService.changePassword(authentication, rawPassword, "nuevaPassword123"))
+                    .isInstanceOf(ResourceNotFoundException.class);
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si la contraseña actual es incorrecta")
+        void shouldThrowWhenCurrentPasswordIsWrong() {
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+
+            assertThatThrownBy(() -> userService.changePassword(authentication, "contrasenaIncorrecta", "nuevaPassword123"))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessage("La contraseña actual es incorrecta.");
+
+            verify(userRepository, never()).save(any());
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si la nueva contraseña tiene menos de 8 caracteres")
+        void shouldThrowWhenNewPasswordTooShort() {
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+
+            assertThatThrownBy(() -> userService.changePassword(authentication, rawPassword, "corta"))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessage("La nueva contraseña debe tener mínimo 8 caracteres.");
+
+            verify(userRepository, never()).save(any());
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si la nueva contraseña es nula")
+        void shouldThrowWhenNewPasswordIsNull() {
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+
+            assertThatThrownBy(() -> userService.changePassword(authentication, rawPassword, null))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessage("La nueva contraseña debe tener mínimo 8 caracteres.");
+
+            verify(userRepository, never()).save(any());
+        }
+
+        @Test
+        @DisplayName("No debe guardar si la contraseña actual falla la validación")
+        void shouldNotSaveWhenValidationFails() {
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+
+            try {
+                userService.changePassword(authentication, "wrongPass", "nuevaPassword123");
+            } catch (BadRequestException ignored) {}
+
+            verify(userRepository, never()).save(any());
+        }
+    }
 }

@@ -262,6 +262,25 @@
         "country": "Country",
         "edit": "Edit profile",
         "changePhoto": "Change photo",
-        "avatar_alt": "Profile picture"
+        "avatar_alt": "Profile picture",
+        "settings": "Settings",
+        "changePassword": "Change password",
+        "editData": "Edit personal data",
+        "currentPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm password",
+        "currentPasswordPlaceholder": "Enter your current password",
+        "newPasswordPlaceholder": "Enter your new password",
+        "confirmPasswordPlaceholder": "Repeat your new password",
+        "passwordAllRequired": "All fields are required",
+        "passwordTooShort": "Password must be at least 8 characters",
+        "passwordMismatch": "Passwords do not match",
+        "passwordNoSpaces": "Password cannot contain spaces",
+        "passwordWrong": "Current password is incorrect",
+        "passwordError": "An error occurred while changing the password",
+        "passwordChanged": "Password updated successfully",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saving": "Saving..."
     }
 }
