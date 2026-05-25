@@ -36,16 +36,24 @@ public class TripService {
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
 
+    // NUEVO
+    private final SupabaseReminderService supabaseReminderService;
+
     public TripService(
             TripRepository tripRepository,
             TripItemRepository tripItemRepository,
             UserRepository userRepository,
-            PlaceRepository placeRepository) {
+            PlaceRepository placeRepository,
+            SupabaseReminderService supabaseReminderService) {
 
         this.tripRepository = tripRepository;
         this.tripItemRepository = tripItemRepository;
         this.userRepository = userRepository;
         this.placeRepository = placeRepository;
+
+        // NUEVO
+        this.supabaseReminderService =
+                supabaseReminderService;
     }
 
     @Transactional(readOnly = true)
@@ -168,6 +176,15 @@ public class TripService {
 
         Trip savedTrip = tripRepository.save(trip);
 
+        // NUEVO → CREA RECORDATORIO EN SUPABASE
+        supabaseReminderService.createReminder(
+                savedTrip.getUser().getCorreo(),
+                savedTrip.getUser().getUserName(),
+                savedTrip.getName(),
+                savedTrip.getStartDate(),
+                savedTrip.getId()
+        );
+
         List<Place> selectedPlaces =
                 buildAndSaveTripItems(
                         savedTrip,
@@ -275,39 +292,78 @@ public class TripService {
     }
 
     @Transactional(readOnly = true)
-    public TripDraftResponse getTripById(Long tripId, Authentication authentication) {
+    public TripDraftResponse getTripById(
+            Long tripId,
+            Authentication authentication) {
+
         User user = resolveAuthenticatedUser(authentication);
 
         logger.info("{} [{}] Buscando itinerario ID: {} para usuario ID: {}",
-                AppConstants.PREFIX_USER, AppConstants.LOG_TRIPS, tripId, user.getId());
+                AppConstants.PREFIX_USER,
+                AppConstants.LOG_TRIPS,
+                tripId,
+                user.getId());
 
-        Trip trip = tripRepository.findByIdAndUserIdAndStateTrue(tripId, user.getId())
+        Trip trip = tripRepository
+                .findByIdAndUserIdAndStateTrue(
+                        tripId,
+                        user.getId())
                 .orElseThrow(() -> {
+
                     logger.warn("{} [{}] Itinerario ID: {} no encontrado o inactivo para usuario ID: {}",
-                            AppConstants.PREFIX_ERROR, AppConstants.LOG_TRIPS, tripId, user.getId());
-                    return new ResourceNotFoundException("Itinerario no encontrado con ID: " + tripId);
+                            AppConstants.PREFIX_ERROR,
+                            AppConstants.LOG_TRIPS,
+                            tripId,
+                            user.getId());
+
+                    return new ResourceNotFoundException(
+                            "Itinerario no encontrado con ID: "
+                                    + tripId);
                 });
 
-        List<TripItem> items = tripItemRepository.findByTripIdAndStateTrueOrderByVisitOrderAsc(trip.getId());
+        List<TripItem> items =
+                tripItemRepository
+                        .findByTripIdAndStateTrueOrderByVisitOrderAsc(
+                                trip.getId());
 
         logger.info("{} [{}] Itinerario ID: {} encontrado con {} lugares",
-                AppConstants.PREFIX_PLACE, AppConstants.LOG_TRIPS, trip.getId(), items.size());
+                AppConstants.PREFIX_PLACE,
+                AppConstants.LOG_TRIPS,
+                trip.getId(),
+                items.size());
 
         return buildResponse(trip, items);
     }
 
     @Transactional
-    public TripDraftResponse updateTripById(Long tripId, TripDraftRequest request, Authentication authentication) {
+    public TripDraftResponse updateTripById(
+            Long tripId,
+            TripDraftRequest request,
+            Authentication authentication) {
+
         User user = resolveAuthenticatedUser(authentication);
 
         logger.info("{} [{}] Actualizando itinerario ID: {} para usuario ID: {}",
-                AppConstants.PREFIX_USER, AppConstants.LOG_TRIPS, tripId, user.getId());
+                AppConstants.PREFIX_USER,
+                AppConstants.LOG_TRIPS,
+                tripId,
+                user.getId());
 
-        Trip trip = tripRepository.findByIdAndUserIdAndStateTrue(tripId, user.getId())
+        Trip trip = tripRepository
+                .findByIdAndUserIdAndStateTrue(
+                        tripId,
+                        user.getId())
                 .orElseThrow(() -> {
-                        logger.warn("{} [{}] Itinerario ID: {} no encontrado o inactivo para usuario ID: {}",
-                                AppConstants.PREFIX_ERROR, AppConstants.LOG_TRIPS, tripId, user.getId());
-                        return new ResourceNotFoundException("Itinerario no encontrado con ID: " + tripId);
+
+                    logger.warn("{} [{}] Itinerario ID: {} no encontrado o inactivo para usuario ID: {}",
+                            AppConstants.PREFIX_ERROR,
+                            AppConstants.LOG_TRIPS,
+                            tripId,
+                            user.getId());
+
+                    return new ResourceNotFoundException(
+                            "Itinerario no encontrado con ID: "
+                                    + tripId);
                 });
 
         populateTrip(trip, user, request);
@@ -316,10 +372,16 @@ public class TripService {
 
         tripItemRepository.deleteByTripId(savedTrip.getId());
 
-        List<Place> selectedPlaces = buildAndSaveTripItems(savedTrip, request.getPlaceIds());
+        List<Place> selectedPlaces =
+                buildAndSaveTripItems(
+                        savedTrip,
+                        request.getPlaceIds());
 
         logger.info("{} [{}] Itinerario ID: {} actualizado con {} lugares",
-                AppConstants.PREFIX_PLACE, AppConstants.LOG_TRIPS, savedTrip.getId(), selectedPlaces.size());
+                AppConstants.PREFIX_PLACE,
+                AppConstants.LOG_TRIPS,
+                savedTrip.getId(),
+                selectedPlaces.size());
 
         return buildResponseFromPlaces(savedTrip, selectedPlaces);
     }
