@@ -1,6 +1,8 @@
 package com.traveling.travel_backend.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -35,6 +37,9 @@ public class Place {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PlaceImage> images = new ArrayList<>();
+
     @Column(name = "is_event")
     @JsonProperty("is_event") // 🔥 CLAVE
     private boolean isEvent = false;
@@ -46,9 +51,6 @@ public class Place {
     @Column(name = "end_date")
     @JsonProperty("end_date") // 🔥 CLAVE
     private LocalDateTime endDate;
-
-    @Column(name = "image_url")
-    private String imageUrl;
 
     private boolean state = true;
 
@@ -76,13 +78,13 @@ public class Place {
 
     public City getCity() { return city; }
 
+    public List<PlaceImage> getImages() { return images; }
+
     public boolean isEvent() { return isEvent; }
 
     public LocalDateTime getStartDate() { return startDate; }
 
     public LocalDateTime getEndDate() { return endDate; }
-
-    public String getImageUrl() { return imageUrl; }
 
     public boolean isState() { return state; }
 
@@ -108,13 +110,13 @@ public class Place {
 
     public void setCity(City city) { this.city = city; }
 
+    public void setImages(List<PlaceImage> images) { this.images = images; }
+
     public void setEvent(boolean event) { isEvent = event; }
 
     public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
 
     public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
-
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     public void setState(boolean state) { this.state = state; }
 }
