@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 
-import { Place } from './place';
+import { Place, PlaceImage } from './place';
 import { City } from '../city/city';
 
 describe('Place', () => {
@@ -29,7 +29,7 @@ describe('Place', () => {
     expect(place.start_date).toBeNull();
     expect(place.end_date).toBeNull();
 
-    expect(place.imageUrl).toBe('');
+    expect(place.images).toEqual([]);
     expect(place.state).toBe(true);
   });
 
@@ -40,6 +40,25 @@ describe('Place', () => {
       id: 1,
       name: 'Cochabamba'
     } as unknown as City;
+
+    const mockImages: PlaceImage[] = [
+      {
+        id: 1,
+        image_url: 'https://res.cloudinary.com/duj77wunh/image/upload/v1779223146/cristo-concordia01_sizmjx.jpg',
+        public_id: 'cristo-concordia01_sizmjx',
+        alt_text: 'Cristo de la Concordia',
+        display_order: 1,
+        is_main: true
+      },
+      {
+        id: 2,
+        image_url: 'https://res.cloudinary.com/duj77wunh/image/upload/v1779223146/cristo-concordia02_abcd.jpg',
+        public_id: 'cristo-concordia02_abcd',
+        alt_text: 'Vista del Cristo de la Concordia',
+        display_order: 2,
+        is_main: false
+      }
+    ];
 
     place.id = 10;
     place.name = 'Cristo de la Concordia';
@@ -61,7 +80,7 @@ describe('Place', () => {
     place.start_date = '2026-05-12';
     place.end_date = '2026-05-13';
 
-    place.imageUrl = 'https://example.com/cristo.jpg';
+    place.images = mockImages;
     place.state = false;
 
     expect(place.id).toBe(10);
@@ -84,7 +103,18 @@ describe('Place', () => {
     expect(place.start_date).toBe('2026-05-12');
     expect(place.end_date).toBe('2026-05-13');
 
-    expect(place.imageUrl).toBe('https://example.com/cristo.jpg');
+    expect(place.images).toEqual(mockImages);
+    expect(place.images.length).toBe(2);
+
+    expect(place.images[0].id).toBe(1);
+    expect(place.images[0].image_url).toBe(
+      'https://res.cloudinary.com/duj77wunh/image/upload/v1779223146/cristo-concordia01_sizmjx.jpg'
+    );
+    expect(place.images[0].public_id).toBe('cristo-concordia01_sizmjx');
+    expect(place.images[0].alt_text).toBe('Cristo de la Concordia');
+    expect(place.images[0].display_order).toBe(1);
+    expect(place.images[0].is_main).toBe(true);
+
     expect(place.state).toBe(false);
   });
 });

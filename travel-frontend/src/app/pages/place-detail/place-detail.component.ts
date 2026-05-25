@@ -95,11 +95,8 @@ export class PlaceDetailComponent implements OnInit {
         next: (data) => {
           this.place = data;
 
-          this.images = [
-            data.imageUrl,
-            data.imageUrl,
-            data.imageUrl
-          ];
+          this.images = this.buildCarouselImages(data);
+          this.currentImageIndex = 0;
 
           this.loading = false;
           this.checkIfFavorite();
@@ -110,6 +107,18 @@ export class PlaceDetailComponent implements OnInit {
         }
       });
     }
+  }
+
+  private buildCarouselImages(place: Place): string[] {
+    const placeImages = place.images
+      ?.map(image => image.image_url)
+      .filter((url): url is string => !!url && url.trim().length > 0) ?? [];
+
+    if (placeImages.length > 0) {
+      return placeImages;
+    }
+
+    return ['assets/images/default-place.jpg'];
   }
 
   checkIfFavorite(): void {
@@ -440,11 +449,20 @@ export class PlaceDetailComponent implements OnInit {
   }
 
   nextImage(): void {
+    if (this.images.length === 0) {
+      return;
+    }
+
     this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
   }
 
   prevImage(): void {
-    this.currentImageIndex = (this.currentImageIndex - 1 + this.images.length) % this.images.length;
+    if (this.images.length === 0) {
+      return;
+    }
+
+    this.currentImageIndex =
+      (this.currentImageIndex - 1 + this.images.length) % this.images.length;
   }
 
   getStars(rating: number): string {
