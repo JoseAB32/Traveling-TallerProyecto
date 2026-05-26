@@ -7,12 +7,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(
     name = "translations",
     indexes = {
-        @Index(name = "idx_translation_lookup", columnList = "entity_type, entity_id, field_name, language")
+        @Index(
+            name = "idx_translation_lookup",
+            columnList = "entity_type, entity_id, field_name, language"
+        )
+    },
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uq_translation_lookup",
+            columnNames = {"entity_type", "entity_id", "field_name", "language"}
+        )
     }
 )
 public class Translations {
