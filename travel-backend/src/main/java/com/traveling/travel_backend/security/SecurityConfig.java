@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                         auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,"/api/users/profile/password").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/profile").authenticated()
@@ -76,7 +77,7 @@ public class SecurityConfig {
                 "https://travelingitinerary.netlify.app"));
 
         configuration.setAllowedMethods(List.of(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
         configuration.setAllowedHeaders(List.of(
                 "Authorization", "Content-Type", "Accept"));

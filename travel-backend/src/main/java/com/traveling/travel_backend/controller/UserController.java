@@ -1,6 +1,7 @@
 package com.traveling.travel_backend.controller;
 
 import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.ChangePasswordRequestDTO;
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
 import com.traveling.travel_backend.dto.UserResponseDTO;
@@ -49,5 +50,12 @@ public class UserController {
     @GetMapping(AppConstants.USERS_ENDPOINT + "/profile")
     public ResponseEntity<UserResponseDTO> getProfile(Authentication authentication) {
         return ResponseEntity.ok(userService.getProfile(authentication));
+    }
+
+    @Operation(summary = "Change password", description = "Changes password for the authenticated user")
+    @PatchMapping(AppConstants.USERS_ENDPOINT + "/profile/password")
+    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequestDTO request, Authentication authentication) {
+        userService.changePassword(authentication, request.getCurrentPassword(), request.getNewPassword());
+        return ResponseEntity.ok().build();
     }
 }

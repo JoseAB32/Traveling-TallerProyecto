@@ -24,4 +24,9 @@ export class UserService {
   getProfile(): Observable<User> {
     return this.httpClient.get<User>(`${this.baseURL}/profile`);
   }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+    return this.httpClient.patch(`${this.baseURL}/profile/password`, { currentPassword, newPassword }
+    );
+  }
 }
