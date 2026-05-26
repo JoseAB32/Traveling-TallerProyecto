@@ -23,6 +23,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +34,7 @@ class TripServiceTest {
     @Mock private TripItemRepository tripItemRepository;
     @Mock private UserRepository userRepository;
     @Mock private PlaceRepository placeRepository;
+    @Mock private SupabaseReminderService supabaseReminderService;  // ← AGREGAR ESTE MOCK
 
     private Authentication authentication;
 
@@ -45,12 +48,12 @@ class TripServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Inicializado aquí — authentication.getName() devuelve "traveler_joe" directamente
         authentication = new UsernamePasswordAuthenticationToken("traveler_joe", null, List.of());
 
         sampleUser = new User();
         sampleUser.setId(1L);
         sampleUser.setUserName("traveler_joe");
+        sampleUser.setCorreo("traveler_joe@example.com");  // ← AGREGAR EMAIL
 
         samplePlace = new Place();
         samplePlace.setId(50L);
@@ -60,6 +63,7 @@ class TripServiceTest {
         sampleTrip.setId(100L);
         sampleTrip.setUser(sampleUser);
         sampleTrip.setName("Mi viaje");
+        sampleTrip.setStartDate("2026-06-01");  // ← AGREGAR FECHA
         sampleTrip.setState(true);
 
         sampleItem = new TripItem(sampleTrip, samplePlace, 1);
@@ -134,6 +138,42 @@ class TripServiceTest {
                     .isInstanceOf(ResourceNotFoundException.class)
                     .hasMessageContaining("Lugar no encontrado con ID: 999");
         }
+
+        @Test
+        @DisplayName("Debe crear un nuevo viaje y llamar a SupabaseReminderService")
+        void shouldCreateTripAndCallReminderService() {
+            TripDraftRequest request = new TripDraftRequest();
+            request.setName("Nuevo viaje");
+            request.setStartDate("2026-06-15");
+            request.setEndDate("2026-06-20");
+            request.setPlaceIds(List.of(50L));
+
+            Trip newTrip = new Trip();
+            newTrip.setId(200L);
+            newTrip.setUser(sampleUser);
+            newTrip.setName("Nuevo viaje");
+            newTrip.setStartDate("2026-06-15");
+            newTrip.setEndDate("2026-06-20");
+            newTrip.setState(true);
+
+            when(userRepository.findByUserName("traveler_joe")).thenReturn(Optional.of(sampleUser));
+            when(tripRepository.save(any(Trip.class))).thenReturn(newTrip);
+            when(placeRepository.findById(50L)).thenReturn(Optional.of(samplePlace));
+
+            TripDraftResponse response = tripService.createTrip(request, authentication);
+
+            // Verificar que se llamó a SupabaseReminderService
+            verify(supabaseReminderService).createReminder(
+                eq(sampleUser.getCorreo()),
+                eq(sampleUser.getUserName()),
+                eq("Nuevo viaje"),
+                eq("2026-06-15"),
+                eq(200L)
+            );
+
+            assertThat(response.getName()).isEqualTo("Nuevo viaje");
+            assertThat(response.getTripId()).isEqualTo(200L);
+        }
     }
 
     @Nested
@@ -144,6 +184,15 @@ class TripServiceTest {
         @DisplayName("Debe lanzar UnauthorizedException si no hay sesión")
         void shouldThrowUnauthorizedWhenNoSession() {
             assertThatThrownBy(() -> tripService.getMyDraft(null))
+                    .isInstanceOf(UnauthorizedException.class);
+        }
+
+        @Test
+        @DisplayName("Debe lanzar UnauthorizedException si el usuario no existe en BD")
+        void shouldThrowUnauthorizedWhenUserNotFound() {
+            when(userRepository.findByUserName("traveler_joe")).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> tripService.getMyDraft(authentication))
                     .isInstanceOf(UnauthorizedException.class);
         }
     }
