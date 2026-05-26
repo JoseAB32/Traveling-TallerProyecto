@@ -18,6 +18,7 @@ describe('UserService', () => {
   const baseURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS;
   const profileURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS + '/profile';
   const passwordURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS + '/profile/password';
+  const updateURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS + '/profile';
 
   const mockUsers = [
     { id: 1, userName: 'Ana Rojas',     correo: 'ana@example.com'    },
@@ -164,6 +165,53 @@ describe('UserService', () => {
       req.flush({ message: 'Contraseña incorrecta' }, { status: 400, statusText: 'Bad Request' });
 
       expect(errorStatus).toBe(400);
+    });
+  });
+
+  describe('updateProfile', () => {
+
+    it('should PATCH /api/users/profile with the provided data', () => {
+      const payload = { userName: 'nuevo_nombre', correo: 'nuevo@mail.com' };
+      const mockResponse = { ...mockUser, userName: 'nuevo_nombre', correo: 'nuevo@mail.com' } as User;
+
+      service.updateProfile(payload).subscribe(res => {
+        expect(res.userName).toBe('nuevo_nombre');
+        expect(res.correo).toBe('nuevo@mail.com');
+      });
+
+      const req = httpMock.expectOne(updateURL);
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual(payload);
+      req.flush(mockResponse);
+    });
+
+    it('should send only the fields provided', () => {
+      const payload = { birthday: '2000-05-15' };
+
+      service.updateProfile(payload).subscribe();
+
+      const req = httpMock.expectOne(updateURL);
+      expect(req.request.body).toEqual({ birthday: '2000-05-15' });
+      expect(req.request.body.userName).toBeUndefined();
+      req.flush(mockUser);
+    });
+
+    it('should propagate 400 error when userName is taken', () => {
+      let errorStatus = 0;
+      service.updateProfile({ userName: 'ocupado' }).subscribe({
+        error: (err) => { errorStatus = err.status; }
+      });
+
+      const req = httpMock.expectOne(updateURL);
+      req.flush({ message: 'El nombre de usuario ya está en uso' }, { status: 400, statusText: 'Bad Request' });
+      expect(errorStatus).toBe(400);
+    });
+
+    it('should call PATCH exactly once', () => {
+      service.updateProfile({ correo: 'test@mail.com' }).subscribe();
+      const req = httpMock.expectOne(updateURL);
+      expect(req.request.method).toBe('PATCH');
+      req.flush(mockUser);
     });
   });
 });
