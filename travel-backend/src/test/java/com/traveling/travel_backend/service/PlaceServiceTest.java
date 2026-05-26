@@ -84,21 +84,60 @@ class PlaceServiceTest {
         }
 
         @Test
-        @DisplayName("Debe retornar el top 5 de lugares sin traducir aunque el idioma no sea español por performance")
-        void shouldReturnTop5RatedPlacesWithoutTranslationWhenLanguageIsNotSpanish() {
+        @DisplayName("Debe retornar el top 5 traduciendo solo el nombre cuando el idioma no es español")
+        void shouldReturnTop5RatedPlacesTranslatingOnlyNameWhenLanguageIsNotSpanish() {
             when(placeRepository.findTop5ByOrderByRatingDesc()).thenReturn(List.of(samplePlace));
+
+            when(translationsService.getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_NAME,
+                    "en",
+                    "Cristo de la Concordia"
+            )).thenReturn("Christ of Concord");
 
             List<PlaceResponseDTO> result = placeService.getTopRated("en");
 
             assertThat(result).hasSize(1);
-            assertThat(result.get(0).getName()).isEqualTo("Cristo de la Concordia");
+            assertThat(result.get(0).getName()).isEqualTo("Christ of Concord");
             assertThat(result.get(0).getDescription()).isEqualTo("Monumento turístico ubicado en Cochabamba");
             assertThat(result.get(0).getAddress()).isEqualTo("Cerro San Pedro");
             assertThat(result.get(0).getPlaceType()).isEqualTo("Monumento");
 
             verify(logRepository).save(any(LogEntity.class));
             verify(placeRepository).findTop5ByOrderByRatingDesc();
-            verifyNoInteractions(translationsService);
+
+            verify(translationsService).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_NAME,
+                    "en",
+                    "Cristo de la Concordia"
+            );
+
+            verify(translationsService, never()).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_DESCRIPTION,
+                    "en",
+                    "Monumento turístico ubicado en Cochabamba"
+            );
+
+            verify(translationsService, never()).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_ADDRESS,
+                    "en",
+                    "Cerro San Pedro"
+            );
+
+            verify(translationsService, never()).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_PLACE_TYPE,
+                    "en",
+                    "Monumento"
+            );
         }
 
         @Test
@@ -347,21 +386,61 @@ class PlaceServiceTest {
         }
 
         @Test
-        @DisplayName("Debe retornar el top 3 de lugares de un departamento sin traducir aunque el idioma no sea español por performance")
-        void shouldReturnTop3PlacesByDepartmentWithoutTranslationWhenLanguageIsNotSpanish() {
-            when(placeRepository.findTop3ByCityIdAndStateTrueOrderByRatingDesc(1L)).thenReturn(List.of(samplePlace));
+        @DisplayName("Debe retornar el top 3 de lugares de un departamento traduciendo solo el nombre cuando el idioma no es español")
+        void shouldReturnTop3PlacesByDepartmentTranslatingOnlyNameWhenLanguageIsNotSpanish() {
+            when(placeRepository.findTop3ByCityIdAndStateTrueOrderByRatingDesc(1L))
+                    .thenReturn(List.of(samplePlace));
+
+            when(translationsService.getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_NAME,
+                    "en",
+                    "Cristo de la Concordia"
+            )).thenReturn("Christ of Concord");
 
             List<PlaceResponseDTO> result = placeService.getTopPlacesByDepartment(1L, "en");
 
             assertThat(result).hasSize(1);
-            assertThat(result.get(0).getName()).isEqualTo("Cristo de la Concordia");
+            assertThat(result.get(0).getName()).isEqualTo("Christ of Concord");
             assertThat(result.get(0).getDescription()).isEqualTo("Monumento turístico ubicado en Cochabamba");
             assertThat(result.get(0).getAddress()).isEqualTo("Cerro San Pedro");
             assertThat(result.get(0).getPlaceType()).isEqualTo("Monumento");
 
             verify(placeRepository).findTop3ByCityIdAndStateTrueOrderByRatingDesc(1L);
             verify(logRepository).save(any(LogEntity.class));
-            verifyNoInteractions(translationsService);
+
+            verify(translationsService).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_NAME,
+                    "en",
+                    "Cristo de la Concordia"
+            );
+
+            verify(translationsService, never()).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_DESCRIPTION,
+                    "en",
+                    "Monumento turístico ubicado en Cochabamba"
+            );
+
+            verify(translationsService, never()).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_ADDRESS,
+                    "en",
+                    "Cerro San Pedro"
+            );
+
+            verify(translationsService, never()).getTranslation(
+                    AppConstants.ENTITY_TYPE_PLACE,
+                    10L,
+                    AppConstants.FIELD_PLACE_TYPE,
+                    "en",
+                    "Monumento"
+            );
         }
 
         @Test

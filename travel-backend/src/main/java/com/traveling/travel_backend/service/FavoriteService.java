@@ -32,13 +32,19 @@ public class FavoriteService {
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
     private final LogRepository logRepository;
+    private final TranslationsService translationsService;
 
-    public FavoriteService(FavoriteRepository favoriteRepository, UserRepository userRepository,
-                           PlaceRepository placeRepository, LogRepository logRepository) {
+    public FavoriteService(
+                FavoriteRepository favoriteRepository,
+                UserRepository userRepository,
+                PlaceRepository placeRepository,
+                LogRepository logRepository,
+                TranslationsService translationsService) {
         this.favoriteRepository = favoriteRepository;
-        this.userRepository     = userRepository;
-        this.placeRepository    = placeRepository;
-        this.logRepository      = logRepository;
+        this.userRepository = userRepository;
+        this.placeRepository = placeRepository;
+        this.logRepository = logRepository;
+        this.translationsService = translationsService;
     }
 
     @Transactional
@@ -48,48 +54,62 @@ public class FavoriteService {
         logger.info("{} [{}] Solicitud de agregado -> Usuario: {}, Lugar: {}",
                 AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId, placeId);
         logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
-                "Solicitud de agregado -> Usuario: " + userId + ", Lugar: " + placeId +
-                " - POST /api/favorites/user/" + userId + "/place/" + placeId, userId));
+                "Solicitud de agregado -> Usuario: " + userId + ", Lugar: " + placeId
+                        + " - POST /api/favorites/user/" + userId + "/place/" + placeId, userId));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> {
-                    logger.warn("{} [{}] Usuario ID {} no encontrado", AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId);
-                    logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_WARN,
-                            "Usuario ID " + userId + " no encontrado.", userId));
-                    return new ResourceNotFoundException("Usuario no encontrado con ID: " + userId);
+                        logger.warn("{} [{}] Usuario ID {} no encontrado", AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId);
+                        logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_WARN,
+                                "Usuario ID " + userId + " no encontrado.", userId));
+                        return new ResourceNotFoundException("Usuario no encontrado con ID: " + userId);
                 });
 
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(() -> {
-                    logger.warn("{} [{}] Lugar ID {} no encontrado", AppConstants.PREFIX_FAVORITE, LOG_MODULE, placeId);
-                    logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_WARN,
-                            "Lugar ID " + placeId + " no encontrado.", userId));
-                    return new ResourceNotFoundException("Lugar no encontrado con ID: " + placeId);
+                        logger.warn("{} [{}] Lugar ID {} no encontrado", AppConstants.PREFIX_FAVORITE, LOG_MODULE, placeId);
+                        logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_WARN,
+                                "Lugar ID " + placeId + " no encontrado.", userId));
+                        return new ResourceNotFoundException("Lugar no encontrado con ID: " + placeId);
                 });
 
         Optional<Favorite> existing = favoriteRepository.findByUserIdAndPlaceId(userId, placeId);
 
         Favorite favorite;
+
         if (existing.isPresent()) {
-            favorite = existing.get();
-            favorite.setState(true);
+                favorite = existing.get();
+
+                if (!favorite.isState()) {
+                favorite.setState(true);
+                favorite = favoriteRepository.save(favorite);
+
+                logger.info("{} [{}] Favorito reactivado -> Usuario: {}, Lugar: {}",
+                        AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId, placeId);
+                logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
+                        "Favorito reactivado correctamente -> Usuario: " + userId + ", Lugar: " + placeId, userId));
+                } else {
+                logger.info("{} [{}] Favorito ya existía activo -> Usuario: {}, Lugar: {}",
+                        AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId, placeId);
+                logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
+                        "Favorito ya existía activo -> Usuario: " + userId + ", Lugar: " + placeId, userId));
+                }
         } else {
-            favorite = new Favorite(user, place);
-            favorite.setState(true);
+                favorite = new Favorite(user, place);
+                favorite.setState(true);
+                favorite = favoriteRepository.save(favorite);
+
+                logger.info("{} [{}] Favorito guardado -> Usuario: {}, Lugar: {}",
+                        AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId, placeId);
+                logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
+                        "Favorito guardado correctamente -> Usuario: " + userId + ", Lugar: " + placeId, userId));
         }
 
-        Favorite saved = favoriteRepository.save(favorite);
-
-        logger.info("{} [{}] Favorito guardado -> Usuario: {}, Lugar: {}",
-                AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId, placeId);
-        logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
-                "Favorito guardado correctamente -> Usuario: " + userId + ", Lugar: " + placeId, userId));
-
-        return FavoriteResponseDTO.fromEntity(saved);
+        return FavoriteResponseDTO.fromEntity(favorite);
     }
 
     @Transactional
-    public List<FavoriteResponseDTO> getUserFavorites(Authentication authentication) {
+    public List<FavoriteResponseDTO> getUserFavorites(Authentication authentication, String language) {
         Long userId = resolveUserId(authentication);
 
         logger.info("{} [{}] Consultando favoritos del usuario ID: {}",
@@ -101,19 +121,19 @@ public class FavoriteService {
         List<Favorite> favorites = favoriteRepository.findByUserIdAndStateTrue(userId);
 
         if (favorites.isEmpty()) {
-            logger.info("{} [{}] Usuario ID {} no tiene favoritos",
-                    AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId);
-            logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
-                    "El usuario ID: " + userId + " no tiene favoritos.", userId));
+                logger.info("{} [{}] Usuario ID {} no tiene favoritos",
+                        AppConstants.PREFIX_FAVORITE, LOG_MODULE, userId);
+                logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
+                        "El usuario ID: " + userId + " no tiene favoritos.", userId));
         } else {
-            logger.info("{} [{}] {} favoritos encontrados para usuario ID: {}",
-                    AppConstants.PREFIX_FAVORITE, LOG_MODULE, favorites.size(), userId);
-            logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
-                    "Devolviendo " + favorites.size() + " favoritos para usuario ID: " + userId, userId));
+                logger.info("{} [{}] {} favoritos encontrados para usuario ID: {}",
+                        AppConstants.PREFIX_FAVORITE, LOG_MODULE, favorites.size(), userId);
+                logRepository.save(new LogEntity(LOG_MODULE, AppConstants.LOG_INFO,
+                        "Devolviendo " + favorites.size() + " favoritos para usuario ID: " + userId, userId));
         }
 
         return favorites.stream()
-                .map(FavoriteResponseDTO::fromEntity)
+                .map(favorite -> buildFavoriteResponseDTO(favorite, language))
                 .collect(Collectors.toList());
     }
 
@@ -141,5 +161,65 @@ public class FavoriteService {
         return userRepository.findByUserName(authentication.getName())
                 .orElseThrow(() -> new UnauthorizedException("Usuario no válido."))
                 .getId();
+    }
+
+    private FavoriteResponseDTO buildFavoriteResponseDTO(Favorite favorite, String language) {
+        FavoriteResponseDTO favoriteResponseDTO = FavoriteResponseDTO.fromEntity(favorite);
+
+        if (isSourceLanguage(language) || favorite.getPlace() == null || favoriteResponseDTO.getPlace() == null) {
+                return favoriteResponseDTO;
+        }
+
+        translateFavoritePlaceName(favorite.getPlace(), favoriteResponseDTO, language);
+        translateFavoritePlaceAddress(favorite.getPlace(), favoriteResponseDTO, language);
+        translateFavoritePlaceDescription(favorite.getPlace(), favoriteResponseDTO, language);
+
+        return favoriteResponseDTO;
+    }
+
+    private void translateFavoritePlaceName(Place place, FavoriteResponseDTO favoriteResponseDTO, String language) {
+        if (place.getName() == null || place.getName().trim().isEmpty()) {
+                return;
+        }
+
+        favoriteResponseDTO.getPlace().setName(translationsService.getTranslation(
+                AppConstants.ENTITY_TYPE_PLACE,
+                place.getId(),
+                AppConstants.FIELD_NAME,
+                language,
+                place.getName()
+        ));
+    }
+
+    private void translateFavoritePlaceAddress(Place place, FavoriteResponseDTO favoriteResponseDTO, String language) {
+        if (place.getAddress() == null || place.getAddress().trim().isEmpty()) {
+                return;
+        }
+
+        favoriteResponseDTO.getPlace().setAddress(translationsService.getTranslation(
+                AppConstants.ENTITY_TYPE_PLACE,
+                place.getId(),
+                AppConstants.FIELD_ADDRESS,
+                language,
+                place.getAddress()
+        ));
+        }
+
+    private void translateFavoritePlaceDescription(Place place, FavoriteResponseDTO favoriteResponseDTO, String language) {
+        if (place.getDescription() == null || place.getDescription().trim().isEmpty()) {
+                return;
+        }
+
+        favoriteResponseDTO.getPlace().setDescription(translationsService.getTranslation(
+                AppConstants.ENTITY_TYPE_PLACE,
+                place.getId(),
+                AppConstants.FIELD_DESCRIPTION,
+                language,
+                place.getDescription()
+        ));
+        }
+
+    private boolean isSourceLanguage(String language) {
+        return language == null || AppConstants.DEFAULT_LANGUAGE.equalsIgnoreCase(language);
     }
 }

@@ -195,6 +195,8 @@ public class PlaceService {
             return placeResponseDTO;
         }
 
+        translateName(place, placeResponseDTO, language);
+
         return placeResponseDTO;
     }
 
