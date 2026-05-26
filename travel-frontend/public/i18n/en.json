@@ -319,6 +319,14 @@
         "passwordChanged": "Password updated successfully",
         "cancel": "Cancel",
         "save": "Save",
-        "saving": "Saving..."
+        "saving": "Saving...",
+        "username":           "Username",
+        "usernamePlaceholder":"Current username",
+        "emailPlaceholder":   "Current email address",
+        "selectCity":         "Select a city",
+        "editRequiredFields": "Username & email are required",
+        "editFieldTaken":     "Username or email already on use",
+        "editError":          "Failed to update profile",
+        "editSuccess":        "Profile updated succesfully"
     }
 }

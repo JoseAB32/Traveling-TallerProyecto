@@ -319,6 +319,14 @@
         "passwordChanged": "Contraseña actualizada correctamente",
         "cancel": "Cancelar",
         "save": "Guardar",
-        "saving": "Guardando..."
+        "saving": "Guardando...",
+        "username":           "Nombre de usuario",
+        "usernamePlaceholder":"Tu nombre de usuario",
+        "emailPlaceholder":   "Tu correo electrónico",
+        "selectCity":         "Selecciona una ciudad",
+        "editRequiredFields": "El nombre y correo son obligatorios",
+        "editFieldTaken":     "El nombre de usuario o correo ya está en uso",
+        "editError":          "Error al actualizar el perfil",
+        "editSuccess":        "Perfil actualizado correctamente"
     }
 }
