@@ -53,7 +53,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   endDate: string = '';
 
   translations: Translation[] = [];
-  translationEntityTypes = ['REVIEW', 'PLACE', 'CITY'];
+  translationEntityTypes = ['REVIEW', 'PLACE', 'FAVORITES'];
   translationFieldNames = ['comment', 'name', 'description', 'address', 'placeType'];
   translationLanguages = ['en', 'pt', 'fr'];
 
