@@ -230,7 +230,7 @@ class PlaceServiceTest {
         @Test
         @DisplayName("Debe retornar cache de búsqueda sin traducir y sin guardar logs")
         void shouldReturnSearchCacheWithoutTranslationAndWithoutSavingLogs() {
-            when(placeRepository.findAll()).thenReturn(List.of(samplePlace));
+            when(placeRepository.findByStateTrue()).thenReturn(List.of(samplePlace));
 
             List<PlaceResponseDTO> result = placeService.getSearchCache();
 
@@ -239,33 +239,25 @@ class PlaceServiceTest {
             assertThat(result.get(0).getAddress()).isEqualTo("Cerro San Pedro");
             assertThat(result.get(0).getPlaceType()).isEqualTo("Monumento");
 
-            verify(placeRepository).findAll();
+            verify(placeRepository).findByStateTrue();
             verifyNoInteractions(translationsService);
             verify(logRepository, never()).save(any(LogEntity.class));
         }
 
         @Test
-        @DisplayName("Debe retornar solo lugares activos en cache de búsqueda")
-        void shouldReturnOnlyActivePlacesInSearchCache() {
-            Place inactivePlace = new Place();
-            inactivePlace.setId(20L);
-            inactivePlace.setName("Lugar inactivo");
-            inactivePlace.setDescription("Descripción inactiva");
-            inactivePlace.setAddress("Dirección inactiva");
-            inactivePlace.setPlaceType("Museo");
-            inactivePlace.setRating(3.0);
-            inactivePlace.setCity(sampleCity);
-            inactivePlace.setState(false);
-
-            when(placeRepository.findAll()).thenReturn(List.of(samplePlace, inactivePlace));
+        @DisplayName("Debe retornar cache de búsqueda con lugares activos sin traducir y sin guardar logs")
+        void shouldReturnSearchCacheWithActivePlacesWithoutTranslationAndWithoutSavingLogs() {
+            when(placeRepository.findByStateTrue()).thenReturn(List.of(samplePlace));
 
             List<PlaceResponseDTO> result = placeService.getSearchCache();
 
             assertThat(result).hasSize(1);
             assertThat(result.get(0).getId()).isEqualTo(10L);
             assertThat(result.get(0).getName()).isEqualTo("Cristo de la Concordia");
+            assertThat(result.get(0).getAddress()).isEqualTo("Cerro San Pedro");
+            assertThat(result.get(0).getPlaceType()).isEqualTo("Monumento");
 
-            verify(placeRepository).findAll();
+            verify(placeRepository).findByStateTrue();
             verifyNoInteractions(translationsService);
             verify(logRepository, never()).save(any(LogEntity.class));
         }

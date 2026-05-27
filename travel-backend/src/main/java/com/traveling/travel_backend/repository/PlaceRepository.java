@@ -1,21 +1,26 @@
 package com.traveling.travel_backend.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.traveling.travel_backend.model.Place;
 
-import java.util.Optional;
-
 @Repository
-public interface PlaceRepository extends JpaRepository<Place, Long>{
+public interface PlaceRepository extends JpaRepository<Place, Long> {
+
     List<Place> findTop5ByOrderByRatingDesc();
+
     List<Place> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCaseOrCity_NameContainingIgnoreCase(
-        String name, String address, String cityName
-    );
+            String name, String address, String cityName);
+
     List<Place> findByCityIdAndStateTrue(Long cityId);
+
     List<Place> findTop3ByCityIdAndStateTrueOrderByRatingDesc(Long cityId);
+
     Optional<Place> findByIdAndStateTrue(Long id);
+
+    List<Place> findByStateTrue();
 }

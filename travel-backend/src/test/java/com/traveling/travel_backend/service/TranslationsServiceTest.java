@@ -24,6 +24,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -117,7 +118,7 @@ class TranslationsServiceTest {
             assertEquals("Excellent place", result);
 
             ArgumentCaptor<Translations> captor = ArgumentCaptor.forClass(Translations.class);
-            verify(translationRepository).save(captor.capture());
+            verify(translationRepository).saveAndFlush(captor.capture());
 
             Translations savedTranslation = captor.getValue();
             assertEquals(AppConstants.ENTITY_TYPE_REVIEW, savedTranslation.getEntityType());
@@ -277,6 +278,102 @@ class TranslationsServiceTest {
             Predicate result = specification.toPredicate(root, query, criteriaBuilder);
 
             assertSame(conjunctionPredicate, result);
+        }
+
+        @Test
+        @DisplayName("No debe guardar traducción cuando el proveedor devuelve ORIGINAL")
+        void shouldNotSaveTranslationWhenProviderReturnsOriginal() {
+            when(translationRepository.findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+                    AppConstants.ENTITY_TYPE_REVIEW, 10L, AppConstants.FIELD_COMMENT, "en"))
+                    .thenReturn(Optional.empty());
+
+            when(translationProviderService.translate("Excelente lugar", AppConstants.DEFAULT_LANGUAGE, "en"))
+                    .thenReturn(new TranslationResultDTO("Excelente lugar", AppConstants.PROVIDER_ORIGINAL));
+
+            String result = translationsService.getTranslation(
+                    AppConstants.ENTITY_TYPE_REVIEW,
+                    10L,
+                    AppConstants.FIELD_COMMENT,
+                    "en",
+                    "Excelente lugar"
+            );
+
+            assertEquals("Excelente lugar", result);
+
+            verify(translationProviderService).translate("Excelente lugar", AppConstants.DEFAULT_LANGUAGE, "en");
+            verify(translationRepository, never()).save(any(Translations.class));
+            verify(translationRepository, never()).saveAndFlush(any(Translations.class));
+            verify(logRepository, times(2)).save(any(LogEntity.class));
+        }
+
+        @Test
+        @DisplayName("Debe recuperar traducción existente si ocurre conflicto concurrente al guardar")
+        void shouldReturnExistingTranslationWhenConcurrentSaveConflictHappens() {
+            Translations existingTranslation = buildTranslation(
+                    1L,
+                    AppConstants.ENTITY_TYPE_REVIEW,
+                    10L,
+                    AppConstants.FIELD_COMMENT,
+                    "en",
+                    "Excellent place"
+            );
+
+            when(translationRepository.findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+                    AppConstants.ENTITY_TYPE_REVIEW, 10L, AppConstants.FIELD_COMMENT, "en"))
+                    .thenReturn(Optional.empty())
+                    .thenReturn(Optional.of(existingTranslation));
+
+            when(translationProviderService.translate("Excelente lugar", AppConstants.DEFAULT_LANGUAGE, "en"))
+                    .thenReturn(new TranslationResultDTO("Excellent place", AppConstants.PROVIDER_AZURE));
+
+            when(translationRepository.saveAndFlush(any(Translations.class)))
+                    .thenThrow(new DataIntegrityViolationException("Duplicate translation"));
+
+            String result = translationsService.getTranslation(
+                    AppConstants.ENTITY_TYPE_REVIEW,
+                    10L,
+                    AppConstants.FIELD_COMMENT,
+                    "en",
+                    "Excelente lugar"
+            );
+
+            assertEquals("Excellent place", result);
+
+            verify(translationProviderService).translate("Excelente lugar", AppConstants.DEFAULT_LANGUAGE, "en");
+            verify(translationRepository).saveAndFlush(any(Translations.class));
+            verify(translationRepository, times(2)).findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+                    AppConstants.ENTITY_TYPE_REVIEW, 10L, AppConstants.FIELD_COMMENT, "en");
+        }
+
+        @Test
+        @DisplayName("Debe normalizar el idioma antes de buscar y guardar traducción")
+        void shouldNormalizeLanguageBeforeSearchingAndSavingTranslation() {
+            when(translationRepository.findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+                    AppConstants.ENTITY_TYPE_REVIEW, 10L, AppConstants.FIELD_COMMENT, "en"))
+                    .thenReturn(Optional.empty());
+
+            when(translationProviderService.translate("Excelente lugar", AppConstants.DEFAULT_LANGUAGE, "en"))
+                    .thenReturn(new TranslationResultDTO("Excellent place", AppConstants.PROVIDER_AZURE));
+
+            String result = translationsService.getTranslation(
+                    AppConstants.ENTITY_TYPE_REVIEW,
+                    10L,
+                    AppConstants.FIELD_COMMENT,
+                    " EN ",
+                    "Excelente lugar"
+            );
+
+            assertEquals("Excellent place", result);
+
+            ArgumentCaptor<Translations> captor = ArgumentCaptor.forClass(Translations.class);
+            verify(translationRepository).saveAndFlush(captor.capture());
+
+            Translations savedTranslation = captor.getValue();
+            assertEquals("en", savedTranslation.getLanguage());
+
+            verify(translationRepository).findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+                    AppConstants.ENTITY_TYPE_REVIEW, 10L, AppConstants.FIELD_COMMENT, "en");
+            verify(translationProviderService).translate("Excelente lugar", AppConstants.DEFAULT_LANGUAGE, "en");
         }
     }
 

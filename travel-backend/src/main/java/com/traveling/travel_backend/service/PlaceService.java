@@ -75,13 +75,10 @@ public class PlaceService {
 
     @Transactional(readOnly = true)
     public List<PlaceResponseDTO> getSearchCache() {
-        logger.debug("{} [{}] Cargando cache ligera de lugares para buscador",
+        logger.debug("{} [{}] Cargando cache ligera de lugares activos para buscador",
                 AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES);
 
-        List<Place> places = placeRepository.findAll();
-
-        return places.stream()
-                .filter(place -> Boolean.TRUE.equals(place.isState()))
+        return placeRepository.findByStateTrue().stream()
                 .map(PlaceResponseDTO::fromEntity)
                 .collect(Collectors.toList());
     }

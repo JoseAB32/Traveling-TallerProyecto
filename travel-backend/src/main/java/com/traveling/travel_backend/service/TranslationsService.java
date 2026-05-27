@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -50,15 +51,17 @@ public class TranslationsService {
             String fieldName,
             String targetLang,
             String originalText) {
+        String normalizedLanguage = normalizeLanguage(targetLang);
+
         logger.info("{} [{}] Buscando traducción para {} con ID {} en campo '{}' y lenguaje '{}'",
-                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, entityId, fieldName, targetLang);
+                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, entityId, fieldName, normalizedLanguage);
 
         logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_INFO,
                 "Buscando traducción para " + entityType + " con ID " + entityId
-                        + " en campo '" + fieldName + "' y lenguaje '" + targetLang + "'", null));
+                        + " en campo '" + fieldName + "' y lenguaje '" + normalizedLanguage + "'", null));
 
         Optional<Translations> existing = translationRepository.findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
-                entityType, entityId, fieldName, targetLang);
+                entityType, entityId, fieldName, normalizedLanguage);
 
         if (existing.isPresent()) {
             logger.debug("{} [{}] Traducción encontrada para {} ID: {}",
@@ -67,18 +70,40 @@ public class TranslationsService {
         }
 
         TranslationResultDTO translationResult = translationProviderService.translate(
-                originalText, AppConstants.DEFAULT_LANGUAGE, targetLang);
+                originalText, AppConstants.DEFAULT_LANGUAGE, normalizedLanguage);
 
         String translatedText = translationResult.getTranslatedText();
+
+        if (AppConstants.PROVIDER_ORIGINAL.equalsIgnoreCase(translationResult.getProvider())) {
+            logger.warn("{} [{}] No se guardará traducción para {} ID {} campo '{}' idioma '{}' porque el proveedor devolvió texto original",
+                    AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, entityId, fieldName, normalizedLanguage);
+
+            logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_WARN,
+                    "No se guardó traducción para " + entityType + " con ID " + entityId
+                            + " en campo '" + fieldName + "' e idioma '" + normalizedLanguage
+                            + "' porque el proveedor devolvió texto original", null));
+
+            return translatedText;
+        }
 
         Translations newTranslation = new Translations();
         newTranslation.setEntityType(entityType);
         newTranslation.setEntityId(entityId);
         newTranslation.setFieldName(fieldName);
-        newTranslation.setLanguage(targetLang);
+        newTranslation.setLanguage(normalizedLanguage);
         newTranslation.setTranslatedText(translatedText);
 
-        translationRepository.save(newTranslation);
+        try {
+            translationRepository.saveAndFlush(newTranslation);
+        } catch (DataIntegrityViolationException exception) {
+            logger.warn("{} [{}] Conflicto concurrente al guardar traducción para {} ID {} campo '{}' idioma '{}'. Se consultará la traducción existente.",
+                    AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, entityId, fieldName, normalizedLanguage);
+
+            return translationRepository.findByEntityTypeAndEntityIdAndFieldNameAndLanguage(
+                            entityType, entityId, fieldName, normalizedLanguage)
+                    .map(Translations::getTranslatedText)
+                    .orElseThrow(() -> exception);
+        }
 
         logger.debug("{} [{}] Traducción guardada para {} ID: {} usando proveedor {}",
                 AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS,
@@ -93,23 +118,24 @@ public class TranslationsService {
 
     @Transactional
     public TranslationPageResponseDTO getTranslations(
-                String entityType,
-                String language,
-                String fieldName,
-                Long entityId,
-                int page,
-                int size) {
+            String entityType,
+            String language,
+            String fieldName,
+            Long entityId,
+            int page,
+            int size) {
         int safePage = Math.max(0, page);
         int safeSize = size <= 0 ? 20 : Math.min(size, 100);
+        String normalizedLanguage = normalizeNullableLanguage(language);
 
         logger.info("{} [{}] Obteniendo traducciones con filtros entityType='{}', language='{}', fieldName='{}', entityId='{}'",
-                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, language, fieldName, entityId);
+                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, entityType, normalizedLanguage, fieldName, entityId);
 
         logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_INFO,
-                "Obteniendo traducciones con filtros entityType='" + entityType + "', language='" + language
+                "Obteniendo traducciones con filtros entityType='" + entityType + "', language='" + normalizedLanguage
                         + "', fieldName='" + fieldName + "', entityId='" + entityId + "'", null));
 
-        Specification<Translations> specification = buildTranslationSpecification(entityType, language, fieldName, entityId);
+        Specification<Translations> specification = buildTranslationSpecification(entityType, normalizedLanguage, fieldName, entityId);
         Pageable pageable = PageRequest.of(safePage, safeSize);
 
         Page<TranslationResponseDTO> translationsPage = translationRepository.findAll(specification, pageable)
@@ -127,45 +153,45 @@ public class TranslationsService {
     }
 
     private Specification<Translations> buildTranslationSpecification(
-    String entityType,
-    String language,
-    String fieldName,
-    Long entityId) {
+            String entityType,
+            String language,
+            String fieldName,
+            Long entityId) {
         return (root, query, criteriaBuilder) -> {
-                var predicate = criteriaBuilder.conjunction();
+            var predicate = criteriaBuilder.conjunction();
 
-                if (entityType != null && !entityType.trim().isEmpty()) {
+            if (entityType != null && !entityType.trim().isEmpty()) {
                 predicate = criteriaBuilder.and(predicate,
                         criteriaBuilder.equal(root.get("entityType"), entityType.trim()));
-                }
+            }
 
-                if (language != null && !language.trim().isEmpty()) {
+            if (language != null && !language.trim().isEmpty()) {
                 predicate = criteriaBuilder.and(predicate,
                         criteriaBuilder.equal(root.get("language"), language.trim()));
-                }
+            }
 
-                if (fieldName != null && !fieldName.trim().isEmpty()) {
+            if (fieldName != null && !fieldName.trim().isEmpty()) {
                 predicate = criteriaBuilder.and(predicate,
                         criteriaBuilder.equal(root.get("fieldName"), fieldName.trim()));
-                }
+            }
 
-                if (entityId != null) {
+            if (entityId != null) {
                 predicate = criteriaBuilder.and(predicate,
                         criteriaBuilder.equal(root.get("entityId"), entityId));
-                }
+            }
 
-                return predicate;
+            return predicate;
         };
     }
 
     @Transactional
     public TranslationResponseDTO updateTranslation(Long id, UpdateTranslationRequestDTO request) {
         if (request == null) {
-                throw new BadRequestException("La solicitud de actualización de traducción es obligatoria");
+            throw new BadRequestException("La solicitud de actualización de traducción es obligatoria");
         }
 
         if (request.getTranslatedText() == null || request.getTranslatedText().trim().isEmpty()) {
-                throw new BadRequestException("El texto traducido es obligatorio");
+            throw new BadRequestException("El texto traducido es obligatorio");
         }
 
         logger.info("{} [{}] Actualizando traducción con ID: {}",
@@ -176,11 +202,11 @@ public class TranslationsService {
 
         Translations translation = translationRepository.findById(id)
                 .orElseThrow(() -> {
-                        logger.warn("{} [{}] Traducción con ID {} no encontrada",
-                                AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, id);
-                        logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_WARN,
-                                "Traducción con ID " + id + " no encontrada", null));
-                        return new ResourceNotFoundException("Traducción no encontrada con ID: " + id);
+                    logger.warn("{} [{}] Traducción con ID {} no encontrada",
+                            AppConstants.PREFIX_TRANSLATION, AppConstants.LOG_TRANSLATIONS, id);
+                    logRepository.save(new LogEntity(AppConstants.LOG_TRANSLATIONS, AppConstants.LOG_WARN,
+                            "Traducción con ID " + id + " no encontrada", null));
+                    return new ResourceNotFoundException("Traducción no encontrada con ID: " + id);
                 });
 
         translation.setTranslatedText(request.getTranslatedText().trim());
@@ -194,5 +220,21 @@ public class TranslationsService {
                 "Traducción con ID " + id + " actualizada correctamente", null));
 
         return TranslationResponseDTO.fromEntity(updatedTranslation);
+    }
+
+    private String normalizeLanguage(String language) {
+        if (language == null || language.trim().isEmpty()) {
+            return AppConstants.DEFAULT_LANGUAGE;
+        }
+
+        return language.trim().toLowerCase();
+    }
+
+    private String normalizeNullableLanguage(String language) {
+        if (language == null || language.trim().isEmpty()) {
+            return null;
+        }
+
+        return language.trim().toLowerCase();
     }
 }
