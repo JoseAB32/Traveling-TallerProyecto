@@ -185,6 +185,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (!this.el.nativeElement.contains(event.target)) {
       this.showSuggestions = false;
       this.isListaOpen = false;
+      this.isMenuOpen = false;
     }
   }
 
