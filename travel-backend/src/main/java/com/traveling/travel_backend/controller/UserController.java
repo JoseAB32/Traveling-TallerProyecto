@@ -4,6 +4,7 @@ import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.dto.ChangePasswordRequestDTO;
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
+import com.traveling.travel_backend.dto.UpdateProfileRequestDTO;
 import com.traveling.travel_backend.dto.UserResponseDTO;
 import com.traveling.travel_backend.model.User;
 import com.traveling.travel_backend.service.UserService;
@@ -57,5 +58,10 @@ public class UserController {
     public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequestDTO request, Authentication authentication) {
         userService.changePassword(authentication, request.getCurrentPassword(), request.getNewPassword());
         return ResponseEntity.ok().build();
+    }
+    @Operation(summary = "Update profile", description = "Updates personal data for the authenticated user")
+    @PatchMapping(AppConstants.USERS_ENDPOINT + "/profile")
+    public ResponseEntity<UserResponseDTO> updateProfile(@RequestBody UpdateProfileRequestDTO request,Authentication authentication) {
+        return ResponseEntity.ok(userService.updateProfile(authentication, request));
     }
 }

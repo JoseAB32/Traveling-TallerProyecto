@@ -20,11 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import org.springframework.security.core.Authentication;
 
 @Service
 public class ReviewService {
@@ -35,20 +35,23 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final PlaceRepository placeRepository;
     private final LogRepository logRepository;
+    private final TranslationsService translationsService;
 
     public ReviewService(
             ReviewRepository reviewRepository,
             UserRepository userRepository,
             PlaceRepository placeRepository,
-            LogRepository logRepository) {
+            LogRepository logRepository,
+            TranslationsService translationsService) {
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
         this.placeRepository = placeRepository;
         this.logRepository = logRepository;
+        this.translationsService = translationsService;
     }
 
     @Transactional
-    public Optional<ReviewResponseDTO> getBestReview(Long placeId) {
+    public Optional<ReviewResponseDTO> getBestReview(Long placeId, String language) {
         String logMessage = "Solicitando la mejor resena para el lugar (ID): " + placeId + " - GET /api/reviews/mejor-resenia";
 
         logger.info("[{}] {}", AppConstants.LOG_REVIEWS, logMessage);
@@ -56,7 +59,7 @@ public class ReviewService {
 
         Optional<ReviewResponseDTO> result = reviewRepository
                 .findFirstByPlaceIdAndStateTrueAndParentIsNullOrderByScoreDesc(placeId)
-                .map(ReviewResponseDTO::fromEntity);
+                .map(review -> buildReviewResponseDTO(review, language));
 
         logger.debug("[{}] Mejor resena para lugar ID {}: {}", AppConstants.LOG_REVIEWS, placeId, result.isPresent() ? "encontrada" : "no encontrada");
 
@@ -64,7 +67,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewPageResponseDTO getPlaceReviews(Long placeId, int page, int size) {
+    public ReviewPageResponseDTO getPlaceReviews(Long placeId, int page, int size, String language) {
         int safePage = Math.max(0, page);
         int safeSize = size <= 0 ? 10 : Math.min(size, 50);
 
@@ -77,7 +80,7 @@ public class ReviewService {
         Pageable pageable = PageRequest.of(safePage, safeSize);
         Page<ReviewResponseDTO> reviewsPage = reviewRepository
                 .findByPlaceIdAndStateTrueAndParentIsNullOrderByCreatedAtDesc(placeId, pageable)
-                .map(ReviewResponseDTO::fromEntity);
+                .map(review -> buildReviewResponseDTO(review, language));
 
         ReviewPageResponseDTO response = new ReviewPageResponseDTO();
         response.setContent(reviewsPage.getContent());
@@ -88,16 +91,13 @@ public class ReviewService {
         response.setHasNext(reviewsPage.hasNext());
 
         logger.debug("[{}] Reseñas paginadas para lugar ID {}: {} elementos en página {}",
-                AppConstants.LOG_REVIEWS,
-                placeId,
-                reviewsPage.getNumberOfElements(),
-                reviewsPage.getNumber());
+                AppConstants.LOG_REVIEWS, placeId, reviewsPage.getNumberOfElements(), reviewsPage.getNumber());
 
         return response;
     }
 
     @Transactional
-    public ReviewPageResponseDTO getReviewReplies(Long reviewId, int page, int size) {
+    public ReviewPageResponseDTO getReviewReplies(Long reviewId, int page, int size, String language) {
         int safePage = Math.max(0, page);
         int safeSize = size <= 0 ? 2 : size;
 
@@ -114,7 +114,7 @@ public class ReviewService {
         Pageable pageable = PageRequest.of(safePage, safeSize);
         Page<ReviewResponseDTO> repliesPage = reviewRepository
                 .findByParentIdAndStateTrueOrderByCreatedAtDesc(reviewId, pageable)
-                .map(ReviewResponseDTO::fromEntity);
+                .map(review -> buildReviewResponseDTO(review, language));
 
         ReviewPageResponseDTO response = new ReviewPageResponseDTO();
         response.setContent(repliesPage.getContent());
@@ -167,6 +167,30 @@ public class ReviewService {
         return ReviewResponseDTO.fromEntity(savedReview);
     }
 
+    private ReviewResponseDTO buildReviewResponseDTO(Review review, String language) {
+        ReviewResponseDTO reviewResponseDTO = ReviewResponseDTO.fromEntity(review);
+
+        if (isSourceLanguage(language) || review.getComment() == null || review.getComment().trim().isEmpty()) {
+            return reviewResponseDTO;
+        }
+
+        String translatedComment = translationsService.getTranslation(
+                AppConstants.ENTITY_TYPE_REVIEW,
+                review.getId(),
+                AppConstants.FIELD_COMMENT,
+                language,
+                review.getComment()
+        );
+
+        reviewResponseDTO.setComment(translatedComment);
+
+        return reviewResponseDTO;
+    }
+
+    private boolean isSourceLanguage(String language) {
+        return language == null || AppConstants.DEFAULT_LANGUAGE.equalsIgnoreCase(language);
+    }
+
     private void validateCreateReviewRequest(CreateReviewRequestDTO request) {
         if (request == null) {
             throw new BadRequestException("La solicitud de reseña es obligatoria");
@@ -180,13 +204,9 @@ public class ReviewService {
             throw new BadRequestException("El comentario es obligatorio");
         }
 
-        // if (request.getScore() == null || request.getScore() < 1 || request.getScore() > 5) {
-        //     throw new BadRequestException("El puntaje debe estar entre 1 y 5");
-        // }
-
         if (request.getParentId() == null && (request.getScore() == null || request.getScore() < 1 || request.getScore() > 5)) {
             throw new BadRequestException("El puntaje debe estar entre 1 y 5");
-        }   
+        }
 
         if (request.getParentId() != null && request.getScore() != null && (request.getScore() < 1 || request.getScore() > 5)) {
             throw new BadRequestException("Si se envía puntaje en respuesta, debe estar entre 1 y 5");

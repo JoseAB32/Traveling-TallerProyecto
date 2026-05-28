@@ -22,39 +22,83 @@ public class PlaceController {
         this.placeService = placeService;
     }
 
-    @Operation(summary = "Top 5 rated places", description = "Returns the top 5 rated places in descending order", operationId = "getAllOrderList")
+    @Operation(
+            summary = "Top 5 rated places",
+            description = "Returns the top 5 rated places in descending order",
+            operationId = "getAllOrderList"
+    )
     @GetMapping(AppConstants.TOP_RATED)
-    public ResponseEntity<List<PlaceResponseDTO>> getTopRated() {
-        return ResponseEntity.ok(placeService.getTopRated());
+    public ResponseEntity<List<PlaceResponseDTO>> getTopRated(
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(placeService.getTopRated(language));
     }
 
-    @Operation(summary = "Search a place", description = "Returns places matching name, address or city", operationId = "search")
+    @Operation(
+            summary = "Search a place",
+            description = "Returns places matching name, address or city with lightweight translation",
+            operationId = "search"
+    )
     @GetMapping(AppConstants.SEARCH)
-    public ResponseEntity<List<PlaceResponseDTO>> search(@RequestParam String q) {
-        return ResponseEntity.ok(placeService.search(q));
+    public ResponseEntity<List<PlaceResponseDTO>> search(
+            @RequestParam String q,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(placeService.search(q, language));
     }
 
-    @Operation(summary = "Get all places", description = "Returns a complete list of places stored in the database", operationId = "getAllPlaces")
+    @Operation(
+            summary = "Get places search cache",
+            description = "Returns a lightweight raw list of active places for frontend autocomplete",
+            operationId = "getSearchCache"
+    )
+    @GetMapping(AppConstants.SEARCH + "/cache")
+    public ResponseEntity<List<PlaceResponseDTO>> getSearchCache() {
+        return ResponseEntity.ok(placeService.getSearchCache());
+    }
+
+    @Operation(
+            summary = "Get all places",
+            description = "Returns a complete list of places stored in the database",
+            operationId = "getAllPlaces"
+    )
     @GetMapping
-    public ResponseEntity<List<PlaceResponseDTO>> getAllPlaces() {
-        return ResponseEntity.ok(placeService.getAllPlaces());
+    public ResponseEntity<List<PlaceResponseDTO>> getAllPlaces(
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(placeService.getAllPlaces(language));
     }
 
-    @Operation(summary = "Get place by Id", description = "Returns a place by its ID", operationId = "getPlaceById")
+    @Operation(
+            summary = "Get place by Id",
+            description = "Returns a place by its ID",
+            operationId = "getPlaceById"
+    )
     @GetMapping("/{id}")
-    public ResponseEntity<PlaceResponseDTO> getPlaceById(@PathVariable Long id) {
-        return ResponseEntity.ok(placeService.getPlaceById(id));
+    public ResponseEntity<PlaceResponseDTO> getPlaceById(
+            @PathVariable Long id,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(placeService.getPlaceById(id, language));
     }
 
-    @Operation(summary = "Get all places by department", description = "Returns all active places for a given department", operationId = "getPlacesByDepartment")
+    @Operation(
+            summary = "Get all places by department",
+            description = "Returns all active places for a given department",
+            operationId = "getPlacesByDepartment"
+    )
     @GetMapping(AppConstants.PLACES_DEPARTMENT)
-    public ResponseEntity<List<PlaceResponseDTO>> getPlacesByDepartment(@PathVariable Long cityId) {
-        return ResponseEntity.ok(placeService.getPlacesByDepartment(cityId));
+    public ResponseEntity<List<PlaceResponseDTO>> getPlacesByDepartment(
+            @PathVariable Long cityId,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(placeService.getPlacesByDepartment(cityId, language));
     }
 
-    @Operation(summary = "Get top rated places by department", description = "Returns top 3 rated places for a given department", operationId = "getPlacesTopByDepartment")
+    @Operation(
+            summary = "Get top rated places by department",
+            description = "Returns top 3 rated places for a given department",
+            operationId = "getPlacesTopByDepartment"
+    )
     @GetMapping(AppConstants.PLACES_DEPARTMENT_TOP)
-    public ResponseEntity<List<PlaceResponseDTO>> getTopPlacesByDepartment(@PathVariable Long cityId) {
-        return ResponseEntity.ok(placeService.getTopPlacesByDepartment(cityId));
+    public ResponseEntity<List<PlaceResponseDTO>> getTopPlacesByDepartment(
+            @PathVariable Long cityId,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(placeService.getTopPlacesByDepartment(cityId, language));
     }
 }

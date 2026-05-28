@@ -31,8 +31,10 @@ public class FavoriteController {
 
     @Operation(summary = "Get a user's favorite list", description = "Returns all active favorite places for a specific user", operationId = "getUserFavorites")
     @GetMapping("/user")
-    public ResponseEntity<List<FavoriteResponseDTO>> getUserFavorites(Authentication authentication) {
-        List<FavoriteResponseDTO> favorites = favoriteService.getUserFavorites(authentication);
+    public ResponseEntity<List<FavoriteResponseDTO>> getUserFavorites(
+            Authentication authentication,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        List<FavoriteResponseDTO> favorites = favoriteService.getUserFavorites(authentication, language);
         if (favorites.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

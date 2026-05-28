@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                         auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH,"/api/users/profile/password").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/users/profile").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/profile").authenticated()
@@ -80,7 +81,7 @@ public class SecurityConfig {
                 "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
         configuration.setAllowedHeaders(List.of(
-                "Authorization", "Content-Type", "Accept"));
+                "Authorization", "Content-Type", "Accept", "X-Language"));
 
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(false);

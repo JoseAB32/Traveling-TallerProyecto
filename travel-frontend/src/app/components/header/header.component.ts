@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy, ElementRef, HostListener, inject } from '
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Place } from '../../models/place/place';
 import { PlaceService } from '../../services/place/place.service';
 import { FEATURES } from '../../features/features';
-import { FeatureService} from '../../services/features/feature.service'
+import { FeatureService } from '../../services/features/feature.service';
 import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 
 @Component({
@@ -16,121 +16,180 @@ import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit, OnDestroy{
+export class HeaderComponent implements OnInit, OnDestroy {
 
-  idiomaDef: string = "";
-  
+  idiomaDef: string = '';
+
   isAdmin: boolean = false;
   isLogsEnabled: boolean = FEATURES.adminLogsEnabled;
-  
+
   featureService = inject(FeatureService);
 
   isLoggedIn: boolean = false;
-  isMenuOpen: boolean = false; // El menú debe empezar cerrado
+  isMenuOpen: boolean = false;
   isListaOpen: boolean = false;
-  private userSub!: Subscription;
+
+  private userSub?: Subscription;
+  private searchCacheSub?: Subscription;
 
   searchTerm: string = '';
   suggestions: Place[] = [];
-  allPlaces: Place[] = []; 
+  allPlaces: Place[] = [];
   showSuggestions: boolean = false;
 
-  constructor(private authService: AuthService, 
-              private router: Router, 
-              private placeService: PlaceService, 
-              private el: ElementRef,
-              private translocoService: TranslocoService) {
-                this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
-              }
-  
+  // Se mantiene porque tu HTML actual lo usa para spinner/loading.
+  isSearchLoading: boolean = false;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private placeService: PlaceService,
+    private el: ElementRef,
+    private translocoService: TranslocoService
+  ) {
+    this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
+  }
+
   ngOnInit(): void {
     const savedLang = localStorage.getItem('lang') || 'es';
     this.translocoService.setActiveLang(savedLang);
     this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
     this.isAdmin = this.authService.isAdmin();
     this.isListaOpen = false;
-    //Para ver al user actual  
+
     this.userSub = this.authService.currentUser$.subscribe(user => {
-      this.isLoggedIn = !!user; // true si existe usuario, false si es null
-      // Si el usuario se desloguea,  cerrar menú
+      this.isLoggedIn = !!user;
+
+      if (this.isLoggedIn) {
+        this.loadSearchCache();
+      }
+
       if (!this.isLoggedIn) {
         this.isMenuOpen = false;
+        this.suggestions = [];
+        this.allPlaces = [];
+        this.showSuggestions = false;
+        this.isSearchLoading = false;
       }
     });
-
-    this.placeService.getPlaces().subscribe(data => this.allPlaces = data);
   }
 
-  changeLang(lang: string) {
+  private loadSearchCache(): void {
+    if (this.allPlaces.length > 0 || this.isSearchLoading) {
+      return;
+    }
+
+    this.isSearchLoading = true;
+
+    this.searchCacheSub = this.placeService.getSearchCache().subscribe({
+      next: (places) => {
+        this.allPlaces = places;
+        this.isSearchLoading = false;
+      },
+      error: (error) => {
+        console.error('Error cargando cache de búsqueda:', error);
+        this.allPlaces = [];
+        this.isSearchLoading = false;
+      }
+    });
+  }
+
+  changeLang(lang: string): void {
+    const currentLang = localStorage.getItem('lang') || 'es';
+
+    if (currentLang === lang) {
+      return;
+    }
+
     this.translocoService.setActiveLang(lang);
     localStorage.setItem('lang', lang);
     this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
+
+    window.location.reload();
   }
 
-  toggleLista() {
+  toggleLista(): void {
     this.isListaOpen = !this.isListaOpen;
   }
 
-  toggleMenu() {
+  toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login'])
+    this.router.navigate(['/login']);
   }
 
-  ngOnDestroy(): void {
-    // Cancelar la suscripción al destruir el componente para evitar fugas de memoria
-    if (this.userSub) {
-      this.userSub.unsubscribe();
-    }
-  }
+  onSearch(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm = input.value;
 
+    const cleanTerm = this.normalizeSearchText(this.searchTerm);
 
-  // Funciones para el buscador
-
-  onSearch(event: any) {
-    this.searchTerm = event.target.value.toLowerCase();
-    
-    if (this.searchTerm.length < 2) {
+    if (cleanTerm.length < 2) {
       this.suggestions = [];
       this.showSuggestions = false;
       return;
     }
 
-    // Filtrado por Nombre, Dirección o Ciudad (Triple coincidencia)
-    this.suggestions = this.allPlaces.filter(p => 
-      p.name.toLowerCase().includes(this.searchTerm) ||
-      p.address.toLowerCase().includes(this.searchTerm) ||
-      p.city?.name?.toLowerCase().includes(this.searchTerm) || false
-    ).slice(0, 5); // Solo 5 sugerencias para no saturar
+    if (this.allPlaces.length === 0) {
+      this.loadSearchCache();
+      this.suggestions = [];
+      this.showSuggestions = true;
+      return;
+    }
+
+    this.suggestions = this.allPlaces
+      .filter(place => this.matchesPlaceSearch(place, cleanTerm))
+      .slice(0, 5);
 
     this.showSuggestions = true;
-}
+  }
 
-selectSuggestion(place: Place) {
+  private matchesPlaceSearch(place: Place, cleanTerm: string): boolean {
+    const name = this.normalizeSearchText(place.name);
+    const address = this.normalizeSearchText(place.address);
+    const cityName = this.normalizeSearchText(place.city?.name || '');
+
+    return name.includes(cleanTerm)
+      || address.includes(cleanTerm)
+      || cityName.includes(cleanTerm);
+  }
+
+  private normalizeSearchText(value: string | undefined | null): string {
+    return (value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
+  }
+
+  selectSuggestion(place: Place): void {
     this.searchTerm = place.name;
     this.showSuggestions = false;
+    this.isSearchLoading = false;
     this.router.navigate(['/place', place.id], { queryParams: { returnTo: 'search' } });
-}
+  }
 
-goToSearch() {
+  goToSearch(): void {
     if (this.searchTerm.trim()) {
       this.showSuggestions = false;
-      // Navegamos al componente de búsqueda pasando el término por queryParams
-      this.router.navigate(['/SearchPlace'], { queryParams: { q: this.searchTerm } });
+      this.isSearchLoading = false;
+      this.router.navigate(['/SearchPlace'], { queryParams: { q: this.searchTerm.trim() } });
     }
-}
+  }
 
-// Detectar clic fuera del buscador para cerrar sugerencias
-@HostListener('document:click', ['$event'])
-  clickout(event: any) {
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event): void {
     if (!this.el.nativeElement.contains(event.target)) {
       this.showSuggestions = false;
       this.isListaOpen = false;
     }
   }
 
-
+  ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
+    this.searchCacheSub?.unsubscribe();
+  }
 }

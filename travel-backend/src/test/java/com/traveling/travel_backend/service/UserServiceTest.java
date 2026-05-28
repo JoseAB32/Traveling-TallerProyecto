@@ -2,6 +2,7 @@ package com.traveling.travel_backend.service;
 
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
+import com.traveling.travel_backend.dto.UpdateProfileRequestDTO;
 import com.traveling.travel_backend.dto.UserResponseDTO;
 import com.traveling.travel_backend.exception.BadRequestException;
 import com.traveling.travel_backend.exception.ResourceNotFoundException;
@@ -445,6 +446,151 @@ class UserServiceTest {
             } catch (BadRequestException ignored) {}
 
             verify(userRepository, never()).save(any());
+        }
+    }
+    @Nested
+    @DisplayName("updateProfile")
+    class UpdateProfileTests {
+
+        private Authentication authentication;
+
+        @BeforeEach
+        void setUpAuth() {
+            authentication = new UsernamePasswordAuthenticationToken("carlos_viajero", null, List.of());
+        }
+
+        @Test
+        @DisplayName("Debe actualizar userName si es nuevo y no está en uso")
+        void shouldUpdateUserName() {
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setUserName("nuevo_nombre");
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.findByUserNameAndStateTrue("nuevo_nombre")).thenReturn(Optional.empty());
+            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+
+            userService.updateProfile(authentication, request);
+
+            verify(userRepository).save(any(User.class));
+            verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el nuevo userName ya está en uso")
+        void shouldThrowWhenUserNameTaken() {
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setUserName("nombre_ocupado");
+
+            User otherUser = new User();
+            otherUser.setUserName("nombre_ocupado");
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.findByUserNameAndStateTrue("nombre_ocupado")).thenReturn(Optional.of(otherUser));
+
+            assertThatThrownBy(() -> userService.updateProfile(authentication, request))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessageContaining("ya está en uso");
+        }
+
+        @Test
+        @DisplayName("Debe actualizar correo si es nuevo y no está en uso")
+        void shouldUpdateCorreo() {
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setCorreo("nuevo@mail.com");
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.findByCorreo("nuevo@mail.com")).thenReturn(Optional.empty());
+            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+
+            userService.updateProfile(authentication, request);
+
+            verify(userRepository).save(any(User.class));
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el correo ya está en uso")
+        void shouldThrowWhenCorreoTaken() {
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setCorreo("ocupado@mail.com");
+
+            User otherUser = new User();
+            otherUser.setCorreo("ocupado@mail.com");
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.findByCorreo("ocupado@mail.com")).thenReturn(Optional.of(otherUser));
+
+            assertThatThrownBy(() -> userService.updateProfile(authentication, request))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessageContaining("correo");
+        }
+
+        @Test
+        @DisplayName("Debe actualizar birthday si viene en el request")
+        void shouldUpdateBirthday() {
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setBirthday("2000-01-15");
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+
+            userService.updateProfile(authentication, request);
+
+            assertThat(sampleUser.getBirthday()).isEqualTo("2000-01-15");
+        }
+
+        @Test
+        @DisplayName("Debe actualizar ciudad si el cityId existe")
+        void shouldUpdateCity() {
+            City city = new City();
+            city.setId(5L);
+            city.setName("Santa Cruz");
+
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setCityId(5L);
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(cityRepository.findById(5L)).thenReturn(Optional.of(city));
+            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+
+            userService.updateProfile(authentication, request);
+
+            assertThat(sampleUser.getCity()).isEqualTo(city);
+        }
+
+        @Test
+        @DisplayName("Debe lanzar ResourceNotFoundException si la ciudad no existe")
+        void shouldThrowWhenCityNotFound() {
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setCityId(99L);
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(cityRepository.findById(99L)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> userService.updateProfile(authentication, request))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessageContaining("99");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar UnauthorizedException si no hay autenticación")
+        void shouldThrowWhenAuthIsNull() {
+            assertThatThrownBy(() -> userService.updateProfile(null, new UpdateProfileRequestDTO()))
+                    .isInstanceOf(UnauthorizedException.class)
+                    .hasMessage("No autenticado.");
+        }
+
+        @Test
+        @DisplayName("No debe actualizar userName si es el mismo que el actual")
+        void shouldNotUpdateWhenUserNameUnchanged() {
+            UpdateProfileRequestDTO request = new UpdateProfileRequestDTO();
+            request.setUserName("carlos_viajero");
+
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+
+            userService.updateProfile(authentication, request);
+
+            verify(userRepository, never()).findByUserNameAndStateTrue("carlos_viajero");
         }
     }
 }
