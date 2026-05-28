@@ -23,6 +23,7 @@
     "@jsverse/transloco": "^8.3.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

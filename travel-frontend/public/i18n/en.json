@@ -40,7 +40,8 @@
             "buttonIniciarSesion": "LOGIN",
             "noTienesCuenta": "Don't have an account yet?",
             "irRegistro": "Register",
-            "textLinkForgotPassword": "Forgot your password?"
+            "textLinkForgotPassword": "Forgot your password?",
+            "textSessionExpired": "Your session has expired. Please log in again."
         },
         "textoInputs": {
             "nombreUsuario": "Username",

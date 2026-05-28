@@ -132,6 +132,12 @@
                 </h1>
             </div>
 
+            @if (sessionExpiredMessage) {
+                <div class="alert alert-warning">
+                    {{ sessionExpiredMessage }}
+                </div>
+            }
+
             <!-- USERNAME -->
             <div class="input-container">
                 <input type="text" placeholder=" " class="form-input"

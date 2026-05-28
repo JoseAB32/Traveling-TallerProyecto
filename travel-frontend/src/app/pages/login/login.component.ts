@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { CONSTANTS } from '../../utils/constants';
@@ -15,6 +15,8 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  sessionExpiredMessage = '';
+
   credentials = {
     userName: '',
     password: ''
@@ -28,7 +30,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService, 
     private router: Router,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
+    private route: ActivatedRoute
   ) {}
 
   onSubmit(form: NgForm): void {
@@ -65,8 +68,14 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const sessionExpired = this.route.snapshot.queryParamMap.get('sessionExpired');
+
     const savedLang = localStorage.getItem('lang') || 'es';
     this.translocoService.setActiveLang(savedLang);
+
+    if (sessionExpired === 'true') {
+      this.sessionExpiredMessage = this.translocoService.translate('formLoginAndSignin.login.textSessionExpired');
+    }
   }
 
   // ngOnDestroy(): void {

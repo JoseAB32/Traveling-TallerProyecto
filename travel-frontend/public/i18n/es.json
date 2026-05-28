@@ -40,7 +40,8 @@
             "buttonIniciarSesion": "INICIAR SESIÓN",
             "noTienesCuenta": "¿Aún no tienes una cuenta?",
             "irRegistro": "Regístrate",
-            "textLinkForgotPassword": "¿Olvidaste tu contraseña?"
+            "textLinkForgotPassword": "¿Olvidaste tu contraseña?",
+            "textSessionExpired": "Tu sesión expiró. Por favor, vuelve a iniciar sesión."
         },
         "textoInputs": {
             "nombreUsuario": "Nombre de usuario",
