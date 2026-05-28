@@ -97,7 +97,8 @@
         "title": "Panel de Administración",
         "tabs": {
             "logs": "Logs de Sistema",
-            "toggles": "Feature Toggles"
+            "toggles": "Feature Toggles",
+            "translations": "Traducciones"
         },
         "logs": {
             "filters": {
@@ -143,6 +144,43 @@
             "close": "Cerrar",
             "textErrorServer": "Error al guardar el cambio en el servidor.",
             "textErrorFilter": "Todos los campos de filtro son obligatorios para realizar la búsqueda precisa."
+        },
+        "translations": {
+            "title": "Revisión de traducciones",
+            "description": "Gestiona las traducciones generadas automáticamente por el sistema.",
+            "total": "traducciones",
+            "loading": "Cargando traducciones...",
+            "empty": "No se encontraron traducciones con los filtros seleccionados.",
+            "filters": {
+                "entityType": "Entidad",
+                "language": "Idioma",
+                "fieldName": "Campo",
+                "entityId": "ID entidad",
+                "size": "Tamaño",
+                "all": "Todos",
+                "search": "Buscar",
+                "clear": "Limpiar"
+            },
+            "card": {
+                "entityId": "ID de entidad",
+                "translation": "Traducción"
+            },
+            "actions": {
+                "edit": "Editar"
+            },
+            "pagination": {
+                "page": "Página",
+                "of": "de",
+                "previous": "Anterior",
+                "next": "Siguiente"
+            },
+            "edit": {
+                "title": "Editar traducción",
+                "translatedText": "Texto traducido",
+                "cancel": "Cancelar",
+                "save": "Guardar cambios",
+                "emptyText": "El texto traducido no puede estar vacío."
+            }
         }
     },
     "searchPlaces": {

@@ -26,6 +26,7 @@ public class AppConstants {
     public static final String TOP_RATED = "/top-rated";
     public static final String SEARCH = "/search";
     public static final String LOGIN = "/login";
+    public static final String TRANSLATIONS_ENDPOINT = "/translations";
 
     // ==================== CORS ====================
     public static final String CORS_LOCALHOST = "http://localhost:4200";
@@ -88,6 +89,7 @@ public class AppConstants {
     public static final String LOG_FAVORITES = "FAVORITES";
     public static final String LOG_TRIPS = "TRIPS";
     public static final String LOG_FEATURES = "FEATURES";
+    public static final String LOG_TRANSLATIONS = "TRANSLATIONS";
 
     // ==================== LOG LEVELS ====================
     public static final String LOG_INFO = "INFO";
@@ -103,6 +105,7 @@ public class AppConstants {
     public static final String PREFIX_FEATURE = "🚩";
     public static final String PREFIX_FAVORITE = "📂";
     public static final String PREFIX_ADMIN = "🖥️";
+    public static final String PREFIX_TRANSLATION = "🔤";
     
     // ==================== VALIDATION ====================
     public static final int MIN_PASSWORD_LENGTH = 8;
@@ -139,4 +142,25 @@ public class AppConstants {
     public static final String ERROR_CODE_UNAUTHORIZED = "ERR_UNAUTHORIZED";
     public static final String ERROR_CODE_CONFLICT = "ERR_CONFLICT";
 
+
+    // Languages
+    public static final String DEFAULT_LANGUAGE = "es";
+    public static final String HEADER_LANGUAGE = "X-Language";
+
+    // Translation entity types
+    public static final String ENTITY_TYPE_REVIEW = "REVIEW";
+    public static final String ENTITY_TYPE_CITY = "CITY";
+    public static final String ENTITY_TYPE_PLACE = "PLACE";
+
+    // Translation field names
+    public static final String FIELD_COMMENT = "comment";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_DESCRIPTION = "description";
+    public static final String FIELD_ADDRESS = "address";
+    public static final String FIELD_PLACE_TYPE = "placeType";
+
+    // Translation providers
+    public static final String PROVIDER_AZURE = "AZURE";
+    public static final String PROVIDER_GOOGLE = "GOOGLE";
+    public static final String PROVIDER_ORIGINAL = "ORIGINAL";
 }
