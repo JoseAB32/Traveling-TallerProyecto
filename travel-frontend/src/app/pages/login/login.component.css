@@ -308,6 +308,10 @@ input:focus {
   margin-top: 5px;
 }
 
+.alert {
+    width: 80%;
+}
+
 @media (max-width: 550px) {
     .content {
         padding: 0;
