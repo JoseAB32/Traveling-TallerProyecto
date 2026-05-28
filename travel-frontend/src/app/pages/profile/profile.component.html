@@ -177,4 +177,60 @@
   </div>
 </div>
 
+<!-- MODAL EDITAR PERFIL -->
+<div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3 class="modal-title">{{ 'profile.editData' | transloco }}</h3>
+      <button class="modal-close" (click)="closeEditModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-field">
+        <label class="form-label">{{ 'profile.username' | transloco }}</label>
+        <input class="form-input" type="text"
+          [(ngModel)]="editForm.userName"
+          [placeholder]="'profile.usernamePlaceholder' | transloco"/>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">{{ 'profile.email' | transloco }}</label>
+        <input class="form-input" type="email"
+          [(ngModel)]="editForm.correo"
+          [placeholder]="'profile.emailPlaceholder' | transloco"/>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">{{ 'profile.birthday' | transloco }}</label>
+        <input class="form-input" type="date"
+          [(ngModel)]="editForm.birthday"/>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">{{ 'profile.city' | transloco }}</label>
+        <select class="form-input form-select" [(ngModel)]="editForm.cityId">
+          <option [ngValue]="null">{{ 'profile.selectCity' | transloco }}</option>
+          <option *ngFor="let city of cities" [ngValue]="city.id">{{ city.name }}</option>
+        </select>
+      </div>
+
+      <p class="form-error"   *ngIf="editError">{{ editError | transloco }}</p>
+      <p class="form-success" *ngIf="editSuccess">{{ 'profile.editSuccess' | transloco }}</p>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel"  (click)="closeEditModal()">
+        {{ 'profile.cancel' | transloco }}
+      </button>
+      <button class="btn-confirm" (click)="submitEditProfile()" [disabled]="isSavingProfile">
+        {{ isSavingProfile ? ('profile.saving' | transloco) : ('profile.save' | transloco) }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
 <app-footer></app-footer>

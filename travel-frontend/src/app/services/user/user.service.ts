@@ -29,4 +29,8 @@ export class UserService {
     return this.httpClient.patch(`${this.baseURL}/profile/password`, { currentPassword, newPassword }
     );
   }
+
+  updateProfile(data: { userName?: string; correo?: string; birthday?: string; cityId?: number }): Observable<User> {
+    return this.httpClient.patch<User>(`${this.baseURL}/profile`, data);
+  }
 }
