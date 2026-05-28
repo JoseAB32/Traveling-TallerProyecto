@@ -18,20 +18,21 @@ import { ResetSuccessComponent } from './pages/reset-success/reset-success.compo
 import { ModifyItineraryComponent } from './pages/modify-itinerary/modify-itinerary.component';
 import { MyItinerariesComponent } from './pages/my-itineraries/my-itineraries.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { publicRedirectGuard } from './guards/public-redirect.guard';
 
 export const routes: Routes = [
 
 
-  { path: 'sign-up', component: SignUpComponent },
+  { path: 'sign-up', canActivate: [publicRedirectGuard], component: SignUpComponent },
 
   {
     path: 'SearchPlace',
     component: SearchPlacesComponent,
   },
   { path: 'InicioLogueado', canActivate: [authGuard], component: InicioLogueadoComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', canActivate: [publicRedirectGuard], component: LoginComponent },
   { path: 'success-signup', component: SuccessSignupComponent },
-  { path: '', component: LandingComponent },
+  { path: '', canActivate: [publicRedirectGuard], component: LandingComponent },
   { path: 'wishlist', canActivate: [authGuard, featureGuard('showFavorites')], component: WishlistComponent },
   { path: 'modify-itinerario/:id', canActivate: [authGuard], component: ModifyItineraryComponent },
   {

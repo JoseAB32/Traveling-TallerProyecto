@@ -8,6 +8,7 @@ import { authInterceptor } from './interceptors/auth.interceptor';
 import { TranslocoHttpLoader } from './transloco-loader';
 import { provideTransloco } from '@jsverse/transloco';
 import { FeatureService } from '../app/services/features/feature.service';
+import { authErrorInterceptor } from './interceptors/authError.interceptor';
 
 function initFeatures(featureService: FeatureService) {
   return () => featureService.loadFeatures().pipe(
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes), 
-    provideHttpClient(withInterceptors([authInterceptor])), 
+    provideHttpClient(withInterceptors([authInterceptor, authErrorInterceptor])), 
     {
       provide: APP_INITIALIZER,
       useFactory: initFeatures,
