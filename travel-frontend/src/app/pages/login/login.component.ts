@@ -70,12 +70,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     const sessionExpired = this.route.snapshot.queryParamMap.get('sessionExpired');
 
-    if (sessionExpired === 'true') {
-      this.sessionExpiredMessage = 'Tu sesión expiró. Por favor, vuelve a iniciar sesión.';
-    }
-
     const savedLang = localStorage.getItem('lang') || 'es';
     this.translocoService.setActiveLang(savedLang);
+
+    if (sessionExpired === 'true') {
+      this.sessionExpiredMessage = this.translocoService.translate('formLoginAndSignin.login.textSessionExpired');
+    }
   }
 
   // ngOnDestroy(): void {
