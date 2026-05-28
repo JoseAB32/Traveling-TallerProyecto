@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Place } from '../../models/place/place';
 import { of, Observable } from 'rxjs';
 import { CONSTANTS } from '../../utils/constants';
@@ -22,8 +22,12 @@ export class PlaceService {
   }
 
   searchPlaces(term: string): Observable<Place[]> {
-  return this.httpClient.get<Place[]>(`${this.baseUrl}/search?q=${term}`);
-}
+    return this.httpClient.get<Place[]>(`${this.baseUrl}/search?q=${term}`);
+  }
+  
+  getSearchCache(): Observable<Place[]> {
+    return this.httpClient.get<Place[]>(`${this.baseUrl}/search/cache`);
+  }
   // 🔥 DETALLE POR ID
   getPlaceById(id: number): Observable<Place> {
     return this.httpClient.get<Place>(`${this.baseUrl}/${id}`);

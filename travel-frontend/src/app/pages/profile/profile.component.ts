@@ -5,6 +5,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { User } from '../../models/user/user';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserService } from '../../services/user/user.service';
+import { CityService } from '../../services/city/city.service';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -43,7 +44,19 @@ export class ProfileComponent implements OnInit {
     confirmPassword: ''
   };
 
+  showEditModal = false;
+  isSavingProfile = false;
+  editError: string | null = null;
+  editSuccess = false;
+
+  editForm: { userName: string; correo: string; birthday: string; cityId: number | null } = {
+    userName: '', correo: '', birthday: '', cityId: null
+  };
+
+  cities: any[] = [];
+  isLoadingCities = false;
   private userService = inject(UserService);
+  private cityService = inject(CityService);
   private authService = inject(AuthService);
 
   @HostListener('document:click', ['$event'])
@@ -141,9 +154,66 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  openEditProfile(): void {
+    this.menuOpen = false;
+    this.editError = null;
+    this.editSuccess = false;
+    this.editForm = {
+      userName:  this.profile?.userName  || '',
+      correo:    this.profile?.correo    || '',
+      birthday:  this.profile?.birthday  || '',
+      cityId:    this.profile?.city?.id  ?? null
+    };
+    this.loadCities();
+    this.showEditModal = true;
+  }
+
+  closeEditModal(): void {
+    this.showEditModal = false;
+    this.editError = null;
+    this.editSuccess = false;
+  }
+
+  loadCities(): void {
+    this.isLoadingCities = true;
+    this.cityService.getCities().subscribe({
+      next: (data) => { this.cities = data; this.isLoadingCities = false; },
+      error: ()   => { this.isLoadingCities = false; }
+    });
+  }
+
+  submitEditProfile(): void {
+    if (!this.editForm.userName.trim() || !this.editForm.correo.trim()) {
+      this.editError = 'profile.editRequiredFields';
+      return;
+    }
+
+    this.isSavingProfile = true;
+    this.editError = null;
+
+    const payload: any = {
+      userName: this.editForm.userName.trim(),
+      correo:   this.editForm.correo.trim(),
+      birthday: this.editForm.birthday || null,
+      cityId:   this.editForm.cityId   || null
+    };
+
+    this.userService.updateProfile(payload).subscribe({
+      next: (updated) => {
+        this.profile = updated;
+        this.isSavingProfile = false;
+        this.editSuccess = true;
+        setTimeout(() => this.closeEditModal(), 1800);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isSavingProfile = false;
+        this.editError = err.status === 400 ? 'profile.editFieldTaken' : 'profile.editError';
+      }
+    });
+  }
+
   onEditProfile(): void {
-    // TODO: implementar edición de perfil (US pendiente)
-    console.log('Editar perfil — pendiente de implementación');
+    this.openEditProfile();
   }
 
   onChangePhoto(): void {

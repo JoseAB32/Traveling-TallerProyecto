@@ -26,8 +26,10 @@ public class ReviewController {
 
     @Operation(summary = "Get best place review", description = "Returns the best review of a specific place", operationId = "getBestReview")
     @GetMapping("/mejor-resenia")
-    public ResponseEntity<ReviewResponseDTO> getBestReview(@RequestParam Long placeId) {
-        return reviewService.getBestReview(placeId)
+    public ResponseEntity<ReviewResponseDTO> getBestReview(
+            @RequestParam Long placeId,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return reviewService.getBestReview(placeId, language)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
     }
@@ -37,8 +39,9 @@ public class ReviewController {
     public ResponseEntity<ReviewPageResponseDTO> getPlaceReviews(
             @PathVariable Long placeId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(reviewService.getPlaceReviews(placeId, page, size));
+            @RequestParam(defaultValue = "10") int size,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(reviewService.getPlaceReviews(placeId, page, size, language));
     }
 
     @Operation(summary = "Get paginated replies by review", description = "Returns active replies for a review ordered by latest created date", operationId = "getReviewReplies")
@@ -46,8 +49,9 @@ public class ReviewController {
     public ResponseEntity<ReviewPageResponseDTO> getReviewReplies(
             @PathVariable Long reviewId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size) {
-        return ResponseEntity.ok(reviewService.getReviewReplies(reviewId, page, size));
+            @RequestParam(defaultValue = "2") int size,
+            @RequestHeader(value = AppConstants.HEADER_LANGUAGE, defaultValue = AppConstants.DEFAULT_LANGUAGE) String language) {
+        return ResponseEntity.ok(reviewService.getReviewReplies(reviewId, page, size, language));
     }
 
     @Operation(summary = "Create place review", description = "Creates a new review for a place", operationId = "createReview")

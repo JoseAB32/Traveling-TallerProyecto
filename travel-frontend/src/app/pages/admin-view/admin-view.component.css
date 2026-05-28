@@ -17,7 +17,7 @@
 .btn-traveling:hover {
     background-color: #00365d;
     color: #ff9800;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .nav-tabs .nav-link {
@@ -43,6 +43,17 @@
     padding: 15px;
 }
 
+.table td,
+.table th {
+    word-break: normal;
+    overflow-wrap: anywhere;
+}
+
+.logs-message-cell {
+    width: 50%;
+    line-height: 1.5;
+}
+
 .form-switch .form-check-input {
     width: 3.5rem;
     height: 1.75rem;
@@ -60,4 +71,232 @@
 
 .modal-content {
     border-radius: 20px;
+}
+
+.admin-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.admin-tabs .nav-item {
+    flex: 1 1 220px;
+}
+
+.admin-tabs .nav-link {
+    width: 100%;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 48px;
+}
+
+.translation-card {
+    border-radius: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.translation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12) !important;
+}
+
+.translation-card .badge {
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.78rem;
+}
+
+.translation-edit-button {
+    white-space: nowrap;
+    min-width: 84px;
+}
+
+.translated-text-box {
+    background: #f8f9fa;
+    border: 1px solid #e3e7eb;
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    min-height: 88px;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+}
+
+.translation-textarea {
+    resize: vertical;
+    min-height: 180px;
+    border-radius: 14px;
+}
+
+.modal-backdrop-custom {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pagination .page-link {
+    color: #004a80;
+    min-width: 44px;
+    text-align: center;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #004a80;
+    border-color: #004a80;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.pagination .page-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.logs-table-wrapper {
+    overflow: visible;
+}
+
+@media (max-width: 767.98px) {
+    main.container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .admin-tabs {
+        flex-direction: column;
+    }
+
+    .admin-tabs .nav-item {
+        flex: 1 1 auto;
+    }
+
+    .admin-tabs .nav-link {
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .translation-card .card-body {
+        padding: 1rem;
+    }
+
+    .translation-card .badge {
+        font-size: 0.72rem;
+        padding: 0.5rem 0.6rem;
+    }
+
+    .translation-edit-button {
+        width: 100%;
+    }
+
+    .translated-text-box {
+        min-height: auto;
+        padding: 0.9rem;
+    }
+
+    .pagination-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .modal-dialog {
+        margin: 1rem;
+    }
+
+    .btn:not(.page-link):not(.btn-close) {
+        width: 100%;
+    }
+
+    .logs-table-wrapper {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent;
+    }
+
+    table.logs-table,
+    table.logs-table thead,
+    table.logs-table tbody,
+    table.logs-table th,
+    table.logs-table td,
+    table.logs-table tr {
+        display: block;
+        width: 100%;
+    }
+
+    table.logs-table {
+        background: transparent !important;
+    }
+
+    table.logs-table thead {
+        display: none;
+    }
+
+    table.logs-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    table.logs-table tr {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 16px;
+        padding: 0.85rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    table.logs-table td {
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+        display: grid;
+        grid-template-columns: 95px 1fr;
+        gap: 0.75rem;
+        align-items: start;
+        padding: 0.65rem 0;
+        text-align: left;
+        white-space: normal !important;
+    }
+
+    table.logs-table td:last-child {
+        border-bottom: none;
+    }
+
+    table.logs-table td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #004a80;
+        font-size: 0.85rem;
+    }
+
+    table.logs-table td[data-label="Message"],
+    table.logs-table td[data-label="Mensaje"] {
+        grid-template-columns: 1fr;
+    }
+
+    table.logs-table td[data-label="Message"]::before,
+    table.logs-table td[data-label="Mensaje"]::before {
+        margin-bottom: 0.25rem;
+    }
+
+    .logs-message-cell {
+        width: 100%;
+    }
 }

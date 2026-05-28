@@ -5,6 +5,7 @@ import { ProfileComponent } from './profile.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { UserService } from '../../services/user/user.service';
+import { CityService } from '../../services/city/city.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -43,9 +44,11 @@ describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let userServiceMock: jest.Mocked<Pick<UserService, 'getProfile'>>;
+  let cityServiceMock: jest.Mocked<Pick<CityService, 'getCities'>>;
 
   beforeEach(async () => {
     userServiceMock = { getProfile: jest.fn() };
+    cityServiceMock = { getCities: jest.fn() };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -54,6 +57,7 @@ describe('ProfileComponent', () => {
       ],
       providers: [
         { provide: UserService, useValue: userServiceMock },
+        { provide: CityService, useValue: cityServiceMock },
         { provide: AuthService, useValue: {} }
       ]
     })
@@ -193,6 +197,7 @@ describe('ProfileComponent', () => {
   describe('handlers pendientes', () => {
     beforeEach(() => {
       userServiceMock.getProfile.mockReturnValue(of(mockProfile));
+      cityServiceMock.getCities.mockReturnValue(of([]));
       createComponent();
       fixture.detectChanges();
     });
@@ -319,6 +324,123 @@ describe('ProfileComponent', () => {
       component.submitChangePassword();
 
       expect(component.passwordError).toBe('profile.passwordError');
+    });
+  });
+
+  describe('openEditProfile y submitEditProfile', () => {
+    const mockCities = [
+      { id: 1, name: 'La Paz',       state: true },
+      { id: 2, name: 'Cochabamba',   state: true },
+      { id: 3, name: 'Santa Cruz',   state: true }
+    ];
+
+    beforeEach(() => {
+      userServiceMock.getProfile.mockReturnValue(of(mockProfile));
+      cityServiceMock.getCities.mockReturnValue(of(mockCities));
+      createComponent();
+      fixture.detectChanges();
+    });
+
+    it('debe abrir el modal de edición', () => {
+      component.openEditProfile();
+      expect(component.showEditModal).toBe(true);
+    });
+
+    it('debe pre-rellenar el form con los datos actuales del perfil', () => {
+      component.openEditProfile();
+      expect(component.editForm.userName).toBe('Ana Rojas');
+      expect(component.editForm.correo).toBe('ana@example.com');
+      expect(component.editForm.birthday).toBe('1995-04-12');
+      expect(component.editForm.cityId).toBe(2);
+    });
+
+    it('debe cargar la lista de ciudades al abrir', () => {
+      component.openEditProfile();
+      expect(cityServiceMock.getCities).toHaveBeenCalledTimes(1);
+      expect(component.cities).toEqual(mockCities);
+    });
+
+    it('debe cerrar el modal y limpiar estados', () => {
+      component.openEditProfile();
+      component.closeEditModal();
+      expect(component.showEditModal).toBe(false);
+      expect(component.editError).toBeNull();
+      expect(component.editSuccess).toBe(false);
+    });
+
+    it('debe mostrar error si userName está vacío', () => {
+      component.openEditProfile();
+      component.editForm.userName = '';
+      component.submitEditProfile();
+      expect(component.editError).toBe('profile.editRequiredFields');
+    });
+
+    it('debe mostrar error si correo está vacío', () => {
+      component.openEditProfile();
+      component.editForm.correo = '';
+      component.submitEditProfile();
+      expect(component.editError).toBe('profile.editRequiredFields');
+    });
+
+    it('debe llamar a updateProfile con los datos del form', () => {
+      const updatedUser = { ...mockProfile, userName: 'nuevo_nombre' } as User;
+      const updateMock = jest.fn().mockReturnValue(of(updatedUser));
+      (userServiceMock as any).updateProfile = updateMock;
+
+      component.openEditProfile();
+      component.editForm.userName = 'nuevo_nombre';
+      component.submitEditProfile();
+
+      expect(updateMock).toHaveBeenCalledWith({
+        userName: 'nuevo_nombre',
+        correo:   'ana@example.com',
+        birthday: '1995-04-12',
+        cityId:   2
+      });
+    });
+
+    it('debe actualizar el perfil y mostrar éxito', () => {
+      const updatedUser = { ...mockProfile, userName: 'nuevo_nombre' } as User;
+      (userServiceMock as any).updateProfile = jest.fn().mockReturnValue(of(updatedUser));
+
+      component.openEditProfile();
+      component.submitEditProfile();
+
+      expect(component.editSuccess).toBe(true);
+      expect(component.isSavingProfile).toBe(false);
+      expect(component.profile?.userName).toBe('nuevo_nombre');
+    });
+
+    it('debe mostrar error 400 si el campo ya está en uso', () => {
+      (userServiceMock as any).updateProfile = jest.fn().mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 400 }))
+      );
+
+      component.openEditProfile();
+      component.submitEditProfile();
+
+      expect(component.editError).toBe('profile.editFieldTaken');
+      expect(component.isSavingProfile).toBe(false);
+    });
+
+    it('debe mostrar error genérico si falla con 500', () => {
+      (userServiceMock as any).updateProfile = jest.fn().mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 500 }))
+      );
+
+      component.openEditProfile();
+      component.submitEditProfile();
+
+      expect(component.editError).toBe('profile.editError');
+    });
+
+    it('debe manejar error al cargar ciudades sin explotar', () => {
+      cityServiceMock.getCities.mockReturnValue(
+        throwError(() => new Error('Network error'))
+      );
+
+      expect(() => component.loadCities()).not.toThrow();
+      expect(component.isLoadingCities).toBe(false);
     });
   });
 });
