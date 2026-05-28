@@ -97,7 +97,8 @@
         "title": "Administration Panel",
         "tabs": {
             "logs": "System Logs",
-            "toggles": "Feature Toggles"
+            "toggles": "Feature Toggles",
+            "translations": "Translations"
         },
         "logs": {
             "filters": {
@@ -141,8 +142,45 @@
         "modal": {
             "title": "Action required",
             "close": "Close",
-            "textError": "Error saving the change on the server.",
+            "textErrorServer": "Error saving the change on the server.",
             "textErrorFilter": "All filter fields are required to perform an accurate search."
+        },
+        "translations": {
+            "title": "Translation review",
+            "description": "Manage translations generated automatically by the system.",
+            "total": "translations",
+            "loading": "Loading translations...",
+            "empty": "No translations found with the selected filters.",
+            "filters": {
+                "entityType": "Entity",
+                "language": "Language",
+                "fieldName": "Field",
+                "entityId": "Entity ID",
+                "size": "Size",
+                "all": "All",
+                "search": "Search",
+                "clear": "Clear"
+            },
+            "card": {
+                "entityId": "Entity ID",
+                "translation": "Translation"
+            },
+            "actions": {
+                "edit": "Edit"
+            },
+            "pagination": {
+                "page": "Page",
+                "of": "of",
+                "previous": "Previous",
+                "next": "Next"
+            },
+            "edit": {
+                "title": "Edit translation",
+                "translatedText": "Translated text",
+                "cancel": "Cancel",
+                "save": "Save changes",
+                "emptyText": "Translated text cannot be empty."
+            }
         }
     },
     "searchPlaces": {

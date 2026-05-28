@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,6 +54,9 @@ class ReviewServiceTest {
     @Mock
     private LogRepository logRepository;
 
+    @Mock
+    private TranslationsService translationsService;
+
     @InjectMocks
     private ReviewService reviewService;
 
@@ -60,7 +64,7 @@ class ReviewServiceTest {
     private Authentication authentication;
 
     @Test
-    @DisplayName("Debe devolver reseñas paginadas con metadatos correctos")
+    @DisplayName("Debe devolver reseñas paginadas con metadatos correctos en español")
     void getPlaceReviewsReturnsPagedResponse() {
         Review review = new Review();
         review.setId(10L);
@@ -84,18 +88,61 @@ class ReviewServiceTest {
                 .thenReturn(page);
         when(logRepository.save(any(LogEntity.class))).thenReturn(null);
 
-        ReviewPageResponseDTO response = reviewService.getPlaceReviews(2L, 0, 10);
+        ReviewPageResponseDTO response = reviewService.getPlaceReviews(2L, 0, 10, "es");
 
         assertEquals(1, response.getContent().size());
+        assertEquals("Excelente lugar", response.getContent().get(0).getComment());
         assertEquals(0, response.getPage());
         assertEquals(10, response.getSize());
         assertEquals(1, response.getTotalElements());
         assertEquals(1, response.getTotalPages());
         assertFalse(response.isHasNext());
+
+        verify(translationsService, never()).getTranslation(any(), any(), any(), any(), any());
     }
 
     @Test
-    @DisplayName("Debe devolver respuestas paginadas por reseña padre")
+    @DisplayName("Debe devolver reseñas paginadas traducidas cuando el idioma no es español")
+    void getPlaceReviewsReturnsTranslatedPagedResponse() {
+        Review review = new Review();
+        review.setId(10L);
+        review.setComment("Excelente lugar");
+        review.setScore(5);
+        review.setState(true);
+        review.setCreatedAt(OffsetDateTime.now());
+
+        User user = new User();
+        user.setId(7L);
+        user.setUserName("peter");
+        review.setUser(user);
+
+        Place place = new Place();
+        place.setId(2L);
+        review.setPlace(place);
+
+        Page<Review> page = new PageImpl<>(List.of(review), PageRequest.of(0, 10), 1);
+
+        when(reviewRepository.findByPlaceIdAndStateTrueAndParentIsNullOrderByCreatedAtDesc(2L, PageRequest.of(0, 10)))
+                .thenReturn(page);
+        when(logRepository.save(any(LogEntity.class))).thenReturn(null);
+        when(translationsService.getTranslation("REVIEW", 10L, "comment", "en", "Excelente lugar"))
+                .thenReturn("Excellent place");
+
+        ReviewPageResponseDTO response = reviewService.getPlaceReviews(2L, 0, 10, "en");
+
+        assertEquals(1, response.getContent().size());
+        assertEquals("Excellent place", response.getContent().get(0).getComment());
+        assertEquals(0, response.getPage());
+        assertEquals(10, response.getSize());
+        assertEquals(1, response.getTotalElements());
+        assertEquals(1, response.getTotalPages());
+        assertFalse(response.isHasNext());
+
+        verify(translationsService).getTranslation("REVIEW", 10L, "comment", "en", "Excelente lugar");
+    }
+
+    @Test
+    @DisplayName("Debe devolver respuestas paginadas por reseña padre en español")
     void getReviewRepliesReturnsPagedResponse() {
         Review reply = new Review();
         reply.setId(30L);
@@ -120,14 +167,58 @@ class ReviewServiceTest {
                 .thenReturn(page);
         when(logRepository.save(any(LogEntity.class))).thenReturn(null);
 
-        ReviewPageResponseDTO response = reviewService.getReviewReplies(10L, 0, 2);
+        ReviewPageResponseDTO response = reviewService.getReviewReplies(10L, 0, 2, "es");
 
         assertEquals(1, response.getContent().size());
+        assertEquals("Respuesta", response.getContent().get(0).getComment());
         assertEquals(0, response.getPage());
         assertEquals(2, response.getSize());
         assertEquals(3, response.getTotalElements());
         assertEquals(2, response.getTotalPages());
         assertTrue(response.isHasNext());
+
+        verify(translationsService, never()).getTranslation(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    @DisplayName("Debe devolver respuestas paginadas traducidas cuando el idioma no es español")
+    void getReviewRepliesReturnsTranslatedPagedResponse() {
+        Review reply = new Review();
+        reply.setId(30L);
+        reply.setComment("Respuesta");
+        reply.setScore(null);
+        reply.setState(true);
+        reply.setCreatedAt(OffsetDateTime.now());
+
+        User user = new User();
+        user.setId(9L);
+        user.setUserName("ana");
+        reply.setUser(user);
+
+        Place place = new Place();
+        place.setId(2L);
+        reply.setPlace(place);
+
+        Page<Review> page = new PageImpl<>(List.of(reply), PageRequest.of(0, 2), 3);
+
+        when(reviewRepository.existsById(10L)).thenReturn(true);
+        when(reviewRepository.findByParentIdAndStateTrueOrderByCreatedAtDesc(10L, PageRequest.of(0, 2)))
+                .thenReturn(page);
+        when(logRepository.save(any(LogEntity.class))).thenReturn(null);
+        when(translationsService.getTranslation("REVIEW", 30L, "comment", "en", "Respuesta"))
+                .thenReturn("Reply");
+
+        ReviewPageResponseDTO response = reviewService.getReviewReplies(10L, 0, 2, "en");
+
+        assertEquals(1, response.getContent().size());
+        assertEquals("Reply", response.getContent().get(0).getComment());
+        assertEquals(0, response.getPage());
+        assertEquals(2, response.getSize());
+        assertEquals(3, response.getTotalElements());
+        assertEquals(2, response.getTotalPages());
+        assertTrue(response.isHasNext());
+
+        verify(translationsService).getTranslation("REVIEW", 30L, "comment", "en", "Respuesta");
     }
 
     @Test
@@ -182,7 +273,7 @@ class ReviewServiceTest {
 
         ArgumentCaptor<Review> captor = ArgumentCaptor.forClass(Review.class);
         verify(reviewRepository, times(1)).save(captor.capture());
-        assertTrue(captor.getValue().getParent() == null);
+        assertNull(captor.getValue().getParent());
     }
 
     @Test
