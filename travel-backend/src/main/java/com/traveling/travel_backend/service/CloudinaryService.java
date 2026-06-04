@@ -21,15 +21,13 @@ public class CloudinaryService {
         Map uploadResult = cloudinary.uploader().upload(
                 file.getBytes(),
                 ObjectUtils.asMap(
-                        "folder",          "traveling/profile_pictures",
-                        "public_id",       "user_" + userId,
-                        "overwrite",       true,
-                        "transformation",  ObjectUtils.asMap(
-                                "width",  400,
-                                "height", 400,
-                                "crop",   "fill",
-                                "gravity","face"
-                        )
+                        "folder",      "traveling/profile_pictures",
+                        "public_id",   "user_" + userId,
+                        "overwrite",   true,
+                        "width",       400,
+                        "height",      400,
+                        "crop",        "fill",
+                        "gravity",     "face"
                 )
         );
         return (String) uploadResult.get("secure_url");

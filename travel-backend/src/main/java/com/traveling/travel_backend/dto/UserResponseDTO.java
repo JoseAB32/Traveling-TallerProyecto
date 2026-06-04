@@ -10,7 +10,6 @@ public class UserResponseDTO {
     private String userName;
     private String birthday;
     private CityResponseDTO city;
-    @JsonProperty("profile_picture_url")
     private String profilePictureUrl;
     private boolean state;
 
