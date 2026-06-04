@@ -20,7 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.core.Authentication;
+import java.io.IOException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,15 +38,17 @@ public class UserService {
     private final LogRepository logRepository;
     private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final CloudinaryService cloudinaryService;
 
     public UserService(UserRepository userRepository, CityRepository cityRepository,
                        LogRepository logRepository, JwtService jwtService,
-                       BCryptPasswordEncoder passwordEncoder) {
+                       BCryptPasswordEncoder passwordEncoder, CloudinaryService cloudinaryService) {
         this.userRepository  = userRepository;
         this.cityRepository  = cityRepository;
         this.logRepository   = logRepository;
         this.jwtService      = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public List<UserResponseDTO> getAllUsers() {
@@ -279,5 +283,49 @@ public class UserService {
                 "Perfil actualizado correctamente para usuario: " + saved.getUserName(), saved.getId()));
 
         return UserResponseDTO.fromEntity(saved);
+        }
+
+    @Transactional
+    public UserResponseDTO updateProfilePicture(Authentication authentication, MultipartFile file) {
+        if (authentication == null || authentication.getName() == null) {
+                throw new UnauthorizedException("No autenticado.");
+        }
+
+        if (file == null || file.isEmpty()) {
+                throw new BadRequestException("No se recibió ninguna imagen.");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+                throw new BadRequestException("El archivo debe ser una imagen.");
+        }
+
+        String userName = authentication.getName();
+
+        logger.info("{} [{}] Actualizando foto de perfil para: {}",
+                AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName);
+        logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
+                "Actualizando foto de perfil para: " + userName, null));
+
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + userName));
+
+        try {
+                String imageUrl = cloudinaryService.uploadProfilePicture(file, user.getId());
+                user.setProfilePictureUrl(imageUrl);
+                User saved = userRepository.save(user);
+
+                logger.info("{} [{}] Foto actualizada para usuario ID: {}",
+                        AppConstants.PREFIX_USER, AppConstants.LOG_USERS, user.getId());
+                logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
+                        "Foto de perfil actualizada para usuario ID: " + user.getId(), user.getId()));
+
+                return UserResponseDTO.fromEntity(saved);
+
+        } catch (IOException e) {
+                logger.error("{} [{}] Error subiendo imagen para usuario {}: {}",
+                        AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName, e.getMessage());
+                throw new RuntimeException("Error al subir la imagen. Intenta de nuevo.");
+        }
         }
 }
