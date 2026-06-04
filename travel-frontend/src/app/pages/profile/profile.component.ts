@@ -267,6 +267,8 @@ export class ProfileComponent implements OnInit {
   }
 
   showPreview(file: File): void {
+    if (!file) return;
+
     if (file.size > 5 * 1024 * 1024) {
       this.photoError = 'profile.photoTooLarge';
       return;
@@ -283,8 +285,9 @@ export class ProfileComponent implements OnInit {
 
   confirmUpload(): void {
     if (!this.selectedFile) return;
+    const file = this.selectedFile;
     this.closePhotoPanel();
-    this.uploadProfilePicture(this.selectedFile);
+    this.uploadProfilePicture(file);
   }
 
   clearPreview(): void {
