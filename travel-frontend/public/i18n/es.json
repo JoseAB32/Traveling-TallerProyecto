@@ -331,6 +331,10 @@
         "editSuccess":        "Perfil actualizado correctamente",
         "photoTooLarge":   "La imagen no puede superar 5MB",
         "photoInvalidType":"El archivo debe ser una imagen",
-        "photoError":      "Error al subir la imagen"
+        "photoError":      "Error al subir la imagen",
+        "uploadPhoto":    "Cambiar foto de perfil",
+        "dragOrClick":    "Arrastra tu foto aquí o haz clic para seleccionar",
+        "photoHint":      "JPG, PNG o WEBP · Máx. 5MB",
+        "uploadConfirm":  "Subir foto"
     }
 }
