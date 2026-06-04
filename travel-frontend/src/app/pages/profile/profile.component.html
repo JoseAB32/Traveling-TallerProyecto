@@ -19,18 +19,30 @@
 
       <div class="id-left">
         <div class="id-avatar-wrap">
-          <div class="id-avatar">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="avatar-icon">
+          <div class="id-avatar" [class.uploading]="isUploadingPhoto">
+            <img *ngIf="profile.profilePictureUrl && !isUploadingPhoto"
+              [src]="profile.profilePictureUrl"
+              alt="Foto de perfil"
+              class="avatar-img"/>
+            <svg *ngIf="!profile.profilePictureUrl && !isUploadingPhoto"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="avatar-icon">
               <path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/>
             </svg>
+            <div *ngIf="isUploadingPhoto" class="avatar-spinner"></div>
           </div>
-          <!-- Botón cámara — pendiente de implementación -->
-          <button class="btn-camera" (click)="onChangePhoto()" [title]="'profile.changePhoto' | transloco" aria-label="Cambiar foto de perfil">
+
+          <button class="btn-camera" (click)="onChangePhoto()"
+            [disabled]="isUploadingPhoto"
+            [title]="'profile.changePhoto' | transloco"
+            aria-label="Cambiar foto de perfil">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="icon-camera">
               <path d="M213.1 128.8L202.7 160L128 160C92.7 160 64 188.7 64 224L64 480C64 515.3 92.7 544 128 544L512 544C547.3 544 576 515.3 576 480L576 224C576 188.7 547.3 160 512 160L437.3 160L426.9 128.8C420.4 109.2 402.1 96 381.4 96L258.6 96C237.9 96 219.6 109.2 213.1 128.8zM320 256C373 256 416 299 416 352C416 405 373 448 320 448C267 448 224 405 224 352C224 299 267 256 320 256z"/>
             </svg>
           </button>
+
         </div>
+
+        <p class="photo-error" *ngIf="photoError">{{ photoError | transloco }}</p>
 
         <div class="id-name-block">
           <p class="id-username">{{ profile.userName }}</p>

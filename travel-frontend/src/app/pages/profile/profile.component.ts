@@ -22,7 +22,9 @@ export class ProfileComponent implements OnInit {
   profile: User | null = null;
   isLoading = true;
   error: string | null = null;
-
+  isUploadingPhoto = false;
+  photoError: string | null = null;
+  
   menuOpen = false;
 
   showPasswordModal = false;
@@ -217,8 +219,39 @@ export class ProfileComponent implements OnInit {
   }
 
   onChangePhoto(): void {
-    // TODO: implementar cambio de foto de perfil (US pendiente)
-    console.log('Cambiar foto — pendiente de implementación');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (event: Event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        this.uploadProfilePicture(file);
+      }
+    };
+    input.click();
+  }
+
+  uploadProfilePicture(file: File): void {
+    if (file.size > 5 * 1024 * 1024) {
+      this.photoError = 'profile.photoTooLarge';
+      return;
+    }
+
+    this.isUploadingPhoto = true;
+    this.photoError = null;
+
+    this.userService.updateProfilePicture(file).subscribe({
+      next: (updated) => {
+        this.profile = updated;
+        this.isUploadingPhoto = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isUploadingPhoto = false;
+        this.photoError = err.status === 400
+          ? 'profile.photoInvalidType'
+          : 'profile.photoError';
+      }
+    });
   }
 
   getInitials(): string {
