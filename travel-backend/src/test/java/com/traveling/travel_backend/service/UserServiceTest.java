@@ -26,9 +26,11 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +46,7 @@ class UserServiceTest {
     @Mock private UserRepository userRepository;
     @Mock private CityRepository cityRepository;
     @Mock private LogRepository logRepository;
-    @Mock private CloudinaryService cloudinaryService;
+    private CloudinaryService cloudinaryService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private JwtService jwtService;
@@ -60,6 +62,13 @@ class UserServiceTest {
         jwtService = new JwtService();
         ReflectionTestUtils.setField(jwtService, "secret", "test-secret-key-for-unit-tests-only-32chars!");
         ReflectionTestUtils.setField(jwtService, "jwtExpiration", 86400000L);
+
+        cloudinaryService = new CloudinaryService(null) {
+            @Override
+            public String uploadProfilePicture(org.springframework.web.multipart.MultipartFile file, Long userId) {
+                return "https://fake-cloudinary-url.com/user_" + userId + ".jpg";
+            }
+        };
 
         userService = new UserService(userRepository, cityRepository, logRepository, jwtService, passwordEncoder, cloudinaryService);
 
@@ -593,6 +602,119 @@ class UserServiceTest {
             userService.updateProfile(authentication, request);
 
             verify(userRepository, never()).findByUserNameAndStateTrue("carlos_viajero");
+        }
+    }
+
+    @Nested
+    @DisplayName("updateProfilePicture")
+    class UpdateProfilePictureTests {
+
+        private Authentication authentication;
+
+        private String cloudinaryResult = "https://res.cloudinary.com/test/image/upload/user_1.jpg";
+        private boolean cloudinaryShouldFail = false;
+
+        @BeforeEach
+        void setUpAuth() {
+            authentication = new UsernamePasswordAuthenticationToken("carlos_viajero", null, List.of());
+
+            CloudinaryService localCloudinary = new CloudinaryService(null) {
+                @Override
+                public String uploadProfilePicture(
+                        org.springframework.web.multipart.MultipartFile file, Long userId) throws java.io.IOException {
+                    if (cloudinaryShouldFail) {
+                        throw new java.io.IOException("Cloudinary no disponible");
+                    }
+                    return cloudinaryResult;
+                }
+            };
+
+            userService = new UserService(userRepository, cityRepository, logRepository,
+                    jwtService, passwordEncoder, localCloudinary);
+        }
+
+        @Test
+        @DisplayName("Debe subir la imagen y actualizar profilePictureUrl")
+        void shouldUploadAndUpdatePictureUrl() throws IOException {
+            cloudinaryResult = "https://res.cloudinary.com/test/image/upload/user_1.jpg";
+            MockMultipartFile file = new MockMultipartFile(
+                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+            );
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+
+            userService.updateProfilePicture(authentication, file);
+
+            verify(userRepository).save(any(User.class));
+            assertThat(sampleUser.getProfilePictureUrl())
+                    .isEqualTo("https://res.cloudinary.com/test/image/upload/user_1.jpg");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar RuntimeException si Cloudinary falla")
+        void shouldThrowWhenCloudinaryFails() {
+            cloudinaryShouldFail = true;
+            MockMultipartFile file = new MockMultipartFile(
+                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+            );
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+
+            assertThatThrownBy(() -> userService.updateProfilePicture(authentication, file))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessageContaining("Error al subir la imagen");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar UnauthorizedException si no hay autenticación")
+        void shouldThrowWhenAuthIsNull() {
+            MockMultipartFile file = new MockMultipartFile(
+                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+            );
+            assertThatThrownBy(() -> userService.updateProfilePicture(null, file))
+                    .isInstanceOf(UnauthorizedException.class)
+                    .hasMessage("No autenticado.");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el archivo está vacío")
+        void shouldThrowWhenFileIsEmpty() {
+            MockMultipartFile emptyFile = new MockMultipartFile(
+                    "file", "foto.jpg", "image/jpeg", new byte[0]
+            );
+            assertThatThrownBy(() -> userService.updateProfilePicture(authentication, emptyFile))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessage("No se recibió ninguna imagen.");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el archivo es nulo")
+        void shouldThrowWhenFileIsNull() {
+            assertThatThrownBy(() -> userService.updateProfilePicture(authentication, null))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessage("No se recibió ninguna imagen.");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el archivo no es una imagen")
+        void shouldThrowWhenFileIsNotImage() {
+            MockMultipartFile pdfFile = new MockMultipartFile(
+                    "file", "documento.pdf", "application/pdf", new byte[]{1, 2, 3}
+            );
+            assertThatThrownBy(() -> userService.updateProfilePicture(authentication, pdfFile))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessage("El archivo debe ser una imagen.");
+        }
+
+        @Test
+        @DisplayName("Debe lanzar ResourceNotFoundException si el usuario no existe")
+        void shouldThrowWhenUserNotFound() {
+            MockMultipartFile file = new MockMultipartFile(
+                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+            );
+            when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> userService.updateProfilePicture(authentication, file))
+                    .isInstanceOf(ResourceNotFoundException.class);
         }
     }
 }
