@@ -243,6 +243,12 @@ export class ProfileComponent implements OnInit {
     this.userService.updateProfilePicture(file).subscribe({
       next: (updated) => {
         this.profile = updated;
+        if (this.profile && this.profile.profilePictureUrl) {
+          this.profile = {
+            ...this.profile,
+            profilePictureUrl: this.profile.profilePictureUrl + '?t=' + Date.now()
+          };
+        }
         this.isUploadingPhoto = false;
       },
       error: (err: HttpErrorResponse) => {
