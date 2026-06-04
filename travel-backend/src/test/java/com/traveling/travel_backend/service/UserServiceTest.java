@@ -14,6 +14,7 @@ import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.UserRepository;
 import com.traveling.travel_backend.security.JwtService;
+import com.traveling.travel_backend.service.CloudinaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -43,6 +44,7 @@ class UserServiceTest {
     @Mock private UserRepository userRepository;
     @Mock private CityRepository cityRepository;
     @Mock private LogRepository logRepository;
+    @Mock private CloudinaryService cloudinaryService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private JwtService jwtService;
@@ -59,7 +61,7 @@ class UserServiceTest {
         ReflectionTestUtils.setField(jwtService, "secret", "test-secret-key-for-unit-tests-only-32chars!");
         ReflectionTestUtils.setField(jwtService, "jwtExpiration", 86400000L);
 
-        userService = new UserService(userRepository, cityRepository, logRepository, jwtService, passwordEncoder);
+        userService = new UserService(userRepository, cityRepository, logRepository, jwtService, passwordEncoder, cloudinaryService);
 
         rawPassword = "miPassword123";
         hashedPassword = passwordEncoder.encode(rawPassword);
