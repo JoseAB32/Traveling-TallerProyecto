@@ -328,6 +328,9 @@
         "editRequiredFields": "El nombre y correo son obligatorios",
         "editFieldTaken":     "El nombre de usuario o correo ya está en uso",
         "editError":          "Error al actualizar el perfil",
-        "editSuccess":        "Perfil actualizado correctamente"
+        "editSuccess":        "Perfil actualizado correctamente",
+        "photoTooLarge":   "La imagen no puede superar 5MB",
+        "photoInvalidType":"El archivo debe ser una imagen",
+        "photoError":      "Error al subir la imagen"
     }
 }

@@ -328,6 +328,9 @@
         "editRequiredFields": "Username & email are required",
         "editFieldTaken":     "Username or email already on use",
         "editError":          "Failed to update profile",
-        "editSuccess":        "Profile updated succesfully"
+        "editSuccess":        "Profile updated succesfully",
+        "photoTooLarge":   "La imagen no puede superar 5MB",
+        "photoInvalidType":"El archivo debe ser una imagen",
+        "photoError":      "Error al subir la imagen"
     }
 }
