@@ -22,7 +22,6 @@ class CloudinaryServiceTest {
     @DisplayName("CloudinaryService")
     class CloudinaryServiceTests {
 
-        // Subclase anónima que captura los parámetros sin tocar Cloudinary real
         private CloudinaryService buildService(String returnUrl, boolean shouldThrow, Map<String, Object> capturedParams) {
             return new CloudinaryService(null) {
                 @Override
@@ -30,7 +29,6 @@ class CloudinaryServiceTest {
                     if (shouldThrow) {
                         throw new IOException("Cloudinary no disponible");
                     }
-                    // Simulamos los parámetros que el servicio real construiría
                     capturedParams.put("public_id",  "user_" + userId);
                     capturedParams.put("folder",     "traveling/profile_pictures");
                     capturedParams.put("overwrite",  true);
