@@ -93,7 +93,6 @@ export class ProfileComponent implements OnInit {
       error: (err: HttpErrorResponse) => {
         this.error = 'profile.errorLoading';
         this.isLoading = false;
-        console.error('Error cargando perfil', err);
       }
     });
   }
@@ -312,13 +311,8 @@ export class ProfileComponent implements OnInit {
     this.userService.updateProfilePicture(file).subscribe({
       next: (updated) => {
         this.profile = updated;
-        if (this.profile && this.profile.profilePictureUrl) {
-          this.profile = {
-            ...this.profile,
-            profilePictureUrl: this.profile.profilePictureUrl + '?t=' + Date.now()
-          };
-        }
         this.isUploadingPhoto = false;
+        window.location.reload();
       },
       error: (err: HttpErrorResponse) => {
         this.isUploadingPhoto = false;
