@@ -13,7 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.core.Authentication;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
+    
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -59,9 +61,18 @@ public class UserController {
         userService.changePassword(authentication, request.getCurrentPassword(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
+
     @Operation(summary = "Update profile", description = "Updates personal data for the authenticated user")
     @PatchMapping(AppConstants.USERS_ENDPOINT + "/profile")
     public ResponseEntity<UserResponseDTO> updateProfile(@RequestBody UpdateProfileRequestDTO request,Authentication authentication) {
         return ResponseEntity.ok(userService.updateProfile(authentication, request));
+    }
+    
+    @Operation(summary = "Update profile picture", description = "Uploads and updates the profile picture for the authenticated user")
+    @PatchMapping(value = AppConstants.USERS_ENDPOINT + "/profile/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserResponseDTO> updateProfilePicture(
+            @RequestParam("file") MultipartFile file,
+            Authentication authentication) {
+        return ResponseEntity.ok(userService.updateProfilePicture(authentication, file));
     }
 }

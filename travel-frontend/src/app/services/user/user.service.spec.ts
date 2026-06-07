@@ -214,4 +214,81 @@ describe('UserService', () => {
       req.flush(mockUser);
     });
   });
+
+  describe('updateProfilePicture', () => {
+    const pictureURL = CONSTANTS.API.BASE_URL + CONSTANTS.API.USERS + '/profile/picture';
+
+    it('should PATCH /api/users/profile/picture with FormData', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+
+      service.updateProfilePicture(file).subscribe(res => {
+        expect(res).toEqual(mockUser);
+      });
+
+      const req = httpMock.expectOne(pictureURL);
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toBeInstanceOf(FormData);
+      req.flush(mockUser);
+    });
+
+    it('should append the file under the key "file" in FormData', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+
+      service.updateProfilePicture(file).subscribe();
+
+      const req = httpMock.expectOne(pictureURL);
+      expect(req.request.body.get('file')).toBe(file);
+      req.flush(mockUser);
+    });
+
+    it('should return the updated user after upload', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      const updatedUser = { ...mockUser, profilePictureUrl: 'https://res.cloudinary.com/test/user_1.jpg' } as User;
+
+      service.updateProfilePicture(file).subscribe(res => {
+        expect(res.profilePictureUrl).toBe('https://res.cloudinary.com/test/user_1.jpg');
+      });
+
+      const req = httpMock.expectOne(pictureURL);
+      req.flush(updatedUser);
+    });
+
+    it('should call PATCH exactly once', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+
+      service.updateProfilePicture(file).subscribe();
+
+      const req = httpMock.expectOne(pictureURL);
+      expect(req.request.method).toBe('PATCH');
+      req.flush(mockUser);
+    });
+
+    it('should propagate 400 error when file is not an image', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'documento.pdf', { type: 'application/pdf' });
+      let errorStatus = 0;
+
+      service.updateProfilePicture(file).subscribe({
+        error: (err) => { errorStatus = err.status; }
+      });
+
+      const req = httpMock.expectOne(pictureURL);
+      req.flush({ message: 'El archivo debe ser una imagen.' }, { status: 400, statusText: 'Bad Request' });
+
+      expect(errorStatus).toBe(400);
+    });
+
+    it('should propagate 401 error when user is not authenticated', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      let errorStatus = 0;
+
+      service.updateProfilePicture(file).subscribe({
+        error: (err) => { errorStatus = err.status; }
+      });
+
+      const req = httpMock.expectOne(pictureURL);
+      req.flush({ message: 'No autenticado.' }, { status: 401, statusText: 'Unauthorized' });
+
+      expect(errorStatus).toBe(401);
+    });
+  });
 });

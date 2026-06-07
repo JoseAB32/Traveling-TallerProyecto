@@ -147,13 +147,12 @@
 }
 
 .profile-pic {
-  width: 55px;
-  height: 55px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  border: 2px solid #ff7841;
-  cursor: pointer;
   object-fit: cover;
-  margin-right: 8px;
+  border: 2px solid #ff7841;
+  display: block;
 }
 
 .profile-container svg {

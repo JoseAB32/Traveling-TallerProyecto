@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ViewChild, ElementRef } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 import { User } from '../../models/user/user';
 import { AuthService } from '../../services/auth/auth.service';
@@ -18,11 +19,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  
+  @ViewChild('fileInputRef') fileInputRef!: ElementRef<HTMLInputElement>;
 
   profile: User | null = null;
   isLoading = true;
   error: string | null = null;
-
+  isUploadingPhoto = false;
+  photoError: string | null = null;
+  
   menuOpen = false;
 
   showPasswordModal = false;
@@ -52,6 +57,11 @@ export class ProfileComponent implements OnInit {
   editForm: { userName: string; correo: string; birthday: string; cityId: number | null } = {
     userName: '', correo: '', birthday: '', cityId: null
   };
+
+  showPhotoPanel = false;
+  isDragging = false;
+  previewUrl: string | null = null;
+  selectedFile: File | null = null;
 
   cities: any[] = [];
   isLoadingCities = false;
@@ -83,7 +93,6 @@ export class ProfileComponent implements OnInit {
       error: (err: HttpErrorResponse) => {
         this.error = 'profile.errorLoading';
         this.isLoading = false;
-        console.error('Error cargando perfil', err);
       }
     });
   }
@@ -216,9 +225,103 @@ export class ProfileComponent implements OnInit {
     this.openEditProfile();
   }
 
+  openPhotoPanel(): void {
+    if (this.isUploadingPhoto) return;
+    this.previewUrl = null;
+    this.selectedFile = null;
+    this.photoError = null;
+    this.showPhotoPanel = true;
+  }
+
+  closePhotoPanel(): void {
+    this.showPhotoPanel = false;
+    this.isDragging = false;
+    this.previewUrl = null;
+    this.selectedFile = null;
+  }
+
+  triggerFileInput(): void {
+    this.fileInputRef.nativeElement.click();
+  }
+
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) this.showPreview(file);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isDragging = false;
+    const file = event.dataTransfer?.files?.[0];
+    if (file) this.showPreview(file);
+  }
+
+  showPreview(file: File): void {
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      this.photoError = 'profile.photoTooLarge';
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      this.photoError = 'profile.photoInvalidType';
+      return;
+    }
+    this.selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => { this.previewUrl = e.target?.result as string; };
+    reader.readAsDataURL(file);
+  }
+
+  confirmUpload(): void {
+    if (!this.selectedFile) return;
+    const file = this.selectedFile;
+    this.closePhotoPanel();
+    this.uploadProfilePicture(file);
+  }
+
+  clearPreview(): void {
+    this.previewUrl = null;
+    this.selectedFile = null;
+    this.fileInputRef.nativeElement.value = '';
+  }
+
   onChangePhoto(): void {
-    // TODO: implementar cambio de foto de perfil (US pendiente)
-    console.log('Cambiar foto — pendiente de implementación');
+    this.openPhotoPanel();
+  }
+
+  uploadProfilePicture(file: File): void {
+    this.isUploadingPhoto = true;
+    this.photoError = null;
+
+    this.userService.updateProfilePicture(file).subscribe({
+      next: (updated) => {
+        this.isUploadingPhoto = false;
+        if (updated.profilePictureUrl) {
+          this.profile = {
+            ...updated,
+            profilePictureUrl: updated.profilePictureUrl + '?t=' + Date.now()
+          };
+        } else {
+          this.profile = updated;
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isUploadingPhoto = false;
+        this.photoError = err.status === 400
+          ? 'profile.photoInvalidType'
+          : 'profile.photoError';
+      }
+    });
   }
 
   getInitials(): string {
