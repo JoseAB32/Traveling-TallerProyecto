@@ -300,19 +300,20 @@ export class ProfileComponent implements OnInit {
   }
 
   uploadProfilePicture(file: File): void {
-    if (file.size > 5 * 1024 * 1024) {
-      this.photoError = 'profile.photoTooLarge';
-      return;
-    }
-
     this.isUploadingPhoto = true;
     this.photoError = null;
 
     this.userService.updateProfilePicture(file).subscribe({
       next: (updated) => {
-        this.profile = updated;
         this.isUploadingPhoto = false;
-        window.location.reload();
+        if (updated.profilePictureUrl) {
+          this.profile = {
+            ...updated,
+            profilePictureUrl: updated.profilePictureUrl + '?t=' + Date.now()
+          };
+        } else {
+          this.profile = updated;
+        }
       },
       error: (err: HttpErrorResponse) => {
         this.isUploadingPhoto = false;
