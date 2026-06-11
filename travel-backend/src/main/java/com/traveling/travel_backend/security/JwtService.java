@@ -24,12 +24,13 @@ public class JwtService {
     @Value("${app.jwt.expiration}")
     private long jwtExpiration;
 
-    public String generateToken(String userName, Long userId) {
-        Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("userId", userId);
+    public String generateToken(String userName, Long userId, String role) {
+    Map<String, Object> extraClaims = new HashMap<>();
+    extraClaims.put("userId", userId);
+    extraClaims.put("role", role);
 
-        return buildToken(extraClaims, userName, jwtExpiration);
-    }
+    return buildToken(extraClaims, userName, jwtExpiration);
+}
 
     private String buildToken(Map<String, Object> extraClaims, String userName, long expiration) {
         return Jwts.builder()
@@ -56,6 +57,17 @@ public class JwtService {
             return (Long) userId;
         }
         return null;
+    }
+
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        Object role = claims.get("role");
+
+        if (role == null) {
+            return null;
+        }
+
+        return role.toString();
     }
 
     public boolean isTokenValid(String token, String userName) {

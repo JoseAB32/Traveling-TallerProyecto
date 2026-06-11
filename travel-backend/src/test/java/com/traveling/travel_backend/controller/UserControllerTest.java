@@ -141,7 +141,7 @@ public class UserControllerTest {
 
         when(userRepository.findByUserName("Pablo")).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("12345678", "encodedPassword")).thenReturn(true);
-        when(jwtService.generateToken("Pablo", 1L)).thenReturn("token-prueba-123");
+        when(jwtService.generateToken("Pablo", 1L, "USER")).thenReturn("token-prueba-123");
 
         mockMvc.perform(post("/api/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +150,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.token").value("token-prueba-123"))
                 .andExpect(jsonPath("$.type").value("Bearer"))
                 .andExpect(jsonPath("$.userName").value("Pablo"))
-                .andExpect(jsonPath("$.correo").value("pablo@test.com"));
+                .andExpect(jsonPath("$.correo").value("pablo@test.com"))
+                .andExpect(jsonPath("$.role").value("USER"));
     }
 
     @Test

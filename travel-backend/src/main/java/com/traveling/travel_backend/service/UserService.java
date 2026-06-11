@@ -157,7 +157,7 @@ public class UserService {
             throw new UnauthorizedException("Usuario o contrasena incorrectos.");
         }
 
-        String token = jwtService.generateToken(user.getUserName(), user.getId());
+        String token = jwtService.generateToken(user.getUserName(), user.getId(), user.getRole().name());
 
         logger.info("{} [{}] Login exitoso para '{}' (ID: {})", AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName, user.getId());
         logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
