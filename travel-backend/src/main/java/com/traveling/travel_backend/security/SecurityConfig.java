@@ -50,8 +50,15 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/features").authenticated();
+                        .requestMatchers(HttpMethod.GET, "/api/features").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/features").hasAnyRole("ADMIN", "SUPERADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/logs/**").hasAnyRole("ADMIN", "SUPERADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/translations").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/translations/**").hasAnyRole("ADMIN", "SUPERADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("SUPERADMIN");
 
                         if (Arrays.asList(env.getActiveProfiles()).contains("dev")) {
                                 auth.requestMatchers("/swagger-ui/**", "/v3/api-docs*/**").permitAll();
