@@ -22,6 +22,10 @@ public class User {
     @Column(name = "birthday")
     private String birthday; 
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role = Role.USER;
+
     @ManyToOne
     @JoinColumn(name = "city_id") 
     private City city;
@@ -67,4 +71,7 @@ public class User {
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }
+
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 }

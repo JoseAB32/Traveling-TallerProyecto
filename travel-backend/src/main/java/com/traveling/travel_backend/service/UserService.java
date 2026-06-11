@@ -10,6 +10,7 @@ import com.traveling.travel_backend.exception.ResourceNotFoundException;
 import com.traveling.travel_backend.exception.UnauthorizedException;
 import com.traveling.travel_backend.model.City;
 import com.traveling.travel_backend.model.LogEntity;
+import com.traveling.travel_backend.model.Role;
 import com.traveling.travel_backend.model.User;
 import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.LogRepository;
@@ -104,6 +105,9 @@ public class UserService {
             user.setPass(passwordEncoder.encode(user.getPass()));
         }
 
+        //Precargar role por defecto
+        user.setRole(Role.USER);
+
         User saved = userRepository.save(user);
 
         logger.info("{} [{}] Usuario '{}' creado con ID: {}", AppConstants.PREFIX_USER, AppConstants.LOG_USERS, saved.getUserName(), saved.getId());
@@ -159,7 +163,7 @@ public class UserService {
         logRepository.save(new LogEntity(AppConstants.LOG_USERS, AppConstants.LOG_INFO,
                 "Login exitoso para '" + user.getUserName() + "' (ID: " + user.getId() + ").", user.getId()));
 
-        return new LoginResponse(token, "Bearer", user.getId(), user.getUserName(), user.getCorreo(), "Login exitoso");
+        return new LoginResponse(token, "Bearer", user.getId(), user.getUserName(), user.getCorreo(), "Login exitoso", user.getRole().name());
     }
     @Transactional
     public UserResponseDTO getProfile(Authentication authentication) {
