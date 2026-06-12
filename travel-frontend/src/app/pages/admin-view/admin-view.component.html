@@ -10,6 +10,7 @@
   </div>
 
   <ul class="nav nav-tabs admin-tabs mb-4 border-bottom-0">
+    @if (isSuperAdmin) {
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold"
               [class.active-tab]="activeTab === 'logs'"
@@ -24,6 +25,7 @@
         <i class="bi bi-toggle-on"></i> {{ 'adminConfiguration.tabs.toggles' | transloco }}
       </button>
     </li>
+  }
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold"
               [class.active-tab]="activeTab === 'translations'"

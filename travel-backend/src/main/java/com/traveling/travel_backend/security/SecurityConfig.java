@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users/admin").hasRole("SUPERADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/profile").authenticated()
+                        
 
                         .requestMatchers("/api/password/**").permitAll()
 
@@ -51,7 +52,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/features").hasRole("SUPERADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/features").hasAnyRole("ADMIN", "SUPERADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/api/logs/**").hasAnyRole("ADMIN", "SUPERADMIN")

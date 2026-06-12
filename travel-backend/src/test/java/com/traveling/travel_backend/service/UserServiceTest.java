@@ -47,6 +47,7 @@ class UserServiceTest {
     @Mock private CityRepository cityRepository;
     @Mock private LogRepository logRepository;
     private CloudinaryService cloudinaryService;
+    private EmailService emailService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private JwtService jwtService;
@@ -70,7 +71,7 @@ class UserServiceTest {
             }
         };
 
-        userService = new UserService(userRepository, cityRepository, logRepository, jwtService, passwordEncoder, cloudinaryService);
+        userService = new UserService(userRepository, cityRepository, logRepository, jwtService, passwordEncoder, cloudinaryService, emailService);
 
         rawPassword = "miPassword123";
         hashedPassword = passwordEncoder.encode(rawPassword);
@@ -630,7 +631,7 @@ class UserServiceTest {
             };
 
             userService = new UserService(userRepository, cityRepository, logRepository,
-                    jwtService, passwordEncoder, localCloudinary);
+                    jwtService, passwordEncoder, localCloudinary, emailService);
         }
 
         @Test
