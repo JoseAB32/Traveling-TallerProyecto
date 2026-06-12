@@ -1,23 +1,17 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
-import { FEATURES } from '../features/features';
 
-export const adminGuard: CanActivateFn = () => {
+export const superAdminGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
-  if (!FEATURES.adminLogsEnabled) {
-    router.navigate(['/InicioLogueado']);
-    return false;
-  }
 
   if (!authService.isAuthenticated()) {
     router.navigate(['/login']);
     return false;
   }
 
-  if (authService.isAdmin()) {
+  if (authService.isSuperAdmin()) {
     return true;
   }
 

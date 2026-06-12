@@ -29,13 +29,15 @@ describe('AuthService', () => {
     userName: 'vanessa',
     correo: 'vanessa@example.com',
     message: 'Login correcto',
-    id: 1
+    id: 1,
+    role: 'USER'
   };
 
   const mockUser: User = {
     id: 1,
     correo: 'vanessa@example.com',
-    userName: 'vanessa'
+    userName: 'vanessa',
+    role: 'USER'
   };
 
   function setupService(): void {
@@ -236,11 +238,12 @@ describe('AuthService', () => {
     expect(service.isAdmin()).toBe(false);
   });
 
-  it('should return true for isAdmin when token subject is admin', () => {
+  it('should return true for isAdmin when token role is ADMIN', () => {
     setupService();
 
     const adminToken = createFakeJwt({
-      sub: 'admin'
+      sub: 'vanessa',
+      role: 'ADMIN'
     });
 
     localStorage.setItem('token', adminToken);
@@ -248,11 +251,12 @@ describe('AuthService', () => {
     expect(service.isAdmin()).toBe(true);
   });
 
-  it('should return false for isAdmin when token subject is not admin', () => {
+  it('should return false for isAdmin when token role is USER', () => {
     setupService();
 
     const userToken = createFakeJwt({
-      sub: 'vanessa'
+      sub: 'vanessa',
+      role: 'USER'
     });
 
     localStorage.setItem('token', userToken);
@@ -266,6 +270,45 @@ describe('AuthService', () => {
     localStorage.setItem('token', 'invalid-token');
 
     expect(service.isAdmin()).toBe(false);
+  });
+
+  it('should return true for isAdmin when token role is SUPERADMIN', () => {
+    setupService();
+
+    const superAdminToken = createFakeJwt({
+      sub: 'vanessa',
+      role: 'SUPERADMIN'
+    });
+
+    localStorage.setItem('token', superAdminToken);
+
+    expect(service.isAdmin()).toBe(true);
+  });
+
+  it('should return true for isSuperAdmin when token role is SUPERADMIN', () => {
+    setupService();
+
+    const superAdminToken = createFakeJwt({
+      sub: 'vanessa',
+      role: 'SUPERADMIN'
+    });
+
+    localStorage.setItem('token', superAdminToken);
+
+    expect(service.isSuperAdmin()).toBe(true);
+  });
+
+  it('should return false for isSuperAdmin when token role is ADMIN', () => {
+    setupService();
+
+    const adminToken = createFakeJwt({
+      sub: 'vanessa',
+      role: 'ADMIN'
+    });
+
+    localStorage.setItem('token', adminToken);
+
+    expect(service.isSuperAdmin()).toBe(false);
   });
 
   it('should load stored user from localStorage when service is created', () => {

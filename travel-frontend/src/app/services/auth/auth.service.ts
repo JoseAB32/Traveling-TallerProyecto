@@ -4,10 +4,13 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { CONSTANTS } from '../../utils/constants';
 
+export type Role = 'USER' | 'ADMIN' | 'SUPERADMIN';
+
 export interface User {
   id?: number;
   correo: string;
   userName: string;
+  role: Role;
 }
 
 export interface LoginResponse {
@@ -17,6 +20,7 @@ export interface LoginResponse {
   correo: string;
   message: string;
   id: number;
+  role: Role;
 }
 
 @Injectable({
@@ -44,7 +48,8 @@ export class AuthService {
           const user: User = {
             id: response.id,
             correo: response.correo,
-            userName: response.userName
+            userName: response.userName,
+            role: response.role
           };
 
           localStorage.setItem('token', response.token);
@@ -83,16 +88,50 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  isAdmin(): boolean {
+  getRole(): Role | null {
     const token = this.getToken();
-    if (!token) return false;
+
+    if (!token) {
+      return null;
+    }
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.sub === 'admin';
+      const parts = token.split('.');
+
+      if (parts.length < 2) {
+        return null;
+      }
+
+      const base64 = parts[1]
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+      const paddedBase64 = base64.padEnd(
+        base64.length + (4 - base64.length % 4) % 4,
+        '='
+      );
+
+      const payload = JSON.parse(atob(paddedBase64));
+      const role = payload.role;
+
+      if (role === 'USER' || role === 'ADMIN' || role === 'SUPERADMIN') {
+        return role;
+      }
+
+      return null;
     } catch {
-      return false;
+      return null;
     }
+  }
+
+  isAdmin(): boolean {
+    const role = this.getRole();
+
+    return role === 'ADMIN' || role === 'SUPERADMIN';
+  }
+
+  isSuperAdmin(): boolean {
+    return this.getRole() === 'SUPERADMIN';
   }
 
   private loadStoredUser() {
