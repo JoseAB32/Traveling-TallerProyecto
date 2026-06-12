@@ -2,6 +2,7 @@ package com.traveling.travel_backend.controller;
 
 import com.traveling.travel_backend.constants.AppConstants;
 import com.traveling.travel_backend.dto.ChangePasswordRequestDTO;
+import com.traveling.travel_backend.dto.CreateAdminRequestDTO;
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
 import com.traveling.travel_backend.dto.UpdateProfileRequestDTO;
@@ -74,5 +75,11 @@ public class UserController {
             @RequestParam("file") MultipartFile file,
             Authentication authentication) {
         return ResponseEntity.ok(userService.updateProfilePicture(authentication, file));
+    }
+
+    @Operation(summary = "Create admin user", description = "Creates a new administrator user with a temporary password sent by email", operationId = "createAdmin")
+    @PostMapping(AppConstants.USERS_ENDPOINT + "/admin")
+    public ResponseEntity<UserResponseDTO> createAdmin(@RequestBody CreateAdminRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createAdmin(request));
     }
 }

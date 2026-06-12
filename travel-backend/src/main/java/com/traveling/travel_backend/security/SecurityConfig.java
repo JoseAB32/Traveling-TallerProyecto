@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/users/profile").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/users/profile/picture").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/admin").hasRole("SUPERADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/profile").authenticated()
 

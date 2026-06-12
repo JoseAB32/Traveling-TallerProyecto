@@ -1,6 +1,7 @@
 package com.traveling.travel_backend.service;
 
 import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.CreateAdminRequestDTO;
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
 import com.traveling.travel_backend.dto.UpdateProfileRequestDTO;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.core.Authentication;
 import java.io.IOException;
-
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,16 +41,19 @@ public class UserService {
     private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final CloudinaryService cloudinaryService;
+    private final EmailService emailService;
 
     public UserService(UserRepository userRepository, CityRepository cityRepository,
                        LogRepository logRepository, JwtService jwtService,
-                       BCryptPasswordEncoder passwordEncoder, CloudinaryService cloudinaryService) {
+                       BCryptPasswordEncoder passwordEncoder, CloudinaryService cloudinaryService,
+                       EmailService emailService) {
         this.userRepository  = userRepository;
         this.cityRepository  = cityRepository;
         this.logRepository   = logRepository;
         this.jwtService      = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.cloudinaryService = cloudinaryService;
+        this.emailService = emailService;
     }
 
     public List<UserResponseDTO> getAllUsers() {
@@ -331,5 +335,83 @@ public class UserService {
                         AppConstants.PREFIX_USER, AppConstants.LOG_USERS, userName, e.getMessage());
                 throw new RuntimeException("Error al subir la imagen. Intenta de nuevo.");
         }
+     }
+
+     @Transactional
+     public UserResponseDTO createAdmin(CreateAdminRequestDTO request) {
+        if (request.getUserName() == null || request.getUserName().trim().isEmpty()) {
+                throw new BadRequestException(AppConstants.USER_REQUIRED);
         }
+
+        if (request.getCorreo() == null || request.getCorreo().trim().isEmpty()) {
+                throw new BadRequestException("El correo es requerido.");
+        }
+
+        String trimmedUserName = request.getUserName().trim();
+        String trimmedCorreo = request.getCorreo().trim();
+
+        if (userRepository.findByUserNameAndStateTrue(trimmedUserName).isPresent()) {
+                throw new BadRequestException(AppConstants.USER_ALREADY_IN_USE);
+        }
+
+        if (userRepository.existsByCorreo(trimmedCorreo)) {
+                throw new BadRequestException(AppConstants.EMAIL_ALREADY_REGISTERED);
+        }
+
+        User admin = new User();
+        admin.setUserName(trimmedUserName);
+        admin.setCorreo(trimmedCorreo);
+        admin.setBirthday(request.getBirthday());
+        admin.setProfilePictureUrl(request.getProfilePictureUrl());
+        admin.setState(request.getState() != null ? request.getState() : true);
+        admin.setRole(Role.ADMIN);
+
+        if (request.getCityId() != null) {
+                City city = cityRepository.findById(request.getCityId())
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Ciudad no encontrada con ID: " + request.getCityId()
+                        ));
+
+                admin.setCity(city);
+        }
+
+        String temporaryPassword = generateTemporaryPassword();
+        admin.setPass(passwordEncoder.encode(temporaryPassword));
+
+        User saved = userRepository.save(admin);
+
+        emailService.sendAdminWelcomeEmail(
+                saved.getCorreo(),
+                saved.getUserName(),
+                temporaryPassword
+        );
+
+        logger.info("{} [{}] Administrador '{}' creado con ID: {}",
+                AppConstants.PREFIX_ADMIN,
+                AppConstants.LOG_USERS,
+                saved.getUserName(),
+                saved.getId());
+
+        logRepository.save(new LogEntity(
+                AppConstants.LOG_USERS,
+                AppConstants.LOG_INFO,
+                "Administrador '" + saved.getUserName() + "' creado con ID: " + saved.getId(),
+                saved.getId()
+        ));
+
+        return UserResponseDTO.fromEntity(saved);
+     }
+
+     private String generateTemporaryPassword() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder("Adm-");
+
+        for (int i = 0; i < 10; i++) {
+                int index = random.nextInt(chars.length());
+                password.append(chars.charAt(index));
+        }
+
+        return password.toString();
+     }
 }

@@ -37,4 +37,29 @@ public class EmailService {
             throw new RuntimeException("No se pudo enviar el correo de recuperación", e);
         }
     }
+
+    public void sendAdminWelcomeEmail(String to, String userName, String temporaryPassword) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(to);
+        message.setSubject("Cuenta de administrador creada - Traveling");
+
+        String body =
+                "Hola,\n\n" +
+                "Se creó una cuenta de administrador para ti en Traveling.\n\n" +
+                "Tus credenciales temporales son:\n\n" +
+                "Usuario: " + userName + "\n" +
+                "Contraseña temporal: " + temporaryPassword + "\n\n" +
+                "Por seguridad, cambia tu contraseña después de iniciar sesión.\n\n" +
+                "Si no esperabas este correo, comunícate con el administrador del sistema.";
+
+        message.setText(body);
+
+        try {
+            mailSender.send(message);
+        } catch (MailException e) {
+            throw new RuntimeException("No se pudo enviar el correo de bienvenida al administrador", e);
+        }
+    }
 }
