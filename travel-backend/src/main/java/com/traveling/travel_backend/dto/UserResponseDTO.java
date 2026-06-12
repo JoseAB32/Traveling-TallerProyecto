@@ -1,5 +1,6 @@
 package com.traveling.travel_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.traveling.travel_backend.model.User;
 
 public class UserResponseDTO {
@@ -9,6 +10,7 @@ public class UserResponseDTO {
     private String userName;
     private String birthday;
     private CityResponseDTO city;
+    private String profilePictureUrl;
     private boolean state;
 
     public UserResponseDTO() {}
@@ -20,6 +22,7 @@ public class UserResponseDTO {
         dto.userName = user.getUserName();
         dto.birthday = user.getBirthday();
         dto.city     = user.getCity() != null ? CityResponseDTO.fromEntity(user.getCity()) : null;
+        dto.profilePictureUrl = user.getProfilePictureUrl();
         dto.state    = user.isState();
         return dto;
     }
@@ -38,6 +41,9 @@ public class UserResponseDTO {
 
     public CityResponseDTO getCity() { return city; }
     public void setCity(CityResponseDTO city) { this.city = city; }
+
+    public String getProfilePictureUrl() { return profilePictureUrl; }
+    public void setProfilePictureUrl(String url) { this.profilePictureUrl = url; }
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }

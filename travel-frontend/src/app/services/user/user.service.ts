@@ -33,4 +33,10 @@ export class UserService {
   updateProfile(data: { userName?: string; correo?: string; birthday?: string; cityId?: number }): Observable<User> {
     return this.httpClient.patch<User>(`${this.baseURL}/profile`, data);
   }
+
+  updateProfilePicture(file: File): Observable<User> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.patch<User>(`${this.baseURL}/profile/picture`, formData);
+  }
 }

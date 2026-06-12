@@ -443,4 +443,102 @@ describe('ProfileComponent', () => {
       expect(component.isLoadingCities).toBe(false);
     });
   });
+
+  describe('uploadProfilePicture', () => {
+    let updatePictureMock: jest.Mock;
+
+    beforeEach(() => {
+      userServiceMock.getProfile.mockReturnValue(of(mockProfile));
+      updatePictureMock = jest.fn();
+      (userServiceMock as any).updateProfilePicture = updatePictureMock;
+      createComponent();
+      fixture.detectChanges();
+    });
+
+    it('debe subir la imagen y actualizar profilePictureUrl', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      const updatedUser = { ...mockProfile, profilePictureUrl: 'https://res.cloudinary.com/test/user_1.jpg' } as User;
+      updatePictureMock.mockReturnValue(of(updatedUser));
+
+      component.uploadProfilePicture(file);
+
+      expect(updatePictureMock).toHaveBeenCalledWith(file);
+      expect(component.profile?.profilePictureUrl).toContain('https://res.cloudinary.com/test/user_1.jpg');
+      expect(component.isUploadingPhoto).toBe(false);
+      expect(component.photoError).toBeNull();
+    });
+
+    it('debe poner isUploadingPhoto en false tras subida exitosa', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      updatePictureMock.mockReturnValue(of({ ...mockProfile }));
+
+      component.uploadProfilePicture(file);
+
+      expect(component.isUploadingPhoto).toBe(false);
+    });
+
+    it('debe limpiar photoError antes de subir', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      component.photoError = 'profile.photoError';
+      updatePictureMock.mockReturnValue(of({ ...mockProfile }));
+
+      component.uploadProfilePicture(file);
+
+      expect(component.photoError).toBeNull();
+    });
+
+    it('debe rechazar archivo mayor a 5MB con error photoTooLarge', () => {
+      const bigFile = new File([new Uint8Array(6 * 1024 * 1024)], 'grande.jpg', { type: 'image/jpeg' });
+
+      component.uploadProfilePicture(bigFile);
+
+      expect(updatePictureMock).not.toHaveBeenCalled();
+      expect(component.photoError).toBe('profile.photoTooLarge');
+      expect(component.isUploadingPhoto).toBe(false);
+    });
+
+    it('debe mostrar error photoInvalidType si el backend responde 400', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      updatePictureMock.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 400 }))
+      );
+
+      component.uploadProfilePicture(file);
+
+      expect(component.photoError).toBe('profile.photoInvalidType');
+      expect(component.isUploadingPhoto).toBe(false);
+    });
+
+    it('debe mostrar error photoError si el backend responde 500', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      updatePictureMock.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 500 }))
+      );
+
+      component.uploadProfilePicture(file);
+
+      expect(component.photoError).toBe('profile.photoError');
+      expect(component.isUploadingPhoto).toBe(false);
+    });
+
+    it('debe añadir cache-buster a la URL si profilePictureUrl existe tras la subida', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      const updatedUser = { ...mockProfile, profilePictureUrl: 'https://res.cloudinary.com/test/user_1.jpg' } as User;
+      updatePictureMock.mockReturnValue(of(updatedUser));
+
+      component.uploadProfilePicture(file);
+
+      expect(component.profile?.profilePictureUrl).toMatch(/\?t=\d+$/);
+    });
+
+    it('no debe añadir cache-buster si profilePictureUrl viene vacío', () => {
+      const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
+      const updatedUser = { ...mockProfile, profilePictureUrl: undefined } as User;
+      updatePictureMock.mockReturnValue(of(updatedUser));
+
+      component.uploadProfilePicture(file);
+
+      expect(component.profile?.profilePictureUrl).toBeUndefined();
+    });
+  });
 });

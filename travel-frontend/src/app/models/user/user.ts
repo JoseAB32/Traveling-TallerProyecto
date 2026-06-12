@@ -8,5 +8,6 @@ export class User {
     birthday: string = "";
     city_id?: number | null = null;
     city?: City | null = null;
+    profilePictureUrl?: string = "";
     state: boolean = true;
 }

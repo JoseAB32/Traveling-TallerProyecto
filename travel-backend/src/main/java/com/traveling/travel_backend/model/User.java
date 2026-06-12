@@ -26,6 +26,9 @@ public class User {
     @JoinColumn(name = "city_id") 
     private City city;
 
+    @Column(name = "profile_picture_url")
+    private String profilePictureUrl;
+
     @Column(name = "state", nullable = false)
     private boolean state = true;
 
@@ -58,6 +61,9 @@ public class User {
 
     public City getCity() { return city; }
     public void setCity(City city) { this.city = city; }
+
+    public String getProfilePictureUrl() { return profilePictureUrl; }
+    public void setProfilePictureUrl(String url) { this.profilePictureUrl = url; }
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }

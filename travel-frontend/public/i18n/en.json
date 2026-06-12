@@ -328,6 +328,13 @@
         "editRequiredFields": "Username & email are required",
         "editFieldTaken":     "Username or email already on use",
         "editError":          "Failed to update profile",
-        "editSuccess":        "Profile updated succesfully"
+        "editSuccess":        "Profile updated succesfully",
+        "photoTooLarge":   "Imagen cant be bigger than 5MB",
+        "photoInvalidType":"The file must be an image",
+        "photoError":      "Error uploading image",
+        "uploadPhoto":    "Change profile picture",
+        "dragOrClick":    "Drag your photo here or click to select",
+        "photoHint":      "JPG, PNG or WEBP · Max 5MB",
+        "uploadConfirm":  "Upload photo"
     }
 }
