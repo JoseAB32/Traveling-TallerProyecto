@@ -7,6 +7,9 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { LoggerService } from '../../services/logger/logger.service';
 import { FeatureService, Features } from '../../services/features/feature.service';
 import { TranslationService } from '../../services/translation/translation.service';
+import { UserService } from '../../services/user/user.service';
+import { CityService } from '../../services/city/city.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Logger } from '../../models/logger/logger';
 import { Translation } from '../../models/translation/translation';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
@@ -25,11 +28,26 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   private translationService = inject(TranslationService);
   private translocoService = inject(TranslocoService);
   private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private cityService = inject(CityService);
 
   private logSub?: Subscription;
   private translationSub?: Subscription;
   private updateTranslationSub?: Subscription;
 
+  showAdminModal = false;
+  isCreatingAdmin = false;
+  adminError: string | null = null;
+  adminSuccess = false;
+  cities: any[] = [];
+  isLoadingCities = false;
+  
+  adminForm = {
+    userName: '',
+    correo:   '',
+    birthday: '',
+    cityId:   null as number | null
+  };
 
   isSuperAdmin: boolean =false;
   allLogs: Logger[] = [];
@@ -290,6 +308,66 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  openAdminModal(): void {
+    this.adminForm = { userName: '', correo: '', birthday: '', cityId: null };
+    this.adminError = null;
+    this.adminSuccess = false;
+    this.loadCitiesForAdmin();
+    this.showAdminModal = true;
+  }
+
+  closeAdminModal(): void {
+    this.showAdminModal = false;
+    this.adminError = null;
+    this.adminSuccess = false;
+  }
+
+  loadCitiesForAdmin(): void {
+    this.isLoadingCities = true;
+    this.cityService.getCities().subscribe({
+      next: (data) => { this.cities = data; this.isLoadingCities = false; },
+      error: ()   => { this.isLoadingCities = false; }
+    });
+  }
+
+  submitCreateAdmin(): void {
+    if (!this.adminForm.userName.trim()) {
+      this.adminError = 'admin.usernameRequired';
+      return;
+    }
+    if (!this.adminForm.correo.trim()) {
+      this.adminError = 'admin.emailRequired';
+      return;
+    }
+    if (!this.isValidEmail(this.adminForm.correo)) {
+      this.adminError = 'admin.emailInvalid';
+      return;
+    }
+
+    this.isCreatingAdmin = true;
+    this.adminError = null;
+
+    this.userService.createAdmin({
+      userName: this.adminForm.userName.trim(),
+      correo:   this.adminForm.correo.trim(),
+      birthday: this.adminForm.birthday || undefined,
+      cityId:   this.adminForm.cityId   || null
+    }).subscribe({
+      next: () => {
+        this.isCreatingAdmin = false;
+        this.adminSuccess = true;
+        setTimeout(() => this.closeAdminModal(), 2000);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isCreatingAdmin = false;
+        this.adminError = err.status === 400 ? 'admin.fieldTaken' : 'admin.error';
+      }
+    });
+  }
+
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
   setDefaultDates(): void {
     const now = new Date();
     const fiveDaysAgo = new Date();
