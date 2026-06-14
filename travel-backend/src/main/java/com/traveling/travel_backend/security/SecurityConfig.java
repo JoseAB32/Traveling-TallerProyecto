@@ -40,8 +40,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/users/profile").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/users/profile/picture").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/admin").hasRole("SUPERADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/users/profile").authenticated()
+                        
 
                         .requestMatchers("/api/password/**").permitAll()
 
@@ -51,7 +53,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/features").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/features").authenticated();
+                        .requestMatchers(HttpMethod.PUT, "/api/features").hasRole( "SUPERADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/logs/**").hasRole( "SUPERADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/translations").hasAnyRole("ADMIN", "SUPERADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/translations/**").hasAnyRole("ADMIN", "SUPERADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("SUPERADMIN");
 
                         if (Arrays.asList(env.getActiveProfiles()).contains("dev")) {
                                 auth.requestMatchers("/swagger-ui/**", "/v3/api-docs*/**").permitAll();

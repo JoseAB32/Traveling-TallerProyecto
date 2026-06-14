@@ -1,5 +1,6 @@
 package com.traveling.travel_backend.service;
 
+import com.traveling.travel_backend.dto.CreateAdminRequestDTO;
 import com.traveling.travel_backend.dto.LoginRequest;
 import com.traveling.travel_backend.dto.LoginResponse;
 import com.traveling.travel_backend.dto.UpdateProfileRequestDTO;
@@ -9,26 +10,27 @@ import com.traveling.travel_backend.exception.ResourceNotFoundException;
 import com.traveling.travel_backend.exception.UnauthorizedException;
 import com.traveling.travel_backend.model.City;
 import com.traveling.travel_backend.model.LogEntity;
+import com.traveling.travel_backend.model.Role;
 import com.traveling.travel_backend.model.User;
 import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.UserRepository;
 import com.traveling.travel_backend.security.JwtService;
-import com.traveling.travel_backend.service.CloudinaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +39,11 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -46,6 +52,8 @@ class UserServiceTest {
     @Mock private UserRepository userRepository;
     @Mock private CityRepository cityRepository;
     @Mock private LogRepository logRepository;
+    @Mock private EmailService emailService;
+
     private CloudinaryService cloudinaryService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -70,7 +78,15 @@ class UserServiceTest {
             }
         };
 
-        userService = new UserService(userRepository, cityRepository, logRepository, jwtService, passwordEncoder, cloudinaryService);
+        userService = new UserService(
+                userRepository,
+                cityRepository,
+                logRepository,
+                jwtService,
+                passwordEncoder,
+                cloudinaryService,
+                emailService
+        );
 
         rawPassword = "miPassword123";
         hashedPassword = passwordEncoder.encode(rawPassword);
@@ -81,6 +97,7 @@ class UserServiceTest {
         sampleUser.setPass(hashedPassword);
         sampleUser.setCorreo("carlos@mail.com");
         sampleUser.setState(true);
+        sampleUser.setRole(Role.USER);
     }
 
     @Nested
@@ -97,6 +114,7 @@ class UserServiceTest {
             assertThat(result).hasSize(1);
             assertThat(result.get(0).getUserName()).isEqualTo("carlos_viajero");
             assertThat(result.get(0).getCorreo()).isEqualTo("carlos@mail.com");
+            assertThat(result.get(0).getRole()).isEqualTo("USER");
             verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
         }
 
@@ -119,9 +137,9 @@ class UserServiceTest {
 
             assertThat(result.get(0)).isNotNull();
             assertThat(result.get(0).getUserName()).isNotNull();
+            assertThat(result.get(0).getRole()).isEqualTo("USER");
         }
     }
-
 
     @Nested
     @DisplayName("createUser")
@@ -132,12 +150,14 @@ class UserServiceTest {
         void shouldCreateUserWithoutCity() {
             sampleUser.setCity(null);
             sampleUser.setPass(rawPassword);
+
             when(userRepository.findByUserNameAndStateTrue("carlos_viajero")).thenReturn(Optional.empty());
-            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+            when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
             UserResponseDTO result = userService.createUser(sampleUser);
 
             assertThat(result.getUserName()).isEqualTo("carlos_viajero");
+            assertThat(result.getRole()).isEqualTo("USER");
             verify(userRepository).save(any(User.class));
             verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
         }
@@ -148,16 +168,18 @@ class UserServiceTest {
             City city = new City();
             city.setId(10L);
             city.setName("Cochabamba");
+
             sampleUser.setCity(city);
             sampleUser.setPass(rawPassword);
 
             when(userRepository.findByUserNameAndStateTrue("carlos_viajero")).thenReturn(Optional.empty());
             when(cityRepository.findById(10L)).thenReturn(Optional.of(city));
-            when(userRepository.save(any(User.class))).thenReturn(sampleUser);
+            when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
             UserResponseDTO result = userService.createUser(sampleUser);
 
             assertThat(result).isNotNull();
+            assertThat(result.getRole()).isEqualTo("USER");
             verify(cityRepository).findById(10L);
         }
 
@@ -179,7 +201,8 @@ class UserServiceTest {
         @Test
         @DisplayName("Debe lanzar BadRequestException si el userName ya está en uso")
         void shouldThrowWhenUserNameAlreadyExists() {
-            when(userRepository.findByUserNameAndStateTrue("carlos_viajero")).thenReturn(Optional.of(sampleUser));
+            when(userRepository.findByUserNameAndStateTrue("carlos_viajero"))
+                    .thenReturn(Optional.of(sampleUser));
 
             assertThatThrownBy(() -> userService.createUser(sampleUser))
                     .isInstanceOf(BadRequestException.class);
@@ -210,12 +233,241 @@ class UserServiceTest {
         void shouldNotEncryptWhenPassIsNull() {
             sampleUser.setPass(null);
             sampleUser.setCity(null);
+
             when(userRepository.findByUserNameAndStateTrue("carlos_viajero")).thenReturn(Optional.empty());
-            when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+            when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
             userService.createUser(sampleUser);
 
             assertThat(sampleUser.getPass()).isNull();
+            assertThat(sampleUser.getRole()).isEqualTo(Role.USER);
+        }
+
+        @Test
+        @DisplayName("Debe forzar role USER aunque el body intente enviar SUPERADMIN")
+        void shouldForceUserRoleWhenCreatingPublicUser() {
+            sampleUser.setPass(rawPassword);
+            sampleUser.setCity(null);
+            sampleUser.setRole(Role.SUPERADMIN);
+
+            when(userRepository.findByUserNameAndStateTrue("carlos_viajero")).thenReturn(Optional.empty());
+            when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+            UserResponseDTO result = userService.createUser(sampleUser);
+
+            assertThat(result.getRole()).isEqualTo("USER");
+
+            ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+            verify(userRepository).save(userCaptor.capture());
+
+            User savedUser = userCaptor.getValue();
+
+            assertThat(savedUser.getRole()).isEqualTo(Role.USER);
+        }
+    }
+
+    @Nested
+    @DisplayName("createAdmin")
+    class CreateAdminTests {
+
+        @Test
+        @DisplayName("Debe crear administrador correctamente sin ciudad")
+        void shouldCreateAdminWithoutCity() {
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("admin_nuevo");
+            request.setCorreo("admin@test.com");
+            request.setBirthday("2000-01-01");
+            request.setState(true);
+
+            when(userRepository.findByUserNameAndStateTrue("admin_nuevo")).thenReturn(Optional.empty());
+            when(userRepository.existsByCorreo("admin@test.com")).thenReturn(false);
+            when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+                User user = invocation.getArgument(0);
+                user.setId(10L);
+                return user;
+            });
+
+            UserResponseDTO result = userService.createAdmin(request);
+
+            assertThat(result.getUserName()).isEqualTo("admin_nuevo");
+            assertThat(result.getCorreo()).isEqualTo("admin@test.com");
+            assertThat(result.getRole()).isEqualTo("ADMIN");
+
+            ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+            verify(userRepository).save(userCaptor.capture());
+
+            User savedUser = userCaptor.getValue();
+
+            assertThat(savedUser.getRole()).isEqualTo(Role.ADMIN);
+            assertThat(savedUser.isState()).isTrue();
+            assertThat(savedUser.getPass()).isNotBlank();
+            assertThat(savedUser.getCity()).isNull();
+
+            ArgumentCaptor<String> temporaryPasswordCaptor = ArgumentCaptor.forClass(String.class);
+
+            verify(emailService).sendAdminWelcomeEmail(
+                    eq("admin@test.com"),
+                    eq("admin_nuevo"),
+                    temporaryPasswordCaptor.capture()
+            );
+
+            String temporaryPassword = temporaryPasswordCaptor.getValue();
+
+            assertThat(temporaryPassword).startsWith("Adm-");
+            assertThat(temporaryPassword).hasSize(14);
+            assertThat(passwordEncoder.matches(temporaryPassword, savedUser.getPass())).isTrue();
+
+            verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
+        }
+
+        @Test
+        @DisplayName("Debe crear administrador correctamente con ciudad")
+        void shouldCreateAdminWithCity() {
+            City city = new City();
+            city.setId(5L);
+            city.setName("La Paz");
+
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("admin_ciudad");
+            request.setCorreo("admin_ciudad@test.com");
+            request.setCityId(5L);
+            request.setState(true);
+
+            when(userRepository.findByUserNameAndStateTrue("admin_ciudad")).thenReturn(Optional.empty());
+            when(userRepository.existsByCorreo("admin_ciudad@test.com")).thenReturn(false);
+            when(cityRepository.findById(5L)).thenReturn(Optional.of(city));
+            when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+                User user = invocation.getArgument(0);
+                user.setId(11L);
+                return user;
+            });
+
+            UserResponseDTO result = userService.createAdmin(request);
+
+            assertThat(result.getUserName()).isEqualTo("admin_ciudad");
+            assertThat(result.getRole()).isEqualTo("ADMIN");
+
+            ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+            verify(userRepository).save(userCaptor.capture());
+
+            User savedUser = userCaptor.getValue();
+
+            assertThat(savedUser.getCity()).isEqualTo(city);
+            assertThat(savedUser.getRole()).isEqualTo(Role.ADMIN);
+
+            verify(cityRepository).findById(5L);
+            verify(emailService).sendAdminWelcomeEmail(
+                    eq("admin_ciudad@test.com"),
+                    eq("admin_ciudad"),
+                    any(String.class)
+            );
+        }
+
+        @Test
+        @DisplayName("Debe crear administrador activo por defecto si state es nulo")
+        void shouldCreateAdminActiveByDefaultWhenStateIsNull() {
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("admin_default");
+            request.setCorreo("admin_default@test.com");
+            request.setState(null);
+
+            when(userRepository.findByUserNameAndStateTrue("admin_default")).thenReturn(Optional.empty());
+            when(userRepository.existsByCorreo("admin_default@test.com")).thenReturn(false);
+            when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+                User user = invocation.getArgument(0);
+                user.setId(12L);
+                return user;
+            });
+
+            userService.createAdmin(request);
+
+            ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+            verify(userRepository).save(userCaptor.capture());
+
+            assertThat(userCaptor.getValue().isState()).isTrue();
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el userName está vacío")
+        void shouldThrowWhenAdminUserNameIsBlank() {
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("   ");
+            request.setCorreo("admin@test.com");
+
+            assertThatThrownBy(() -> userService.createAdmin(request))
+                    .isInstanceOf(BadRequestException.class);
+
+            verify(userRepository, never()).save(any());
+            verify(emailService, never()).sendAdminWelcomeEmail(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el correo está vacío")
+        void shouldThrowWhenAdminEmailIsBlank() {
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("admin_nuevo");
+            request.setCorreo("   ");
+
+            assertThatThrownBy(() -> userService.createAdmin(request))
+                    .isInstanceOf(BadRequestException.class)
+                    .hasMessage("El correo es requerido.");
+
+            verify(userRepository, never()).save(any());
+            verify(emailService, never()).sendAdminWelcomeEmail(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el userName ya está en uso")
+        void shouldThrowWhenAdminUserNameAlreadyExists() {
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("admin_existente");
+            request.setCorreo("admin@test.com");
+
+            when(userRepository.findByUserNameAndStateTrue("admin_existente"))
+                    .thenReturn(Optional.of(sampleUser));
+
+            assertThatThrownBy(() -> userService.createAdmin(request))
+                    .isInstanceOf(BadRequestException.class);
+
+            verify(userRepository, never()).save(any());
+            verify(emailService, never()).sendAdminWelcomeEmail(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("Debe lanzar BadRequestException si el correo ya está registrado")
+        void shouldThrowWhenAdminEmailAlreadyExists() {
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("admin_nuevo");
+            request.setCorreo("admin@test.com");
+
+            when(userRepository.findByUserNameAndStateTrue("admin_nuevo")).thenReturn(Optional.empty());
+            when(userRepository.existsByCorreo("admin@test.com")).thenReturn(true);
+
+            assertThatThrownBy(() -> userService.createAdmin(request))
+                    .isInstanceOf(BadRequestException.class);
+
+            verify(userRepository, never()).save(any());
+            verify(emailService, never()).sendAdminWelcomeEmail(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("Debe lanzar ResourceNotFoundException si la ciudad no existe")
+        void shouldThrowWhenAdminCityDoesNotExist() {
+            CreateAdminRequestDTO request = new CreateAdminRequestDTO();
+            request.setUserName("admin_ciudad");
+            request.setCorreo("admin_ciudad@test.com");
+            request.setCityId(99L);
+
+            when(userRepository.findByUserNameAndStateTrue("admin_ciudad")).thenReturn(Optional.empty());
+            when(userRepository.existsByCorreo("admin_ciudad@test.com")).thenReturn(false);
+            when(cityRepository.findById(99L)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> userService.createAdmin(request))
+                    .isInstanceOf(ResourceNotFoundException.class)
+                    .hasMessageContaining("99");
+
+            verify(userRepository, never()).save(any());
+            verify(emailService, never()).sendAdminWelcomeEmail(any(), any(), any());
         }
     }
 
@@ -238,6 +490,11 @@ class UserServiceTest {
             assertThat(response.getUserName()).isEqualTo("carlos_viajero");
             assertThat(response.getCorreo()).isEqualTo("carlos@mail.com");
             assertThat(response.getType()).isEqualTo("Bearer");
+            assertThat(response.getRole()).isEqualTo("USER");
+
+            String extractedRole = jwtService.extractRole(response.getToken());
+            assertThat(extractedRole).isEqualTo("USER");
+
             verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
         }
 
@@ -247,6 +504,7 @@ class UserServiceTest {
             LoginRequest request = new LoginRequest();
             request.setUserName("nadie");
             request.setPass(rawPassword);
+
             when(userRepository.findByUserName("nadie")).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> userService.login(request))
@@ -257,9 +515,11 @@ class UserServiceTest {
         @DisplayName("Debe lanzar UnauthorizedException si el usuario está desactivado")
         void shouldThrowWhenUserIsInactive() {
             sampleUser.setState(false);
+
             LoginRequest request = new LoginRequest();
             request.setUserName("carlos_viajero");
             request.setPass(rawPassword);
+
             when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
 
             assertThatThrownBy(() -> userService.login(request))
@@ -273,6 +533,7 @@ class UserServiceTest {
             LoginRequest request = new LoginRequest();
             request.setUserName("carlos_viajero");
             request.setPass("contrasena_incorrecta");
+
             when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
 
             assertThatThrownBy(() -> userService.login(request))
@@ -348,6 +609,7 @@ class UserServiceTest {
 
             assertThat(result.getUserName()).isEqualTo("carlos_viajero");
             assertThat(result.getCorreo()).isEqualTo("carlos@mail.com");
+            assertThat(result.getRole()).isEqualTo("USER");
             verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
         }
 
@@ -369,6 +631,7 @@ class UserServiceTest {
                     .hasMessageContaining("carlos_viajero");
         }
     }
+
     @Nested
     @DisplayName("changePassword")
     class ChangePasswordTests {
@@ -384,6 +647,7 @@ class UserServiceTest {
         @DisplayName("Debe cambiar la contraseña correctamente")
         void shouldChangePasswordSuccessfully() {
             String newPassword = "nuevaPassword123";
+
             when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
             when(userRepository.save(any(User.class))).thenReturn(sampleUser);
 
@@ -454,11 +718,13 @@ class UserServiceTest {
 
             try {
                 userService.changePassword(authentication, "wrongPass", "nuevaPassword123");
-            } catch (BadRequestException ignored) {}
+            } catch (BadRequestException ignored) {
+            }
 
             verify(userRepository, never()).save(any());
         }
     }
+
     @Nested
     @DisplayName("updateProfile")
     class UpdateProfileTests {
@@ -621,25 +887,40 @@ class UserServiceTest {
             CloudinaryService localCloudinary = new CloudinaryService(null) {
                 @Override
                 public String uploadProfilePicture(
-                        org.springframework.web.multipart.MultipartFile file, Long userId) throws java.io.IOException {
+                        org.springframework.web.multipart.MultipartFile file,
+                        Long userId
+                ) throws IOException {
                     if (cloudinaryShouldFail) {
-                        throw new java.io.IOException("Cloudinary no disponible");
+                        throw new IOException("Cloudinary no disponible");
                     }
+
                     return cloudinaryResult;
                 }
             };
 
-            userService = new UserService(userRepository, cityRepository, logRepository,
-                    jwtService, passwordEncoder, localCloudinary);
+            userService = new UserService(
+                    userRepository,
+                    cityRepository,
+                    logRepository,
+                    jwtService,
+                    passwordEncoder,
+                    localCloudinary,
+                    emailService
+            );
         }
 
         @Test
         @DisplayName("Debe subir la imagen y actualizar profilePictureUrl")
         void shouldUploadAndUpdatePictureUrl() throws IOException {
             cloudinaryResult = "https://res.cloudinary.com/test/image/upload/user_1.jpg";
+
             MockMultipartFile file = new MockMultipartFile(
-                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+                    "file",
+                    "foto.jpg",
+                    "image/jpeg",
+                    new byte[]{1, 2, 3}
             );
+
             when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
             when(userRepository.save(any(User.class))).thenReturn(sampleUser);
 
@@ -654,9 +935,14 @@ class UserServiceTest {
         @DisplayName("Debe lanzar RuntimeException si Cloudinary falla")
         void shouldThrowWhenCloudinaryFails() {
             cloudinaryShouldFail = true;
+
             MockMultipartFile file = new MockMultipartFile(
-                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+                    "file",
+                    "foto.jpg",
+                    "image/jpeg",
+                    new byte[]{1, 2, 3}
             );
+
             when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.of(sampleUser));
 
             assertThatThrownBy(() -> userService.updateProfilePicture(authentication, file))
@@ -668,8 +954,12 @@ class UserServiceTest {
         @DisplayName("Debe lanzar UnauthorizedException si no hay autenticación")
         void shouldThrowWhenAuthIsNull() {
             MockMultipartFile file = new MockMultipartFile(
-                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+                    "file",
+                    "foto.jpg",
+                    "image/jpeg",
+                    new byte[]{1, 2, 3}
             );
+
             assertThatThrownBy(() -> userService.updateProfilePicture(null, file))
                     .isInstanceOf(UnauthorizedException.class)
                     .hasMessage("No autenticado.");
@@ -679,8 +969,12 @@ class UserServiceTest {
         @DisplayName("Debe lanzar BadRequestException si el archivo está vacío")
         void shouldThrowWhenFileIsEmpty() {
             MockMultipartFile emptyFile = new MockMultipartFile(
-                    "file", "foto.jpg", "image/jpeg", new byte[0]
+                    "file",
+                    "foto.jpg",
+                    "image/jpeg",
+                    new byte[0]
             );
+
             assertThatThrownBy(() -> userService.updateProfilePicture(authentication, emptyFile))
                     .isInstanceOf(BadRequestException.class)
                     .hasMessage("No se recibió ninguna imagen.");
@@ -698,8 +992,12 @@ class UserServiceTest {
         @DisplayName("Debe lanzar BadRequestException si el archivo no es una imagen")
         void shouldThrowWhenFileIsNotImage() {
             MockMultipartFile pdfFile = new MockMultipartFile(
-                    "file", "documento.pdf", "application/pdf", new byte[]{1, 2, 3}
+                    "file",
+                    "documento.pdf",
+                    "application/pdf",
+                    new byte[]{1, 2, 3}
             );
+
             assertThatThrownBy(() -> userService.updateProfilePicture(authentication, pdfFile))
                     .isInstanceOf(BadRequestException.class)
                     .hasMessage("El archivo debe ser una imagen.");
@@ -709,8 +1007,12 @@ class UserServiceTest {
         @DisplayName("Debe lanzar ResourceNotFoundException si el usuario no existe")
         void shouldThrowWhenUserNotFound() {
             MockMultipartFile file = new MockMultipartFile(
-                    "file", "foto.jpg", "image/jpeg", new byte[]{1, 2, 3}
+                    "file",
+                    "foto.jpg",
+                    "image/jpeg",
+                    new byte[]{1, 2, 3}
             );
+
             when(userRepository.findByUserName("carlos_viajero")).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> userService.updateProfilePicture(authentication, file))
