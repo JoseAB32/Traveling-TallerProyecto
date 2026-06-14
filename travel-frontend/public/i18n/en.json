@@ -127,10 +127,6 @@
                 "title": "Pin Redirection (PinRedirection)",
                 "description": "Enables automatic navigation when clicking on the markers of the tourist map."
             },
-            "autoCreateItinerary": {
-                "title": "Auto-create Itinerary (AutoCreateItinerary)",
-                "description": "Allows the system to generate automatic travel suggestions based on selected places."
-            }, 
             "showSearchPlaces": {
                     "title": "Search Places (ShowSearchPlaces)",
                     "description": "Shows or hides the search bar for tourist attractions in the application."

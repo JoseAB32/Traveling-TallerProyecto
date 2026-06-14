@@ -53,7 +53,6 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.getFeatures();
 
         assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("autoCreateItinerary", true);
         assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
         assertThat(result).hasSize(4);
@@ -68,7 +67,6 @@ class FeatureServiceTest {
         );
 
         assertThat(savedOnDisk).containsEntry("pinRedirection", true);
-        assertThat(savedOnDisk).containsEntry("autoCreateItinerary", true);
         assertThat(savedOnDisk).containsEntry("showSearchPlaces", true);
         assertThat(savedOnDisk).containsEntry("showFavorites", true);
 
@@ -81,7 +79,6 @@ class FeatureServiceTest {
         File file = tempDir.resolve("features.json").toFile();
         objectMapper.writeValue(file, Map.of(
                 "pinRedirection", true,
-                "autoCreateItinerary", false,
                 "showSearchPlaces", true,
                 "showFavorites", false
         ));
@@ -89,7 +86,6 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.getFeatures();
 
         assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("autoCreateItinerary", false);
         assertThat(result).containsEntry("showFavorites", false);
     }
 
@@ -98,14 +94,12 @@ class FeatureServiceTest {
     void getFeatures_MergesNewKeysIntoExistingFile() throws IOException {
         File file = tempDir.resolve("features.json").toFile();
         objectMapper.writeValue(file, Map.of(
-                "pinRedirection", true,
-                "autoCreateItinerary", false
+                "pinRedirection", true
         ));
 
         Map<String, Boolean> result = featureService.getFeatures();
 
         assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("autoCreateItinerary", false);
         assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
         assertThat(result).hasSize(4);
@@ -117,7 +111,6 @@ class FeatureServiceTest {
     void updateFeatures_SavesAndReturnsUpdatedValues() throws IOException {
         Map<String, Boolean> updated = Map.of(
                 "pinRedirection", true,
-                "autoCreateItinerary", false,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );
@@ -125,7 +118,6 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.updateFeatures(updated);
 
         assertThat(result).containsEntry("pinRedirection", true);
-        assertThat(result).containsEntry("autoCreateItinerary", false);
         assertThat(result).containsEntry("showSearchPlaces", false);
         assertThat(result).containsEntry("showFavorites", true);
     }
@@ -135,7 +127,6 @@ class FeatureServiceTest {
     void updateFeatures_PersistsValuesToFile() throws IOException {
         Map<String, Boolean> updated = Map.of(
                 "pinRedirection", true,
-                "autoCreateItinerary", true,
                 "showSearchPlaces", false,
                 "showFavorites", false
         );
@@ -155,7 +146,6 @@ class FeatureServiceTest {
     void updateFeatures_IgnoresUnknownKeys() throws IOException {
         Map<String, Boolean> withUnknownKeys = new HashMap<>();
         withUnknownKeys.put("pinRedirection", true);
-        withUnknownKeys.put("autoCreateItinerary", false);
         withUnknownKeys.put("showSearchPlaces", true);
         withUnknownKeys.put("showFavorites", false);
         withUnknownKeys.put("keyInventada", true); // key desconocida

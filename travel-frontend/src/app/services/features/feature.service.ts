@@ -5,7 +5,6 @@ import { CONSTANTS } from '../../utils/constants';
 
 export interface Features {
   pinRedirection: boolean;
-  autoCreateItinerary: boolean;
   showSearchPlaces: boolean;
   showFavorites: boolean;
   [key: string]: boolean;
@@ -21,7 +20,6 @@ export class FeatureService {
   // Signal para reactividad - fallback
   private _features = signal<Features>({
     pinRedirection: true,
-    autoCreateItinerary: true,
     showSearchPlaces: true,
     showFavorites: true,
   });

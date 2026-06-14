@@ -31,7 +31,6 @@ public class FeatureControllerTest {
     void getFeatures_Returns200WithFeatureMap() throws IOException {
         Map<String, Boolean> mockFeatures = Map.of(
                 "pinRedirection", false,
-                "autoCreateItinerary", true,
                 "showSearchPlaces", true,
                 "showFavorites", true
         );
@@ -60,13 +59,11 @@ public class FeatureControllerTest {
     void getFeatures_ReturnsExactlyWhatServiceReturns() throws IOException {
         Map<String, Boolean> mockFeatures = new HashMap<>();
         mockFeatures.put("pinRedirection", true);
-        mockFeatures.put("autoCreateItinerary", false);
         when(featureService.getFeatures()).thenReturn(mockFeatures);
 
         ResponseEntity<Map<String, Boolean>> response = featureController.getFeatures();
 
         assertThat(response.getBody()).containsEntry("pinRedirection", true);
-        assertThat(response.getBody()).containsEntry("autoCreateItinerary", false);
     }
 
     @Test
@@ -74,13 +71,11 @@ public class FeatureControllerTest {
     void updateFeatures_Returns200WithUpdatedMap() throws IOException {
         Map<String, Boolean> incoming = Map.of(
                 "pinRedirection", true,
-                "autoCreateItinerary", false,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );
         Map<String, Boolean> serviceResponse = Map.of(
                 "pinRedirection", true,
-                "autoCreateItinerary", false,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );
