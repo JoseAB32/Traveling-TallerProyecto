@@ -12,6 +12,7 @@ public class UserResponseDTO {
     private CityResponseDTO city;
     private String profilePictureUrl;
     private boolean state;
+    private String role;
 
     public UserResponseDTO() {}
 
@@ -24,6 +25,7 @@ public class UserResponseDTO {
         dto.city     = user.getCity() != null ? CityResponseDTO.fromEntity(user.getCity()) : null;
         dto.profilePictureUrl = user.getProfilePictureUrl();
         dto.state    = user.isState();
+        dto.role     = user.getRole() != null ? user.getRole().name() : null;
         return dto;
     }
 
@@ -47,4 +49,7 @@ public class UserResponseDTO {
 
     public boolean isState() { return state; }
     public void setState(boolean state) { this.state = state; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

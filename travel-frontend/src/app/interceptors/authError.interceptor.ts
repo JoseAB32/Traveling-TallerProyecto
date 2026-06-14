@@ -15,13 +15,17 @@ export const authErrorInterceptor: HttpInterceptorFn = (req, next) => {
     //     error: error.error
     //   });
   
-      if (error.status === 401 || error.status === 403) {
+      if (error.status === 401) {
         localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStorage.removeItem('currentUser');
 
         router.navigate(['/login'], {
           queryParams: { sessionExpired: 'true' }
         });
+      }
+
+      if (error.status === 403) {
+        router.navigate(['/InicioLogueado']);
       }
 
       return throwError(() => error);

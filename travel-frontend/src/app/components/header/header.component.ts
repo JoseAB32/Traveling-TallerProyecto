@@ -65,20 +65,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.userSub = this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
+      this.isAdmin = this.authService.isAdmin();
 
       if (this.isLoggedIn) {
         this.loadSearchCache();
         this.userService.getProfile().subscribe({
           next: (data: User) => {
             this.profile = data;
-            },
-            error: (err: HttpErrorResponse) => {
-              console.error('Error cargando perfil', err);
-            }
-          });
+          },
+          error: (err: HttpErrorResponse) => {
+            console.error('Error cargando perfil', err);
+          }
+        });
       }
 
       if (!this.isLoggedIn) {
+        this.isAdmin = false;
         this.isMenuOpen = false;
         this.suggestions = [];
         this.allPlaces = [];

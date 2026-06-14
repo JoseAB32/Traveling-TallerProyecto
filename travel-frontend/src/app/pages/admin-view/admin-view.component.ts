@@ -10,6 +10,7 @@ import { TranslationService } from '../../services/translation/translation.servi
 import { Logger } from '../../models/logger/logger';
 import { Translation } from '../../models/translation/translation';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-admin-view',
@@ -23,11 +24,14 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   private featureService = inject(FeatureService);
   private translationService = inject(TranslationService);
   private translocoService = inject(TranslocoService);
+  private authService = inject(AuthService);
 
   private logSub?: Subscription;
   private translationSub?: Subscription;
   private updateTranslationSub?: Subscription;
 
+
+  isSuperAdmin: boolean =false;
   allLogs: Logger[] = [];
   logs: Logger[] = [];
   activeTab: string = 'logs';
@@ -72,26 +76,64 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   editedTranslatedText: string = '';
 
   ngOnInit(): void {
-    this.setDefaultDates();
-    this.loadAllLogs();
-    this.loadFeatures();
+    this.isSuperAdmin = this.authService.isSuperAdmin();
+
+    this.activeTab = this.isSuperAdmin ? 'logs' : 'translations';
+
+    if (this.isSuperAdmin) {
+      this.setDefaultDates();
+      this.loadAllLogs();
+      this.loadFeatures();
+    }
+
+    if (this.activeTab === 'translations') {
+      this.loadTranslations(0);
+    }
   }
 
   changeAdminTab(tab: string): void {
+    const superAdminTabs = ['logs', 'toggles'];
+
+    if (superAdminTabs.includes(tab) && !this.isSuperAdmin) {
+      this.activeTab = 'translations';
+
+      if (this.translations.length === 0) {
+        this.loadTranslations(0);
+      }
+
+      return;
+    }
+
     this.activeTab = tab;
 
     if (tab === 'translations' && this.translations.length === 0) {
       this.loadTranslations(0);
     }
+
+    if (tab === 'logs' && this.isSuperAdmin && this.allLogs.length === 0) {
+      this.setDefaultDates();
+      this.loadAllLogs();
+    }
+
+    if (tab === 'toggles' && this.isSuperAdmin) {
+      this.loadFeatures();
+    }
   }
 
   loadFeatures(): void {
+    if (!this.isSuperAdmin) {
+      return;
+    }
     this.featureService.loadFeatures().subscribe({
       error: (err) => console.error('Error cargando features', err)
     });
   }
 
   toggleFeature(featureKey: keyof Features): void {
+    if (!this.isSuperAdmin) {
+      return;
+    }
+
     const updated: Features = {
       ...this.featuresData(),
       [featureKey]: !this.featuresData()[featureKey]
@@ -117,6 +159,10 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
+    if (!this.isSuperAdmin) {
+      return;
+    }
+    
     if (this.filterModule && this.filterLevel && this.startDate && this.endDate) {
       this.loggerService
         .getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)

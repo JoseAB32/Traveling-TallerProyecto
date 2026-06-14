@@ -1,5 +1,7 @@
 import { City } from '../city/city';
 
+export type Role = 'USER' | 'ADMIN' | 'SUPERADMIN';
+
 export class User {
     id: number = 0;
     correo: string = "";
@@ -10,4 +12,5 @@ export class User {
     city?: City | null = null;
     profilePictureUrl?: string = "";
     state: boolean = true;
+    role: Role = 'USER';
 }
