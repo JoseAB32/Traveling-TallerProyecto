@@ -35,7 +35,6 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   private translationSub?: Subscription;
   private updateTranslationSub?: Subscription;
 
-  showAdminModal = false;
   isCreatingAdmin = false;
   adminError: string | null = null;
   adminSuccess = false;
@@ -110,15 +109,13 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   }
 
   changeAdminTab(tab: string): void {
-    const superAdminTabs = ['logs', 'toggles'];
+    const superAdminTabs = ['logs', 'toggles', 'createAdmin'];
 
     if (superAdminTabs.includes(tab) && !this.isSuperAdmin) {
       this.activeTab = 'translations';
-
       if (this.translations.length === 0) {
         this.loadTranslations(0);
       }
-
       return;
     }
 
@@ -136,6 +133,18 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     if (tab === 'toggles' && this.isSuperAdmin) {
       this.loadFeatures();
     }
+
+    if (tab === 'createAdmin' && this.isSuperAdmin) {
+      this.resetAdminForm();
+      this.loadCitiesForAdmin();
+    }
+  }
+
+
+  resetAdminForm(): void {
+    this.adminForm = { userName: '', correo: '', birthday: '', cityId: null };
+    this.adminError = null;
+    this.adminSuccess = false;
   }
 
   loadFeatures(): void {
@@ -308,19 +317,6 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  openAdminModal(): void {
-    this.adminForm = { userName: '', correo: '', birthday: '', cityId: null };
-    this.adminError = null;
-    this.adminSuccess = false;
-    this.loadCitiesForAdmin();
-    this.showAdminModal = true;
-  }
-
-  closeAdminModal(): void {
-    this.showAdminModal = false;
-    this.adminError = null;
-    this.adminSuccess = false;
-  }
 
   loadCitiesForAdmin(): void {
     this.isLoadingCities = true;
@@ -332,15 +328,15 @@ export class AdminViewComponent implements OnInit, OnDestroy {
 
   submitCreateAdmin(): void {
     if (!this.adminForm.userName.trim()) {
-      this.adminError = 'admin.usernameRequired';
+      this.adminError = 'adminConfiguration.adminRegister.usernameRequired';
       return;
     }
     if (!this.adminForm.correo.trim()) {
-      this.adminError = 'admin.emailRequired';
+      this.adminError = 'adminConfiguration.adminRegister.emailRequired';
       return;
     }
     if (!this.isValidEmail(this.adminForm.correo)) {
-      this.adminError = 'admin.emailInvalid';
+      this.adminError = 'adminConfiguration.adminRegister.emailInvalid';
       return;
     }
 
@@ -356,11 +352,11 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       next: () => {
         this.isCreatingAdmin = false;
         this.adminSuccess = true;
-        setTimeout(() => this.closeAdminModal(), 2000);
+        setTimeout(() => this.resetAdminForm(), 2000);
       },
       error: (err: HttpErrorResponse) => {
         this.isCreatingAdmin = false;
-        this.adminError = err.status === 400 ? 'admin.fieldTaken' : 'admin.error';
+        this.adminError = err.status === 400 ? 'adminConfiguration.adminRegister.fieldTaken' : 'adminConfiguration.adminRegister.error';
       }
     });
   }

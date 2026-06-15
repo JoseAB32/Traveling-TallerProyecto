@@ -10,30 +10,30 @@
   </div>
 
   <ul class="nav nav-tabs admin-tabs mb-4 border-bottom-0">
-    @if (isSuperAdmin) 
-    {
-      <li class="nav-item">
-        <button class="nav-link text-uppercase fw-bold"
-                [class.active-tab]="activeTab === 'logs'"
-                (click)="changeAdminTab('logs')">
-          <i class="bi bi-list-columns-reverse"></i> {{ 'adminConfiguration.tabs.logs' | transloco }}
-        </button>
-      </li>
-      <li class="nav-item">
-        <button class="nav-link text-uppercase fw-bold"
-                [class.active-tab]="activeTab === 'toggles'"
-                (click)="changeAdminTab('toggles')">
-          <i class="bi bi-toggle-on"></i> {{ 'adminConfiguration.tabs.toggles' | transloco }}
-        </button>
-      </li>
+    @if (isSuperAdmin) {
+    <li class="nav-item">
+      <button class="nav-link text-uppercase fw-bold"
+              [class.active-tab]="activeTab === 'logs'"
+              (click)="changeAdminTab('logs')">
+        <i class="bi bi-list-columns-reverse"></i> {{ 'adminConfiguration.tabs.logs' | transloco }}
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link text-uppercase fw-bold"
+              [class.active-tab]="activeTab === 'toggles'"
+              (click)="changeAdminTab('toggles')">
+        <i class="bi bi-toggle-on"></i> {{ 'adminConfiguration.tabs.toggles' | transloco }}
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link text-uppercase fw-bold"
+              [class.active-tab]="activeTab === 'createAdmin'"
+              (click)="changeAdminTab('createAdmin')">
+        <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.tabs.createAdmin' | transloco }}
+      </button>
+    </li>
+  }
 
-      <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-traveling rounded-pill px-4" (click)="openAdminModal()">
-          <i class="bi bi-person-plus-fill"></i> {{ 'admin.createAdmin' | transloco }}
-        </button>
-      </div>
-    }
-    
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold"
               [class.active-tab]="activeTab === 'translations'"
@@ -396,6 +396,67 @@
     </section>
   }
 
+  @if (activeTab === 'createAdmin') {
+    <div class="card shadow-sm border-0 bg-white p-4">
+
+      <div class="d-flex align-items-center mb-4">
+        <h4 class="text-traveling mb-0">
+          <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.adminRegister.createAdmin' | transloco }}
+        </h4>
+      </div>
+
+      <p class="text-muted small mb-4">{{ 'adminConfiguration.adminRegister.hint' | transloco }}</p>
+
+      <div class="row g-3">
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminUserName' | transloco }} *</label>
+          <input class="form-control" type="text"
+            [(ngModel)]="adminForm.userName"
+            [placeholder]="'adminConfiguration.adminRegister.form.usernamePlaceholder' | transloco"/>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminEmail' | transloco }} *</label>
+          <input class="form-control" type="email"
+            [(ngModel)]="adminForm.correo"
+            [placeholder]="'adminConfiguration.adminRegister.form.emailPlaceholder' | transloco"/>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminBirthday' | transloco }}</label>
+          <input class="form-control" type="date"
+            [(ngModel)]="adminForm.birthday"/>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminCity' | transloco }}</label>
+          <select class="form-select" [(ngModel)]="adminForm.cityId">
+            <option [ngValue]="null">{{ 'adminConfiguration.adminRegister.form.selectCity' | transloco }}</option>
+            @for (city of cities; track city.id) {
+              <option [ngValue]="city.id">{{ city.name }}</option>
+            }
+          </select>
+        </div>
+
+      </div>
+
+      @if (adminError) {
+        <p class="text-danger small mt-3 mb-0">{{ adminError | transloco }}</p>
+      }
+      @if (adminSuccess) {
+        <p class="text-success small mt-3 mb-0 fw-bold">{{ 'adminConfiguration.adminRegister.success' | transloco }}</p>
+      }
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-traveling rounded-pill px-4"
+          (click)="submitCreateAdmin()" [disabled]="isCreatingAdmin">
+          {{ isCreatingAdmin ? ('adminConfiguration.adminRegister.form.saving' | transloco) : ('adminConfiguration.adminRegister.create' | transloco) }}
+        </button>
+      </div>
+
+    </div>
+  }
   @if (showTranslationEditModal && selectedTranslation) {
     <div class="modal fade show d-block modal-backdrop-custom">
       <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -466,80 +527,6 @@
               {{ 'adminConfiguration.modal.close' | transloco }}
             </button>
           </div>
-        </div>
-      </div>
-    </div>
-  }
-
-  @if (showAdminModal) {
-    <div class="modal fade show d-block modal-backdrop-custom">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-
-          <div class="modal-header bg-traveling text-white border-0">
-            <h5 class="modal-title">
-              <i class="bi bi-person-plus-fill"></i> {{ 'admin.createAdmin' | transloco }}
-            </h5>
-            <button type="button" class="btn-close btn-close-white" (click)="closeAdminModal()"></button>
-          </div>
-
-          <div class="modal-body">
-
-            <p class="text-muted small mb-3">{{ 'admin.hint' | transloco }}</p>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold small">{{ 'profile.username' | transloco }} *</label>
-              <input class="form-control" type="text"
-                [(ngModel)]="adminForm.userName"
-                [placeholder]="'profile.usernamePlaceholder' | transloco"/>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold small">{{ 'profile.email' | transloco }} *</label>
-              <input class="form-control" type="email"
-                [(ngModel)]="adminForm.correo"
-                [placeholder]="'profile.emailPlaceholder' | transloco"/>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold small">{{ 'profile.birthday' | transloco }}</label>
-              <input class="form-control" type="date"
-                [(ngModel)]="adminForm.birthday"/>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold small">{{ 'profile.city' | transloco }}</label>
-              <select class="form-select" [(ngModel)]="adminForm.cityId">
-                <option [ngValue]="null">{{ 'profile.selectCity' | transloco }}</option>
-                @for (city of cities; track city.id) {
-                  <option [ngValue]="city.id">{{ city.name }}</option>
-                }
-              </select>
-            </div>
-
-            <div class="alert alert-light border small mb-0">
-              <i class="bi bi-key-fill"></i> {{ 'admin.passwordNote' | transloco }}
-            </div>
-
-            @if (adminError) {
-              <p class="text-danger small mt-3 mb-0">{{ adminError | transloco }}</p>
-            }
-            @if (adminSuccess) {
-              <p class="text-success small mt-3 mb-0 fw-bold">{{ 'admin.success' | transloco }}</p>
-            }
-
-          </div>
-
-          <div class="modal-footer border-0">
-            <button type="button" class="btn btn-outline-secondary rounded-pill px-4" (click)="closeAdminModal()">
-              {{ 'profile.cancel' | transloco }}
-            </button>
-            <button type="button" class="btn btn-traveling rounded-pill px-4"
-              (click)="submitCreateAdmin()" [disabled]="isCreatingAdmin">
-              {{ isCreatingAdmin ? ('profile.saving' | transloco) : ('admin.create' | transloco) }}
-            </button>
-          </div>
-
         </div>
       </div>
     </div>

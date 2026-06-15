@@ -99,7 +99,8 @@
         "tabs": {
             "logs": "Logs de Sistema",
             "toggles": "Feature Toggles",
-            "translations": "Traducciones"
+            "translations": "Traducciones",
+            "createAdmin": "Registrar admin"
         },
         "logs": {
             "filters": {
@@ -181,18 +182,28 @@
                 "cancel": "Cancelar",
                 "save": "Guardar cambios",
                 "emptyText": "El texto traducido no puede estar vacío."
-            },
-            "admin": {
-                "createAdmin":     "Crear administrador",
-                "hint":            "Se enviará una contraseña temporal al correo del nuevo administrador.",
-                "passwordNote":    "La contraseña se genera automáticamente y se envía por correo.",
-                "create":          "Crear",
-                "success":         "Administrador creado correctamente. Se envió la contraseña por correo.",
-                "usernameRequired":"El nombre de usuario es obligatorio.",
-                "emailRequired":   "El correo es obligatorio.",
-                "emailInvalid":    "Ingresa un correo válido.",
-                "fieldTaken":      "El nombre de usuario o correo ya está en uso.",
-                "error":           "Error al crear el administrador."
+            }
+        },
+        "adminRegister": {
+            "createAdmin":     "Crear administrador",
+            "hint":            "Se enviará una contraseña temporal al correo del nuevo administrador.",
+            "passwordNote":    "La contraseña se genera automáticamente y se envía por correo.",
+            "create":          "Crear",
+            "success":         "Administrador creado correctamente. Se envió la contraseña por correo.",
+            "usernameRequired":"El nombre de usuario es obligatorio.",
+            "emailRequired":   "El correo es obligatorio.",
+            "emailInvalid":    "Ingresa un correo válido.",
+            "fieldTaken":      "El nombre de usuario o correo ya está en uso.",
+            "error":           "Error al crear el administrador.",
+            "form": {
+                "adminUserName": "Usuario",
+                "adminEmail": "Correo",
+                "adminBirthday": "Fecha de nacimiento",
+                "adminCity": "Ciudad",                
+                "usernamePlaceholder":"Nombre de usuario",
+                "emailPlaceholder":"Correo electrónico",
+                "selectCity":"Selecciona una ciudad",
+                "saving": "Guardando..."
             }
         }
     },
