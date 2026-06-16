@@ -39,4 +39,8 @@ export class UserService {
     formData.append('file', file);
     return this.httpClient.patch<User>(`${this.baseURL}/profile/picture`, formData);
   }
+
+  createAdmin(data: { userName: string; correo: string; birthday?: string; cityId?: number | null; }): Observable<User> {
+    return this.httpClient.post<User>(`${this.baseURL}/admin`, data);
+  }
 }
