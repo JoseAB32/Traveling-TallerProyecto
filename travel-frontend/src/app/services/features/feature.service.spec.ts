@@ -17,14 +17,12 @@ describe('FeatureService', () => {
   const baseUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.FEATURES;
 
   const mockFeatures: Features = {
-    pinRedirection: true,
     autoCreateItinerary: false,
     showSearchPlaces: true,
     showFavorites: false
   };
 
   const updatedFeatures: Features = {
-    pinRedirection: false,
     autoCreateItinerary: true,
     showSearchPlaces: false,
     showFavorites: true
@@ -53,7 +51,6 @@ describe('FeatureService', () => {
 
   it('should have default cached features', () => {
     expect(service.features()).toEqual({
-      pinRedirection: true,
       autoCreateItinerary: true,
       showSearchPlaces: true,
       showFavorites: true
@@ -72,7 +69,6 @@ describe('FeatureService', () => {
     req.flush(mockFeatures);
 
     expect(service.features()).toEqual(mockFeatures);
-    expect(service.isEnabled('pinRedirection')).toBe(true);
     expect(service.isEnabled('autoCreateItinerary')).toBe(false);
     expect(service.isEnabled('showSearchPlaces')).toBe(true);
     expect(service.isEnabled('showFavorites')).toBe(false);
@@ -84,7 +80,6 @@ describe('FeatureService', () => {
     const req = httpMock.expectOne(baseUrl);
     req.flush(mockFeatures);
 
-    expect(service.isEnabled('pinRedirection')).toBe(true);
     expect(service.isEnabled('showSearchPlaces')).toBe(true);
   });
 
@@ -120,7 +115,6 @@ describe('FeatureService', () => {
     req.flush(updatedFeatures);
 
     expect(service.features()).toEqual(updatedFeatures);
-    expect(service.isEnabled('pinRedirection')).toBe(false);
     expect(service.isEnabled('autoCreateItinerary')).toBe(true);
     expect(service.isEnabled('showSearchPlaces')).toBe(false);
     expect(service.isEnabled('showFavorites')).toBe(true);
