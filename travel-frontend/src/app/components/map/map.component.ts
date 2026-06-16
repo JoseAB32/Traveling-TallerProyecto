@@ -113,7 +113,7 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
       });
 
       marker.on('click', () => {
-        if (this.forcePlaceClick || this.featureService.isEnabled('pinRedirection')) {
+        if (this.forcePlaceClick) {
           this.placeClicked.emit(place);
         }
       });
