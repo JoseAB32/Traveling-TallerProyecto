@@ -7,6 +7,9 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { LoggerService } from '../../services/logger/logger.service';
 import { FeatureService, Features } from '../../services/features/feature.service';
 import { TranslationService } from '../../services/translation/translation.service';
+import { UserService } from '../../services/user/user.service';
+import { CityService } from '../../services/city/city.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Logger } from '../../models/logger/logger';
 import { Translation } from '../../models/translation/translation';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
@@ -25,11 +28,25 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   private translationService = inject(TranslationService);
   private translocoService = inject(TranslocoService);
   private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private cityService = inject(CityService);
 
   private logSub?: Subscription;
   private translationSub?: Subscription;
   private updateTranslationSub?: Subscription;
 
+  isCreatingAdmin = false;
+  adminError: string | null = null;
+  adminSuccess = false;
+  cities: any[] = [];
+  isLoadingCities = false;
+  
+  adminForm = {
+    userName: '',
+    correo:   '',
+    birthday: '',
+    cityId:   null as number | null
+  };
 
   isSuperAdmin: boolean =false;
   allLogs: Logger[] = [];
@@ -92,15 +109,13 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   }
 
   changeAdminTab(tab: string): void {
-    const superAdminTabs = ['logs', 'toggles'];
+    const superAdminTabs = ['logs', 'toggles', 'createAdmin'];
 
     if (superAdminTabs.includes(tab) && !this.isSuperAdmin) {
       this.activeTab = 'translations';
-
       if (this.translations.length === 0) {
         this.loadTranslations(0);
       }
-
       return;
     }
 
@@ -118,6 +133,18 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     if (tab === 'toggles' && this.isSuperAdmin) {
       this.loadFeatures();
     }
+
+    if (tab === 'createAdmin' && this.isSuperAdmin) {
+      this.resetAdminForm();
+      this.loadCitiesForAdmin();
+    }
+  }
+
+
+  resetAdminForm(): void {
+    this.adminForm = { userName: '', correo: '', birthday: '', cityId: null };
+    this.adminError = null;
+    this.adminSuccess = false;
   }
 
   loadFeatures(): void {
@@ -290,6 +317,53 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  loadCitiesForAdmin(): void {
+    this.isLoadingCities = true;
+    this.cityService.getCities().subscribe({
+      next: (data) => { this.cities = data; this.isLoadingCities = false; },
+      error: ()   => { this.isLoadingCities = false; }
+    });
+  }
+
+  submitCreateAdmin(): void {
+    if (!this.adminForm.userName.trim()) {
+      this.adminError = 'adminConfiguration.adminRegister.usernameRequired';
+      return;
+    }
+    if (!this.adminForm.correo.trim()) {
+      this.adminError = 'adminConfiguration.adminRegister.emailRequired';
+      return;
+    }
+    if (!this.isValidEmail(this.adminForm.correo)) {
+      this.adminError = 'adminConfiguration.adminRegister.emailInvalid';
+      return;
+    }
+
+    this.isCreatingAdmin = true;
+    this.adminError = null;
+
+    this.userService.createAdmin({
+      userName: this.adminForm.userName.trim(),
+      correo:   this.adminForm.correo.trim(),
+      birthday: this.adminForm.birthday || undefined,
+      cityId:   this.adminForm.cityId   || null
+    }).subscribe({
+      next: () => {
+        this.isCreatingAdmin = false;
+        this.adminSuccess = true;
+        setTimeout(() => this.resetAdminForm(), 2000);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isCreatingAdmin = false;
+        this.adminError = err.status === 400 ? 'adminConfiguration.adminRegister.fieldTaken' : 'adminConfiguration.adminRegister.error';
+      }
+    });
+  }
+
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
   setDefaultDates(): void {
     const now = new Date();
     const fiveDaysAgo = new Date();
