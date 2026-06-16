@@ -25,7 +25,15 @@
         <i class="bi bi-toggle-on"></i> {{ 'adminConfiguration.tabs.toggles' | transloco }}
       </button>
     </li>
+    <li class="nav-item">
+      <button class="nav-link text-uppercase fw-bold"
+              [class.active-tab]="activeTab === 'createAdmin'"
+              (click)="changeAdminTab('createAdmin')">
+        <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.tabs.createAdmin' | transloco }}
+      </button>
+    </li>
   }
+
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold"
               [class.active-tab]="activeTab === 'translations'"
@@ -376,6 +384,67 @@
     </section>
   }
 
+  @if (activeTab === 'createAdmin') {
+    <div class="card shadow-sm border-0 bg-white p-4">
+
+      <div class="d-flex align-items-center mb-4">
+        <h4 class="text-traveling mb-0">
+          <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.adminRegister.createAdmin' | transloco }}
+        </h4>
+      </div>
+
+      <p class="text-muted small mb-4">{{ 'adminConfiguration.adminRegister.hint' | transloco }}</p>
+
+      <div class="row g-3">
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminUserName' | transloco }} *</label>
+          <input class="form-control" type="text"
+            [(ngModel)]="adminForm.userName"
+            [placeholder]="'adminConfiguration.adminRegister.form.usernamePlaceholder' | transloco"/>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminEmail' | transloco }} *</label>
+          <input class="form-control" type="email"
+            [(ngModel)]="adminForm.correo"
+            [placeholder]="'adminConfiguration.adminRegister.form.emailPlaceholder' | transloco"/>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminBirthday' | transloco }}</label>
+          <input class="form-control" type="date"
+            [(ngModel)]="adminForm.birthday"/>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminCity' | transloco }}</label>
+          <select class="form-select" [(ngModel)]="adminForm.cityId">
+            <option [ngValue]="null">{{ 'adminConfiguration.adminRegister.form.selectCity' | transloco }}</option>
+            @for (city of cities; track city.id) {
+              <option [ngValue]="city.id">{{ city.name }}</option>
+            }
+          </select>
+        </div>
+
+      </div>
+
+      @if (adminError) {
+        <p class="text-danger small mt-3 mb-0">{{ adminError | transloco }}</p>
+      }
+      @if (adminSuccess) {
+        <p class="text-success small mt-3 mb-0 fw-bold">{{ 'adminConfiguration.adminRegister.success' | transloco }}</p>
+      }
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-traveling rounded-pill px-4"
+          (click)="submitCreateAdmin()" [disabled]="isCreatingAdmin">
+          {{ isCreatingAdmin ? ('adminConfiguration.adminRegister.form.saving' | transloco) : ('adminConfiguration.adminRegister.create' | transloco) }}
+        </button>
+      </div>
+
+    </div>
+  }
   @if (showTranslationEditModal && selectedTranslation) {
     <div class="modal fade show d-block modal-backdrop-custom">
       <div class="modal-dialog modal-dialog-centered modal-lg">

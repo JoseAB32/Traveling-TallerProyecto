@@ -99,7 +99,8 @@
         "tabs": {
             "logs": "System Logs",
             "toggles": "Feature Toggles",
-            "translations": "Translations"
+            "translations": "Translations",
+            "createAdmin": "Register admin"
         },
         "logs": {
             "filters": {
@@ -177,6 +178,28 @@
                 "cancel": "Cancel",
                 "save": "Save changes",
                 "emptyText": "Translated text cannot be empty."
+            }
+        },
+        "adminRegister": {
+            "createAdmin":     "Create administrator",
+            "hint":            "A temporary password will be sent to the new administrator's email.",
+            "passwordNote":    "Password is auto-generated and sent by email.",
+            "create":          "Create",
+            "success":         "Administrator created successfully. Password sent by email.",
+            "usernameRequired":"Username is required.",
+            "emailRequired":   "Email is required.",
+            "emailInvalid":    "Enter a valid email.",
+            "fieldTaken":      "Username or email already in use.",
+            "error":           "Error creating administrator.",
+            "form": {
+                "adminUserName": "Username",
+                "adminEmail": "Email",
+                "adminBirthday": "Birthday",
+                "adminCity": "City",
+                "usernamePlaceholder":"Username",
+                "emailPlaceholder":"Email",
+                "selectCity":"Select a city",
+                "saving":"Saving..."
             }
         }
     },

@@ -362,7 +362,7 @@ public class UserService {
         admin.setUserName(trimmedUserName);
         admin.setCorreo(trimmedCorreo);
         admin.setBirthday(request.getBirthday());
-        admin.setProfilePictureUrl(request.getProfilePictureUrl());
+        admin.setProfilePictureUrl(null);
         admin.setState(request.getState() != null ? request.getState() : true);
         admin.setRole(Role.ADMIN);
 

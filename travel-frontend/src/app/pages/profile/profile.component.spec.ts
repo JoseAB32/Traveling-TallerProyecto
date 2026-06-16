@@ -37,7 +37,8 @@ const mockProfile: User = {
   correo: 'ana@example.com',
   birthday: '1995-04-12',
   city: { id: 2, name: 'Cochabamba', state: true },
-  state: true
+  state: true,
+  role:'USER'
 };
 
 describe('ProfileComponent', () => {
@@ -487,15 +488,15 @@ describe('ProfileComponent', () => {
       expect(component.photoError).toBeNull();
     });
 
-    it('debe rechazar archivo mayor a 5MB con error photoTooLarge', () => {
-      const bigFile = new File([new Uint8Array(6 * 1024 * 1024)], 'grande.jpg', { type: 'image/jpeg' });
+  it('debe rechazar archivo mayor a 5MB con error photoTooLarge', () => {
+    const bigFile = new File([new Uint8Array(6 * 1024 * 1024)], 'grande.jpg', { type: 'image/jpeg' });
 
-      component.uploadProfilePicture(bigFile);
+    component.showPreview(bigFile);
 
-      expect(updatePictureMock).not.toHaveBeenCalled();
-      expect(component.photoError).toBe('profile.photoTooLarge');
-      expect(component.isUploadingPhoto).toBe(false);
-    });
+    expect(updatePictureMock).not.toHaveBeenCalled();
+    expect(component.photoError).toBe('profile.photoTooLarge');
+    expect(component.isUploadingPhoto).toBe(false);
+  });
 
     it('debe mostrar error photoInvalidType si el backend responde 400', () => {
       const file = new File([new Uint8Array([1, 2, 3])], 'foto.jpg', { type: 'image/jpeg' });
