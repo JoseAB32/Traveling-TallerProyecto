@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlaceService } from '../../services/place/place.service';
-import { MapComponent } from '../../components/map/map.component'
+import { MapComponent } from '../../components/map/map.component';
 import { HeaderComponent } from "../../components/header/header.component";
 import { FooterComponent } from "../../components/footer/footer.component";
 import { Place } from '../../models/place/place';
@@ -109,21 +109,18 @@ export class DepartmentComponent implements OnInit {
   onMapClicked(place: any) {
     this.clickedPlaceFromMap = place;
 
-    if (this.featureService.isEnabled('pinRedirection')) {
-
-      if (this.isMobileView()) {
-        this.selectedPlaceFromMap = place;
-        this.placeId = place.id;
-        return;
-      }
-
-      this.router.navigate(['/place', place.id], {
-        queryParams: {
-          returnTo: 'department',
-          cityId: this.departmentId
-        }
-      });
+    if (this.isMobileView()) {
+      this.selectedPlaceFromMap = place;
+      this.placeId = place.id;
+      return;
     }
+
+    this.router.navigate(['/place', place.id], {
+      queryParams: {
+        returnTo: 'department',
+        cityId: this.departmentId
+      }
+    });
   }
 
   private isMobileView(): boolean {

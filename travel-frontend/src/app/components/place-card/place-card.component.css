@@ -111,3 +111,107 @@
     border-radius: 10px;
   }
 }
+
+/* ========================================
+   DARK MODE - PLACE CARD
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+}
+
+/* Card base */
+:host-context(.dark-mode) .card-container {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
+}
+
+/* Variante azul */
+:host-context(.dark-mode) .theme-blue {
+  background-color: #082b47;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.18);
+}
+
+/* Variante naranja */
+:host-context(.dark-mode) .theme-orange {
+  background-color: #3a2a22;
+  color: #ffb287;
+  border: 1px solid rgba(255, 178, 135, 0.22);
+}
+
+/* Imagen */
+:host-context(.dark-mode) .white-frame {
+  background: #0b2235;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.42);
+}
+
+:host-context(.dark-mode) .white-frame img {
+  filter: brightness(0.92);
+}
+
+/* Header */
+:host-context(.dark-mode) .card-header h3 {
+  color: inherit;
+}
+
+/* Corazón */
+:host-context(.dark-mode) .theme-blue .heart-icon {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .theme-blue .heart-icon:hover {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .theme-orange .heart-icon {
+  color: #ffb287;
+}
+
+:host-context(.dark-mode) .theme-orange .heart-icon:hover {
+  color: var(--atomic-tangerine);
+}
+
+/* Estrellas */
+:host-context(.dark-mode) .stars-container {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .theme-blue .stars-container {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .theme-orange .stars-container {
+  color: #ffb287;
+}
+
+/* Descripción */
+:host-context(.dark-mode) .label {
+  color: inherit;
+}
+
+:host-context(.dark-mode) .description-container p {
+  color: inherit;
+}
+
+/* Botón ver más - card azul */
+:host-context(.dark-mode) .theme-blue .btn-ver-mas {
+  background: var(--peach-glow);
+  color: #061826;
+}
+
+:host-context(.dark-mode) .theme-blue .btn-ver-mas:hover {
+  background: var(--atomic-tangerine);
+  color: white;
+}
+
+/* Botón ver más - card naranja */
+:host-context(.dark-mode) .theme-orange .btn-ver-mas {
+  background: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .theme-orange .btn-ver-mas:hover {
+  background: transparent;
+  color: var(--atomic-tangerine);
+  border: 1px solid var(--atomic-tangerine);
+}

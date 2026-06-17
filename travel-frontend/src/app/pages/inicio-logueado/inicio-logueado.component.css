@@ -380,3 +380,105 @@
     }
 
 }
+
+/* DARK MODE - INICIO LOGUEADO */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .main-content {
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .mapa-texto {
+  color: var(--beige) !important;
+}
+
+:host-context(.dark-mode) .mapa-container svg path {
+  color: #2d5b7a;
+}
+
+:host-context(.dark-mode) .mapa-container svg path:hover {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .text-orange {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .bg-blue-dark {
+  background-color: #082b47 !important;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .bg-blue-dark svg {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .bg-orange-soft {
+  background-color: #3a2a22 !important;
+  color: #ffb287;
+}
+
+:host-context(.dark-mode) .text-different {
+  color: #ffb287;
+}
+
+:host-context(.dark-mode) .cta-section {
+  background-color: #082b47;
+  border-top: 5px solid #061826;
+}
+
+:host-context(.dark-mode) .carousel-btn svg {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .btn-indicador {
+  background-color: #4c6b82;
+}
+
+:host-context(.dark-mode) .btn-indicador.active {
+  background-color: var(--atomic-tangerine);
+}
+
+@media (max-width: 450px) {
+  :host-context(.dark-mode) .pando {
+    fill: #21445e !important;
+  }
+
+  :host-context(.dark-mode) .beni {
+    fill: #2d5b7a !important;
+  }
+
+  :host-context(.dark-mode) .lapaz {
+    fill: #3f789e !important;
+  }
+
+  :host-context(.dark-mode) .oruro {
+    fill: #2d5b7a !important;
+  }
+
+  :host-context(.dark-mode) .potosi {
+    fill: #3f789e !important;
+  }
+
+  :host-context(.dark-mode) .cochabamba {
+    fill: #21445e !important;
+  }
+
+  :host-context(.dark-mode) .chuquisaca {
+    fill: #2d5b7a !important;
+  }
+
+  :host-context(.dark-mode) .tarija {
+    fill: #21445e !important;
+  }
+
+  :host-context(.dark-mode) .santacruz {
+    fill: #3f789e !important;
+  }
+}

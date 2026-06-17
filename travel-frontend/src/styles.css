@@ -29,3 +29,12 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+body {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body.dark-mode {
+  background-color: #061826;
+  color: #EFEFD0;
+}
