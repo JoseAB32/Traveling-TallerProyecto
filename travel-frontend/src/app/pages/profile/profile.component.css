@@ -719,3 +719,276 @@
   }
   .drop-zone { padding: 2rem 1rem; }
 }
+
+/* ========================================
+   DARK MODE - PROFILE PAGE
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+
+  --steel-08: rgba(247, 197, 159, 0.08);
+  --steel-20: rgba(247, 197, 159, 0.22);
+  --text-muted: #b8c7d6;
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+:host-context(.dark-mode) .profile-page {
+  background-color: #061826;
+  color: var(--beige);
+}
+
+/* Loading / error */
+:host-context(.dark-mode) .profile-loading,
+:host-context(.dark-mode) .profile-error {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .spinner {
+  border-color: rgba(247, 197, 159, 0.2);
+  border-top-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .btn-retry {
+  background: var(--atomic-tangerine);
+  color: white;
+}
+
+/* Card principal */
+:host-context(.dark-mode) .id-card {
+  background: #0b2235;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
+}
+
+:host-context(.dark-mode) .id-left {
+  background: #06263f;
+}
+
+:host-context(.dark-mode) .id-avatar {
+  background: #102f49;
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .avatar-icon {
+  fill: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .avatar-overlay {
+  background: rgba(6, 24, 38, 0.65);
+}
+
+:host-context(.dark-mode) .btn-camera {
+  background: var(--atomic-tangerine);
+  border-color: #0b2235;
+}
+
+:host-context(.dark-mode) .id-username {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .id-badge {
+  background: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .id-badge--empty {
+  background: rgba(247, 197, 159, 0.16);
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .id-divider {
+  background: rgba(247, 197, 159, 0.15);
+}
+
+:host-context(.dark-mode) .id-right {
+  background-color: #102f49;
+}
+
+:host-context(.dark-mode) .id-section-title,
+:host-context(.dark-mode) .field-label {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .field-value {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .id-field {
+  border-bottom-color: rgba(247, 197, 159, 0.14);
+}
+
+/* Botón configuración */
+:host-context(.dark-mode) .btn-edit {
+  border-color: rgba(247, 197, 159, 0.28);
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .btn-edit:hover,
+:host-context(.dark-mode) .btn-edit.active {
+  border-color: var(--atomic-tangerine);
+  background: rgba(255, 107, 53, 0.12);
+}
+
+:host-context(.dark-mode) .icon-gear {
+  fill: var(--peach-glow);
+}
+
+/* Dropdown */
+:host-context(.dark-mode) .gear-dropdown {
+  background: #0b2235;
+  border-color: rgba(247, 197, 159, 0.22);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
+}
+
+:host-context(.dark-mode) .dropdown-item {
+  background-color: #0b2235;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .dropdown-item:not(:last-child) {
+  border-bottom-color: rgba(247, 197, 159, 0.15);
+}
+
+:host-context(.dark-mode) .dropdown-item:hover {
+  background: #15344f;
+}
+
+/* Modal general */
+:host-context(.dark-mode) .modal-overlay,
+:host-context(.dark-mode) .photo-panel-overlay {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+:host-context(.dark-mode) .modal,
+:host-context(.dark-mode) .photo-panel {
+  background: #0b2235;
+  color: var(--beige);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45);
+}
+
+:host-context(.dark-mode) .modal-header,
+:host-context(.dark-mode) .modal-footer,
+:host-context(.dark-mode) .photo-panel-header {
+  border-color: rgba(247, 197, 159, 0.18);
+}
+
+:host-context(.dark-mode) .modal-title,
+:host-context(.dark-mode) .photo-panel-title {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .modal-close {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .modal-close:hover {
+  color: var(--atomic-tangerine);
+}
+
+/* Inputs de modal */
+:host-context(.dark-mode) .form-label {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .form-input,
+:host-context(.dark-mode) .form-select {
+  background-color: #102f49;
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.28);
+}
+
+:host-context(.dark-mode) .form-input:focus,
+:host-context(.dark-mode) .form-select:focus {
+  border-color: var(--atomic-tangerine);
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+}
+
+:host-context(.dark-mode) .form-input::placeholder {
+  color: #9fb1c3;
+}
+
+:host-context(.dark-mode) .form-select option {
+  background-color: #102f49;
+  color: var(--beige);
+}
+
+/* Flecha del select en dark */
+:host-context(.dark-mode) .form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23F7C59F' d='M8 11L2 5h12z'/%3E%3C/svg%3E");
+}
+
+:host-context(.dark-mode) .btn-eye {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .btn-eye:hover {
+  color: var(--atomic-tangerine);
+}
+
+/* Botones modal */
+:host-context(.dark-mode) .btn-cancel {
+  border-color: rgba(247, 197, 159, 0.28);
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .btn-cancel:hover {
+  background: rgba(247, 197, 159, 0.08);
+}
+
+:host-context(.dark-mode) .btn-confirm {
+  background: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .btn-confirm:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* Panel de foto */
+:host-context(.dark-mode) .drop-zone {
+  border-color: rgba(247, 197, 159, 0.28);
+  background: rgba(16, 47, 73, 0.5);
+}
+
+:host-context(.dark-mode) .drop-zone:hover,
+:host-context(.dark-mode) .photo-panel.drag-over .drop-zone {
+  border-color: var(--atomic-tangerine);
+  background: rgba(255, 107, 53, 0.12);
+}
+
+:host-context(.dark-mode) .drop-icon {
+  fill: #b8c7d6;
+}
+
+:host-context(.dark-mode) .drop-zone:hover .drop-icon,
+:host-context(.dark-mode) .photo-panel.drag-over .drop-icon {
+  fill: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .drop-text {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .drop-hint {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .preview-img {
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .avatar-spinner {
+  border-color: rgba(247, 197, 159, 0.2);
+  border-top-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .photo-error,
+:host-context(.dark-mode) .form-error {
+  color: #ff8b8b;
+}
+
+:host-context(.dark-mode) .form-success {
+  color: #86efac;
+}

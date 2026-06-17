@@ -62,3 +62,46 @@ svg {
         width: 80%;
     }
 }
+
+/* ========================================
+   DARK MODE - SUCCESS SIGNUP
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .content {
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .success-container {
+  background-color: #0b2235;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.18);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.42);
+}
+
+:host-context(.dark-mode) svg {
+  color: #86efac;
+}
+
+:host-context(.dark-mode) .success-container h2 {
+  color: #86efac;
+}
+
+:host-context(.dark-mode) .success-container p {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .success-container a {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .success-container a:hover {
+  color: var(--peach-glow);
+  text-decoration: underline;
+}

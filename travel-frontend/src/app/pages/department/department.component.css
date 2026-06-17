@@ -274,3 +274,171 @@ main.container {
     padding-right: 0 !important;
   }
 }
+
+/* ========================================
+   DARK MODE - DEPARTMENT PAGE
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) main.container,
+:host-context(.dark-mode) .container {
+  background-color: #061826;
+  color: var(--beige);
+}
+
+/* Loading */
+:host-context(.dark-mode) .text-muted {
+  color: #b8c7d6 !important;
+}
+
+:host-context(.dark-mode) .spinner-border.text-primary {
+  color: var(--atomic-tangerine) !important;
+}
+
+/* Textos principales */
+:host-context(.dark-mode) .text-traveling-orange {
+  color: var(--atomic-tangerine) !important;
+}
+
+:host-context(.dark-mode) .text-traveling-blue {
+  color: var(--peach-glow) !important;
+}
+
+/* Este h3 tiene style="color: #000;" en el HTML, por eso va con !important */
+:host-context(.dark-mode) .default-content h3 {
+  color: var(--beige) !important;
+}
+
+/* Botón naranja */
+:host-context(.dark-mode) .btn-traveling-orange {
+  background-color: var(--atomic-tangerine);
+  color: white;
+  border: 2px solid var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .btn-traveling-orange:hover {
+  background-color: transparent;
+  color: var(--atomic-tangerine);
+  box-shadow: 0 5px 15px rgba(255, 107, 53, 0.35) !important;
+}
+
+/* Mapa */
+:host-context(.dark-mode) .map-wrapper {
+  background-color: #0b2235 !important;
+  border-color: rgba(247, 197, 159, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Si el mapa es Leaflet */
+:host-context(.dark-mode) .map-wrapper ::ng-deep .leaflet-tile {
+  filter: brightness(0.75) contrast(1.08) saturate(0.9);
+}
+
+:host-context(.dark-mode) .map-wrapper ::ng-deep .leaflet-control,
+:host-context(.dark-mode) .map-wrapper ::ng-deep .leaflet-popup-content-wrapper,
+:host-context(.dark-mode) .map-wrapper ::ng-deep .leaflet-popup-tip {
+  background-color: #0b2235;
+  color: var(--beige);
+}
+
+/* Tarjeta dinámica del mapa */
+:host-context(.dark-mode) .info-card-blue {
+  background-color: #082b47;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.22);
+}
+
+:host-context(.dark-mode) .info-card-blue hr {
+  border-color: rgba(247, 197, 159, 0.55) !important;
+}
+
+:host-context(.dark-mode) .info-card-blue .text-white {
+  color: var(--beige) !important;
+}
+
+:host-context(.dark-mode) .btn-mas {
+  background-color: var(--peach-glow);
+  color: #061826;
+}
+
+:host-context(.dark-mode) .btn-mas:hover {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+/* Tarjetas de lugares */
+:host-context(.dark-mode) .custom-card-blue {
+  background-color: #082b47;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.18) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38) !important;
+}
+
+:host-context(.dark-mode) .custom-card-peach {
+  background-color: #3a2a22;
+  color: #ffb287;
+  border: 1px solid rgba(255, 178, 135, 0.22) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38) !important;
+}
+
+:host-context(.dark-mode) .custom-card-peach h3,
+:host-context(.dark-mode) .custom-card-peach .text-traveling-blue {
+  color: #ffb287 !important;
+}
+
+:host-context(.dark-mode) .custom-card-peach .text-traveling-blue i,
+:host-context(.dark-mode) .custom-card-peach .text-traveling-blue span {
+  color: #ffb287 !important;
+}
+
+:host-context(.dark-mode) .custom-card-blue .text-white {
+  color: var(--peach-glow) !important;
+}
+
+/* Imágenes tipo polaroid */
+:host-context(.dark-mode) .tilted-img-left,
+:host-context(.dark-mode) .tilted-img-right {
+  border-color: #0b2235;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45) !important;
+  filter: brightness(0.92);
+}
+
+:host-context(.dark-mode) .tilted-img-left:hover,
+:host-context(.dark-mode) .tilted-img-right:hover {
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.55) !important;
+}
+
+/* Burbujas de reseña */
+:host-context(.dark-mode) .review-bubble {
+  background-color: #0b2235 !important;
+  color: var(--beige) !important;
+  border: 1px solid rgba(247, 197, 159, 0.18);
+}
+
+:host-context(.dark-mode) .review-bubble p {
+  color: var(--beige) !important;
+}
+
+:host-context(.dark-mode) .review-bubble .text-muted {
+  color: #b8c7d6 !important;
+}
+
+/* Empty */
+:host-context(.dark-mode) .display-1.text-muted,
+:host-context(.dark-mode) h2.text-muted {
+  color: #b8c7d6 !important;
+}
+
+/* Bootstrap helpers que aparecen en el HTML */
+:host-context(.dark-mode) .bg-white {
+  background-color: #0b2235 !important;
+}
+
+:host-context(.dark-mode) .text-dark {
+  color: var(--beige) !important;
+}
