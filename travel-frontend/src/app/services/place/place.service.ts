@@ -16,7 +16,7 @@ export interface CreatePlaceRequest {
   is_event: boolean;
   start_date: string | null;
   end_date: string | null;
-  image_url?: string | null;
+  images?: File[] | null;
 }
 
 @Injectable({
@@ -61,6 +61,33 @@ export class PlaceService {
   }
 
   createPlace(payload: CreatePlaceRequest): Observable<Place> {
-    return this.httpClient.post<Place>(this.baseUrl, payload);
+    const formData = new FormData();
+
+    formData.append('name', payload.name);
+    formData.append('description', payload.description);
+    formData.append('address', payload.address);
+    formData.append('price', String(payload.price));
+    formData.append('latitude', String(payload.latitude));
+    formData.append('longitude', String(payload.longitude));
+
+    formData.append('placeType', payload.place_type);
+    formData.append('cityId', String(payload.city_id));
+    formData.append('isEvent', String(payload.is_event));
+
+    if (payload.is_event && payload.start_date) {
+      formData.append('startDate', payload.start_date);
+    }
+
+    if (payload.is_event && payload.end_date) {
+      formData.append('endDate', payload.end_date);
+    }
+
+    if (payload.images && payload.images.length > 0) {
+      payload.images.forEach((image) => {
+        formData.append('images', image);
+      });
+    }
+
+    return this.httpClient.post<Place>(this.baseUrl, formData);
   }
 }

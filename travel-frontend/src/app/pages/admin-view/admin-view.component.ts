@@ -116,6 +116,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   isCreatingPlace = false;
   createPlaceError: string | null = null;
   createPlaceSuccess = false;
+  selectedPlaceImages: File[] = [];
 
   placeForm = {
     name: '',
@@ -128,8 +129,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     city_id: null as number | null,
     is_event: false,
     start_date: null as string | null,
-    end_date: null as string | null,
-    image_url: ''
+    end_date: null as string | null
   };
 
   ngOnInit(): void {
@@ -441,6 +441,44 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       }
     });
   }
+    onPlaceImagesSelected(event: Event): void {
+    this.createPlaceError = null;
+
+    const input = event.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+
+    if (files.length === 0) {
+      this.selectedPlaceImages = [];
+      return;
+    }
+
+    if (files.length > 5) {
+      this.selectedPlaceImages = [];
+      this.createPlaceError = 'Solo se permite subir hasta 5 imágenes por lugar turístico.';
+      input.value = '';
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024;
+
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) {
+        this.selectedPlaceImages = [];
+        this.createPlaceError = 'Todos los archivos seleccionados deben ser imágenes.';
+        input.value = '';
+        return;
+      }
+
+      if (file.size > maxSize) {
+        this.selectedPlaceImages = [];
+        this.createPlaceError = 'Cada imagen no debe superar los 5 MB.';
+        input.value = '';
+        return;
+      }
+    }
+
+    this.selectedPlaceImages = files;
+  }
 
   submitCreatePlace(): void {
     this.createPlaceError = null;
@@ -472,8 +510,8 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       is_event: Boolean(this.placeForm.is_event),
       start_date: this.placeForm.is_event ? this.placeForm.start_date : null,
       end_date: this.placeForm.is_event ? this.placeForm.end_date : null,
-      image_url: this.placeForm.image_url || null
-    };
+      images: this.selectedPlaceImages
+  };
 
     this.isCreatingPlace = true;
 
@@ -492,25 +530,25 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  resetPlaceForm(): void {
-    this.createPlaceError = null;
-    this.createPlaceSuccess = false;
+    resetPlaceForm(): void {
+      this.createPlaceError = null;
+      this.createPlaceSuccess = false;
+      this.selectedPlaceImages = [];
 
-    this.placeForm = {
-      name: '',
-      description: '',
-      address: '',
-      price: 0,
-      latitude: 0,
-      longitude: 0,
-      place_type: '',
-      city_id: null,
-      is_event: false,
-      start_date: null,
-      end_date: null,
-      image_url: ''
-    };
-  }
+      this.placeForm = {
+        name: '',
+        description: '',
+        address: '',
+        price: 0,
+        latitude: 0,
+        longitude: 0,
+        place_type: '',
+        city_id: null,
+        is_event: false,
+        start_date: null,
+        end_date: null
+      };
+   }
 
   private resetCreatePlaceMessages(): void {
     this.createPlaceError = null;
@@ -560,10 +598,6 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       return 'La longitud debe estar entre -180 y 180.';
     }
 
-    if (this.placeForm.image_url && !/^https?:\/\/.+/i.test(this.placeForm.image_url)) {
-      return 'La URL de imagen debe empezar con http:// o https://.';
-    }
-
     if (this.placeForm.is_event) {
       if (!this.placeForm.start_date || !this.placeForm.end_date) {
         return 'Los eventos deben tener fecha de inicio y fecha de fin.';
@@ -593,7 +627,6 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     this.placeForm.description = this.normalizeSpaces(this.placeForm.description);
     this.placeForm.address = this.normalizeSpaces(this.placeForm.address);
     this.placeForm.place_type = this.normalizeSpaces(this.placeForm.place_type);
-    this.placeForm.image_url = this.normalizeSpaces(this.placeForm.image_url);
   }
 
   private normalizeSpaces(value: string): string {

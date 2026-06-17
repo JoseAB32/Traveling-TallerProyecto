@@ -11,14 +11,14 @@ import com.traveling.travel_backend.model.Place;
 import com.traveling.travel_backend.model.PlaceImage;
 import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.LogRepository;
+import com.traveling.travel_backend.repository.PlaceImageRepository;
 import com.traveling.travel_backend.repository.PlaceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,23 +29,31 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final CityRepository cityRepository;
+    private final PlaceImageRepository placeImageRepository;
     private final LogRepository logRepository;
     private final TranslationsService translationsService;
+    private final CloudinaryService cloudinaryService;
 
     public PlaceService(
             PlaceRepository placeRepository,
             CityRepository cityRepository,
+            PlaceImageRepository placeImageRepository,
             LogRepository logRepository,
-            TranslationsService translationsService) {
+            TranslationsService translationsService,
+            CloudinaryService cloudinaryService
+    ) {
         this.placeRepository = placeRepository;
         this.cityRepository = cityRepository;
+        this.placeImageRepository = placeImageRepository;
         this.logRepository = logRepository;
         this.translationsService = translationsService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Transactional
-    public PlaceResponseDTO createPlace(CreatePlaceRequestDTO request) {
+    public PlaceResponseDTO createPlace(CreatePlaceRequestDTO request, List<MultipartFile> imageFiles) {
         validateCreatePlaceRequest(request);
+        validateImageFiles(imageFiles);
 
         String normalizedName = normalizeRequired(request.getName());
         String normalizedDescription = normalizeRequired(request.getDescription());
@@ -77,24 +85,49 @@ public class PlaceService {
         place.setStartDate(isEvent ? request.getStartDate() : null);
         place.setEndDate(isEvent ? request.getEndDate() : null);
 
-        String imageUrl = normalizeOptional(request.getImageUrl());
-        if (imageUrl != null) {
-            PlaceImage image = new PlaceImage();
-            image.setImageUrl(imageUrl);
-            image.setAltText(normalizedName);
-            image.setDisplayOrder(0);
-            image.setIsMain(true);
-            image.setState(true);
-            image.setPlace(place);
-            place.getImages().add(image);
-        }
-
         Place savedPlace = placeRepository.save(place);
+
+        if (imageFiles != null && !imageFiles.isEmpty()) {
+            int displayOrder = 0;
+
+            for (MultipartFile imageFile : imageFiles) {
+                if (imageFile == null || imageFile.isEmpty()) {
+                    continue;
+                }
+
+                String cloudinaryUrl = cloudinaryService.uploadPlaceImage(
+                        imageFile,
+                        savedPlace.getId(),
+                        displayOrder
+                );
+
+                PlaceImage image = new PlaceImage();
+                image.setImageUrl(cloudinaryUrl);
+                image.setAltText(normalizedName);
+                image.setDisplayOrder(displayOrder);
+                image.setIsMain(displayOrder == 0);
+                image.setState(true);
+                image.setPlace(savedPlace);
+
+                PlaceImage savedImage = placeImageRepository.save(image);
+
+                if (savedPlace.getImages() != null) {
+                    savedPlace.getImages().add(savedImage);
+                }
+
+                displayOrder++;
+            }
+        }
 
         logger.info("{} [{}] Lugar turístico creado con ID: {}",
                 AppConstants.PREFIX_PLACE, AppConstants.LOG_PLACES, savedPlace.getId());
-        logRepository.save(new LogEntity(AppConstants.LOG_PLACES, AppConstants.LOG_INFO,
-                "Lugar turístico creado: " + savedPlace.getName() + " - POST /api/places", null));
+
+        logRepository.save(new LogEntity(
+                AppConstants.LOG_PLACES,
+                AppConstants.LOG_INFO,
+                "Lugar turístico creado: " + savedPlace.getName() + " - POST /api/places",
+                null
+        ));
 
         return PlaceResponseDTO.fromEntity(savedPlace);
     }
@@ -249,10 +282,36 @@ public class PlaceService {
                 throw new BadRequestException("La fecha de fin debe ser posterior a la fecha de inicio.");
             }
         }
+    }
 
-        String imageUrl = normalizeOptional(request.getImageUrl());
-        if (imageUrl != null && !isValidUrl(imageUrl)) {
-            throw new BadRequestException("La URL de la imagen no tiene un formato válido.");
+    private void validateImageFiles(List<MultipartFile> imageFiles) {
+        if (imageFiles == null || imageFiles.isEmpty()) {
+            return;
+        }
+
+        int validImages = 0;
+        long maxSize = 5 * 1024 * 1024;
+
+        for (MultipartFile imageFile : imageFiles) {
+            if (imageFile == null || imageFile.isEmpty()) {
+                continue;
+            }
+
+            validImages++;
+
+            String contentType = imageFile.getContentType();
+
+            if (contentType == null || !contentType.startsWith("image/")) {
+                throw new BadRequestException("Todos los archivos seleccionados deben ser imágenes.");
+            }
+
+            if (imageFile.getSize() > maxSize) {
+                throw new BadRequestException("Cada imagen no debe superar los 5 MB.");
+            }
+        }
+
+        if (validImages > 5) {
+            throw new BadRequestException("Solo se permite subir hasta 5 imágenes por lugar turístico.");
         }
     }
 
@@ -287,17 +346,6 @@ public class PlaceService {
 
         String normalized = value.trim().replaceAll("\\s+", " ");
         return normalized.isEmpty() ? null : normalized;
-    }
-
-    private boolean isValidUrl(String value) {
-        try {
-            URI uri = new URI(value);
-            return uri.getScheme() != null
-                    && uri.getHost() != null
-                    && ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme()));
-        } catch (URISyntaxException ex) {
-            return false;
-        }
     }
 
     private List<PlaceResponseDTO> toRawDTO(List<Place> places) {

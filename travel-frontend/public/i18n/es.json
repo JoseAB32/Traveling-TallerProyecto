@@ -1,4 +1,4 @@
-{ 
+{
     "header": {
         "searchPlaceholder": "Buscar departamento o lugar",
         "profile": "Perfil",
@@ -182,24 +182,24 @@
             }
         },
         "adminRegister": {
-            "createAdmin":     "Crear administrador",
-            "hint":            "Se enviará una contraseña temporal al correo del nuevo administrador.",
-            "passwordNote":    "La contraseña se genera automáticamente y se envía por correo.",
-            "create":          "Crear",
-            "success":         "Administrador creado correctamente. Se envió la contraseña por correo.",
-            "usernameRequired":"El nombre de usuario es obligatorio.",
-            "emailRequired":   "El correo es obligatorio.",
-            "emailInvalid":    "Ingresa un correo válido.",
-            "fieldTaken":      "El nombre de usuario o correo ya está en uso.",
-            "error":           "Error al crear el administrador.",
+            "createAdmin": "Crear administrador",
+            "hint": "Se enviará una contraseña temporal al correo del nuevo administrador.",
+            "passwordNote": "La contraseña se genera automáticamente y se envía por correo.",
+            "create": "Crear",
+            "success": "Administrador creado correctamente. Se envió la contraseña por correo.",
+            "usernameRequired": "El nombre de usuario es obligatorio.",
+            "emailRequired": "El correo es obligatorio.",
+            "emailInvalid": "Ingresa un correo válido.",
+            "fieldTaken": "El nombre de usuario o correo ya está en uso.",
+            "error": "Error al crear el administrador.",
             "form": {
                 "adminUserName": "Usuario",
                 "adminEmail": "Correo",
                 "adminBirthday": "Fecha de nacimiento",
-                "adminCity": "Ciudad",                
-                "usernamePlaceholder":"Nombre de usuario",
-                "emailPlaceholder":"Correo electrónico",
-                "selectCity":"Selecciona una ciudad",
+                "adminCity": "Ciudad",
+                "usernamePlaceholder": "Nombre de usuario",
+                "emailPlaceholder": "Correo electrónico",
+                "selectCity": "Selecciona una ciudad",
                 "saving": "Guardando..."
             }
         },
@@ -221,15 +221,16 @@
                 "price": "Precio referencial",
                 "latitude": "Latitud",
                 "longitude": "Longitud",
-                "imageUrl": "URL de imagen principal",
+                "imageFiles": "Imágenes del lugar",
+                "imageHelp": "Puedes subir hasta 5 imágenes. La primera imagen seleccionada será la imagen principal.",
                 "isEvent": "Es un evento turístico",
                 "startDate": "Fecha y hora de inicio",
                 "endDate": "Fecha y hora de fin",
                 "clear": "Limpiar",
                 "saving": "Creando...",
                 "create": "Crear Lugar"
+            }
         }
-    }
     },
     "searchPlaces": {
         "textResultsFor": "Resultados para:",
@@ -294,9 +295,9 @@
         "textHaventGeneratedItinerary": "Todavía no generaste el itinerario.",
         "textButtonSave": "GUARDAR ITINERARIO",
         "textButtonSaveModal": "GUARDAR",
-        "savingModalText":"Guardando...",
-        "itineraryName":"Nombre del Itinerario",
-        "modalCancelButton":"Cancelar",
+        "savingModalText": "Guardando...",
+        "itineraryName": "Nombre del Itinerario",
+        "modalCancelButton": "Cancelar",
         "textUncategorized": "Sin categoría",
         "textNoSchedule": "Sin horario",
         "textCalculatingRoutes": "Calculando rutas y ordenando los lugares...",
@@ -368,20 +369,20 @@
         "cancel": "Cancelar",
         "save": "Guardar",
         "saving": "Guardando...",
-        "username":           "Nombre de usuario",
-        "usernamePlaceholder":"Tu nombre de usuario",
-        "emailPlaceholder":   "Tu correo electrónico",
-        "selectCity":         "Selecciona una ciudad",
+        "username": "Nombre de usuario",
+        "usernamePlaceholder": "Tu nombre de usuario",
+        "emailPlaceholder": "Tu correo electrónico",
+        "selectCity": "Selecciona una ciudad",
         "editRequiredFields": "El nombre y correo son obligatorios",
-        "editFieldTaken":     "El nombre de usuario o correo ya está en uso",
-        "editError":          "Error al actualizar el perfil",
-        "editSuccess":        "Perfil actualizado correctamente",
-        "photoTooLarge":   "La imagen no puede superar 5MB",
-        "photoInvalidType":"El archivo debe ser una imagen",
-        "photoError":      "Error al subir la imagen",
-        "uploadPhoto":    "Cambiar foto de perfil",
-        "dragOrClick":    "Arrastra tu foto aquí o haz clic para seleccionar",
-        "photoHint":      "JPG, PNG o WEBP · Máx. 5MB",
-        "uploadConfirm":  "Subir foto"
+        "editFieldTaken": "El nombre de usuario o correo ya está en uso",
+        "editError": "Error al actualizar el perfil",
+        "editSuccess": "Perfil actualizado correctamente",
+        "photoTooLarge": "La imagen no puede superar 5MB",
+        "photoInvalidType": "El archivo debe ser una imagen",
+        "photoError": "Error al subir la imagen",
+        "uploadPhoto": "Cambiar foto de perfil",
+        "dragOrClick": "Arrastra tu foto aquí o haz clic para seleccionar",
+        "photoHint": "JPG, PNG o WEBP · Máx. 5MB",
+        "uploadConfirm": "Subir foto"
     }
 }
