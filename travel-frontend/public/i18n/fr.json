@@ -1,0 +1,363 @@
+{ 
+    "header": {
+        "searchPlaceholder": "Rechercher un appartement ou un lieu",
+        "profile": "Profil",
+        "itineraries": "Itinéraires",
+        "myItineraries": "Mes itinéraires",
+        "wishlist": "Voulu",
+        "logout": "Se déconnecter",
+        "adminConfig": "Configuration"
+    },
+    "footer": {
+        "termsTitle": "Conditions et confidentialité",
+        "communityRules": "Lignes directrices de la communauté",
+        "terms": "Termes",
+        "privacy": "Confidentialité",
+        "about": "À propos de nous",
+        "mission": "Mission"
+    },
+    "landing": {
+        "textStartHere": "Planifiez votre voyage et profitez des meilleures destinations touristiques de toute la Bolivie!",
+        "signUp": "COMMENCEZ ICI",
+        "login": "J'AI DÉJÀ UN COMPTE",
+        "subtitle1": "Explorez les paysages les plus époustouflants de Bolivie",
+        "text1": "Du miroir infini du Salar d'Uyuni aux sommets enneigés des Andes, découvrez des destinations qui semblent venues d'un autre monde.",
+        "subtitle2": "La culture vivante à chaque coin de rue",
+        "text2": "Plongez au cœur de la richesse historique de nos villes coloniales, de nos traditions ancestrales et de la chaleur humaine de nos habitants, dans tous les domaines.",
+        "ctaRouteTitle": "Planifiez des itinéraires pour visiter les endroits que vous souhaitez.",
+        "ctaRouteText": "Élaborez votre itinéraire en fonction des lieux que vous souhaitez visiter, créez un parcours efficace et profitez simplement du voyage.",
+        "freeTrialButton": "ESSAYEZ-LE ICI"
+    },
+    "formLoginAndSignin": {
+        "signIn": {
+            "titleForm": "REGISTRE",
+            "buttonRegistrarse": "REGISTRE",
+            "tienesCuenta": "Avez-vous déjà un compte?",
+            "irLogin": "Se connecter"
+        },
+        "login": {
+            "titleForm": "SE CONNECTER",
+            "buttonIniciarSesion": "SE CONNECTER",
+            "noTienesCuenta": "Vous n'avez pas encore de compte?",
+            "irRegistro": "S'inscrire",
+            "textLinkForgotPassword": "Mot de passe oublié?",
+            "textSessionExpired": "Votre session a expiré. Veuillez vous reconnecter."
+        },
+        "textoInputs": {
+            "nombreUsuario": "Nom d'utilisateur",
+            "correo": "E-mail",
+            "contrasena": "Mot de passe",
+            "confContrasena": "Confirmez le mot de passe",
+            "fechaNac": "Date de naissance",
+            "ciudad": "Ville"
+        },
+        "errorInputs": {
+            "userNameRequired": "Le nom d'utilisateur est requis.",
+            "userNameContainSpace": "Le nom d'utilisateur ne peut pas contenir d'espaces.",
+            "userNameMinLength": "Le nom d'utilisateur doit comporter au moins 5 caractères.",
+            "passwordRequired": "Un mot de passe est requis.",
+            "passwordContainSpace": "Le mot de passe ne doit pas contenir d'espaces.",
+            "passwordMinLength": "Le mot de passe doit comporter au moins 8 caractères.",
+            "emailRequired": "Un e-mail est requis.",
+            "emailInvalid": "L'adresse e-mail est invalide.",
+            "confirmPasswordRequired": "La confirmation du mot de passe est requise.",
+            "confirmPasswordContainSpace": "La confirmation du mot de passe ne peut pas contenir d'espaces.",
+            "birthdateRequired": "La date de naissance est requise.",
+            "cityRequired": "La ville est obligatoire."
+        }
+    },
+    "inicioLogueado": {
+        "mejores_lugares": "LES MEILLEURS ENDROITS",
+        "elige_y_empieza": "Choisissez un département et partez à la découverte de la magie de chaque panorama que la Bolivie, pays riche en culture, a à offrir."
+    },
+    "wishlist": {
+        "title": "VOS ENDROITS PRÉFÉRÉS",
+        "empty": "Tu n'as pas encore d'endroits préférés.",
+        "modal": {
+            "title": "Retirer des favoris?",
+            "message": "Êtes-vous sûr de vouloir supprimer ce lieu de votre liste de favoris? Cette action est irréversible.",
+            "cancel": "Annuler",
+            "confirm": "Oui, supprimer"
+        }
+    },
+    "department": {
+        "textExploreCity": "Explorez les différentes attractions touristiques de {{cityName}} ou commencez à élaborer votre itinéraire pour visiter {{cityName}}.",
+        "buttonItinerary": "CRÉEZ VOTRE ITINÉRAIRE ICI",
+        "titleBestPlaces": "LES MEILLEURS ENDROITS",
+        "textBestReview": "Meilleure critique:",
+        "textLoadingInfo": "Chargement des informations du département...",
+        "textThereAreNoPlaces": "Aucun lieu mis en avant n'est encore disponible pour ce département.",
+        "textLoadingMap": "Chargement de la carte...",
+        "textThereAreNoReviews": "Il n'y a pas encore d'avis pour cet endroit.",
+        "textLoading": "Chargement...",
+        "textBy": "Par",
+        "textAnonymous": "Anonyme",
+        "textGenericDescription": "Description détaillée de cette destination touristique. Découvrez ses magnifiques paysages et sa riche histoire à {{cityName}}."
+    },
+    "adminConfiguration": {
+        "title": "Panneau d'administration",
+        "tabs": {
+            "logs": "Journaux système",
+            "toggles": "Basculement des fonctionnalités",
+            "translations": "Traductions",
+            "createAdmin": "Inscrire l'administrateur"
+        },
+        "logs": {
+            "filters": {
+                "module": "Module",
+                "allModules": "Tous les modules",
+                "level": "Niveau",
+                "allLevels": "Tous niveaux",
+                "from": "Depuis",
+                "to": "Jusqu'à"
+            },
+            "table": {
+                "date": "Date",
+                "module": "Module",
+                "level": "Niveau",
+                "message": "Message",
+                "user": "Utilisateur",
+                "noRecords": "Aucun enregistrement n'a été trouvé.",
+                "system": "Système"
+            }
+        },
+        "toggles": {
+            "title": "Contrôle des fonctionnalités",
+            "persistence": "Persistance dans JSON",
+            "pinRedirection": {
+                "title": "Redirection dans les Épingles",
+                "description": "Activez la navigation automatique en cliquant sur les marqueurs de la carte touristique."
+            },
+            "autoCreateItinerary": {
+                "title": "Création automatique d'itinéraire",
+                "description": "Il permet au système de générer automatiquement des suggestions de voyage en fonction des lieux sélectionnés."
+            },
+            "showSearchPlaces": {
+                "title": "Recherche de lieux",
+                "description": "Afficher ou masquer la barre de recherche des attractions touristiques dans l'application."
+            },
+            "showFavorites": {
+                "title": "Favoris",
+                "description": "Permet à cette section d'ajouter et de consulter les lieux favoris des utilisateurs enregistrés."
+            }
+        },
+        "modal": {
+            "title": "Action requise",
+            "close": "Fermer",
+            "textErrorServer": "Erreur lors de l'enregistrement de la modification sur le serveur.",
+            "textErrorFilter": "Tous les champs de filtre sont obligatoires pour effectuer une recherche précise."
+        },
+        "translations": {
+            "title": "Révision de traduction",
+            "description": "Gérer les traductions générées automatiquement par le système.",
+            "total": "traductions",
+            "loading": "Chargement des traductions...",
+            "empty": "Aucune traduction n'a été trouvée avec les filtres sélectionnés.",
+            "filters": {
+                "entityType": "Entité",
+                "language": "Langue",
+                "fieldName": "Champ",
+                "entityId": "entité ID",
+                "size": "Taille",
+                "all": "Tous",
+                "search": "Rechercher",
+                "clear": "Faire le ménage"
+            },
+            "card": {
+                "entityId": "ID d'entité",
+                "translation": "Traduction"
+            },
+            "actions": {
+                "edit": "Modifier"
+            },
+            "pagination": {
+                "page": "Page",
+                "of": "de",
+                "previous": "Ancien",
+                "next": "Suivant"
+            },
+            "edit": {
+                "title": "Modifier la traduction",
+                "translatedText": "Texte traduit",
+                "cancel": "Annuler",
+                "save": "Enregistrer les modifications",
+                "emptyText": "Le texte traduit ne peut pas être vide."
+            }
+        },
+        "adminRegister": {
+            "createAdmin":     "Créer un administrateur",
+            "hint":            "Un mot de passe temporaire sera envoyé à l'adresse électronique du nouvel administrateur.",
+            "passwordNote":    "Le mot de passe est généré automatiquement et envoyé par e-mail.",
+            "create":          "Créer",
+            "success":         "Compte administrateur créé avec succès. Mot de passe envoyé par e-mail.",
+            "usernameRequired":"Le nom d'utilisateur est requis.",
+            "emailRequired":   "Un e-mail est requis.",
+            "emailInvalid":    "Veuillez saisir une adresse courriel valide.",
+            "fieldTaken":      "Le nom d'utilisateur ou l'adresse e-mail est déjà utilisé.",
+            "error":           "Erreur lors de la création de l'administrateur.",
+            "form": {
+                "adminUserName": "Utilisateur",
+                "adminEmail": "E-mail",
+                "adminBirthday": "Date de naissance",
+                "adminCity": "Ville",                
+                "usernamePlaceholder":"Nom d'utilisateur",
+                "emailPlaceholder":"E-mail",
+                "selectCity":"Sélectionnez une ville",
+                "saving": "Économie..."
+            }
+        }
+    },
+    "searchPlaces": {
+        "textResultsFor": "Résultats pour:",
+        "textSearchInBolivia": "Recherche en Bolivie...",
+        "textLocated": "Situé dans",
+        "textViewDetail": "Voir le détail",
+        "textNoMatchesFound": "Oups! Aucun résultat trouvé.",
+        "textTryAnother": "Essayez un autre service, un autre nom de lieu ou une autre adresse.",
+        "textBack": "Retour en haut"
+    },
+    "placeDetail": {
+        "textLoading": "Lieu de chargement...",
+        "textPlaceNotFound": "Lieu introuvable",
+        "textGeneralInfo": "Informations générales",
+        "textInfoPlace": "Informations de localisation",
+        "textBack": "Retour",
+        "textBackToItinerary": "Retour à l'itinéraire",
+        "textReviewsTitle": "Avis sur les lieux",
+        "textBy": "Par",
+        "textReviewPlaceholder": "Évaluez et rédigez un avis...",
+        "textPublish": "Poste",
+        "textPublishing": "Affectation...",
+        "textLoginToReview": "Connectez-vous pour publier un avis.",
+        "textPublishReviewError": "Impossible de publier votre avis. Veuillez réessayer.",
+        "textReply": "Répondre",
+        "textReplyPlaceholder": "Écrivez une réponse...",
+        "textPublishReply": "Publier la réponse",
+        "textLoginToReply": "Connectez-vous pour répondre.",
+        "textPublishReplyError": "La réponse n'a pas pu être publiée. Veuillez réessayer.",
+        "textViewMore": "Voir {{count}} plus",
+        "textHide": "Déguisement",
+        "textNoReviews": "Il n'y a pas encore d'avis pour cet endroit.",
+        "textLoadingReviews": "Chargement des avis...",
+        "textPrevious": "Ancien",
+        "textNext": "Suivant"
+    },
+    "components": {
+        "cardTextGeneralInfo": "INFORMATIONS GÉNÉRALES:",
+        "cardButtonSeeMore": "Voir plus",
+        "signUpSuccessTextSuccess": "Inscription réussie",
+        "signUpSuccessTextMessage": "La procédure s'est déroulée avec succès. Veuillez vous connecter pour accéder à la plateforme.",
+        "signUpSuccessTextLink": "Allez dans Connexion"
+    },
+    "createItinerary": {
+        "textFirstStep": "1. Sélectionnez le département ou la ville",
+        "textSecondStep": "2. Sélectionnez les lieux que vous souhaitez visiter",
+        "textThirdStep": "3. Vérifiez les lieux que vous avez sélectionnés",
+        "textFourthStep": "4. Définissez les dates de votre itinéraire",
+        "textFifthStep": "5. Générez votre itinéraire",
+        "textInputSelectCity": "Sélectionnez une ville",
+        "textLoadingPlaces": "Chargement des lieux...",
+        "textSelectCity": "Sélectionnez une ville pour afficher sa carte.",
+        "textThereAreNoPlaces": "Il n'y a pas de places disponibles dans cette ville.",
+        "textClickPin": "Cliquez sur une épingle pour voir l'emplacement",
+        "textSelectPlace": "Sélectionnez un lieu sur la carte pour consulter ses informations et l'ajouter à votre itinéraire.",
+        "textButtonAdd": "Ajouter",
+        "textButtonSeeMore": "Voir plus",
+        "textHaventSelectPlaces": "Vous n'avez encore sélectionné aucun lieu.",
+        "textLabelStart": "Date de début:",
+        "textLabelEnd": "Date de fin:",
+        "textButtonGenerate": "GÉNÉRER UN ITINÉRAIRE",
+        "textHaventGeneratedItinerary": "Vous n'avez pas encore généré l'itinéraire.",
+        "textButtonSave": "ENREGISTRER L'ITINÉRAIRE",
+        "textButtonSaveModal": "GARDER",
+        "savingModalText":"Économie...",
+        "itineraryName":"Nom de l'itinéraire",
+        "modalCancelButton":"Annuler",
+        "textUncategorized": "Non classé",
+        "textNoSchedule": "Pas d'horaire",
+        "textCalculatingRoutes": "Calcul des itinéraires et classement des lieux...",
+        "textErrorRequiredName": "Vous devez saisir un nom pour l'itinéraire."
+    },
+    "forgotPassword": {
+        "textLinkReturnLogin": "Revenir à la connexion",
+        "textTitle": "RÉCUPÉRER VOTRE MOT DE PASSE",
+        "textDescription": "Saisissez votre adresse e-mail pour recevoir un lien qui vous permettra de récupérer votre mot de passe.",
+        "textButtonSendLink": "Envoyer le lien"
+    },
+    "resetPassword": {
+        "textValidatingToken": "Validation de la liaison de sécurité...",
+        "textExpiredLink": "Lien expiré",
+        "textErrorExpired": "Le lien de réinitialisation a expiré ou n'est pas valide.",
+        "textInfoExpired": "Les liens de sécurité expirent après 15 minutes.",
+        "textButtonReturnLanding": "Retour à la maison",
+        "textTitle": "RÉINITIALISER VOTRE MOT DE PASSE",
+        "textCreateNewPassword": "Il est temps de se rafraîchir! Créez une nouvelle clé secrète.",
+        "textInputNewPassword": "Nouveau mot de passe",
+        "textErrorPasswordNotMatch": "Les mots de passe ne correspondent pas.",
+        "textMessageProcessing": "Traitement...",
+        "textMessageConfirm": "Valider les modifications"
+    },
+    "resetSuccess": {
+        "textTittleSuccess": "Récupération du mot de passe réussie",
+        "textMessageSuccess": "Le changement de mot de passe a bien été effectué. Veuillez vous connecter pour accéder à la plateforme.",
+        "textLinkLogin": "Allez dans Connexion"
+    },
+    "myItineraries": {
+        "title": "MES ITINÉRAIRES",
+        "loading": "Chargement des itinéraires...",
+        "empty": "Vous n'avez aucun itinéraire enregistré.",
+        "noStartDate": "Pas de date de début",
+        "noEndDate": "Pas de date de fin",
+        "places": "lieux",
+        "viewMore": "Voir plus"
+    },
+    "profile": {
+        "loading": "Chargement du profil...",
+        "errorLoading": "Le profil n'a pas pu être chargé.",
+        "myData": "Informations personnelles",
+        "retry": "Réessayer",
+        "active": "Actif",
+        "inactive": "Inactif",
+        "email": "E-mail",
+        "birthday": "Date de naissance",
+        "city": "Ville",
+        "country": "Pays",
+        "edit": "Modifier le profil",
+        "changePhoto": "Changer de photo",
+        "avatar_alt": "Photo de profil",
+        "settings": "Paramètres du profil",
+        "changePassword": "Changer le mot de passe",
+        "editData": "Modifier les données personnelles",
+        "currentPassword": "Mot de passe actuel",
+        "newPassword": "Nouveau mot de passe",
+        "confirmPassword": "Confirmez le mot de passe",
+        "currentPasswordPlaceholder": "Entrez votre mot de passe actuel",
+        "newPasswordPlaceholder": "Entrez votre nouveau mot de passe",
+        "confirmPasswordPlaceholder": "Répétez votre nouveau mot de passe",
+        "passwordAllRequired": "Tous les champs sont obligatoires",
+        "passwordTooShort": "Le mot de passe doit comporter au moins 8 caractères.",
+        "passwordMismatch": "Les mots de passe ne correspondent pas.",
+        "passwordNoSpaces": "Le mot de passe ne doit pas contenir d'espaces.",
+        "passwordWrong": "Le mot de passe actuel est incorrect.",
+        "passwordError": "Une erreur s'est produite lors de la modification du mot de passe.",
+        "passwordChanged": "Mot de passe mis à jour avec succès.",
+        "cancel": "Annuler",
+        "save": "Garder",
+        "saving": "Économie...",
+        "username":           "Nom d'utilisateur",
+        "usernamePlaceholder":"Votre nom d'utilisateur",
+        "emailPlaceholder":   "Votre e-mail",
+        "selectCity":         "Sélectionnez une ville",
+        "editRequiredFields": "Nom et adresse e-mail obligatoires.",
+        "editFieldTaken":     "Le nom d'utilisateur ou l'adresse e-mail est déjà utilisé.",
+        "editError":          "Erreur lors de la mise à jour du profil.",
+        "editSuccess":        "Profil mis à jour avec succès.",
+        "photoTooLarge":   "L'image ne peut pas dépasser 5 MB.",
+        "photoInvalidType":"Le fichier doit être une image.",
+        "photoError":      "Erreur lors du chargement de l'image.",
+        "uploadPhoto":    "Changer la photo de profil",
+        "dragOrClick":    "Faites glisser votre photo ici ou cliquez pour la sélectionner.",
+        "photoHint":      "JPG, PNG ou WEBP · Max. 5 MB",
+        "uploadConfirm":  "Télécharger une photo"
+    }
+}
