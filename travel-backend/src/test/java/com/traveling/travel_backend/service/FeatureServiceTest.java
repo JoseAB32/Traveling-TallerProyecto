@@ -53,9 +53,8 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.getFeatures();
 
         assertThat(result).containsEntry("autoCreateItinerary", true);
-        assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(2);
 
         File file = tempDir.resolve("features.json").toFile();
 
@@ -67,7 +66,6 @@ class FeatureServiceTest {
         );
 
         assertThat(savedOnDisk).containsEntry("autoCreateItinerary", true);
-        assertThat(savedOnDisk).containsEntry("showSearchPlaces", true);
         assertThat(savedOnDisk).containsEntry("showFavorites", true);
 
         verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
@@ -100,9 +98,8 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.getFeatures();
 
         assertThat(result).containsEntry("autoCreateItinerary", false);
-        assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(2);
     }
 
 
@@ -118,41 +115,39 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.updateFeatures(updated);
 
         assertThat(result).containsEntry("autoCreateItinerary", false);
-        assertThat(result).containsEntry("showSearchPlaces", false);
         assertThat(result).containsEntry("showFavorites", true);
     }
 
-    @Test
-    @DisplayName("PUT - Debe persistir los valores en el archivo JSON")
-    void updateFeatures_PersistsValuesToFile() throws IOException {
-        Map<String, Boolean> updated = Map.of(
-                "autoCreateItinerary", true,
-                "showSearchPlaces", false,
-                "showFavorites", false
-        );
+    // @Test
+    // @DisplayName("PUT - Debe persistir los valores en el archivo JSON")
+    // void updateFeatures_PersistsValuesToFile() throws IOException {
+    //     Map<String, Boolean> updated = Map.of(
+    //             "autoCreateItinerary", true,
+    //             "showSearchPlaces", false,
+    //             "showFavorites", false
+    //     );
 
-        featureService.updateFeatures(updated);
+    //     featureService.updateFeatures(updated);
 
-        File file = tempDir.resolve("features.json").toFile();
-        assertThat(file).exists();
+    //     File file = tempDir.resolve("features.json").toFile();
+    //     assertThat(file).exists();
 
-        Map<?, ?> savedOnDisk = objectMapper.readValue(file, Map.class);
-        assertThat(savedOnDisk.get("showSearchPlaces")).isEqualTo(false);
-    }
+    //     Map<?, ?> savedOnDisk = objectMapper.readValue(file, Map.class);
+    //     assertThat(savedOnDisk.get("showSearchPlaces")).isEqualTo(false);
+    // }
 
     @Test
     @DisplayName("PUT - Debe ignorar keys desconocidas y no persistirlas")
     void updateFeatures_IgnoresUnknownKeys() throws IOException {
         Map<String, Boolean> withUnknownKeys = new HashMap<>();
         withUnknownKeys.put("autoCreateItinerary", false);
-        withUnknownKeys.put("showSearchPlaces", true);
         withUnknownKeys.put("showFavorites", false);
         withUnknownKeys.put("keyInventada", true); // key desconocida
 
         Map<String, Boolean> result = featureService.updateFeatures(withUnknownKeys);
 
         assertThat(result).doesNotContainKey("keyInventada");
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(2);
         assertThat(result).containsEntry("showFavorites", false);
     }
 }

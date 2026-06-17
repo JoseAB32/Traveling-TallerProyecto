@@ -71,7 +71,6 @@
       </svg>
     </div>
     @if (isLoggedIn) {
-      @if (featureService.isEnabled('showSearchPlaces')) {
         <div class="search-container">
           <div class="search-bar" [ngClass]="{'active': showSuggestions && suggestions.length > 0}">
             <input 
@@ -102,7 +101,6 @@
             </div>
           }
         </div>
-      }
     } 
   <div class="cont-id-prof">
     <div class="idioma-container" (click)="toggleLista()">
@@ -197,7 +195,6 @@
 </nav>
 <div class="search-main-container2">
   @if (isLoggedIn) {
-      @if (featureService.isEnabled('showSearchPlaces')) {
         <div class="search-container2">
           <div class="search-bar" [ngClass]="{'active': showSuggestions && suggestions.length > 0}">
             <input 
@@ -227,6 +224,5 @@
             </div>
           }
         </div>
-      }
   }
 </div>
