@@ -445,6 +445,10 @@
   background-color: var(--atomic-tangerine);
 }
 
+:host-context(.dark-mode) .tooltip {
+    background: #06263f;
+}
+
 @media (max-width: 450px) {
   :host-context(.dark-mode) .pando {
     fill: #21445e !important;
