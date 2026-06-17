@@ -11,6 +11,7 @@ import { FEATURES } from '../../features/features';
 import { FeatureService } from '../../services/features/feature.service';
 import { TranslocoService, TranslocoModule } from '@jsverse/transloco';
 import { HttpErrorResponse } from '@angular/common/http'
+import { ThemeService } from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -51,7 +52,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private placeService: PlaceService,
     private el: ElementRef,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
+    public themeService: ThemeService
   ) {
     this.idiomaDef = this.translocoService.getActiveLang().toUpperCase();
   }

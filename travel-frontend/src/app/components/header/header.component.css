@@ -73,6 +73,7 @@
   align-items: center;
   gap: 20px;
   justify-content: space-between;
+  /* background-color: teal; */
 }
 
 .idioma-container {
@@ -141,9 +142,32 @@
   font-weight: 500;
 }
 
+.theme-container {
+  /* background-color:chocolate; */
+  margin: 0 5px 0 0;
+}
+
+.theme-toggle {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.dark-icon {
+  width: 25px;
+  color: white;
+}
+
+.light-icon {
+  width: 25px;
+  color: white;
+}
+
 .profile-container {
   position: relative; 
   width: auto;
+  display: flex;
+  gap: 5px;
 }
 
 .profile-pic {
@@ -156,7 +180,7 @@
 }
 
 .profile-container svg {
-  width: 30px;
+  width: 25px;
   color: #ff7841;
 }
 
@@ -308,7 +332,7 @@
 
   .cont-id-prof {
     /* background-color: tomato; */
-    width: 35%;
+    width: auto;
     gap: 10px;
     z-index: 310;
   }
@@ -434,4 +458,61 @@
   .search-container2 .suggestion-item:hover {
     background-color: #fff1eb;
   }
+}
+
+/* DARK MODE - HEADER */
+
+:host-context(.dark-mode) .header {
+  background-color: #06263f;
+}
+
+:host-context(.dark-mode) .search-bar {
+  background-color: #0b2235;
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .search-bar input {
+  background-color: transparent;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .search-bar input::placeholder {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .suggestions-dropdown {
+  background-color: #0b2235;
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .suggestion-item {
+  color: var(--beige);
+  border-bottom: 1px solid rgba(247, 197, 159, 0.15);
+}
+
+:host-context(.dark-mode) .suggestion-item:hover {
+  background-color: #15344f;
+}
+
+:host-context(.dark-mode) .suggestion-detail {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .lista-idiomas {
+  background-color: #0b2235;
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .lista-idiomas li button {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .active-lang {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .dropdown-menu {
+  background-color: #082b47;
+  border-color: var(--atomic-tangerine);
 }
