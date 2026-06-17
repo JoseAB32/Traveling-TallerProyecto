@@ -4,7 +4,6 @@ import { Observable, tap } from 'rxjs';
 import { CONSTANTS } from '../../utils/constants';
 
 export interface Features {
-  pinRedirection: boolean;
   showSearchPlaces: boolean;
   showFavorites: boolean;
   [key: string]: boolean;
@@ -19,7 +18,6 @@ export class FeatureService {
 
   // Signal para reactividad - fallback
   private _features = signal<Features>({
-    pinRedirection: true,
     showSearchPlaces: true,
     showFavorites: true,
   });

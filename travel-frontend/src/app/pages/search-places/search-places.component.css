@@ -170,3 +170,127 @@
     padding: 6px 12px;
   }
 }
+
+/* ========================================
+   DARK MODE - SEARCH PAGE
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .search-page-wrapper {
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .container {
+  background-color: transparent;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .title-cont h3 {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .text-orange-travel {
+  color: var(--atomic-tangerine) !important;
+}
+
+/* Loading */
+:host-context(.dark-mode) .spinner-border.text-primary {
+  color: var(--atomic-tangerine) !important;
+}
+
+:host-context(.dark-mode) .text-center p {
+  color: #b8c7d6;
+}
+
+/* Cards */
+:host-context(.dark-mode) .search-card {
+  background-color: #0b2235;
+  color: var(--beige);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+:host-context(.dark-mode) .search-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+:host-context(.dark-mode) .border-orange-travel {
+  border-color: var(--atomic-tangerine) !important;
+}
+
+:host-context(.dark-mode) .border-blue-travel {
+  border-color: #2f7ac4 !important;
+}
+
+/* Textos */
+:host-context(.dark-mode) .place-title {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .place-location {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .place-description {
+  color: #b8c7d6;
+}
+
+/* Estrellas */
+:host-context(.dark-mode) .stars-orange {
+  color: var(--atomic-tangerine) !important;
+}
+
+:host-context(.dark-mode) .stars-blue {
+  color: var(--peach-glow) !important;
+}
+
+/* Botones detalle */
+:host-context(.dark-mode) .detail-btn-orange {
+  color: var(--atomic-tangerine);
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .detail-btn-orange:hover {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .detail-btn-blue {
+  color: var(--peach-glow);
+  border-color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .detail-btn-blue:hover {
+  background-color: var(--peach-glow);
+  color: #061826;
+}
+
+/* No results */
+:host-context(.dark-mode) .no-results h4 {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .no-results .text-muted {
+  color: #b8c7d6 !important;
+}
+
+:host-context(.dark-mode) .no-results img {
+  opacity: 0.75 !important;
+  filter: brightness(0.9);
+}
+
+:host-context(.dark-mode) .btn-outline-primary {
+  color: var(--peach-glow);
+  border-color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .btn-outline-primary:hover {
+  background-color: var(--peach-glow);
+  color: #061826;
+  border-color: var(--peach-glow);
+}

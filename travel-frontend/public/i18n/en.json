@@ -99,7 +99,8 @@
         "tabs": {
             "logs": "System Logs",
             "toggles": "Feature Toggles",
-            "translations": "Translations"
+            "translations": "Translations",
+            "createAdmin": "Register admin"
         },
         "logs": {
             "filters": {
@@ -125,12 +126,16 @@
             "persistence": "JSON Persistence",
             "pinRedirection": {
                 "title": "Pin Redirection (PinRedirection)",
-                "description": "Enables automatic navigation when clicking on the markers of the tourist map."
+                "description": "Enables automatic navigation when clicking on tourist map markers."
+            },
+            "autoCreateItinerary": {
+                "title": "Auto-create Itinerary (AutoCreateItinerary)",
+                "description": "Allows the system to generate automatic travel suggestions based on selected places."
             },
             "showSearchPlaces": {
-                    "title": "Search Places (ShowSearchPlaces)",
-                    "description": "Shows or hides the search bar for tourist attractions in the application."
-                },
+                "title": "Search Places (ShowSearchPlaces)",
+                "description": "Shows or hides the search bar for tourist attractions in the application."
+            },
             "showFavorites": {
                 "title": "Favorites (ShowFavorites)",
                 "description": "Enables the section to add and view favorite places for registered users."
@@ -177,6 +182,28 @@
                 "cancel": "Cancel",
                 "save": "Save changes",
                 "emptyText": "Translated text cannot be empty."
+            }
+        },
+        "adminRegister": {
+            "createAdmin":     "Create administrator",
+            "hint":            "A temporary password will be sent to the new administrator's email.",
+            "passwordNote":    "Password is auto-generated and sent by email.",
+            "create":          "Create",
+            "success":         "Administrator created successfully. Password sent by email.",
+            "usernameRequired":"Username is required.",
+            "emailRequired":   "Email is required.",
+            "emailInvalid":    "Enter a valid email.",
+            "fieldTaken":      "Username or email already in use.",
+            "error":           "Error creating administrator.",
+            "form": {
+                "adminUserName": "Username",
+                "adminEmail": "Email",
+                "adminBirthday": "Birthday",
+                "adminCity": "City",
+                "usernamePlaceholder":"Username",
+                "emailPlaceholder":"Email",
+                "selectCity":"Select a city",
+                "saving":"Saving..."
             }
         }
     },
