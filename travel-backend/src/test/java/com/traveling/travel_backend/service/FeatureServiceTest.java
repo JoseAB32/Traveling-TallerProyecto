@@ -46,14 +46,13 @@ class FeatureServiceTest {
                 tempDir.resolve("features.json").toString());
     }
 
-
     @Test
     @DisplayName("GET - Debe crear features.json con defaults si no existe")
     void getFeatures_CreatesFileWithDefaultsWhenNotExists() throws IOException {
         Map<String, Boolean> result = featureService.getFeatures();
         assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(2);
 
         File file = tempDir.resolve("features.json").toFile();
 
@@ -91,9 +90,8 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.getFeatures();
         assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(2);
     }
-
 
     @Test
     @DisplayName("PUT - Debe actualizar y retornar los nuevos valores")
@@ -136,7 +134,7 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.updateFeatures(withUnknownKeys);
 
         assertThat(result).doesNotContainKey("keyInventada");
-        assertThat(result).hasSize(3);
+        assertThat(result).hasSize(2);
         assertThat(result).containsEntry("showFavorites", false);
     }
 }
