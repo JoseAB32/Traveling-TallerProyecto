@@ -275,3 +275,89 @@
     width: 60%;
   } 
 }
+
+/* ========================================
+   DARK MODE - LANDING
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .landing-container {
+  background: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .white-bg {
+  background-color: #061826 !important;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .blue-bg {
+  background-color: #06263f !important;
+  color: white;
+}
+
+:host-context(.dark-mode) .text-block h1,
+:host-context(.dark-mode) .text-block h2,
+:host-context(.dark-mode) .text-block h3,
+:host-context(.dark-mode) .text-block p {
+  color: inherit;
+}
+
+/* Botones */
+:host-context(.dark-mode) .btn-primary {
+  background: var(--atomic-tangerine);
+  color: white;
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .btn-primary:hover {
+  background: transparent;
+  color: var(--atomic-tangerine);
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .btn-outline {
+  background: transparent;
+  border-color: var(--peach-glow);
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .btn-outline:hover {
+  background: var(--peach-glow);
+  color: #061826;
+}
+
+:host-context(.dark-mode) .btn-orange {
+  background: var(--atomic-tangerine);
+  color: white;
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .btn-orange:hover {
+  background: transparent;
+  color: var(--atomic-tangerine);
+}
+
+/* Imágenes tipo collage */
+:host-context(.dark-mode) .image-collage img {
+  border-color: #0b2235;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+:host-context(.dark-mode) .full-img {
+  filter: brightness(0.92);
+}
+
+/* CTA final */
+:host-context(.dark-mode) .cta-card {
+  color: white;
+}
+
+:host-context(.dark-mode) .white-text {
+  color: white;
+}

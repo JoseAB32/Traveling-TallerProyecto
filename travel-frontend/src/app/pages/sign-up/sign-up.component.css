@@ -275,3 +275,127 @@ svg {
         width: 90%;
     }
 }
+
+/* ========================================
+   DARK MODE - SIGN UP
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .content {
+  background-color: #061826;
+}
+
+:host-context(.dark-mode) .img-border {
+  background-color: #0b2235;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+:host-context(.dark-mode) .logo svg,
+:host-context(.dark-mode) .logo-simp {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .form-signup {
+  background-color: #0b2235;
+  color: var(--beige);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+:host-context(.dark-mode) .title-container {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .label-form {
+  background-color: #0b2235;
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .label-above {
+  background-color: #0b2235;
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .form-input,
+:host-context(.dark-mode) .form-select {
+  background-color: #0b2235;
+  color: var(--beige);
+  border-color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .form-input::placeholder {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .form-input::placeholder,
+:host-context(.dark-mode) input[type="date"]::-webkit-datetime-edit,
+:host-context(.dark-mode) .form-select {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+:host-context(.dark-mode) .form-select option {
+  background-color: #102f49;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .form-input:focus,
+:host-context(.dark-mode) .form-select:focus {
+  border-color: var(--atomic-tangerine);
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+}
+
+:host-context(.dark-mode) svg {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .button-container button {
+  background-color: transparent;
+  color: var(--atomic-tangerine);
+  border-color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .button-container button:hover {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .login-container p {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .login-container a {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .input-error,
+:host-context(.dark-mode) .select-error {
+  border-color: #ff8b8b !important;
+  box-shadow: 0 0 0 1px rgba(255, 139, 139, 0.25);
+}
+
+:host-context(.dark-mode) .label-error {
+  color: #ff8b8b;
+}
+
+:host-context(.dark-mode) .error-container p {
+  color: #ff8b8b;
+}
+
+:host-context(.dark-mode) .error-general p {
+  background-color: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 139, 139, 0.55);
+  color: #ff8b8b;
+}
+
+:host-context(.dark-mode) .error-general i {
+  color: #ff8b8b;
+}
