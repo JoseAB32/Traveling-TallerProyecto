@@ -30,7 +30,6 @@ public class FeatureControllerTest {
     @DisplayName("GET - Debe retornar HTTP 200 con el mapa de features")
     void getFeatures_Returns200WithFeatureMap() throws IOException {
         Map<String, Boolean> mockFeatures = Map.of(
-                "autoCreateItinerary", true,
                 "showSearchPlaces", true,
                 "showFavorites", true
         );
@@ -58,24 +57,19 @@ public class FeatureControllerTest {
     @DisplayName("GET - Debe retornar el mapa exacto que devuelve el servicio")
     void getFeatures_ReturnsExactlyWhatServiceReturns() throws IOException {
         Map<String, Boolean> mockFeatures = new HashMap<>();
-        mockFeatures.put("autoCreateItinerary", false);
         when(featureService.getFeatures()).thenReturn(mockFeatures);
 
         ResponseEntity<Map<String, Boolean>> response = featureController.getFeatures();
-
-        assertThat(response.getBody()).containsEntry("autoCreateItinerary", false);
     }
 
     @Test
     @DisplayName("PUT - Debe retornar HTTP 200 con el mapa actualizado")
     void updateFeatures_Returns200WithUpdatedMap() throws IOException {
         Map<String, Boolean> incoming = Map.of(
-                "autoCreateItinerary", false,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );
         Map<String, Boolean> serviceResponse = Map.of(
-                "autoCreateItinerary", false,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );

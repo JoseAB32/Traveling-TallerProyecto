@@ -46,15 +46,12 @@ class FeatureServiceTest {
                 tempDir.resolve("features.json").toString());
     }
 
-
     @Test
     @DisplayName("GET - Debe crear features.json con defaults si no existe")
     void getFeatures_CreatesFileWithDefaultsWhenNotExists() throws IOException {
         Map<String, Boolean> result = featureService.getFeatures();
-
-        assertThat(result).containsEntry("autoCreateItinerary", true);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(1);
 
         File file = tempDir.resolve("features.json").toFile();
 
@@ -65,7 +62,6 @@ class FeatureServiceTest {
                 new TypeReference<Map<String, Boolean>>() {}
         );
 
-        assertThat(savedOnDisk).containsEntry("autoCreateItinerary", true);
         assertThat(savedOnDisk).containsEntry("showFavorites", true);
 
         verify(logRepository, atLeastOnce()).save(any(LogEntity.class));
@@ -76,14 +72,11 @@ class FeatureServiceTest {
     void getFeatures_ReturnsStoredValuesWhenFileExists() throws IOException {
         File file = tempDir.resolve("features.json").toFile();
         objectMapper.writeValue(file, Map.of(
-                "autoCreateItinerary", false,
                 "showSearchPlaces", true,
                 "showFavorites", false
         ));
 
         Map<String, Boolean> result = featureService.getFeatures();
-
-        assertThat(result).containsEntry("autoCreateItinerary", false);
         assertThat(result).containsEntry("showFavorites", false);
     }
 
@@ -91,30 +84,21 @@ class FeatureServiceTest {
     @DisplayName("GET - Debe agregar keys faltantes al archivo existente")
     void getFeatures_MergesNewKeysIntoExistingFile() throws IOException {
         File file = tempDir.resolve("features.json").toFile();
-        objectMapper.writeValue(file, Map.of(
-                "autoCreateItinerary", false
-        ));
-
+        objectMapper.writeValue(file, Map.of());
         Map<String, Boolean> result = featureService.getFeatures();
-
-        assertThat(result).containsEntry("autoCreateItinerary", false);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(1);
     }
-
 
     @Test
     @DisplayName("PUT - Debe actualizar y retornar los nuevos valores")
     void updateFeatures_SavesAndReturnsUpdatedValues() throws IOException {
         Map<String, Boolean> updated = Map.of(
-                "autoCreateItinerary", false,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );
 
         Map<String, Boolean> result = featureService.updateFeatures(updated);
-
-        assertThat(result).containsEntry("autoCreateItinerary", false);
         assertThat(result).containsEntry("showFavorites", true);
     }
 
@@ -140,14 +124,13 @@ class FeatureServiceTest {
     @DisplayName("PUT - Debe ignorar keys desconocidas y no persistirlas")
     void updateFeatures_IgnoresUnknownKeys() throws IOException {
         Map<String, Boolean> withUnknownKeys = new HashMap<>();
-        withUnknownKeys.put("autoCreateItinerary", false);
         withUnknownKeys.put("showFavorites", false);
         withUnknownKeys.put("keyInventada", true); // key desconocida
 
         Map<String, Boolean> result = featureService.updateFeatures(withUnknownKeys);
 
         assertThat(result).doesNotContainKey("keyInventada");
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(1);
         assertThat(result).containsEntry("showFavorites", false);
     }
 }
