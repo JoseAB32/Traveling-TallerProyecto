@@ -115,8 +115,11 @@
           <li [ngClass]="{ 'active-lang': idiomaDef === 'EN' }">
             <button (click)="changeLang('en')">EN</button>
           </li>
-          <li class="last-item" [ngClass]="{ 'active-lang': idiomaDef === 'FR' }">
+          <li [ngClass]="{ 'active-lang': idiomaDef === 'FR' }">
             <button (click)="changeLang('fr')">FR</button>
+          </li>
+          <li class="last-item" [ngClass]="{ 'active-lang': idiomaDef === 'IT' }">
+            <button (click)="changeLang('it')">IT</button>
           </li>
         </ul>
       }
