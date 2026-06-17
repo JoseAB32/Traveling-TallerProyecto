@@ -124,20 +124,16 @@
         "toggles": {
             "title": "Contrôle des fonctionnalités",
             "persistence": "Persistance dans JSON",
-            "pinRedirection": {
-                "title": "Redirection dans les Épingles",
-                "description": "Activez la navigation automatique en cliquant sur les marqueurs de la carte touristique."
-            },
             "autoCreateItinerary": {
-                "title": "Création automatique d'itinéraire",
+                "title": "Création automatique d'itinéraire (AutoCreateItinerary)",
                 "description": "Il permet au système de générer automatiquement des suggestions de voyage en fonction des lieux sélectionnés."
             },
             "showSearchPlaces": {
-                "title": "Recherche de lieux",
+                "title": "Recherche de lieux (ShowSearchPlaces)",
                 "description": "Afficher ou masquer la barre de recherche des attractions touristiques dans l'application."
             },
             "showFavorites": {
-                "title": "Favoris",
+                "title": "Favoris (ShowFavorites)",
                 "description": "Permet à cette section d'ajouter et de consulter les lieux favoris des utilisateurs enregistrés."
             }
         },
