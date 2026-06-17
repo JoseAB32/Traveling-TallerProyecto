@@ -100,7 +100,8 @@
             "logs": "System Logs",
             "toggles": "Feature Toggles",
             "translations": "Translations",
-            "createAdmin": "Register admin"
+            "createAdmin": "Register admin",
+            "createPlace": "Create Tourist Place"
         },
         "logs": {
             "filters": {
@@ -200,6 +201,33 @@
                 "emailPlaceholder":"Email",
                 "selectCity":"Select a city",
                 "saving":"Saving..."
+            }
+        },
+        "placeRegister": {
+            "title": "Create Tourist Place",
+            "description": "Register a new tourist place so it can be displayed in the system.",
+            "success": "Tourist place created successfully.",
+            "form": {
+                "name": "Place name",
+                "namePlaceholder": "Example: Cross Viewpoint",
+                "description": "Description",
+                "descriptionPlaceholder": "Describe what visitors can find in this place",
+                "address": "Address",
+                "addressPlaceholder": "Example: Downtown, Main Avenue",
+                "city": "City / Department",
+                "selectCity": "Select a city",
+                "placeType": "Place type",
+                "selectPlaceType": "Select a type",
+                "price": "Reference price",
+                "latitude": "Latitude",
+                "longitude": "Longitude",
+                "imageUrl": "Main image URL",
+                "isEvent": "Is a tourist event",
+                "startDate": "Start date and time",
+                "endDate": "End date and time",
+                "clear": "Clear",
+                "saving": "Creating...",
+                "create": "Create Place"
             }
         }
     },

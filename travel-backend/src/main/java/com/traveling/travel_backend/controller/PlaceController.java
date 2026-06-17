@@ -1,13 +1,16 @@
 package com.traveling.travel_backend.controller;
 
 import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.CreatePlaceRequestDTO;
 import com.traveling.travel_backend.dto.PlaceResponseDTO;
 import com.traveling.travel_backend.service.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,6 +23,24 @@ public class PlaceController {
 
     public PlaceController(PlaceService placeService) {
         this.placeService = placeService;
+    }
+
+    @Operation(
+            summary = "Create a tourist place",
+            description = "Creates a new tourist place. Requires ADMIN or SUPERADMIN role.",
+            operationId = "createPlace"
+    )
+    @PostMapping
+    public ResponseEntity<PlaceResponseDTO> createPlace(@RequestBody CreatePlaceRequestDTO request) {
+        PlaceResponseDTO createdPlace = placeService.createPlace(request);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdPlace.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(createdPlace);
     }
 
     @Operation(

@@ -100,7 +100,8 @@
             "logs": "Logs de Sistema",
             "toggles": "Feature Toggles",
             "translations": "Traducciones",
-            "createAdmin": "Registrar admin"
+            "createAdmin": "Registrar admin",
+            "createPlace": "Crear Lugar Turístico"
         },
         "logs": {
             "filters": {
@@ -201,7 +202,34 @@
                 "selectCity":"Selecciona una ciudad",
                 "saving": "Guardando..."
             }
+        },
+        "placeRegister": {
+            "title": "Crear Lugar Turístico",
+            "description": "Registra un nuevo lugar turístico para que pueda visualizarse en el sistema.",
+            "success": "Lugar turístico creado correctamente.",
+            "form": {
+                "name": "Nombre del lugar",
+                "namePlaceholder": "Ej. Mirador de la Cruz",
+                "description": "Descripción",
+                "descriptionPlaceholder": "Describe qué puede encontrar el visitante en este lugar",
+                "address": "Dirección",
+                "addressPlaceholder": "Ej. Zona Central, Av. Principal",
+                "city": "Ciudad / Departamento",
+                "selectCity": "Seleccione una ciudad",
+                "placeType": "Tipo de lugar",
+                "selectPlaceType": "Seleccione un tipo",
+                "price": "Precio referencial",
+                "latitude": "Latitud",
+                "longitude": "Longitud",
+                "imageUrl": "URL de imagen principal",
+                "isEvent": "Es un evento turístico",
+                "startDate": "Fecha y hora de inicio",
+                "endDate": "Fecha y hora de fin",
+                "clear": "Limpiar",
+                "saving": "Creando...",
+                "create": "Crear Lugar"
         }
+    }
     },
     "searchPlaces": {
         "textResultsFor": "Resultados para:",

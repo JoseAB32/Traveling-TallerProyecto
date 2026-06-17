@@ -6,6 +6,7 @@ import com.traveling.travel_backend.exception.ResourceNotFoundException;
 import com.traveling.travel_backend.model.City;
 import com.traveling.travel_backend.model.LogEntity;
 import com.traveling.travel_backend.model.Place;
+import com.traveling.travel_backend.repository.CityRepository;
 import com.traveling.travel_backend.repository.LogRepository;
 import com.traveling.travel_backend.repository.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +32,9 @@ class PlaceServiceTest {
 
     @Mock
     private PlaceRepository placeRepository;
+
+    @Mock
+    private CityRepository cityRepository;
 
     @Mock
     private LogRepository logRepository;

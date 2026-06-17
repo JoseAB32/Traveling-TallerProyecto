@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -9,9 +10,11 @@ import { FeatureService, Features } from '../../services/features/feature.servic
 import { TranslationService } from '../../services/translation/translation.service';
 import { UserService } from '../../services/user/user.service';
 import { CityService } from '../../services/city/city.service';
+import { PlaceService, CreatePlaceRequest } from '../../services/place/place.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Logger } from '../../models/logger/logger';
 import { Translation } from '../../models/translation/translation';
+import { Place } from '../../models/place/place';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../services/auth/auth.service';
 
@@ -30,25 +33,30 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private userService = inject(UserService);
   private cityService = inject(CityService);
+  private placeService = inject(PlaceService);
+  private router = inject(Router);
 
   private logSub?: Subscription;
   private translationSub?: Subscription;
   private updateTranslationSub?: Subscription;
+  private placesSub?: Subscription;
+  private createPlaceSub?: Subscription;
+  private citiesSub?: Subscription;
 
   isCreatingAdmin = false;
   adminError: string | null = null;
   adminSuccess = false;
   cities: any[] = [];
   isLoadingCities = false;
-  
+
   adminForm = {
     userName: '',
-    correo:   '',
+    correo: '',
     birthday: '',
-    cityId:   null as number | null
+    cityId: null as number | null
   };
 
-  isSuperAdmin: boolean =false;
+  isSuperAdmin: boolean = false;
   allLogs: Logger[] = [];
   logs: Logger[] = [];
   activeTab: string = 'logs';
@@ -92,6 +100,38 @@ export class AdminViewComponent implements OnInit, OnDestroy {
   selectedTranslation: Translation | null = null;
   editedTranslatedText: string = '';
 
+  placeTypes: string[] = [
+    'Museo',
+    'Parque',
+    'Sitio histórico',
+    'Mirador',
+    'Área natural',
+    'Centro cultural',
+    'Restaurante',
+    'Evento'
+  ];
+
+  existingPlaces: Place[] = [];
+
+  isCreatingPlace = false;
+  createPlaceError: string | null = null;
+  createPlaceSuccess = false;
+
+  placeForm = {
+    name: '',
+    description: '',
+    address: '',
+    price: 0,
+    latitude: 0,
+    longitude: 0,
+    place_type: '',
+    city_id: null as number | null,
+    is_event: false,
+    start_date: null as string | null,
+    end_date: null as string | null,
+    image_url: ''
+  };
+
   ngOnInit(): void {
     this.isSuperAdmin = this.authService.isSuperAdmin();
 
@@ -113,9 +153,11 @@ export class AdminViewComponent implements OnInit, OnDestroy {
 
     if (superAdminTabs.includes(tab) && !this.isSuperAdmin) {
       this.activeTab = 'translations';
+
       if (this.translations.length === 0) {
         this.loadTranslations(0);
       }
+
       return;
     }
 
@@ -138,11 +180,22 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       this.resetAdminForm();
       this.loadCitiesForAdmin();
     }
+
+    if (tab === 'createPlace') {
+      this.resetCreatePlaceMessages();
+      this.loadCitiesForAdmin();
+      this.loadExistingPlaces();
+    }
   }
 
-
   resetAdminForm(): void {
-    this.adminForm = { userName: '', correo: '', birthday: '', cityId: null };
+    this.adminForm = {
+      userName: '',
+      correo: '',
+      birthday: '',
+      cityId: null
+    };
+
     this.adminError = null;
     this.adminSuccess = false;
   }
@@ -151,6 +204,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     if (!this.isSuperAdmin) {
       return;
     }
+
     this.featureService.loadFeatures().subscribe({
       error: (err) => console.error('Error cargando features', err)
     });
@@ -189,7 +243,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     if (!this.isSuperAdmin) {
       return;
     }
-    
+
     if (this.filterModule && this.filterLevel && this.startDate && this.endDate) {
       this.loggerService
         .getFilteredLogs(this.filterModule, this.filterLevel, this.startDate, this.endDate)
@@ -317,12 +371,22 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     });
   }
 
-
   loadCitiesForAdmin(): void {
+    if (this.cities.length > 0) {
+      return;
+    }
+
     this.isLoadingCities = true;
-    this.cityService.getCities().subscribe({
-      next: (data) => { this.cities = data; this.isLoadingCities = false; },
-      error: ()   => { this.isLoadingCities = false; }
+
+    this.citiesSub?.unsubscribe();
+    this.citiesSub = this.cityService.getCities().subscribe({
+      next: (data) => {
+        this.cities = data;
+        this.isLoadingCities = false;
+      },
+      error: () => {
+        this.isLoadingCities = false;
+      }
     });
   }
 
@@ -331,10 +395,12 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       this.adminError = 'adminConfiguration.adminRegister.usernameRequired';
       return;
     }
+
     if (!this.adminForm.correo.trim()) {
       this.adminError = 'adminConfiguration.adminRegister.emailRequired';
       return;
     }
+
     if (!this.isValidEmail(this.adminForm.correo)) {
       this.adminError = 'adminConfiguration.adminRegister.emailInvalid';
       return;
@@ -345,9 +411,9 @@ export class AdminViewComponent implements OnInit, OnDestroy {
 
     this.userService.createAdmin({
       userName: this.adminForm.userName.trim(),
-      correo:   this.adminForm.correo.trim(),
+      correo: this.adminForm.correo.trim(),
       birthday: this.adminForm.birthday || undefined,
-      cityId:   this.adminForm.cityId   || null
+      cityId: this.adminForm.cityId || null
     }).subscribe({
       next: () => {
         this.isCreatingAdmin = false;
@@ -356,18 +422,201 @@ export class AdminViewComponent implements OnInit, OnDestroy {
       },
       error: (err: HttpErrorResponse) => {
         this.isCreatingAdmin = false;
-        this.adminError = err.status === 400 ? 'adminConfiguration.adminRegister.fieldTaken' : 'adminConfiguration.adminRegister.error';
+        this.adminError = err.status === 400
+          ? 'adminConfiguration.adminRegister.fieldTaken'
+          : 'adminConfiguration.adminRegister.error';
       }
     });
+  }
+
+  loadExistingPlaces(): void {
+    this.placesSub?.unsubscribe();
+
+    this.placesSub = this.placeService.getSearchCache().subscribe({
+      next: (places) => {
+        this.existingPlaces = places;
+      },
+      error: () => {
+        this.createPlaceError = 'No se pudieron cargar los lugares existentes para validar duplicados.';
+      }
+    });
+  }
+
+  submitCreatePlace(): void {
+    this.createPlaceError = null;
+    this.createPlaceSuccess = false;
+
+    this.normalizePlaceForm();
+
+    const validationError = this.validatePlaceForm();
+
+    if (validationError) {
+      this.createPlaceError = validationError;
+      return;
+    }
+
+    if (this.isRepeatedPlace()) {
+      this.createPlaceError = 'Ya existe un lugar turístico activo con ese nombre en la ciudad seleccionada.';
+      return;
+    }
+
+    const payload: CreatePlaceRequest = {
+      name: this.placeForm.name,
+      description: this.placeForm.description,
+      address: this.placeForm.address,
+      price: Number(this.placeForm.price),
+      latitude: Number(this.placeForm.latitude),
+      longitude: Number(this.placeForm.longitude),
+      place_type: this.placeForm.place_type,
+      city_id: Number(this.placeForm.city_id),
+      is_event: Boolean(this.placeForm.is_event),
+      start_date: this.placeForm.is_event ? this.placeForm.start_date : null,
+      end_date: this.placeForm.is_event ? this.placeForm.end_date : null,
+      image_url: this.placeForm.image_url || null
+    };
+
+    this.isCreatingPlace = true;
+
+    this.createPlaceSub?.unsubscribe();
+    this.createPlaceSub = this.placeService.createPlace(payload).subscribe({
+      next: (createdPlace) => {
+        this.isCreatingPlace = false;
+        this.createPlaceSuccess = true;
+        this.resetPlaceForm();
+        this.router.navigate(['/place', createdPlace.id]);
+      },
+      error: (error) => {
+        this.isCreatingPlace = false;
+        this.createPlaceError = error?.error?.message || error?.message || 'No se pudo crear el lugar turístico.';
+      }
+    });
+  }
+
+  resetPlaceForm(): void {
+    this.createPlaceError = null;
+    this.createPlaceSuccess = false;
+
+    this.placeForm = {
+      name: '',
+      description: '',
+      address: '',
+      price: 0,
+      latitude: 0,
+      longitude: 0,
+      place_type: '',
+      city_id: null,
+      is_event: false,
+      start_date: null,
+      end_date: null,
+      image_url: ''
+    };
+  }
+
+  private resetCreatePlaceMessages(): void {
+    this.createPlaceError = null;
+    this.createPlaceSuccess = false;
+  }
+
+  private validatePlaceForm(): string {
+    if (!this.placeForm.name || this.placeForm.name.length < 3) {
+      return 'El nombre debe tener al menos 3 caracteres.';
+    }
+
+    if (!this.placeForm.description || this.placeForm.description.length < 10) {
+      return 'La descripción debe tener al menos 10 caracteres.';
+    }
+
+    if (!this.placeForm.address || this.placeForm.address.length < 5) {
+      return 'La dirección debe tener al menos 5 caracteres.';
+    }
+
+    if (!this.placeForm.place_type || this.placeForm.place_type.length < 3) {
+      return 'Debe seleccionar un tipo de lugar válido.';
+    }
+
+    if (!this.placeForm.city_id) {
+      return 'Debe seleccionar una ciudad.';
+    }
+
+    if (this.placeForm.price === null || this.placeForm.price === undefined || Number(this.placeForm.price) < 0) {
+      return 'El precio debe ser mayor o igual a 0.';
+    }
+
+    if (
+      this.placeForm.latitude === null ||
+      this.placeForm.latitude === undefined ||
+      Number(this.placeForm.latitude) < -90 ||
+      Number(this.placeForm.latitude) > 90
+    ) {
+      return 'La latitud debe estar entre -90 y 90.';
+    }
+
+    if (
+      this.placeForm.longitude === null ||
+      this.placeForm.longitude === undefined ||
+      Number(this.placeForm.longitude) < -180 ||
+      Number(this.placeForm.longitude) > 180
+    ) {
+      return 'La longitud debe estar entre -180 y 180.';
+    }
+
+    if (this.placeForm.image_url && !/^https?:\/\/.+/i.test(this.placeForm.image_url)) {
+      return 'La URL de imagen debe empezar con http:// o https://.';
+    }
+
+    if (this.placeForm.is_event) {
+      if (!this.placeForm.start_date || !this.placeForm.end_date) {
+        return 'Los eventos deben tener fecha de inicio y fecha de fin.';
+      }
+
+      if (new Date(this.placeForm.end_date).getTime() <= new Date(this.placeForm.start_date).getTime()) {
+        return 'La fecha de fin debe ser posterior a la fecha de inicio.';
+      }
+    }
+
+    return '';
+  }
+
+  private isRepeatedPlace(): boolean {
+    const name = this.normalizeForComparison(this.placeForm.name);
+    const cityId = Number(this.placeForm.city_id);
+
+    return this.existingPlaces.some(place =>
+      place.state &&
+      this.normalizeForComparison(place.name) === name &&
+      Number(place.city?.id) === cityId
+    );
+  }
+
+  private normalizePlaceForm(): void {
+    this.placeForm.name = this.normalizeSpaces(this.placeForm.name);
+    this.placeForm.description = this.normalizeSpaces(this.placeForm.description);
+    this.placeForm.address = this.normalizeSpaces(this.placeForm.address);
+    this.placeForm.place_type = this.normalizeSpaces(this.placeForm.place_type);
+    this.placeForm.image_url = this.normalizeSpaces(this.placeForm.image_url);
+  }
+
+  private normalizeSpaces(value: string): string {
+    return (value || '').trim().replace(/\s+/g, ' ');
+  }
+
+  private normalizeForComparison(value: string | undefined | null): string {
+    return this.normalizeSpaces(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
   }
 
   private isValidEmail(email: string): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
+
   setDefaultDates(): void {
     const now = new Date();
     const fiveDaysAgo = new Date();
+
     fiveDaysAgo.setDate(now.getDate() - 5);
+
     this.endDate = this.formatDateForInput(now);
     this.startDate = this.formatDateForInput(fiveDaysAgo);
   }
@@ -378,6 +627,7 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     const day = date.getDate().toString().padStart(2, '0');
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
+
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
 
@@ -385,5 +635,8 @@ export class AdminViewComponent implements OnInit, OnDestroy {
     this.logSub?.unsubscribe();
     this.translationSub?.unsubscribe();
     this.updateTranslationSub?.unsubscribe();
+    this.placesSub?.unsubscribe();
+    this.createPlaceSub?.unsubscribe();
+    this.citiesSub?.unsubscribe();
   }
 }

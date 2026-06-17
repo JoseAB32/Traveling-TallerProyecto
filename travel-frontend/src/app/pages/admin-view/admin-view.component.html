@@ -41,6 +41,14 @@
         <i class="bi bi-translate"></i> {{ 'adminConfiguration.tabs.translations' | transloco }}
       </button>
     </li>
+
+   <li class="nav-item">
+      <button class="nav-link text-uppercase fw-bold"
+              [class.active-tab]="activeTab === 'createPlace'"
+              (click)="changeAdminTab('createPlace')">
+        <i class="bi bi-geo-alt-fill"></i> {{ 'adminConfiguration.tabs.createPlace' | transloco }}
+      </button>
+    </li>
   </ul>
 
   @if (activeTab === 'logs') {
@@ -445,6 +453,190 @@
 
     </div>
   }
+
+  @if (activeTab === 'createPlace') {
+  <section>
+    <div class="card shadow-sm border-0 bg-white p-4">
+
+      <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+        <div>
+          <h4 class="text-traveling mb-1">
+            <i class="bi bi-geo-alt-fill"></i> {{ 'adminConfiguration.placeRegister.title' | transloco }}
+          </h4>
+          <p class="text-muted small mb-0">
+            {{ 'adminConfiguration.placeRegister.description' | transloco }}
+          </p>
+        </div>
+      </div>
+
+      @if (createPlaceError) {
+        <div class="alert alert-danger">
+          {{ createPlaceError }}
+        </div>
+      }
+
+      @if (createPlaceSuccess) {
+        <div class="alert alert-success">
+          {{ 'adminConfiguration.placeRegister.success' | transloco }}
+        </div>
+      }
+
+      <div class="row g-3">
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.name' | transloco }} *
+          </label>
+          <input class="form-control"
+                 type="text"
+                 [(ngModel)]="placeForm.name"
+                 [placeholder]="'adminConfiguration.placeRegister.form.namePlaceholder' | transloco">
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.city' | transloco }} *
+          </label>
+          <select class="form-select" [(ngModel)]="placeForm.city_id">
+            <option [ngValue]="null">
+              {{ 'adminConfiguration.placeRegister.form.selectCity' | transloco }}
+            </option>
+            @for (city of cities; track city.id) {
+              <option [ngValue]="city.id">{{ city.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.description' | transloco }} *
+          </label>
+          <textarea class="form-control"
+                    rows="4"
+                    [(ngModel)]="placeForm.description"
+                    [placeholder]="'adminConfiguration.placeRegister.form.descriptionPlaceholder' | transloco"></textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.address' | transloco }} *
+          </label>
+          <input class="form-control"
+                 type="text"
+                 [(ngModel)]="placeForm.address"
+                 [placeholder]="'adminConfiguration.placeRegister.form.addressPlaceholder' | transloco">
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.placeType' | transloco }} *
+          </label>
+          <select class="form-select" [(ngModel)]="placeForm.place_type">
+            <option value="">
+              {{ 'adminConfiguration.placeRegister.form.selectPlaceType' | transloco }}
+            </option>
+            @for (type of placeTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.price' | transloco }} *
+          </label>
+          <input class="form-control"
+                 type="number"
+                 min="0"
+                 step="0.1"
+                 [(ngModel)]="placeForm.price">
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.latitude' | transloco }} *
+          </label>
+          <input class="form-control"
+                 type="number"
+                 step="0.000001"
+                 [(ngModel)]="placeForm.latitude">
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.longitude' | transloco }} *
+          </label>
+          <input class="form-control"
+                 type="number"
+                 step="0.000001"
+                 [(ngModel)]="placeForm.longitude">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label fw-bold small">
+            {{ 'adminConfiguration.placeRegister.form.imageUrl' | transloco }}
+          </label>
+          <input class="form-control"
+                 type="url"
+                 [(ngModel)]="placeForm.image_url"
+                 placeholder="https://ejemplo.com/imagen.jpg">
+        </div>
+
+        <div class="col-12">
+          <div class="form-check form-switch">
+            <input class="form-check-input"
+                   type="checkbox"
+                   role="switch"
+                   id="isEventSwitch"
+                   [(ngModel)]="placeForm.is_event">
+            <label class="form-check-label fw-bold small" for="isEventSwitch">
+              {{ 'adminConfiguration.placeRegister.form.isEvent' | transloco }}
+            </label>
+          </div>
+        </div>
+
+        @if (placeForm.is_event) {
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.startDate' | transloco }} *
+            </label>
+            <input class="form-control"
+                   type="datetime-local"
+                   [(ngModel)]="placeForm.start_date">
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.endDate' | transloco }} *
+            </label>
+            <input class="form-control"
+                   type="datetime-local"
+                   [(ngModel)]="placeForm.end_date">
+          </div>
+        }
+
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button"
+                class="btn btn-outline-secondary rounded-pill px-4"
+                (click)="resetPlaceForm()"
+                [disabled]="isCreatingPlace">
+          {{ 'adminConfiguration.placeRegister.form.clear' | transloco }}
+        </button>
+
+        <button type="button"
+                class="btn btn-traveling rounded-pill px-4"
+                (click)="submitCreatePlace()"
+                [disabled]="isCreatingPlace">
+          {{ isCreatingPlace ? ('adminConfiguration.placeRegister.form.saving' | transloco) : ('adminConfiguration.placeRegister.form.create' | transloco) }}
+        </button>
+      </div>
+
+    </div>
+  </section>
+}
+
   @if (showTranslationEditModal && selectedTranslation) {
     <div class="modal fade show d-block modal-backdrop-custom">
       <div class="modal-dialog modal-dialog-centered modal-lg">
