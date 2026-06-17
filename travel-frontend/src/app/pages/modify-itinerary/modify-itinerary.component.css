@@ -649,3 +649,365 @@
     font-size: 1rem;
   }
 }
+
+/* ========================================
+   DARK MODE - MODIFY ITINERARY
+   Pegar al final de modify-itinerary.component.css
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .itinerary-page {
+  background-color: #061826;
+  color: var(--beige);
+}
+
+/* ========================================
+   TÍTULOS DE SECCIONES
+======================================== */
+
+:host-context(.dark-mode) .section-title.peach {
+  background: #3a2a22;
+  color: #ffb287;
+  border: 1px solid rgba(255, 178, 135, 0.25);
+}
+
+:host-context(.dark-mode) .section-title.blue {
+  background: #082b47;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.18);
+}
+
+/* ========================================
+   SELECTOR DE CIUDAD
+======================================== */
+
+:host-context(.dark-mode) .city-selector select {
+  background-color: #102f49;
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.35);
+}
+
+:host-context(.dark-mode) .city-selector select:focus {
+  border-color: var(--atomic-tangerine);
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+  outline: none;
+}
+
+:host-context(.dark-mode) .city-selector select option {
+  background-color: #102f49;
+  color: var(--beige);
+}
+
+/* Por si tu modify también tiene input de nombre */
+:host-context(.dark-mode) .name-section input,
+:host-context(.dark-mode) .name-input {
+  background-color: #102f49;
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.35);
+}
+
+:host-context(.dark-mode) .name-section input:focus,
+:host-context(.dark-mode) .name-input:focus {
+  border-color: var(--atomic-tangerine);
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+  outline: none;
+}
+
+/* ========================================
+   MAPA
+======================================== */
+
+:host-context(.dark-mode) .map-box,
+:host-context(.dark-mode) .generated-map-box {
+  background-color: #0b2235;
+  border: 1px solid rgba(247, 197, 159, 0.22);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+:host-context(.dark-mode) .map-box ::ng-deep .leaflet-tile,
+:host-context(.dark-mode) .generated-map-box ::ng-deep .leaflet-tile {
+  filter: brightness(0.75) contrast(1.08) saturate(0.9);
+}
+
+:host-context(.dark-mode) .map-box ::ng-deep .leaflet-control,
+:host-context(.dark-mode) .map-box ::ng-deep .leaflet-popup-content-wrapper,
+:host-context(.dark-mode) .map-box ::ng-deep .leaflet-popup-tip,
+:host-context(.dark-mode) .generated-map-box ::ng-deep .leaflet-control,
+:host-context(.dark-mode) .generated-map-box ::ng-deep .leaflet-popup-content-wrapper,
+:host-context(.dark-mode) .generated-map-box ::ng-deep .leaflet-popup-tip {
+  background-color: #0b2235;
+  color: var(--beige);
+}
+
+/* ========================================
+   CAJAS DE CARGA / VACÍO
+======================================== */
+
+:host-context(.dark-mode) .loading-box,
+:host-context(.dark-mode) .empty-state {
+  background: #102f49;
+  color: #b8c7d6;
+  border-color: rgba(247, 197, 159, 0.28);
+}
+
+:host-context(.dark-mode) .loading-box.no-places {
+  color: var(--peach-glow);
+}
+
+/* ========================================
+   INFORMACIÓN DEL LUGAR SELECCIONADO
+======================================== */
+
+:host-context(.dark-mode) .place-info {
+  background: #082b47;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+:host-context(.dark-mode) .place-info h3 {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .place-info p {
+  color: var(--beige);
+}
+
+/* Botones dentro de la info */
+:host-context(.dark-mode) .btn.add {
+  background: var(--peach-glow);
+  color: #061826;
+}
+
+:host-context(.dark-mode) .btn.add:hover {
+  background: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .btn.view {
+  background: transparent;
+  color: var(--peach-glow);
+  border: 1px solid var(--peach-glow);
+}
+
+:host-context(.dark-mode) .btn.view:hover {
+  background: var(--peach-glow);
+  color: #061826;
+}
+
+/* ========================================
+   LISTA DE LUGARES SELECCIONADOS
+======================================== */
+
+:host-context(.dark-mode) .selected-item {
+  background: #082b47;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+:host-context(.dark-mode) .selected-item .name {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .inline-link {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .inline-link:hover {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .remove {
+  color: #ff8b8b;
+}
+
+:host-context(.dark-mode) .remove:hover {
+  color: #ff5f5f;
+}
+
+/* ========================================
+   FECHAS
+======================================== */
+
+:host-context(.dark-mode) .date-field label {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .date-field input {
+  background-color: #102f49;
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.35);
+}
+
+:host-context(.dark-mode) .date-field input:focus {
+  border-color: var(--atomic-tangerine);
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+  outline: none;
+}
+
+:host-context(.dark-mode) input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* ========================================
+   BOTÓN GENERAR / ESTADO DE CARGA
+======================================== */
+
+:host-context(.dark-mode) .btn-generar-it {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .btn-generar-it:hover:not(:disabled) {
+  background-color: #e85a28;
+}
+
+:host-context(.dark-mode) .btn-generar-it:disabled {
+  background-color: #3a4654;
+  color: #9fb1c3;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+:host-context(.dark-mode) .loading-itinerary {
+  color: var(--peach-glow);
+}
+
+/* ========================================
+   ITINERARIO GENERADO
+======================================== */
+
+:host-context(.dark-mode) .itinerario-container {
+  background-color: #061826;
+}
+
+:host-context(.dark-mode) .lugar-container {
+  background-color: #082b47;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+}
+
+:host-context(.dark-mode) .orden-container {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .lugar-nombre {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .det-container p,
+:host-context(.dark-mode) .det-container svg,
+:host-context(.dark-mode) .rating-text {
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .rating-container i {
+  color: var(--peach-glow);
+}
+
+/* ========================================
+   BOTÓN GUARDAR
+======================================== */
+
+:host-context(.dark-mode) .btn-save-it {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .btn-save-it:hover {
+  background-color: var(--peach-glow);
+  color: #061826;
+}
+
+/* ========================================
+   MODAL
+======================================== */
+
+:host-context(.dark-mode) .modal-overlay {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+:host-context(.dark-mode) .modal-box {
+  background: #0b2235;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.22);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45);
+}
+
+:host-context(.dark-mode) .modal-field input {
+  background-color: #102f49;
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.35);
+}
+
+:host-context(.dark-mode) .modal-field input:focus {
+  border-color: var(--atomic-tangerine);
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.18);
+}
+
+:host-context(.dark-mode) .modal-field label {
+  background: #0b2235;
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .modal-field input:focus + label,
+:host-context(.dark-mode) .modal-field input:not(:placeholder-shown) + label {
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .modal-error {
+  color: #ff8b8b;
+}
+
+:host-context(.dark-mode) .modal-success {
+  color: #86efac;
+}
+
+:host-context(.dark-mode) .btn-save-modal {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .btn-save-modal:hover:not(:disabled) {
+  background-color: #e85a28;
+}
+
+:host-context(.dark-mode) .btn-save-modal:disabled {
+  background-color: #3a4654;
+  color: #9fb1c3;
+}
+
+:host-context(.dark-mode) .btn-cancel-modal {
+  color: #b8c7d6;
+}
+
+:host-context(.dark-mode) .btn-cancel-modal:hover {
+  color: var(--peach-glow);
+}
+
+/* ========================================
+   RESPONSIVE DARK FIXES
+======================================== */
+
+@media (max-width: 768px) {
+  :host-context(.dark-mode) .itinerary-page {
+    background-color: #061826;
+  }
+
+  :host-context(.dark-mode) .selected-item {
+    background: #082b47;
+  }
+
+  :host-context(.dark-mode) .modal-box {
+    background: #0b2235;
+  }
+}

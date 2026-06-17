@@ -300,3 +300,494 @@
         width: 100%;
     }
 }
+
+/* ========================================
+   DARK MODE - ADMIN PAGE
+======================================== */
+
+:host-context(.dark-mode) {
+  display: block;
+  background-color: #061826;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) main.container,
+:host-context(.dark-mode) .container {
+  background-color: #061826;
+  color: var(--beige);
+}
+
+/* Colores base admin */
+:host-context(.dark-mode) .bg-traveling {
+  background-color: #06263f !important;
+}
+
+:host-context(.dark-mode) .text-traveling {
+  color: var(--peach-glow);
+}
+
+/* Botones */
+:host-context(.dark-mode) .btn-traveling {
+  background-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .btn-traveling:hover {
+  background-color: transparent;
+  color: var(--atomic-tangerine);
+  border: 1px solid var(--atomic-tangerine);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.25);
+}
+
+/* Tabs */
+:host-context(.dark-mode) .nav-tabs {
+  border-bottom-color: rgba(247, 197, 159, 0.22);
+}
+
+:host-context(.dark-mode) .nav-tabs .nav-link {
+  color: #b8c7d6;
+  background-color: transparent;
+}
+
+:host-context(.dark-mode) .nav-tabs .nav-link:hover {
+  color: var(--peach-glow);
+  background-color: rgba(247, 197, 159, 0.08);
+}
+
+:host-context(.dark-mode) .active-tab {
+  color: var(--atomic-tangerine) !important;
+  border-bottom: 3px solid var(--atomic-tangerine) !important;
+  background-color: rgba(255, 107, 53, 0.08) !important;
+}
+
+/* Cards */
+:host-context(.dark-mode) .card,
+:host-context(.dark-mode) .translation-card {
+  background-color: #0b2235;
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32) !important;
+}
+
+:host-context(.dark-mode) .translation-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+:host-context(.dark-mode) .card-header,
+:host-context(.dark-mode) .card-footer {
+  background-color: #102f49;
+  border-color: rgba(247, 197, 159, 0.18);
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .card-title,
+:host-context(.dark-mode) .card-text {
+  color: var(--beige);
+}
+
+/* Badges */
+:host-context(.dark-mode) .badge {
+  border: 1px solid rgba(247, 197, 159, 0.16);
+}
+
+/* Cajas de traducción */
+:host-context(.dark-mode) .translated-text-box {
+  background: #102f49;
+  border-color: rgba(247, 197, 159, 0.22);
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .translation-textarea,
+:host-context(.dark-mode) textarea,
+:host-context(.dark-mode) input,
+:host-context(.dark-mode) select {
+  background-color: #102f49;
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.28);
+}
+
+:host-context(.dark-mode) .translation-textarea:focus,
+:host-context(.dark-mode) textarea:focus,
+:host-context(.dark-mode) input:focus,
+:host-context(.dark-mode) select:focus {
+  background-color: #102f49;
+  color: var(--beige);
+  border-color: var(--atomic-tangerine);
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.18);
+}
+
+:host-context(.dark-mode) input::placeholder,
+:host-context(.dark-mode) textarea::placeholder {
+  color: #9fb1c3;
+}
+
+/* Tables */
+:host-context(.dark-mode) .table {
+  color: var(--beige);
+  border-color: rgba(247, 197, 159, 0.18);
+}
+
+:host-context(.dark-mode) .table thead th {
+  background-color: #102f49;
+  color: var(--peach-glow);
+  border-color: rgba(247, 197, 159, 0.18);
+}
+
+:host-context(.dark-mode) .table tbody tr {
+  background-color: #0b2235;
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .table td,
+:host-context(.dark-mode) .table th {
+  border-color: rgba(247, 197, 159, 0.14);
+}
+
+:host-context(.dark-mode) .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(247, 197, 159, 0.045);
+  color: var(--beige);
+}
+
+:host-context(.dark-mode) .table-hover > tbody > tr:hover > * {
+  background-color: rgba(255, 107, 53, 0.08);
+  color: var(--beige);
+}
+
+/* Switches */
+:host-context(.dark-mode) .form-switch .form-check-input {
+  background-color: #102f49;
+  border-color: rgba(247, 197, 159, 0.35);
+}
+
+:host-context(.dark-mode) .form-switch .form-check-input:checked {
+  background-color: var(--atomic-tangerine);
+  border-color: var(--atomic-tangerine);
+}
+
+/* Modal */
+:host-context(.dark-mode) .modal-backdrop-custom,
+:host-context(.dark-mode) .modal-backdrop {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+:host-context(.dark-mode) .modal-content {
+  background-color: #0b2235;
+  color: var(--beige);
+  border: 1px solid rgba(247, 197, 159, 0.22);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.48);
+}
+
+:host-context(.dark-mode) .modal-header,
+:host-context(.dark-mode) .modal-footer {
+  border-color: rgba(247, 197, 159, 0.18);
+}
+
+:host-context(.dark-mode) .modal-title {
+  color: var(--peach-glow);
+}
+
+:host-context(.dark-mode) .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Bootstrap text helpers */
+:host-context(.dark-mode) .text-muted {
+  color: #b8c7d6 !important;
+}
+
+:host-context(.dark-mode) .text-dark {
+  color: var(--beige) !important;
+}
+
+:host-context(.dark-mode) .bg-white {
+  background-color: #0b2235 !important;
+}
+
+:host-context(.dark-mode) .bg-light {
+  background-color: #102f49 !important;
+}
+
+/* Alertas */
+:host-context(.dark-mode) .alert-info {
+  background-color: rgba(47, 122, 196, 0.16);
+  color: #b8d8ff;
+  border-color: rgba(47, 122, 196, 0.35);
+}
+
+:host-context(.dark-mode) .alert-success {
+  background-color: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+  border-color: rgba(134, 239, 172, 0.35);
+}
+
+:host-context(.dark-mode) .alert-danger {
+  background-color: rgba(255, 80, 80, 0.12);
+  color: #ff8b8b;
+  border-color: rgba(255, 139, 139, 0.38);
+}
+
+:host-context(.dark-mode) .alert-warning {
+  background-color: rgba(255, 193, 7, 0.12);
+  color: #ffe08a;
+  border-color: rgba(255, 193, 7, 0.35);
+}
+
+/* Pagination */
+:host-context(.dark-mode) .pagination .page-link {
+  background-color: #0b2235;
+  color: var(--peach-glow);
+  border-color: rgba(247, 197, 159, 0.22);
+}
+
+:host-context(.dark-mode) .pagination .page-link:hover {
+  background-color: #15344f;
+  color: var(--atomic-tangerine);
+}
+
+:host-context(.dark-mode) .pagination .page-item.active .page-link {
+  background-color: var(--atomic-tangerine);
+  border-color: var(--atomic-tangerine);
+  color: white;
+}
+
+:host-context(.dark-mode) .pagination .page-item.disabled .page-link {
+  background-color: #102f49;
+  color: #6f8498;
+  border-color: rgba(247, 197, 159, 0.12);
+}
+
+:host-context(.dark-mode) .pagination .page-number {
+  color: white;
+}
+
+/* Logs */
+:host-context(.dark-mode) .logs-table-wrapper {
+  background-color: #0b2235;
+  border-color: rgba(247, 197, 159, 0.18) !important;
+}
+
+:host-context(.dark-mode) .logs-message-cell {
+  color: var(--beige);
+}
+
+/* Móvil: logs como cards */
+@media (max-width: 767.98px) {
+  :host-context(.dark-mode) .logs-table-wrapper {
+    background: transparent;
+  }
+
+  :host-context(.dark-mode) table.logs-table {
+    background: transparent !important;
+  }
+
+  :host-context(.dark-mode) table.logs-table tr {
+    background: #0b2235;
+    border-color: rgba(247, 197, 159, 0.18);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.32);
+  }
+
+  :host-context(.dark-mode) table.logs-table td {
+    border-bottom-color: rgba(247, 197, 159, 0.12);
+    color: var(--beige);
+  }
+
+  :host-context(.dark-mode) table.logs-table td::before {
+    color: var(--peach-glow);
+  }
+}
+
+/* ========================================
+   FIX DARK MODE - ADMIN TABLES + FEATURE TOGGLES
+   Pegar al final de admin.css
+======================================== */
+
+/* Fondo general de cards internas */
+:host-context(.dark-mode) .card,
+:host-context(.dark-mode) .card-body {
+  background-color: #102f49 !important;
+  color: var(--beige) !important;
+}
+
+/* Feature Toggles: contenedor y filas */
+:host-context(.dark-mode) .list-group,
+:host-context(.dark-mode) .list-group-flush {
+  background-color: #0b2235 !important;
+  color: var(--beige) !important;
+}
+
+:host-context(.dark-mode) .list-group-item,
+:host-context(.dark-mode) .feature-item,
+:host-context(.dark-mode) .feature-row,
+:host-context(.dark-mode) .toggle-row {
+  background-color: #102f49 !important;
+  color: var(--beige) !important;
+  border-color: rgba(247, 197, 159, 0.18) !important;
+}
+
+:host-context(.dark-mode) .list-group-item h1,
+:host-context(.dark-mode) .list-group-item h2,
+:host-context(.dark-mode) .list-group-item h3,
+:host-context(.dark-mode) .list-group-item h4,
+:host-context(.dark-mode) .list-group-item h5,
+:host-context(.dark-mode) .list-group-item h6,
+:host-context(.dark-mode) .list-group-item p,
+:host-context(.dark-mode) .list-group-item span,
+:host-context(.dark-mode) .feature-item p,
+:host-context(.dark-mode) .feature-item span {
+  color: var(--beige) !important;
+}
+
+:host-context(.dark-mode) .list-group-item small,
+:host-context(.dark-mode) .feature-item small,
+:host-context(.dark-mode) .toggle-description {
+  color: #b8c7d6 !important;
+}
+
+/* Switch de Bootstrap */
+:host-context(.dark-mode) .form-check-input {
+  background-color: #102f49 !important;
+  border-color: rgba(247, 197, 159, 0.35) !important;
+}
+
+:host-context(.dark-mode) .form-check-input:checked {
+  background-color: var(--atomic-tangerine) !important;
+  border-color: var(--atomic-tangerine) !important;
+}
+
+/* Tabla logs: Bootstrap pinta las CELDAS, no solo los TR */
+:host-context(.dark-mode) .table {
+  --bs-table-bg: #0b2235;
+  --bs-table-color: var(--beige);
+  --bs-table-border-color: rgba(247, 197, 159, 0.16);
+  --bs-table-striped-bg: #102f49;
+  --bs-table-striped-color: var(--beige);
+  --bs-table-hover-bg: #15344f;
+  --bs-table-hover-color: var(--beige);
+
+  background-color: #0b2235 !important;
+  color: var(--beige) !important;
+  border-color: rgba(247, 197, 159, 0.16) !important;
+}
+
+/* Celdas reales de Bootstrap */
+:host-context(.dark-mode) .table > :not(caption) > * > * {
+  background-color: #0b2235 !important;
+  color: var(--beige) !important;
+  border-color: rgba(247, 197, 159, 0.14) !important;
+  box-shadow: none !important;
+}
+
+/* Header de tabla */
+:host-context(.dark-mode) .table thead,
+:host-context(.dark-mode) .table thead tr,
+:host-context(.dark-mode) .table thead th {
+  background-color: #102f49 !important;
+  color: var(--peach-glow) !important;
+  border-color: rgba(247, 197, 159, 0.18) !important;
+}
+
+/* Body de tabla */
+:host-context(.dark-mode) .table tbody,
+:host-context(.dark-mode) .table tbody tr,
+:host-context(.dark-mode) .table tbody td {
+  background-color: #0b2235 !important;
+  color: var(--beige) !important;
+}
+
+/* Filas alternas si usas table-striped */
+:host-context(.dark-mode) .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #102f49 !important;
+  color: var(--beige) !important;
+}
+
+/* Hover si usas table-hover */
+:host-context(.dark-mode) .table-hover > tbody > tr:hover > * {
+  background-color: #15344f !important;
+  color: var(--beige) !important;
+}
+
+/* Fila activa / seleccionada */
+:host-context(.dark-mode) .table-active,
+:host-context(.dark-mode) .table-active > th,
+:host-context(.dark-mode) .table-active > td,
+:host-context(.dark-mode) tr.table-active > * {
+  background-color: #1e2430 !important;
+  color: var(--beige) !important;
+}
+
+/* Textos dentro de las celdas */
+:host-context(.dark-mode) .table td,
+:host-context(.dark-mode) .table th,
+:host-context(.dark-mode) .table td span,
+:host-context(.dark-mode) .table td p,
+:host-context(.dark-mode) .table td div {
+  color: var(--beige) !important;
+}
+
+/* Si hay textos muted dentro de tabla */
+:host-context(.dark-mode) .table .text-muted {
+  color: #b8c7d6 !important;
+}
+
+/* Badges dentro de tabla: no los dañamos, solo aseguramos legibilidad */
+:host-context(.dark-mode) .table .badge {
+  color: white !important;
+}
+
+/* Wrapper de logs */
+:host-context(.dark-mode) .logs-table-wrapper {
+  background-color: #0b2235 !important;
+  border-color: rgba(247, 197, 159, 0.18) !important;
+}
+
+/* Filtros de logs */
+:host-context(.dark-mode) .form-control,
+:host-context(.dark-mode) .form-select {
+  background-color: #102f49 !important;
+  color: var(--beige) !important;
+  border-color: rgba(247, 197, 159, 0.28) !important;
+}
+
+:host-context(.dark-mode) .form-control:focus,
+:host-context(.dark-mode) .form-select:focus {
+  background-color: #102f49 !important;
+  color: var(--beige) !important;
+  border-color: var(--atomic-tangerine) !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.18) !important;
+}
+
+/* Options de selects */
+:host-context(.dark-mode) .form-select option {
+  background-color: #102f49;
+  color: var(--beige);
+}
+
+/* Labels de filtros */
+:host-context(.dark-mode) label,
+:host-context(.dark-mode) .form-label {
+  color: var(--beige) !important;
+}
+
+/* Paginación */
+:host-context(.dark-mode) .pagination .page-link {
+  background-color: #102f49 !important;
+  color: var(--peach-glow) !important;
+  border-color: rgba(247, 197, 159, 0.22) !important;
+}
+
+:host-context(.dark-mode) .pagination .page-link:hover {
+  background-color: #15344f !important;
+  color: var(--atomic-tangerine) !important;
+}
+
+:host-context(.dark-mode) .pagination .page-item.active .page-link {
+  background-color: var(--atomic-tangerine) !important;
+  border-color: var(--atomic-tangerine) !important;
+  color: white !important;
+}
+
+:host-context(.dark-mode) .pagination .page-item.disabled .page-link {
+  background-color: #102f49 !important;
+  color: #6f8498 !important;
+  border-color: rgba(247, 197, 159, 0.12) !important;
+}
