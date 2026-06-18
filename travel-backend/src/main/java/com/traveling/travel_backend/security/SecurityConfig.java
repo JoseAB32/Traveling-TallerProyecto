@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/password/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/cities/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/places", "/api/places/").hasAnyRole("ADMIN", "SUPERADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/places/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
