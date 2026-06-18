@@ -55,7 +55,7 @@ class FeatureServiceTest {
         assertThat(result).containsEntry("pinRedirection", true);
         assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(4);
+        assertThat(result).hasSize(3);
 
         File file = tempDir.resolve("features.json").toFile();
 
@@ -102,7 +102,7 @@ class FeatureServiceTest {
         assertThat(result).containsEntry("pinRedirection", true);
         assertThat(result).containsEntry("showSearchPlaces", true);
         assertThat(result).containsEntry("showFavorites", true);
-        assertThat(result).hasSize(4);
+        assertThat(result).hasSize(3);
     }
 
 
@@ -153,7 +153,7 @@ class FeatureServiceTest {
         Map<String, Boolean> result = featureService.updateFeatures(withUnknownKeys);
 
         assertThat(result).doesNotContainKey("keyInventada");
-        assertThat(result).hasSize(4);
+        assertThat(result).hasSize(3);
         assertThat(result).containsEntry("pinRedirection", true);
         assertThat(result).containsEntry("showFavorites", false);
     }

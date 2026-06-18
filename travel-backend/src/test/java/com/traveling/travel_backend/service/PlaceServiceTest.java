@@ -17,7 +17,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.traveling.travel_backend.dto.CreatePlaceRequestDTO;
+import com.traveling.travel_backend.exception.BadRequestException;
+import com.traveling.travel_backend.model.PlaceImage;
+import com.traveling.travel_backend.repository.PlaceImageRepository;
+import org.mockito.ArgumentCaptor;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +50,12 @@ class PlaceServiceTest {
     @Mock
     private TranslationsService translationsService;
 
+    @Mock
+    private PlaceImageRepository placeImageRepository;
+
+    @Mock
+    private CloudinaryService cloudinaryService;
+
     @InjectMocks
     private PlaceService placeService;
 
@@ -53,7 +67,7 @@ class PlaceServiceTest {
         sampleCity = new City();
         sampleCity.setId(1L);
         sampleCity.setName("Cochabamba");
-
+        sampleCity.setState(true);
         samplePlace = new Place();
         samplePlace.setId(10L);
         samplePlace.setName("Cristo de la Concordia");
@@ -64,6 +78,190 @@ class PlaceServiceTest {
         samplePlace.setCity(sampleCity);
         samplePlace.setState(true);
     }
+
+    @Nested
+    @DisplayName("Pruebas de creación de lugares turísticos")
+    class CreatePlaceTests {
+
+    @Test
+    @DisplayName("Debe crear un lugar turístico con varias imágenes y marcar la primera como principal")
+    void shouldCreatePlaceWithMultipleImagesAndMarkFirstAsMain() {
+        CreatePlaceRequestDTO request = validCreatePlaceRequest();
+
+        MockMultipartFile image1 = imageFile("madidi-1.jpg", "image/jpeg", 1024);
+        MockMultipartFile image2 = imageFile("madidi-2.jpg", "image/jpeg", 2048);
+
+        when(cityRepository.findById(1L)).thenReturn(Optional.of(sampleCity));
+
+        when(placeRepository.existsByNameIgnoreCaseAndCityIdAndStateTrue(
+                "Parque Nacional Madidi",
+                1L
+        )).thenReturn(false);
+
+        when(placeRepository.save(any(Place.class))).thenAnswer(invocation -> {
+            Place place = invocation.getArgument(0);
+            place.setId(100L);
+            return place;
+        });
+
+        when(cloudinaryService.uploadPlaceImage(image1, 100L, 0))
+                .thenReturn("https://res.cloudinary.com/test/madidi-1.jpg");
+
+        when(cloudinaryService.uploadPlaceImage(image2, 100L, 1))
+                .thenReturn("https://res.cloudinary.com/test/madidi-2.jpg");
+
+        when(placeImageRepository.save(any(PlaceImage.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        PlaceResponseDTO result = placeService.createPlace(request, List.of(image1, image2));
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(100L);
+        assertThat(result.getName()).isEqualTo("Parque Nacional Madidi");
+
+        ArgumentCaptor<PlaceImage> imageCaptor = ArgumentCaptor.forClass(PlaceImage.class);
+
+        verify(placeImageRepository, times(2)).save(imageCaptor.capture());
+
+        List<PlaceImage> savedImages = imageCaptor.getAllValues();
+
+        assertThat(savedImages.get(0).getImageUrl())
+                .isEqualTo("https://res.cloudinary.com/test/madidi-1.jpg");
+        assertThat(savedImages.get(0).getDisplayOrder()).isEqualTo(0);
+        assertThat(savedImages.get(0).getIsMain()).isTrue();
+        assertThat(savedImages.get(0).isState()).isTrue();
+        assertThat(savedImages.get(0).getPlace().getId()).isEqualTo(100L);
+
+        assertThat(savedImages.get(1).getImageUrl())
+                .isEqualTo("https://res.cloudinary.com/test/madidi-2.jpg");
+        assertThat(savedImages.get(1).getDisplayOrder()).isEqualTo(1);
+        assertThat(savedImages.get(1).getIsMain()).isFalse();
+        assertThat(savedImages.get(1).isState()).isTrue();
+        assertThat(savedImages.get(1).getPlace().getId()).isEqualTo(100L);
+
+        verify(cloudinaryService).uploadPlaceImage(image1, 100L, 0);
+        verify(cloudinaryService).uploadPlaceImage(image2, 100L, 1);
+        verify(logRepository).save(any(LogEntity.class));
+    }
+
+    @Test
+    @DisplayName("Debe crear un lugar turístico sin imágenes cuando no se envían archivos")
+    void shouldCreatePlaceWithoutImagesWhenFilesAreNull() {
+        CreatePlaceRequestDTO request = validCreatePlaceRequest();
+
+        when(cityRepository.findById(1L)).thenReturn(Optional.of(sampleCity));
+
+        when(placeRepository.existsByNameIgnoreCaseAndCityIdAndStateTrue(
+                "Parque Nacional Madidi",
+                1L
+        )).thenReturn(false);
+
+        when(placeRepository.save(any(Place.class))).thenAnswer(invocation -> {
+            Place place = invocation.getArgument(0);
+            place.setId(101L);
+            return place;
+        });
+
+        PlaceResponseDTO result = placeService.createPlace(request, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(101L);
+        assertThat(result.getName()).isEqualTo("Parque Nacional Madidi");
+
+        verify(placeRepository).save(any(Place.class));
+        verifyNoInteractions(cloudinaryService);
+        verify(placeImageRepository, never()).save(any(PlaceImage.class));
+        verify(logRepository).save(any(LogEntity.class));
+    }
+
+    @Test
+    @DisplayName("Debe rechazar más de 5 imágenes")
+    void shouldRejectMoreThanFiveImages() {
+        CreatePlaceRequestDTO request = validCreatePlaceRequest();
+
+        List<MultipartFile> images = List.of(
+                imageFile("img-1.jpg", "image/jpeg", 100),
+                imageFile("img-2.jpg", "image/jpeg", 100),
+                imageFile("img-3.jpg", "image/jpeg", 100),
+                imageFile("img-4.jpg", "image/jpeg", 100),
+                imageFile("img-5.jpg", "image/jpeg", 100),
+                imageFile("img-6.jpg", "image/jpeg", 100)
+        );
+
+        assertThatThrownBy(() -> placeService.createPlace(request, images))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Solo se permite subir hasta 5 imágenes");
+
+        verify(placeRepository, never()).save(any(Place.class));
+        verifyNoInteractions(cloudinaryService);
+        verifyNoInteractions(placeImageRepository);
+    }
+
+    @Test
+    @DisplayName("Debe rechazar archivos que no sean imágenes")
+    void shouldRejectNonImageFiles() {
+        CreatePlaceRequestDTO request = validCreatePlaceRequest();
+
+        MockMultipartFile pdfFile = new MockMultipartFile(
+                "images",
+                "documento.pdf",
+                "application/pdf",
+                new byte[]{1, 2, 3}
+        );
+
+        assertThatThrownBy(() -> placeService.createPlace(request, List.of(pdfFile)))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Todos los archivos seleccionados deben ser imágenes");
+
+        verify(placeRepository, never()).save(any(Place.class));
+        verifyNoInteractions(cloudinaryService);
+        verifyNoInteractions(placeImageRepository);
+    }
+
+    @Test
+    @DisplayName("Debe rechazar imágenes mayores a 5 MB")
+    void shouldRejectImagesGreaterThanFiveMb() {
+        CreatePlaceRequestDTO request = validCreatePlaceRequest();
+
+        byte[] bigContent = new byte[(5 * 1024 * 1024) + 1];
+
+        MockMultipartFile bigImage = new MockMultipartFile(
+                "images",
+                "imagen-grande.jpg",
+                "image/jpeg",
+                bigContent
+        );
+
+        assertThatThrownBy(() -> placeService.createPlace(request, List.of(bigImage)))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Cada imagen no debe superar los 5 MB");
+
+        verify(placeRepository, never()).save(any(Place.class));
+        verifyNoInteractions(cloudinaryService);
+        verifyNoInteractions(placeImageRepository);
+    }
+
+    @Test
+    @DisplayName("Debe rechazar lugar duplicado en la misma ciudad")
+    void shouldRejectDuplicatedPlaceInSameCity() {
+        CreatePlaceRequestDTO request = validCreatePlaceRequest();
+
+        when(cityRepository.findById(1L)).thenReturn(Optional.of(sampleCity));
+
+        when(placeRepository.existsByNameIgnoreCaseAndCityIdAndStateTrue(
+                "Parque Nacional Madidi",
+                1L
+        )).thenReturn(true);
+
+        assertThatThrownBy(() -> placeService.createPlace(request, Collections.emptyList()))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Ya existe un lugar turístico activo con ese nombre");
+
+        verify(placeRepository, never()).save(any(Place.class));
+        verifyNoInteractions(cloudinaryService);
+        verifyNoInteractions(placeImageRepository);
+    }
+}
 
     @Nested
     @DisplayName("Pruebas de Consultas Generales y Top Rated")
@@ -643,6 +841,31 @@ class PlaceServiceTest {
                 AppConstants.FIELD_PLACE_TYPE,
                 language,
                 "Monumento"
+        );
+    }
+
+        private CreatePlaceRequestDTO validCreatePlaceRequest() {
+        CreatePlaceRequestDTO request = new CreatePlaceRequestDTO();
+        request.setName("Parque Nacional Madidi");
+        request.setDescription("Área protegida de gran biodiversidad ubicada en el norte de La Paz.");
+        request.setAddress("Región norte del departamento de La Paz");
+        request.setPrice(100.0);
+        request.setLatitude(-14.2500);
+        request.setLongitude(-68.7500);
+        request.setPlaceType("Natural");
+        request.setCityId(1L);
+        request.setIsEvent(false);
+        request.setStartDate(null);
+        request.setEndDate(null);
+        return request;
+    }
+
+    private MockMultipartFile imageFile(String filename, String contentType, int sizeInBytes) {
+        return new MockMultipartFile(
+                "images",
+                filename,
+                contentType,
+                new byte[sizeInBytes]
         );
     }
 }
