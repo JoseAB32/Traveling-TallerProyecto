@@ -100,7 +100,8 @@
             "logs": "Journaux système",
             "toggles": "Basculement des fonctionnalités",
             "translations": "Traductions",
-            "createAdmin": "Inscrire l'administrateur"
+            "createAdmin": "Inscrire l'administrateur",
+            "createPlace": "Créer un lieu touristique"
         },
         "logs": {
             "filters": {
@@ -124,10 +125,6 @@
         "toggles": {
             "title": "Contrôle des fonctionnalités",
             "persistence": "Persistance dans JSON",
-            "autoCreateItinerary": {
-                "title": "Création automatique d'itinéraire (AutoCreateItinerary)",
-                "description": "Il permet au système de générer automatiquement des suggestions de voyage en fonction des lieux sélectionnés."
-            },
             "showSearchPlaces": {
                 "title": "Recherche de lieux (ShowSearchPlaces)",
                 "description": "Afficher ou masquer la barre de recherche des attractions touristiques dans l'application."
@@ -200,6 +197,34 @@
                 "emailPlaceholder":"E-mail",
                 "selectCity":"Sélectionnez une ville",
                 "saving": "Économie..."
+            }
+        },
+        "placeRegister": {
+            "title": "Créer un lieu touristique",
+            "description": "Enregistrez un nouveau site touristique afin qu'il puisse être affiché dans le système.",
+            "success": "Site touristique créé avec succès.",
+            "form": {
+                "name": "Nom du lieu",
+                "namePlaceholder": "Exemple : Point de vue croisé",
+                "description": "Description",
+                "descriptionPlaceholder": "Décrivez ce que les visiteurs peuvent trouver dans ce lieu.",
+                "address": "Adresse",
+                "addressPlaceholder": "Exemple : Centre-ville, Avenue principale",
+                "city": "Ville / Département",
+                "selectCity": "Sélectionnez une ville",
+                "placeType": "Type de lieu",
+                "selectPlaceType": "Sélectionnez un type",
+                "price": "Prix ​​de référence",
+                "latitude": "Latitude",
+                "longitude": "Longitude",
+                "imageFiles": "Placer des images",
+                "imageHelp": "Vous pouvez télécharger jusqu'à 5 images. La première image sélectionnée sera utilisée comme image principale.",
+                "isEvent": "Est-ce un événement touristique?",
+                "startDate": "Date et heure de début",
+                "endDate": "Date et heure de fin",
+                "clear": "Assurant",
+                "saving": "Création...",
+                "create": "Créer un lieu"
             }
         }
     },

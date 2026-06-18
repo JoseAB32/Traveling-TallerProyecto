@@ -100,7 +100,8 @@
             "logs": "Registros do sistema",
             "toggles": "Alternadores de recursos",
             "translations": "Traduções",
-            "createAdmin": "Registrar administrador"
+            "createAdmin": "Registrar administrador",
+            "createPlace": "Criar local turístico"
         },
         "logs": {
             "filters": {
@@ -124,10 +125,6 @@
         "toggles": {
             "title": "Controle de recursos",
             "persistence": "Persistência JSON",
-            "autoCreateItinerary": {
-                "title": "Criar itinerário automaticamente (AutoCreateItinerary)",
-                "description": "Permite que o sistema gere sugestões de viagem automáticas com base em locais selecionados."
-            }, 
             "showSearchPlaces": {
                     "title": "Pesquisar lugares (ShowSearchPlaces)",
                     "description": "Mostra ou oculta a barra de pesquisa de atrações turísticas no aplicativo."
@@ -200,6 +197,34 @@
                 "emailPlaceholder":"E-mail",
                 "selectCity":"Selecione uma cidade",
                 "saving":"Salvando..."
+            }
+        },
+        "placeRegister": {
+            "title": "Criar local turístico",
+            "description": "Cadastre um novo ponto turístico para que ele possa ser exibido no sistema.",
+            "success": "Ponto turístico criado com sucesso.",
+            "form": {
+                "name": "Nome do lugar",
+                "namePlaceholder": "Exemplo: Ponto de Vista Cruzado",
+                "description": "Descrição",
+                "descriptionPlaceholder": "Descreva o que os visitantes podem encontrar neste local.",
+                "address": "Endereço",
+                "addressPlaceholder": "Exemplo: Centro, Avenida Principal",
+                "city": "Cidade / Departamento",
+                "selectCity": "Selecione uma cidade",
+                "placeType": "Tipo de lugar",
+                "selectPlaceType": "Selecione um tipo",
+                "price": "Preço de referência",
+                "latitude": "Latitude",
+                "longitude": "Longitude",
+                "imageFiles": "Colocar imagens",
+                "imageHelp": "Você pode enviar até 5 imagens. A primeira imagem selecionada será usada como imagem principal.",
+                "isEvent": "É um evento turístico?",
+                "startDate": "Data e hora de início",
+                "endDate": "Data e hora de término",
+                "clear": "Límpido",
+                "saving": "Criando...",
+                "create": "Criar lugar"
             }
         }
     },

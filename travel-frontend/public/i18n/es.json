@@ -219,7 +219,7 @@
                 "longitude": "Longitud",
                 "imageFiles": "Imágenes del lugar",
                 "imageHelp": "Puedes subir hasta 5 imágenes. La primera imagen seleccionada será la imagen principal.",
-                "isEvent": "Es un evento turístico",
+                "isEvent": "¿Es un evento turístico?",
                 "startDate": "Fecha y hora de inicio",
                 "endDate": "Fecha y hora de fin",
                 "clear": "Limpiar",
