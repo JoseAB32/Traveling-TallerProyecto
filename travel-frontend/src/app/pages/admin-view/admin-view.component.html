@@ -11,28 +11,28 @@
 
   <ul class="nav nav-tabs admin-tabs mb-4 border-bottom-0">
     @if (isSuperAdmin) {
-    <li class="nav-item">
-      <button class="nav-link text-uppercase fw-bold"
-              [class.active-tab]="activeTab === 'logs'"
-              (click)="changeAdminTab('logs')">
-        <i class="bi bi-list-columns-reverse"></i> {{ 'adminConfiguration.tabs.logs' | transloco }}
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link text-uppercase fw-bold"
-              [class.active-tab]="activeTab === 'toggles'"
-              (click)="changeAdminTab('toggles')">
-        <i class="bi bi-toggle-on"></i> {{ 'adminConfiguration.tabs.toggles' | transloco }}
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link text-uppercase fw-bold"
-              [class.active-tab]="activeTab === 'createAdmin'"
-              (click)="changeAdminTab('createAdmin')">
-        <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.tabs.createAdmin' | transloco }}
-      </button>
-    </li>
-  }
+      <li class="nav-item">
+        <button class="nav-link text-uppercase fw-bold"
+                [class.active-tab]="activeTab === 'logs'"
+                (click)="changeAdminTab('logs')">
+          <i class="bi bi-list-columns-reverse"></i> {{ 'adminConfiguration.tabs.logs' | transloco }}
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link text-uppercase fw-bold"
+                [class.active-tab]="activeTab === 'toggles'"
+                (click)="changeAdminTab('toggles')">
+          <i class="bi bi-toggle-on"></i> {{ 'adminConfiguration.tabs.toggles' | transloco }}
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link text-uppercase fw-bold"
+                [class.active-tab]="activeTab === 'createAdmin'"
+                (click)="changeAdminTab('createAdmin')">
+          <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.tabs.createAdmin' | transloco }}
+        </button>
+      </li>
+    }
 
     <li class="nav-item">
       <button class="nav-link text-uppercase fw-bold"
@@ -41,137 +41,151 @@
         <i class="bi bi-translate"></i> {{ 'adminConfiguration.tabs.translations' | transloco }}
       </button>
     </li>
+
+    <li class="nav-item">
+      <button class="nav-link text-uppercase fw-bold"
+              [class.active-tab]="activeTab === 'createPlace'"
+              (click)="changeAdminTab('createPlace')">
+        <i class="bi bi-geo-alt-fill"></i> {{ 'adminConfiguration.tabs.createPlace' | transloco }}
+      </button>
+    </li>
   </ul>
 
   @if (activeTab === 'logs') {
-    <div class="card shadow-sm mb-4 border-0">
-      <div class="card-body bg-light rounded">
-        <div class="row g-3 align-items-end">
-          <div class="col-12 col-md-6 col-xl-3">
-            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.module' | transloco }}</label>
-            <select class="form-select" [(ngModel)]="filterModule">
-              <option value="">{{ 'adminConfiguration.logs.filters.allModules' | transloco }}</option>
-              @for (mod of modules; track mod) {
-                <option [value]="mod">{{ mod }}</option>
-              }
-            </select>
-          </div>
+    <section>
+      <!-- Filtros -->
+      <div class="card shadow-sm mb-4 border-0">
+        <div class="card-body bg-light rounded">
+          <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.module' | transloco }}</label>
+              <select class="form-select" [(ngModel)]="filterModule">
+                <option value="">{{ 'adminConfiguration.logs.filters.allModules' | transloco }}</option>
+                @for (mod of modules; track mod) {
+                  <option [value]="mod">{{ mod }}</option>
+                }
+              </select>
+            </div>
 
-          <div class="col-12 col-md-6 col-xl-2">
-            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.level' | transloco }}</label>
-            <select class="form-select" [(ngModel)]="filterLevel">
-              <option value="">{{ 'adminConfiguration.logs.filters.allLevels' | transloco }}</option>
-              @for (lvl of levels; track lvl) {
-                <option [value]="lvl">{{ lvl }}</option>
-              }
-            </select>
-          </div>
+            <div class="col-12 col-md-6 col-xl-2">
+              <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.level' | transloco }}</label>
+              <select class="form-select" [(ngModel)]="filterLevel">
+                <option value="">{{ 'adminConfiguration.logs.filters.allLevels' | transloco }}</option>
+                @for (lvl of levels; track lvl) {
+                  <option [value]="lvl">{{ lvl }}</option>
+                }
+              </select>
+            </div>
 
-          <div class="col-12 col-md-6 col-xl-3">
-            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.from' | transloco }}</label>
-            <input type="datetime-local" class="form-control" [(ngModel)]="startDate">
-          </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.from' | transloco }}</label>
+              <input type="datetime-local" class="form-control" [(ngModel)]="startDate">
+            </div>
 
-          <div class="col-12 col-md-6 col-xl-3">
-            <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.to' | transloco }}</label>
-            <input type="datetime-local" class="form-control" [(ngModel)]="endDate">
-          </div>
+            <div class="col-12 col-md-6 col-xl-3">
+              <label class="form-label fw-bold small">{{ 'adminConfiguration.logs.filters.to' | transloco }}</label>
+              <input type="datetime-local" class="form-control" [(ngModel)]="endDate">
+            </div>
 
-          <div class="col-12 col-xl-1 d-grid">
-            <button class="btn btn-traveling" (click)="applyFilters()">
-              <i class="bi bi-search"></i>
-            </button>
+            <div class="col-12 col-xl-1 d-grid">
+              <button class="btn btn-traveling" (click)="applyFilters()">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="logs-table-wrapper shadow-sm rounded border">
-      <table class="table table-hover align-middle bg-white mb-0 logs-table">
-        <thead class="bg-traveling text-white">
-          <tr>
-            <th>{{ 'adminConfiguration.logs.table.date' | transloco }}</th>
-            <th>{{ 'adminConfiguration.logs.table.module' | transloco }}</th>
-            <th>{{ 'adminConfiguration.logs.table.level' | transloco }}</th>
-            <th>{{ 'adminConfiguration.logs.table.message' | transloco }}</th>
-            <th>{{ 'adminConfiguration.logs.table.user' | transloco }}</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          @for (log of logs; track log.id) {
+      <!-- Tabla de logs -->
+      <div class="logs-table-wrapper shadow-sm rounded border">
+        <table class="table table-hover align-middle bg-white mb-0 logs-table">
+          <thead class="bg-traveling text-white">
             <tr>
-              <td [attr.data-label]="'adminConfiguration.logs.table.date' | transloco"
-                  class="text-nowrap small text-muted">
-                {{ log.timestamp | date:'short' }}
-              </td>
-
-              <td [attr.data-label]="'adminConfiguration.logs.table.module' | transloco">
-                <span class="badge bg-secondary opacity-75">{{ log.module }}</span>
-              </td>
-
-              <td [attr.data-label]="'adminConfiguration.logs.table.level' | transloco">
-                <span class="badge" [ngClass]="{
-                  'bg-success': log.level === 'INFO',
-                  'bg-warning text-dark': log.level === 'WARN',
-                  'bg-danger': log.level === 'ERROR',
-                  'bg-info text-dark': log.level === 'DEBUG'
-                }">
-                  {{ log.level }}
-                </span>
-              </td>
-
-              <td [attr.data-label]="'adminConfiguration.logs.table.message' | transloco"
-                  class="small logs-message-cell">
-                {{ log.message }}
-              </td>
-
-              <td [attr.data-label]="'adminConfiguration.logs.table.user' | transloco"
-                  class="text-muted">
-                {{ log.userId || ('adminConfiguration.logs.table.system' | transloco) }}
-              </td>
+              <th>{{ 'adminConfiguration.logs.table.date' | transloco }}</th>
+              <th>{{ 'adminConfiguration.logs.table.module' | transloco }}</th>
+              <th>{{ 'adminConfiguration.logs.table.level' | transloco }}</th>
+              <th>{{ 'adminConfiguration.logs.table.message' | transloco }}</th>
+              <th>{{ 'adminConfiguration.logs.table.user' | transloco }}</th>
             </tr>
-          } @empty {
-            <tr>
-              <td colspan="5" class="text-center py-5 text-muted">
-                {{ 'adminConfiguration.logs.table.noRecords' | transloco }}
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-    @if (logsTotalPages > 1) {
-      <nav class="mt-4" aria-label="Logs pagination">
-        <div class="pagination-wrapper">
-          <p class="text-muted small mb-0">
-            {{ 'adminConfiguration.translations.pagination.page' | transloco }}
-            <strong>{{ logsPage + 1 }}</strong>
-            {{ 'adminConfiguration.translations.pagination.of' | transloco }}
-            <strong>{{ logsTotalPages }}</strong>
-            · {{ logsTotalElements }} logs
-          </p>
+          </thead>
 
-          <ul class="pagination mb-0">
-            <li class="page-item" [class.disabled]="logsPage === 0">
-              <button class="page-link" (click)="goToLogsPage(logsPage - 1)">
-                {{ 'adminConfiguration.translations.pagination.previous' | transloco }}
-              </button>
-            </li>
+          <tbody>
+            @for (log of logs; track log.id) {
+              <tr>
+                <td [attr.data-label]="'adminConfiguration.logs.table.date' | transloco"
+                    class="text-nowrap small text-muted">
+                  {{ log.timestamp | date:'short' }}
+                </td>
 
-            <li class="page-item active">
-              <span class="page-link page-number">{{ logsPage + 1 }}</span>
-            </li>
+                <td [attr.data-label]="'adminConfiguration.logs.table.module' | transloco">
+                  <span class="badge bg-secondary opacity-75">{{ log.module }}</span>
+                </td>
 
-            <li class="page-item" [class.disabled]="!logsHasNext">
-              <button class="page-link" (click)="goToLogsPage(logsPage + 1)">
-                {{ 'adminConfiguration.translations.pagination.next' | transloco }}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    }
+                <td [attr.data-label]="'adminConfiguration.logs.table.level' | transloco">
+                  <span class="badge" [ngClass]="{
+                    'bg-success': log.level === 'INFO',
+                    'bg-warning text-dark': log.level === 'WARN',
+                    'bg-danger': log.level === 'ERROR',
+                    'bg-info text-dark': log.level === 'DEBUG'
+                  }">
+                    {{ log.level }}
+                  </span>
+                </td>
+
+                <td [attr.data-label]="'adminConfiguration.logs.table.message' | transloco"
+                    class="small logs-message-cell">
+                  {{ log.message }}
+                </td>
+
+                <td [attr.data-label]="'adminConfiguration.logs.table.user' | transloco"
+                    class="text-muted">
+                  {{ log.userId || ('adminConfiguration.logs.table.system' | transloco) }}
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="text-center py-5 text-muted">
+                  {{ 'adminConfiguration.logs.table.noRecords' | transloco }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación logs -->
+      @if (logsTotalPages > 1) {
+        <nav class="mt-4" aria-label="Logs pagination">
+          <div class="pagination-wrapper">
+            <p class="text-muted small mb-0">
+              {{ 'adminConfiguration.translations.pagination.page' | transloco }}
+              <strong>{{ logsPage + 1 }}</strong>
+              {{ 'adminConfiguration.translations.pagination.of' | transloco }}
+              <strong>{{ logsTotalPages }}</strong>
+              · {{ logsTotalElements }} logs
+            </p>
+
+            <ul class="pagination mb-0">
+              <li class="page-item" [class.disabled]="logsPage === 0">
+                <button class="page-link" (click)="goToLogsPage(logsPage - 1)">
+                  {{ 'adminConfiguration.translations.pagination.previous' | transloco }}
+                </button>
+              </li>
+
+              <li class="page-item active">
+                <span class="page-link page-number">{{ logsPage + 1 }}</span>
+              </li>
+
+              <li class="page-item" [class.disabled]="!logsHasNext">
+                <button class="page-link" (click)="goToLogsPage(logsPage + 1)">
+                  {{ 'adminConfiguration.translations.pagination.next' | transloco }}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      }
+    </section>
   }
 
   @if (activeTab === 'toggles') {
@@ -185,19 +199,19 @@
 
       <div class="list-group list-group-flush border-top">
 
-        <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
-          <div class="pe-4">
-            <h6 class="mb-1 fw-bold text-dark">{{ 'adminConfiguration.toggles.showFavorites.title' | transloco }}</h6>
-            <p class="small text-muted mb-0">{{ 'adminConfiguration.toggles.showFavorites.description' | transloco }}</p>
+          <div class="list-group-item d-flex justify-content-between align-items-center py-4 px-0">
+            <div class="pe-4">
+              <h6 class="mb-1 fw-bold text-dark">{{ 'adminConfiguration.toggles.showFavorites.title' | transloco }}</h6>
+              <p class="small text-muted mb-0">{{ 'adminConfiguration.toggles.showFavorites.description' | transloco }}</p>
+            </div>
+            <div class="form-check form-switch fs-2">
+              <input class="form-check-input" type="checkbox" role="switch"
+                     [checked]="featuresData()['showFavorites']"
+                     (change)="toggleFeature('showFavorites')">
+            </div>
           </div>
-          <div class="form-check form-switch fs-2">
-            <input class="form-check-input" type="checkbox" role="switch"
-                   [checked]="featuresData()['showFavorites']"
-                   (change)="toggleFeature('showFavorites')">
-          </div>
-        </div>
       </div>
-    </div>
+    </section>
   }
 
   @if (activeTab === 'translations') {
@@ -362,66 +376,259 @@
   }
 
   @if (activeTab === 'createAdmin') {
-    <div class="card shadow-sm border-0 bg-white p-4">
+    <section>
+      <div class="card shadow-sm border-0 bg-white p-4">
+        <div class="d-flex align-items-center mb-4">
+          <h4 class="text-traveling mb-0">
+            <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.adminRegister.createAdmin' | transloco }}
+          </h4>
+        </div>
 
-      <div class="d-flex align-items-center mb-4">
-        <h4 class="text-traveling mb-0">
-          <i class="bi bi-person-plus-fill"></i> {{ 'adminConfiguration.adminRegister.createAdmin' | transloco }}
-        </h4>
+        <p class="text-muted small mb-4">{{ 'adminConfiguration.adminRegister.hint' | transloco }}</p>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminUserName' | transloco }} *</label>
+            <input class="form-control" type="text"
+                   [(ngModel)]="adminForm.userName"
+                   [placeholder]="'adminConfiguration.adminRegister.form.usernamePlaceholder' | transloco"/>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminEmail' | transloco }} *</label>
+            <input class="form-control" type="email"
+                   [(ngModel)]="adminForm.correo"
+                   [placeholder]="'adminConfiguration.adminRegister.form.emailPlaceholder' | transloco"/>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminBirthday' | transloco }}</label>
+            <input class="form-control" type="date"
+                   [(ngModel)]="adminForm.birthday"/>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminCity' | transloco }}</label>
+            <select class="form-select" [(ngModel)]="adminForm.cityId">
+              <option [ngValue]="null">{{ 'adminConfiguration.adminRegister.form.selectCity' | transloco }}</option>
+              @for (city of cities; track city.id) {
+                <option [ngValue]="city.id">{{ city.name }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (adminError) {
+          <p class="text-danger small mt-3 mb-0">{{ adminError | transloco }}</p>
+        }
+        @if (adminSuccess) {
+          <p class="text-success small mt-3 mb-0 fw-bold">{{ 'adminConfiguration.adminRegister.success' | transloco }}</p>
+        }
+
+        <div class="d-flex justify-content-end mt-4">
+          <button type="button" class="btn btn-traveling rounded-pill px-4"
+                  (click)="submitCreateAdmin()" [disabled]="isCreatingAdmin">
+            {{ isCreatingAdmin ? ('adminConfiguration.adminRegister.form.saving' | transloco) : ('adminConfiguration.adminRegister.create' | transloco) }}
+          </button>
+        </div>
       </div>
-
-      <p class="text-muted small mb-4">{{ 'adminConfiguration.adminRegister.hint' | transloco }}</p>
-
-      <div class="row g-3">
-
-        <div class="col-12 col-md-6">
-          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminUserName' | transloco }} *</label>
-          <input class="form-control" type="text"
-            [(ngModel)]="adminForm.userName"
-            [placeholder]="'adminConfiguration.adminRegister.form.usernamePlaceholder' | transloco"/>
-        </div>
-
-        <div class="col-12 col-md-6">
-          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminEmail' | transloco }} *</label>
-          <input class="form-control" type="email"
-            [(ngModel)]="adminForm.correo"
-            [placeholder]="'adminConfiguration.adminRegister.form.emailPlaceholder' | transloco"/>
-        </div>
-
-        <div class="col-12 col-md-6">
-          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminBirthday' | transloco }}</label>
-          <input class="form-control" type="date"
-            [(ngModel)]="adminForm.birthday"/>
-        </div>
-
-        <div class="col-12 col-md-6">
-          <label class="form-label fw-bold small">{{ 'adminConfiguration.adminRegister.form.adminCity' | transloco }}</label>
-          <select class="form-select" [(ngModel)]="adminForm.cityId">
-            <option [ngValue]="null">{{ 'adminConfiguration.adminRegister.form.selectCity' | transloco }}</option>
-            @for (city of cities; track city.id) {
-              <option [ngValue]="city.id">{{ city.name }}</option>
-            }
-          </select>
-        </div>
-
-      </div>
-
-      @if (adminError) {
-        <p class="text-danger small mt-3 mb-0">{{ adminError | transloco }}</p>
-      }
-      @if (adminSuccess) {
-        <p class="text-success small mt-3 mb-0 fw-bold">{{ 'adminConfiguration.adminRegister.success' | transloco }}</p>
-      }
-
-      <div class="d-flex justify-content-end mt-4">
-        <button type="button" class="btn btn-traveling rounded-pill px-4"
-          (click)="submitCreateAdmin()" [disabled]="isCreatingAdmin">
-          {{ isCreatingAdmin ? ('adminConfiguration.adminRegister.form.saving' | transloco) : ('adminConfiguration.adminRegister.create' | transloco) }}
-        </button>
-      </div>
-
-    </div>
+    </section>
   }
+
+  @if (activeTab === 'createPlace') {
+    <section>
+      <div class="card shadow-sm border-0 bg-white p-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+          <div>
+            <h4 class="text-traveling mb-1">
+              <i class="bi bi-geo-alt-fill"></i> {{ 'adminConfiguration.placeRegister.title' | transloco }}
+            </h4>
+            <p class="text-muted small mb-0">
+              {{ 'adminConfiguration.placeRegister.description' | transloco }}
+            </p>
+          </div>
+        </div>
+
+        @if (createPlaceError) {
+          <div class="alert alert-danger">
+            {{ createPlaceError }}
+          </div>
+        }
+
+        @if (createPlaceSuccess) {
+          <div class="alert alert-success">
+            {{ 'adminConfiguration.placeRegister.success' | transloco }}
+          </div>
+        }
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.name' | transloco }} *
+            </label>
+            <input class="form-control"
+                   type="text"
+                   [(ngModel)]="placeForm.name"
+                   [placeholder]="'adminConfiguration.placeRegister.form.namePlaceholder' | transloco">
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.city' | transloco }} *
+            </label>
+            <select class="form-select" [(ngModel)]="placeForm.city_id">
+              <option [ngValue]="null">
+                {{ 'adminConfiguration.placeRegister.form.selectCity' | transloco }}
+              </option>
+              @for (city of cities; track city.id) {
+                <option [ngValue]="city.id">{{ city.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.description' | transloco }} *
+            </label>
+            <textarea class="form-control"
+                      rows="4"
+                      [(ngModel)]="placeForm.description"
+                      [placeholder]="'adminConfiguration.placeRegister.form.descriptionPlaceholder' | transloco"></textarea>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.address' | transloco }} *
+            </label>
+            <input class="form-control"
+                   type="text"
+                   [(ngModel)]="placeForm.address"
+                   [placeholder]="'adminConfiguration.placeRegister.form.addressPlaceholder' | transloco">
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.placeType' | transloco }} *
+            </label>
+            <select class="form-select" [(ngModel)]="placeForm.place_type">
+              <option value="">
+                {{ 'adminConfiguration.placeRegister.form.selectPlaceType' | transloco }}
+              </option>
+              @for (type of placeTypes; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.price' | transloco }} *
+            </label>
+            <input class="form-control"
+                   type="number"
+                   min="0"
+                   step="0.1"
+                   [(ngModel)]="placeForm.price">
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.latitude' | transloco }} *
+            </label>
+            <input class="form-control"
+                   type="number"
+                   step="0.000001"
+                   [(ngModel)]="placeForm.latitude">
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.longitude' | transloco }} *
+            </label>
+            <input class="form-control"
+                   type="number"
+                   step="0.000001"
+                   [(ngModel)]="placeForm.longitude">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-bold small">
+              {{ 'adminConfiguration.placeRegister.form.imageFiles' | transloco }}
+            </label>
+            <input class="form-control"
+                   type="file"
+                   accept="image/*"
+                   multiple
+                   (change)="onPlaceImagesSelected($event)">
+            <small class="text-muted">
+              {{ 'adminConfiguration.placeRegister.form.imageHelp' | transloco }}
+            </small>
+
+            @if (selectedPlaceImages.length > 0) {
+              <div class="small text-success mt-2">
+                {{ selectedPlaceImages.length }} imagen(es) seleccionada(s):
+                <ul class="mb-0 mt-1">
+                  @for (image of selectedPlaceImages; track image.name) {
+                    <li>{{ image.name }}</li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+
+          <div class="col-12">
+            <div class="form-check form-switch">
+              <input class="form-check-input"
+                     type="checkbox"
+                     role="switch"
+                     id="isEventSwitch"
+                     [(ngModel)]="placeForm.is_event">
+              <label class="form-check-label fw-bold small" for="isEventSwitch">
+                {{ 'adminConfiguration.placeRegister.form.isEvent' | transloco }}
+              </label>
+            </div>
+          </div>
+
+          @if (placeForm.is_event) {
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small">
+                {{ 'adminConfiguration.placeRegister.form.startDate' | transloco }} *
+              </label>
+              <input class="form-control"
+                     type="datetime-local"
+                     [(ngModel)]="placeForm.start_date">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small">
+                {{ 'adminConfiguration.placeRegister.form.endDate' | transloco }} *
+              </label>
+              <input class="form-control"
+                     type="datetime-local"
+                     [(ngModel)]="placeForm.end_date">
+            </div>
+          }
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <button type="button"
+                  class="btn btn-outline-secondary rounded-pill px-4"
+                  (click)="resetPlaceForm()"
+                  [disabled]="isCreatingPlace">
+            {{ 'adminConfiguration.placeRegister.form.clear' | transloco }}
+          </button>
+
+          <button type="button"
+                  class="btn btn-traveling rounded-pill px-4"
+                  (click)="submitCreatePlace()"
+                  [disabled]="isCreatingPlace">
+            {{ isCreatingPlace ? ('adminConfiguration.placeRegister.form.saving' | transloco) : ('adminConfiguration.placeRegister.form.create' | transloco) }}
+          </button>
+        </div>
+      </div>
+    </section>
+  }
+
   @if (showTranslationEditModal && selectedTranslation) {
     <div class="modal fade show d-block modal-backdrop-custom">
       <div class="modal-dialog modal-dialog-centered modal-lg">
