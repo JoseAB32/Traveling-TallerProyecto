@@ -1,13 +1,18 @@
 package com.traveling.travel_backend.controller;
 
 import com.traveling.travel_backend.constants.AppConstants;
+import com.traveling.travel_backend.dto.CreatePlaceRequestDTO;
 import com.traveling.travel_backend.dto.PlaceResponseDTO;
 import com.traveling.travel_backend.service.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,6 +25,27 @@ public class PlaceController {
 
     public PlaceController(PlaceService placeService) {
         this.placeService = placeService;
+    }
+
+    @Operation(
+            summary = "Create a tourist place",
+            description = "Creates a new tourist place with optional Cloudinary images. Requires ADMIN or SUPERADMIN role.",
+            operationId = "createPlace"
+    )
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PlaceResponseDTO> createPlace(
+            @ModelAttribute CreatePlaceRequestDTO request,
+            @RequestParam(value = "images", required = false) List<MultipartFile> images
+    ) {
+        PlaceResponseDTO createdPlace = placeService.createPlace(request, images);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdPlace.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(createdPlace);
     }
 
     @Operation(

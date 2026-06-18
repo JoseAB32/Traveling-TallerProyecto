@@ -1,4 +1,4 @@
-{ 
+{
     "header": {
         "searchPlaceholder": "Search department or place",
         "profile": "Profile",
@@ -100,7 +100,8 @@
             "logs": "System Logs",
             "toggles": "Feature Toggles",
             "translations": "Translations",
-            "createAdmin": "Register admin"
+            "createAdmin": "Register admin",
+            "createPlace": "Create Tourist Place"
         },
         "logs": {
             "filters": {
@@ -177,25 +178,53 @@
             }
         },
         "adminRegister": {
-            "createAdmin":     "Create administrator",
-            "hint":            "A temporary password will be sent to the new administrator's email.",
-            "passwordNote":    "Password is auto-generated and sent by email.",
-            "create":          "Create",
-            "success":         "Administrator created successfully. Password sent by email.",
-            "usernameRequired":"Username is required.",
-            "emailRequired":   "Email is required.",
-            "emailInvalid":    "Enter a valid email.",
-            "fieldTaken":      "Username or email already in use.",
-            "error":           "Error creating administrator.",
+            "createAdmin": "Create administrator",
+            "hint": "A temporary password will be sent to the new administrator's email.",
+            "passwordNote": "Password is auto-generated and sent by email.",
+            "create": "Create",
+            "success": "Administrator created successfully. Password sent by email.",
+            "usernameRequired": "Username is required.",
+            "emailRequired": "Email is required.",
+            "emailInvalid": "Enter a valid email.",
+            "fieldTaken": "Username or email already in use.",
+            "error": "Error creating administrator.",
             "form": {
                 "adminUserName": "Username",
                 "adminEmail": "Email",
                 "adminBirthday": "Birthday",
                 "adminCity": "City",
-                "usernamePlaceholder":"Username",
-                "emailPlaceholder":"Email",
-                "selectCity":"Select a city",
-                "saving":"Saving..."
+                "usernamePlaceholder": "Username",
+                "emailPlaceholder": "Email",
+                "selectCity": "Select a city",
+                "saving": "Saving..."
+            }
+        },
+        "placeRegister": {
+            "title": "Create Tourist Place",
+            "description": "Register a new tourist place so it can be displayed in the system.",
+            "success": "Tourist place created successfully.",
+            "form": {
+                "name": "Place name",
+                "namePlaceholder": "Example: Cross Viewpoint",
+                "description": "Description",
+                "descriptionPlaceholder": "Describe what visitors can find in this place",
+                "address": "Address",
+                "addressPlaceholder": "Example: Downtown, Main Avenue",
+                "city": "City / Department",
+                "selectCity": "Select a city",
+                "placeType": "Place type",
+                "selectPlaceType": "Select a type",
+                "price": "Reference price",
+                "latitude": "Latitude",
+                "longitude": "Longitude",
+                "imageFiles": "Place images",
+                "imageHelp": "You can upload up to 5 images. The first selected image will be used as the main image.",
+                "isEvent": "Is a tourist event",
+                "startDate": "Start date and time",
+                "endDate": "End date and time",
+                "clear": "Clear",
+                "saving": "Creating...",
+                "create": "Create Place"
             }
         }
     },
@@ -262,9 +291,9 @@
         "textHaventGeneratedItinerary": "You haven't generated the itinerary yet.",
         "textButtonSave": "SAVE ITINERARY",
         "textButtonSaveModal": "SAVE",
-        "savingModalText":"Saving...",
-        "itineraryName":"Itineary's Name",
-        "modalCancelButton":"Cancel",
+        "savingModalText": "Saving...",
+        "itineraryName": "Itineary's Name",
+        "modalCancelButton": "Cancel",
         "textUncategorized": "Uncategorized",
         "textNoSchedule": "No schedule",
         "textCalculatingRoutes": "Calculating routes and ordering places...",
@@ -336,20 +365,20 @@
         "cancel": "Cancel",
         "save": "Save",
         "saving": "Saving...",
-        "username":           "Username",
-        "usernamePlaceholder":"Current username",
-        "emailPlaceholder":   "Current email address",
-        "selectCity":         "Select a city",
+        "username": "Username",
+        "usernamePlaceholder": "Current username",
+        "emailPlaceholder": "Current email address",
+        "selectCity": "Select a city",
         "editRequiredFields": "Username & email are required",
-        "editFieldTaken":     "Username or email already on use",
-        "editError":          "Failed to update profile",
-        "editSuccess":        "Profile updated succesfully",
-        "photoTooLarge":   "Imagen cant be bigger than 5MB",
-        "photoInvalidType":"The file must be an image",
-        "photoError":      "Error uploading image",
-        "uploadPhoto":    "Change profile picture",
-        "dragOrClick":    "Drag your photo here or click to select",
-        "photoHint":      "JPG, PNG or WEBP · Max 5MB",
-        "uploadConfirm":  "Upload photo"
+        "editFieldTaken": "Username or email already on use",
+        "editError": "Failed to update profile",
+        "editSuccess": "Profile updated succesfully",
+        "photoTooLarge": "Imagen cant be bigger than 5MB",
+        "photoInvalidType": "The file must be an image",
+        "photoError": "Error uploading image",
+        "uploadPhoto": "Change profile picture",
+        "dragOrClick": "Drag your photo here or click to select",
+        "photoHint": "JPG, PNG or WEBP · Max 5MB",
+        "uploadConfirm": "Upload photo"
     }
 }
