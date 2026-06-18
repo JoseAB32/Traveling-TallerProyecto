@@ -125,10 +125,6 @@
         "toggles": {
             "title": "Control de Funcionalidades",
             "persistence": "Persistencia en JSON",
-            "pinRedirection": {
-                "title": "Redirección en Pines (PinRedirection)",
-                "description": "Habilita la navegación automática al hacer clic sobre los marcadores del mapa turístico."
-            },
             "showSearchPlaces": {
                 "title": "Buscador de Lugares (ShowSearchPlaces)",
                 "description": "Muestra u oculta la barra de búsqueda de lugares turísticos en la aplicación."

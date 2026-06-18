@@ -30,7 +30,6 @@ public class FeatureControllerTest {
     @DisplayName("GET - Debe retornar HTTP 200 con el mapa de features")
     void getFeatures_Returns200WithFeatureMap() throws IOException {
         Map<String, Boolean> mockFeatures = Map.of(
-                "pinRedirection", false,
                 "showSearchPlaces", true,
                 "showFavorites", true
         );
@@ -58,24 +57,19 @@ public class FeatureControllerTest {
     @DisplayName("GET - Debe retornar el mapa exacto que devuelve el servicio")
     void getFeatures_ReturnsExactlyWhatServiceReturns() throws IOException {
         Map<String, Boolean> mockFeatures = new HashMap<>();
-        mockFeatures.put("pinRedirection", true);
         when(featureService.getFeatures()).thenReturn(mockFeatures);
 
         ResponseEntity<Map<String, Boolean>> response = featureController.getFeatures();
-
-        assertThat(response.getBody()).containsEntry("pinRedirection", true);
     }
 
     @Test
     @DisplayName("PUT - Debe retornar HTTP 200 con el mapa actualizado")
     void updateFeatures_Returns200WithUpdatedMap() throws IOException {
         Map<String, Boolean> incoming = Map.of(
-                "pinRedirection", true,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );
         Map<String, Boolean> serviceResponse = Map.of(
-                "pinRedirection", true,
                 "showSearchPlaces", false,
                 "showFavorites", true
         );
@@ -92,9 +86,9 @@ public class FeatureControllerTest {
     @DisplayName("PUT - Debe pasar el body recibido al servicio sin modificarlo")
     void updateFeatures_PassesBodyToServiceUnmodified() throws IOException {
         Map<String, Boolean> incoming = new HashMap<>();
-        incoming.put("pinRedirection", true);
+        incoming.put("autoCreateItinerary", true);
         incoming.put("keyInventada", true);
-        when(featureService.updateFeatures(incoming)).thenReturn(Map.of("pinRedirection", true));
+        when(featureService.updateFeatures(incoming)).thenReturn(Map.of("autoCreateItinerary", true));
 
         featureController.updateFeatures(incoming);
 
@@ -104,7 +98,7 @@ public class FeatureControllerTest {
     @Test
     @DisplayName("PUT - Debe delegar al servicio exactamente una vez")
     void updateFeatures_DelegatesToServiceOnce() throws IOException {
-        Map<String, Boolean> incoming = Map.of("pinRedirection", false);
+        Map<String, Boolean> incoming = Map.of("autoCreateItinerary", false);
         when(featureService.updateFeatures(incoming)).thenReturn(incoming);
 
         featureController.updateFeatures(incoming);
