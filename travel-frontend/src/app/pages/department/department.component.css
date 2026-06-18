@@ -1,3 +1,29 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+/* El header debe estar por encima de todo el contenido de la página */
+app-header {
+  display: block;
+  position: relative;
+  z-index: 10000;
+}
+
+/* El contenido principal queda por debajo del header */
+main.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* El mapa debe crear su propio contexto, pero por debajo del header */
+.map-container,
+.map-wrapper,
+.map-wrapper app-map {
+  position: relative;
+  z-index: 0;
+}
+
 /* --- COLORES CORPORATIVOS TRAVELING --- */
 .text-traveling-orange {
   color: #ff6b35 !important;
@@ -403,7 +429,7 @@ main.container {
 /* Imágenes tipo polaroid */
 :host-context(.dark-mode) .tilted-img-left,
 :host-context(.dark-mode) .tilted-img-right {
-  border-color: #0b2235;
+  border-color: #152d41;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45) !important;
   filter: brightness(0.92);
 }

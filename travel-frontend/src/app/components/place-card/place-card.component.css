@@ -141,7 +141,7 @@
 
 /* Imagen */
 :host-context(.dark-mode) .white-frame {
-  background: #0b2235;
+  background: #152d41;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.42);
 }
 
