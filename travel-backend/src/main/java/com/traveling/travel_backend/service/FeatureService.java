@@ -101,7 +101,6 @@ public class FeatureService {
 
     private Map<String, Boolean> defaultFeatures() {
         Map<String, Boolean> defaults = new LinkedHashMap<>();
-        defaults.put("showSearchPlaces", true);
         defaults.put("showFavorites", true);
         return defaults;
     }
