@@ -23,4 +23,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     Optional<Place> findByIdAndStateTrue(Long id);
 
     List<Place> findByStateTrue();
+
+    boolean existsByNameIgnoreCaseAndCityIdAndStateTrue(String name, Long cityId);
 }
