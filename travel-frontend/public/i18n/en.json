@@ -125,10 +125,7 @@
         "toggles": {
             "title": "Features Control",
             "persistence": "JSON Persistence",
-            "showFavorites": {
-                "title": "Favorites (ShowFavorites)",
-                "description": "Enables the section to add and view favorite places for registered users."
-            }
+            "emptyMessage": "There are currently no features under Feature Toggle."
         },
         "modal": {
             "title": "Action required",

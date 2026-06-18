@@ -31,7 +31,6 @@
     <!-- BARRA DE TÍTULO -->
     <div class="title-bar">
       <span class="location-name">{{ place.name }}</span>
-        @if (featureService.isEnabled('showFavorites')){
           <span class="favorite-icon" (click)="toggleFavorite()">
 
             <!-- ❤️ FAVORITO -->
@@ -49,7 +48,7 @@
             </ng-template>
 
           </span>
-        }
+        
     </div>
 
     <!-- CARRUSEL -->
