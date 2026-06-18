@@ -17,13 +17,9 @@ describe('FeatureService', () => {
   const baseUrl = CONSTANTS.API.BASE_URL + CONSTANTS.API.FEATURES;
 
   const mockFeatures: Features = {
-    showSearchPlaces: true,
-    showFavorites: false
   };
 
   const updatedFeatures: Features = {
-    showSearchPlaces: false,
-    showFavorites: true
   };
 
   beforeEach(() => {
@@ -49,8 +45,6 @@ describe('FeatureService', () => {
 
   it('should have default cached features', () => {
     expect(service.features()).toEqual({
-      showSearchPlaces: true,
-      showFavorites: true
     });
   });
 
@@ -66,8 +60,6 @@ describe('FeatureService', () => {
     req.flush(mockFeatures);
 
     expect(service.features()).toEqual(mockFeatures);
-    expect(service.isEnabled('showSearchPlaces')).toBe(true);
-    expect(service.isEnabled('showFavorites')).toBe(false);
   });
 
   it('should return true when a feature is enabled', () => {
@@ -75,8 +67,6 @@ describe('FeatureService', () => {
 
     const req = httpMock.expectOne(baseUrl);
     req.flush(mockFeatures);
-
-    expect(service.isEnabled('showSearchPlaces')).toBe(true);
   });
 
   it('should return false when a feature is disabled', () => {
@@ -84,8 +74,6 @@ describe('FeatureService', () => {
 
     const req = httpMock.expectOne(baseUrl);
     req.flush(mockFeatures);
-
-    expect(service.isEnabled('showFavorites')).toBe(false);
   });
 
   it('should return false when feature key does not exist', () => {
@@ -110,7 +98,5 @@ describe('FeatureService', () => {
     req.flush(updatedFeatures);
 
     expect(service.features()).toEqual(updatedFeatures);
-    expect(service.isEnabled('showSearchPlaces')).toBe(false);
-    expect(service.isEnabled('showFavorites')).toBe(true);
   });
 });

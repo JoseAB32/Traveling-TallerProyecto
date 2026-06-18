@@ -125,10 +125,7 @@
         "toggles": {
             "title": "Controle de recursos",
             "persistence": "Persistência JSON",
-            "showFavorites": {
-                "title": "Favoritos (ShowFavorites)",
-                "description": "Permite que usuários registrados adicionem e visualizem locais favoritos."
-            }
+            "emptyMessage": "Atualmente, não há funcionalidades disponíveis em 'Alternar funcionalidade'."
         },
         "modal": {
             "title": "Ação necessária",

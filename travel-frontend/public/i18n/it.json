@@ -125,10 +125,7 @@
         "toggles": {
             "title": "Controllo delle funzioni",
             "persistence": "Persistenza JSON",
-            "showFavorites": {
-                "title": "Preferiti (ShowFavorites)",
-                "description": "Consente agli utenti registrati di aggiungere e visualizzare i luoghi preferiti nella sezione dedicata."
-            }
+            "emptyMessage": "Al momento non sono presenti funzionalità nella sezione Attiva/Disattiva funzionalità."
         },
         "modal": {
             "title": "Azione richiesta",

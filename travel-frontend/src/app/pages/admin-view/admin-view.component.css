@@ -93,6 +93,14 @@
     min-height: 48px;
 }
 
+.ft-empty {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
 .translation-card {
     border-radius: 18px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;

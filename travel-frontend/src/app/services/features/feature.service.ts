@@ -4,7 +4,6 @@ import { Observable, tap } from 'rxjs';
 import { CONSTANTS } from '../../utils/constants';
 
 export interface Features {
-  showFavorites: boolean;
   [key: string]: boolean;
 }
 
@@ -17,7 +16,6 @@ export class FeatureService {
 
   // Signal para reactividad - fallback
   private _features = signal<Features>({
-    showFavorites: true,
   });
 
 readonly features = this._features.asReadonly();

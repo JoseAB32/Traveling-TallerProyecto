@@ -125,10 +125,7 @@
         "toggles": {
             "title": "Contrôle des fonctionnalités",
             "persistence": "Persistance dans JSON",
-            "showFavorites": {
-                "title": "Favoris (ShowFavorites)",
-                "description": "Permet à cette section d'ajouter et de consulter les lieux favoris des utilisateurs enregistrés."
-            }
+            "emptyMessage": "Aucune fonctionnalité n'est actuellement disponible sous « Feature Toggle »."
         },
         "modal": {
             "title": "Action requise",
