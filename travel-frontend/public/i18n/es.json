@@ -125,10 +125,6 @@
         "toggles": {
             "title": "Control de Funcionalidades",
             "persistence": "Persistencia en JSON",
-            "showSearchPlaces": {
-                "title": "Buscador de Lugares (ShowSearchPlaces)",
-                "description": "Muestra u oculta la barra de búsqueda de lugares turísticos en la aplicación."
-            },
             "showFavorites": {
                 "title": "Favoritos (ShowFavorites)",
                 "description": "Habilita la sección de añadir y ver lugares favoritos para los usuarios registrados."
