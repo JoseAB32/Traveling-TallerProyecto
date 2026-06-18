@@ -403,7 +403,7 @@ main.container {
 /* Imágenes tipo polaroid */
 :host-context(.dark-mode) .tilted-img-left,
 :host-context(.dark-mode) .tilted-img-right {
-  border-color: #0b2235;
+  border-color: #152d41;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45) !important;
   filter: brightness(0.92);
 }

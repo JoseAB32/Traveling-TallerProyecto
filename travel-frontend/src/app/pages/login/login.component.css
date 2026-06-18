@@ -365,7 +365,7 @@ input:focus {
 }
 
 :host-context(.dark-mode) .img-border {
-  background-color: #0b2235;
+  background-color: #152d41;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
